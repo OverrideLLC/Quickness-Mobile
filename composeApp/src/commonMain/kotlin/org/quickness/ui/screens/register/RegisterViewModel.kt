@@ -2,10 +2,10 @@ package org.quickness.ui.screens.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.soywiz.krypto.SHA256
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDateTime
 import org.quickness.data.repository.RegisterRepository
 
 class RegisterViewModel(
@@ -24,6 +24,7 @@ class RegisterViewModel(
         val day: String = "",
         val month: String = "",
         val year: String = "",
+        val sex: String = "",
         val selectedState: String = "",
         val verificationCode: String = "",
         val isVisiblePassword: Boolean = false,
@@ -132,6 +133,11 @@ class RegisterViewModel(
                 false
             }
 
+            isNotInappropriate(_state.value.name) -> {
+                errorMessage("Invalid inappropriate name")
+                false
+            }
+
             else -> {
                 capitalizeWords()
                 true
@@ -178,6 +184,49 @@ class RegisterViewModel(
         }
     }
 
+    private fun isNotInappropriate(name: String): Boolean {
+        val prohibitedWords = listOf(
+            // Roles administrativos y palabras reservadas
+            "admin", "administrator", "root", "superuser", "mod", "moderator", "support",
+            "helpdesk", "sysadmin", "system", "owner", "god", "master", "boss",
+
+            // Palabras ofensivas generales (en inglés)
+            "idiot", "stupid", "dumb", "fool", "jerk", "moron", "loser", "trash", "scum",
+            "nonsense", "troll", "hater", "clown",
+
+            // Insultos y términos ofensivos (en varios idiomas)
+            "puta", "puto", "pendejo", "idiota", "imbecil", "tarado", "baboso", "tonto",
+            "estupido", "cabrón", "gilipollas", "mamon", "mierda", "imbécil", "zorra",
+            "retard", "bastard", "dick", "pussy", "ass", "butt", "crap", "hell", "damn",
+
+            // Palabras relacionadas con odio
+            "racist", "nazi", "bigot", "terrorist", "killer", "murderer", "pedophile",
+            "abuser", "pervert", "incest", "rapist", "misogynist", "homophobe", "antisemitic",
+
+            // Referencias sexuales explícitas
+            "sex", "porn", "xxx", "naked", "boobs", "butt", "orgasm", "penis", "vagina",
+            "cum", "sperm", "milf", "bdsm", "fetish", "anal", "hentai", "incest",
+            "masturbate", "ejaculate",
+
+            // Palabras comunes de spam y estafas
+            "free", "money", "winner", "lottery", "cash", "bitcoin", "crypto",
+            "giveaway", "prize", "gift", "cheap", "discount", "deal", "loan",
+
+            // Términos religiosos inapropiados
+            "mohammed", "allah", "buddha", "god", "messiah", "prophet", "christ", "satan",
+            "lucifer", "devil", "hell",
+
+            // Palabras relacionadas con drogas o sustancias prohibidas
+            "weed", "cannabis", "cocaine", "heroin", "meth", "lsd", "ecstasy", "opium",
+            "addict", "drug", "stoned", "high", "joint", "blunt",
+
+            // Otros términos sensibles
+            "suicide", "death", "kill", "die", "gun", "bomb", "weapon", "war", "violence",
+            "blood", "terror", "shoot", "execute", "massacre", "assassinate"
+        )
+        return prohibitedWords.none { name.contains(it, ignoreCase = true) }
+    }
+
     private fun doesDateMatchCurp(curpDate: String): Boolean {
         val day = _state.value.day.padStart(2, '0')
         val month = _state.value.month.padStart(2, '0')
@@ -187,8 +236,10 @@ class RegisterViewModel(
     }
 
     private fun doesSexMatchCurp(curpSex: Char): Boolean {
+        var sexOptions = ' '
+        sexOptions = if (_state.value.sex == "Male") 'H' else 'M'
         val enteredSex = _state.value.curp[10].uppercaseChar()
-        return enteredSex == curpSex
+        return enteredSex == curpSex && enteredSex == sexOptions
     }
 
     private fun doesStateMatchCurp(curpState: String): Boolean {
@@ -372,6 +423,15 @@ class RegisterViewModel(
         _state.value = _state.value.copy(selectedState = state)
     }
 
+    fun onSexSelected(sex: String) {
+        _state.value = _state.value.copy(sex = sex)
+    }
+
+    private fun encryptPasswordSHA256(password: String): String {
+        val hashBytes = SHA256.digest(password.encodeToByteArray())
+        return hashBytes.hex
+    }
+
     fun register(
         onSuccess: () -> Unit,
         onError: () -> Unit
@@ -381,7 +441,7 @@ class RegisterViewModel(
             try {
                 val result = registerRepository.register(
                     email = _state.value.email,
-                    password = _state.value.password,
+                    password = encryptPasswordSHA256(_state.value.password),
                     name = _state.value.name,
                     curp = _state.value.curp,
                     phoneNumber = formatPhoneNumber(_state.value.phoneNumber)

@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.quickness.ui.components.AgeInputFields
+import org.quickness.ui.components.SexField
 import org.quickness.ui.components.StateDropdown
 import org.quickness.ui.components.TextFIelCustom
 import org.quickness.ui.components.TextFieldCustomEmail
@@ -104,6 +105,8 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
                 isError = viewModel.state.collectAsState().value.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
             TextFIelCustom(
                 value = viewModel.state.collectAsState().value.curp,
                 modifier = Modifier.fillMaxWidth(),
@@ -115,6 +118,8 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
                 isError = viewModel.state.collectAsState().value.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
             TextFIelCustom(
                 value = viewModel.state.collectAsState().value.phoneNumber,
                 modifier = Modifier.fillMaxWidth(),
@@ -126,13 +131,13 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
                 isError = viewModel.state.collectAsState().value.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
-            StateDropdown(
-                selectedState = viewModel.state.collectAsState().value.selectedState,
-                isError = viewModel.state.collectAsState().value.isError,
-                onStateSelected = { viewModel.onStateSelected(it) },
-                onValueChange = { viewModel.onStateSelected(it) }
+        }
+        item {
+            Text(
+                text = "Age",
+                color = colorScheme.primary,
+                fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light)),
             )
-            Spacer(modifier = Modifier.height(20.dp))
             AgeInputFields(
                 day = viewModel.state.collectAsState().value.day,
                 month = viewModel.state.collectAsState().value.month,
@@ -141,6 +146,23 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
                 onDayChange = { viewModel.onDayChange(it) },
                 onMonthChange = { viewModel.onMonthChange(it) },
                 onYearChange = { viewModel.onYearChange(it) }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
+            StateDropdown(
+                selectedState = viewModel.state.collectAsState().value.selectedState,
+                isError = viewModel.state.collectAsState().value.isError,
+                onStateSelected = { viewModel.onStateSelected(it) },
+                onValueChange = { viewModel.onStateSelected(it) }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
+            SexField(
+                selectedOption = viewModel.state.collectAsState().value.sex,
+                isError = viewModel.state.collectAsState().value.isError,
+                onSexChange = { viewModel.onSexSelected(it) }
             )
             Spacer(modifier = Modifier.height(20.dp))
         }

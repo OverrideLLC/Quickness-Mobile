@@ -9,6 +9,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import org.quickness.data.model.RegisterResult
 import org.quickness.data.request.RegisterRequest
+import org.quickness.utils.Constants
 
 class RegisterService(private val httpClient: HttpClient) {
     suspend fun register(
@@ -20,7 +21,7 @@ class RegisterService(private val httpClient: HttpClient) {
     ): RegisterResult {
         return try {
             httpClient.post {
-                url("https://us-central1-quickness-backend-7f4ac.cloudfunctions.net/Registro")
+                url("${Constants.URL_BACK_END}/register")
                 contentType(ContentType.Application.Json)
                 setBody(
                     RegisterRequest(
