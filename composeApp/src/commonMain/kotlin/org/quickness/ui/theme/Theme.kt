@@ -16,4 +16,7 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun MaterialThemeApp(content: @Composable () -> Unit) =
-    MaterialTheme(colorScheme = DarkColorScheme, content = content)
+    MaterialTheme(
+        colorScheme = DarkColorScheme,
+        content = content,
+    )

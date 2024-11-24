@@ -8,14 +8,15 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import org.quickness.Uri
 import org.quickness.ui.animations.NavAnimations
 import org.quickness.ui.screens.login.LoginScreen
 import org.quickness.ui.screens.register.RegisterScreen
 import org.quickness.ui.screens.start.StartScreen
-import org.quickness.utils.RoutesStart
+import org.quickness.utils.routes.RoutesStart
 
 @Composable
-fun NavigationStart() {
+fun NavigationStart(uri: Uri) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -34,7 +35,7 @@ fun NavigationStart() {
             LoginScreen(navController)
         }
         composable(RoutesStart.Register.route) {
-            RegisterScreen(navController)
+            RegisterScreen(navController, uri)
         }
         composable(RoutesStart.ForgotPassword.route) {
             //ForgotPasswordScreen(navController)

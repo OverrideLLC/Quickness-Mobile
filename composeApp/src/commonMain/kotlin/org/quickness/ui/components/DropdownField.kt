@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
@@ -21,38 +20,34 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StateDropdown(
-    selectedState: String,
-    isError: Boolean,
-    onValueChange: (String) -> Unit,
-    onStateSelected: (String) -> Unit,
+fun DropdownField(
+    label: String,
+    options: List<String>,
+    isError: Boolean = false,
+    selectedOption: String,
+    exposedHeight: Dp = 200.dp,
+    onOptionSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val states = listOf(
-        "Aguascalientes", "Baja California", "Baja California Sur",
-        "Campeche", "Chiapas", "Chihuahua", "Coahuila", "Colima",
-        "Durango", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco",
-        "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
-        "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí",
-        "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala",
-        "Veracruz", "Yucatán", "Zacatecas", "Ciudad de México"
-    )
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
+        modifier = modifier
     ) {
         OutlinedTextField(
-            value = selectedState,
+            value = selectedOption,
+            onValueChange = {},
             colors = TextFieldColorsApp(),
-            isError = isError,
-            onValueChange = { onValueChange(it) },
             readOnly = true,
-            label = { Text("State") },
+            isError = isError,
+            label = { Text(label) },
             trailingIcon = {
                 if (expanded) {
                     Icon(
@@ -68,26 +63,21 @@ fun StateDropdown(
                     )
                 }
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+            modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable)
         )
 
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .wrapContentWidth()
-                .height(200.dp)
+            modifier = Modifier.wrapContentWidth().height(exposedHeight)
         ) {
-            states.forEach { state ->
+            options.forEach { option ->
                 DropdownMenuItem(
                     onClick = {
-                        onStateSelected(state)
+                        onOptionSelected(option)
                         expanded = false
                     },
-                    text = { Text(state) },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    text = { Text(option) }
                 )
             }
         }

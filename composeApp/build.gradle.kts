@@ -55,6 +55,7 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.loggin)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.krypto)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

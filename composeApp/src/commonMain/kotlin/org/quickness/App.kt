@@ -8,9 +8,9 @@ import org.quickness.ui.theme.MaterialThemeApp
 
 @Composable
 @Preview
-fun App() {
+fun App(uri: Uri) {
     MaterialThemeApp {
         //Navegación de la aplicación
-        NavigationStart()
+        NavigationStart(uri)
     }
 }

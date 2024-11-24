@@ -1,6 +1,5 @@
 package org.quickness.ui.screens.register
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,27 +8,24 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
+import org.quickness.Uri
 import org.quickness.ui.components.AgeInputFields
-import org.quickness.ui.components.StateDropdown
+import org.quickness.ui.components.DropdownField
+import org.quickness.ui.components.ItemWithLink
 import org.quickness.ui.components.TextFIelCustom
 import org.quickness.ui.components.TextFieldCustomEmail
 import org.quickness.ui.components.TextFieldCustomPassword
-import quickness.composeapp.generated.resources.Poppins_Bold
+import org.quickness.utils.enums.MexicanState
 import quickness.composeapp.generated.resources.Poppins_Light
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -45,48 +41,65 @@ import quickness.composeapp.generated.resources.person_24dp_E8EAED_FILL0_wght400
 import quickness.composeapp.generated.resources.phone_iphone_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.privacy_policy
 import quickness.composeapp.generated.resources.privacy_policy_description
-import quickness.composeapp.generated.resources.read_more
 import quickness.composeapp.generated.resources.terms_and_conditions
 import quickness.composeapp.generated.resources.terms_and_conditions_description
 
+/**
+ * Displays email and password input fields for user registration.
+ *
+ * @param viewModel The [RegisterViewModel] used to handle UI state and interactions.
+ * @param state The current state of the registration screen, represented by [RegisterState].
+ */
 @Composable
-fun EmailAndPassword(viewModel: RegisterViewModel) {
+fun EmailAndPassword(
+    viewModel: RegisterViewModel,
+    state: RegisterState
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
         TextFieldCustomEmail(
-            value = viewModel.state.collectAsState().value.email,
+            value = state.email,
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { viewModel.onEmailChange(it) },
+            onValueChange = { email -> viewModel.updateState { copy(email = email) } },
             text = stringResource(Res.string.email),
-            isError = viewModel.state.collectAsState().value.isError
+            isError = state.isError
         )
         Spacer(modifier = Modifier.height(20.dp))
         TextFieldCustomPassword(
-            value = viewModel.state.collectAsState().value.password,
+            value = state.password,
             text = stringResource(Res.string.password),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { viewModel.onPasswordChange(it) },
-            isPasswordVisible = viewModel.state.collectAsState().value.isVisiblePassword,
-            isError = viewModel.state.collectAsState().value.isError,
-            togglePasswordVisibility = { viewModel.onIsVisiblePasswordChange() }
+            onValueChange = { password -> viewModel.updateState { copy(password = password) } },
+            isPasswordVisible = state.isVisiblePassword,
+            isError = state.isError,
+            togglePasswordVisibility = { viewModel.updateState { copy(isVisiblePassword = isVisiblePassword.not()) } }
         )
         Spacer(modifier = Modifier.height(20.dp))
         TextFieldCustomPassword(
-            value = viewModel.state.collectAsState().value.confirmPassword,
+            value = state.confirmPassword,
             text = stringResource(Res.string.confirm_password),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { viewModel.onConfirmPasswordChange(it) },
-            isPasswordVisible = viewModel.state.collectAsState().value.isVisibleConfirmPassword,
-            isError = viewModel.state.collectAsState().value.isError,
-            togglePasswordVisibility = { viewModel.onIsVisibleConfirmPasswordChange() }
+            onValueChange = { confirmPassword -> viewModel.updateState { copy(confirmPassword = confirmPassword) } },
+            isPasswordVisible = state.isVisibleConfirmPassword,
+            isError = state.isError,
+            togglePasswordVisibility = { viewModel.updateState { copy(isVisibleConfirmPassword = isVisibleConfirmPassword.not()) } }
         )
     }
 }
 
+/**
+ * Displays the personal information input fields for user registration.
+ *
+ * @param viewModel The [RegisterViewModel] used to handle UI state and interactions.
+ * @param state The current state of the registration screen, represented by [RegisterState].
+ */
 @Composable
-fun InformationPersonal(viewModel: RegisterViewModel) {
+fun InformationPersonal(
+    viewModel: RegisterViewModel,
+    state: RegisterState
+) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
@@ -94,145 +107,128 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
     ) {
         item {
             TextFIelCustom(
-                value = viewModel.state.collectAsState().value.name,
+                value = state.name,
                 modifier = Modifier.fillMaxWidth(),
-                onValueChange = { viewModel.onNameChange(it) },
+                onValueChange = { name -> viewModel.updateState { copy(name = name) } },
                 text = stringResource(Res.string.name_complete),
                 placeholder = "surnames names",
                 keyboardType = KeyboardType.Text,
                 icon = Res.drawable.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                isError = viewModel.state.collectAsState().value.isError
+                isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
             TextFIelCustom(
-                value = viewModel.state.collectAsState().value.curp,
+                value = state.curp,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardType = KeyboardType.Text,
                 placeholder = "##################",
-                onValueChange = { viewModel.onCurpChange(it) },
+                onValueChange = { curp -> viewModel.updateState { copy(curp = curp) } },
                 icon = Res.drawable.person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
                 text = stringResource(Res.string.curp),
-                isError = viewModel.state.collectAsState().value.isError
+                isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
             TextFIelCustom(
-                value = viewModel.state.collectAsState().value.phoneNumber,
+                value = state.phoneNumber,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardType = KeyboardType.Phone,
                 placeholder = "452 903 932",
-                onValueChange = { viewModel.onPhoneNumberChange(it) },
+                onValueChange = { phoneNumber -> viewModel.updateState { copy(phoneNumber = phoneNumber) } },
                 text = stringResource(Res.string.number_phone),
                 icon = Res.drawable.phone_iphone_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                isError = viewModel.state.collectAsState().value.isError
+                isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
-            StateDropdown(
-                selectedState = viewModel.state.collectAsState().value.selectedState,
-                isError = viewModel.state.collectAsState().value.isError,
-                onStateSelected = { viewModel.onStateSelected(it) },
-                onValueChange = { viewModel.onStateSelected(it) }
+        }
+        item {
+            Text(
+                text = "Age",
+                color = colorScheme.primary,
+                fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light)),
             )
-            Spacer(modifier = Modifier.height(20.dp))
             AgeInputFields(
-                day = viewModel.state.collectAsState().value.day,
-                month = viewModel.state.collectAsState().value.month,
-                year = viewModel.state.collectAsState().value.year,
-                isError = viewModel.state.collectAsState().value.isError,
-                onDayChange = { viewModel.onDayChange(it) },
-                onMonthChange = { viewModel.onMonthChange(it) },
-                onYearChange = { viewModel.onYearChange(it) }
+                day = state.day,
+                month = state.month,
+                year = state.year,
+                isError = state.isError,
+                onDayChange = { day -> viewModel.updateState { copy(day = day) } },
+                onMonthChange = { month -> viewModel.updateState { copy(month = month) } },
+                onYearChange = { year -> viewModel.updateState { copy(year = year) } }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
+            DropdownField(
+                label = "State",
+                options = MexicanState.entries.map { it.displayName },
+                selectedOption = state.selectedState,
+                isError = state.isError,
+                onOptionSelected = { selectedState -> viewModel.updateState { copy(selectedState = selectedState) } }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
+            DropdownField(
+                selectedOption = state.sex,
+                isError = state.isError,
+                label = "Sex",
+                options = listOf("Male", "Female"),
+                exposedHeight = 100.dp,
+                onOptionSelected = { sex -> viewModel.updateState { copy(sex = sex) } }
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
 
+/**
+ * Displays the terms and conditions, privacy policy, and data analytics approvals.
+ *
+ * @param viewModel The [RegisterViewModel] used to handle UI state and interactions.
+ * @param state The current state of the registration screen, represented by [RegisterState].
+ * @param uri The [Uri] used to link to additional information pages.
+ */
 @Composable
-fun Approbation(viewModel: RegisterViewModel) {
+fun Approbation(
+    viewModel: RegisterViewModel,
+    state: RegisterState,
+    uri: Uri
+) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.padding(16.dp)
     ) {
         item {
-            // Términos y condiciones
             ItemWithLink(
                 title = stringResource(Res.string.terms_and_conditions),
                 description = stringResource(Res.string.terms_and_conditions_description),
-                url = "https://example.com/terms",
-                checked = viewModel.state.collectAsState().value.termsAndConditions,
-                onCheckedChange = { viewModel.onTermsAndConditionsChange() }
+                checked = state.termsAndConditions,
+                uri = uri,
+                onCheckedChange = { viewModel.updateState { copy(termsAndConditions = termsAndConditions.not()) } }
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Política de privacidad
             ItemWithLink(
                 title = stringResource(Res.string.privacy_policy),
                 description = stringResource(Res.string.privacy_policy_description),
-                url = "https://example.com/privacy",
-                checked = viewModel.state.collectAsState().value.privacyPolicy,
-                onCheckedChange = { viewModel.onPrivacyPolicyChange() }
+                uri = uri,
+                checked = state.privacyPolicy,
+                onCheckedChange = { viewModel.updateState { copy(privacyPolicy = privacyPolicy.not()) } }
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Analítica de datos
             ItemWithLink(
                 title = stringResource(Res.string.data_analytics),
                 description = stringResource(Res.string.data_analytics_description),
-                url = "https://example.com/analytics",
-                checked = viewModel.state.collectAsState().value.dataAnalytics,
-                onCheckedChange = { viewModel.onDataAnalyticsChange() }
+                checked = state.dataAnalytics,
+                uri = uri,
+                onCheckedChange = { viewModel.updateState { copy(dataAnalytics = dataAnalytics.not()) } }
             )
         }
-    }
-}
-
-@Composable
-private fun ItemWithLink(
-    title: String,
-    description: String,
-    url: String,
-    checked: Boolean,
-    onCheckedChange: () -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = colorScheme.onBackground, shape = RoundedCornerShape(10.dp))
-    ) {
-        Text(
-            text = title,
-            color = colorScheme.primary,
-            textAlign = TextAlign.Center,
-            fontFamily = FontFamily(Font(resource = Res.font.Poppins_Bold)),
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = description,
-            color = colorScheme.tertiary,
-            textAlign = TextAlign.Center,
-            fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light)),
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextButton(
-            onClick = {
-
-            },
-            content = {
-                Text(
-                    text = stringResource(Res.string.read_more),
-                    color = colorScheme.primary,
-                    fontFamily = FontFamily(Font(resource = Res.font.Poppins_Bold)),
-                )
-            }
-        )
-        Checkbox(
-            checked = checked,
-            onCheckedChange = {
-                onCheckedChange()
-            }
-        )
     }
 }
