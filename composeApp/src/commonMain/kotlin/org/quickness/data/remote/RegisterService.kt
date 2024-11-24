@@ -9,7 +9,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import org.quickness.data.model.RegisterResult
 import org.quickness.data.request.RegisterRequest
-import org.quickness.utils.Constants
+import org.quickness.utils.`object`.Constants
 
 class RegisterService(private val httpClient: HttpClient) {
     suspend fun register(

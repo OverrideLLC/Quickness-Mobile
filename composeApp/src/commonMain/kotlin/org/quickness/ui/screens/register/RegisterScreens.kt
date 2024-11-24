@@ -22,10 +22,10 @@ import org.quickness.Uri
 import org.quickness.ui.components.AgeInputFields
 import org.quickness.ui.components.DropdownField
 import org.quickness.ui.components.ItemWithLink
-import org.quickness.ui.components.SexField
 import org.quickness.ui.components.TextFIelCustom
 import org.quickness.ui.components.TextFieldCustomEmail
 import org.quickness.ui.components.TextFieldCustomPassword
+import org.quickness.utils.enums.MexicanState
 import quickness.composeapp.generated.resources.Poppins_Light
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -48,12 +48,12 @@ import quickness.composeapp.generated.resources.terms_and_conditions_description
  * Displays email and password input fields for user registration.
  *
  * @param viewModel The [RegisterViewModel] used to handle UI state and interactions.
- * @param state The current state of the registration screen, represented by [RegisterViewModel.RegisterState].
+ * @param state The current state of the registration screen, represented by [RegisterState].
  */
 @Composable
 fun EmailAndPassword(
     viewModel: RegisterViewModel,
-    state: RegisterViewModel.RegisterState
+    state: RegisterState
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,7 +62,7 @@ fun EmailAndPassword(
         TextFieldCustomEmail(
             value = state.email,
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { viewModel.onEmailChange(it) },
+            onValueChange = { email -> viewModel.updateState { copy(email = email) } },
             text = stringResource(Res.string.email),
             isError = state.isError
         )
@@ -71,20 +71,20 @@ fun EmailAndPassword(
             value = state.password,
             text = stringResource(Res.string.password),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { viewModel.onPasswordChange(it) },
+            onValueChange = { password -> viewModel.updateState { copy(password = password) } },
             isPasswordVisible = state.isVisiblePassword,
             isError = state.isError,
-            togglePasswordVisibility = { viewModel.onIsVisiblePasswordChange() }
+            togglePasswordVisibility = { viewModel.updateState { copy(isVisiblePassword = isVisiblePassword.not()) } }
         )
         Spacer(modifier = Modifier.height(20.dp))
         TextFieldCustomPassword(
             value = state.confirmPassword,
             text = stringResource(Res.string.confirm_password),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { viewModel.onConfirmPasswordChange(it) },
+            onValueChange = { confirmPassword -> viewModel.updateState { copy(confirmPassword = confirmPassword) } },
             isPasswordVisible = state.isVisibleConfirmPassword,
             isError = state.isError,
-            togglePasswordVisibility = { viewModel.onIsVisibleConfirmPasswordChange() }
+            togglePasswordVisibility = { viewModel.updateState { copy(isVisibleConfirmPassword = isVisibleConfirmPassword.not()) } }
         )
     }
 }
@@ -93,12 +93,12 @@ fun EmailAndPassword(
  * Displays the personal information input fields for user registration.
  *
  * @param viewModel The [RegisterViewModel] used to handle UI state and interactions.
- * @param state The current state of the registration screen, represented by [RegisterViewModel.RegisterState].
+ * @param state The current state of the registration screen, represented by [RegisterState].
  */
 @Composable
 fun InformationPersonal(
     viewModel: RegisterViewModel,
-    state: RegisterViewModel.RegisterState
+    state: RegisterState
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -109,7 +109,7 @@ fun InformationPersonal(
             TextFIelCustom(
                 value = state.name,
                 modifier = Modifier.fillMaxWidth(),
-                onValueChange = { viewModel.onNameChange(it) },
+                onValueChange = { name -> viewModel.updateState { copy(name = name) } },
                 text = stringResource(Res.string.name_complete),
                 placeholder = "surnames names",
                 keyboardType = KeyboardType.Text,
@@ -124,7 +124,7 @@ fun InformationPersonal(
                 modifier = Modifier.fillMaxWidth(),
                 keyboardType = KeyboardType.Text,
                 placeholder = "##################",
-                onValueChange = { viewModel.onCurpChange(it) },
+                onValueChange = { curp -> viewModel.updateState { copy(curp = curp) } },
                 icon = Res.drawable.person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
                 text = stringResource(Res.string.curp),
                 isError = state.isError
@@ -137,7 +137,7 @@ fun InformationPersonal(
                 modifier = Modifier.fillMaxWidth(),
                 keyboardType = KeyboardType.Phone,
                 placeholder = "452 903 932",
-                onValueChange = { viewModel.onPhoneNumberChange(it) },
+                onValueChange = { phoneNumber -> viewModel.updateState { copy(phoneNumber = phoneNumber) } },
                 text = stringResource(Res.string.number_phone),
                 icon = Res.drawable.phone_iphone_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
                 isError = state.isError
@@ -155,35 +155,30 @@ fun InformationPersonal(
                 month = state.month,
                 year = state.year,
                 isError = state.isError,
-                onDayChange = { viewModel.onDayChange(it) },
-                onMonthChange = { viewModel.onMonthChange(it) },
-                onYearChange = { viewModel.onYearChange(it) }
+                onDayChange = { day -> viewModel.updateState { copy(day = day) } },
+                onMonthChange = { month -> viewModel.updateState { copy(month = month) } },
+                onYearChange = { year -> viewModel.updateState { copy(year = year) } }
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
         item {
             DropdownField(
                 label = "State",
-                options = listOf(
-                    "Aguascalientes", "Baja California", "Baja California Sur",
-                    "Campeche", "Chiapas", "Chihuahua", "Coahuila", "Colima",
-                    "Durango", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco",
-                    "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca",
-                    "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí",
-                    "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala",
-                    "Veracruz", "Yucatán", "Zacatecas", "Ciudad de México"
-                ),
+                options = MexicanState.entries.map { it.displayName },
                 selectedOption = state.selectedState,
                 isError = state.isError,
-                onOptionSelected = { viewModel.onStateSelected(it) }
+                onOptionSelected = { selectedState -> viewModel.updateState { copy(selectedState = selectedState) } }
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
         item {
-            SexField(
+            DropdownField(
                 selectedOption = state.sex,
                 isError = state.isError,
-                onSexChange = { viewModel.onSexSelected(it) }
+                label = "Sex",
+                options = listOf("Male", "Female"),
+                exposedHeight = 100.dp,
+                onOptionSelected = { sex -> viewModel.updateState { copy(sex = sex) } }
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -194,13 +189,13 @@ fun InformationPersonal(
  * Displays the terms and conditions, privacy policy, and data analytics approvals.
  *
  * @param viewModel The [RegisterViewModel] used to handle UI state and interactions.
- * @param state The current state of the registration screen, represented by [RegisterViewModel.RegisterState].
+ * @param state The current state of the registration screen, represented by [RegisterState].
  * @param uri The [Uri] used to link to additional information pages.
  */
 @Composable
 fun Approbation(
     viewModel: RegisterViewModel,
-    state: RegisterViewModel.RegisterState,
+    state: RegisterState,
     uri: Uri
 ) {
     LazyColumn(
@@ -214,7 +209,7 @@ fun Approbation(
                 description = stringResource(Res.string.terms_and_conditions_description),
                 checked = state.termsAndConditions,
                 uri = uri,
-                onCheckedChange = { viewModel.onTermsAndConditionsChange() }
+                onCheckedChange = { viewModel.updateState { copy(termsAndConditions = termsAndConditions.not()) } }
             )
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -223,7 +218,7 @@ fun Approbation(
                 description = stringResource(Res.string.privacy_policy_description),
                 uri = uri,
                 checked = state.privacyPolicy,
-                onCheckedChange = { viewModel.onPrivacyPolicyChange() }
+                onCheckedChange = { viewModel.updateState { copy(privacyPolicy = privacyPolicy.not()) } }
             )
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -232,7 +227,7 @@ fun Approbation(
                 description = stringResource(Res.string.data_analytics_description),
                 checked = state.dataAnalytics,
                 uri = uri,
-                onCheckedChange = { viewModel.onDataAnalyticsChange() }
+                onCheckedChange = { viewModel.updateState { copy(dataAnalytics = dataAnalytics.not()) } }
             )
         }
     }

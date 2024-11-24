@@ -1,4 +1,4 @@
-package org.quickness.utils
+package org.quickness.utils.routes
 
 sealed class RoutesStart(val route: String) {
     data object Home : RoutesStart("Home")

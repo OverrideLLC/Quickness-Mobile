@@ -14,7 +14,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.quickness.ui.components.ButtonAccess
 import org.quickness.ui.components.LogoAndTitle
 import org.quickness.ui.components.powered
-import org.quickness.utils.RoutesStart
+import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.app_name
 

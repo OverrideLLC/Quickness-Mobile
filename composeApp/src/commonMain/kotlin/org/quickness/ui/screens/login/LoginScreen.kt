@@ -32,7 +32,7 @@ import org.quickness.ui.components.Message
 import org.quickness.ui.components.TextFieldCustomEmail
 import org.quickness.ui.components.TextFieldCustomPassword
 import org.quickness.ui.components.powered
-import org.quickness.utils.RoutesStart
+import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.email

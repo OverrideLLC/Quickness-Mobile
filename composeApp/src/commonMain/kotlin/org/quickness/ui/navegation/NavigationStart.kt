@@ -13,7 +13,7 @@ import org.quickness.ui.animations.NavAnimations
 import org.quickness.ui.screens.login.LoginScreen
 import org.quickness.ui.screens.register.RegisterScreen
 import org.quickness.ui.screens.start.StartScreen
-import org.quickness.utils.RoutesStart
+import org.quickness.utils.routes.RoutesStart
 
 @Composable
 fun NavigationStart(uri: Uri) {

@@ -39,8 +39,8 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.Uri
 import org.quickness.ui.components.Message
 import org.quickness.ui.navegation.NavigationRegister
-import org.quickness.utils.RoutesRegister
-import org.quickness.utils.RoutesStart
+import org.quickness.utils.routes.RoutesRegister
+import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Poppins_Light
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.arrow_back_ios_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -48,9 +48,9 @@ import quickness.composeapp.generated.resources.next
 import quickness.composeapp.generated.resources.register
 
 /**
- * Composable principal para la pantalla de registro.
+ * Main composable for the registration screen.
  *
- * @param navController Controlador de navegación principal.
+ * @param navController Main navigation controller.
  */
 @Composable
 fun RegisterScreen(
@@ -59,10 +59,10 @@ fun RegisterScreen(
 ) = RegisterContent(navController, uri)
 
 /**
- * Pantalla de registro que contiene el encabezado, contenido y barra inferior.
+ * Registration screen that contains the header, content, and bottom bar.
  *
- * @param navController Controlador de navegación principal.
- * @param viewModel ViewModel para gestionar el estado y las acciones de la pantalla.
+ * @param navController Main navigation controller.
+ * @param viewModel ViewModel to manage the state and actions of the screen.
  */
 @OptIn(KoinExperimentalAPI::class)
 @Composable
@@ -113,15 +113,16 @@ fun RegisterContent(
     Message(
         message = state.errorMessage,
         visibility = state.isError,
-        actionPostDelayed = { viewModel.toggleError() }
+        actionPostDelayed = { viewModel.updateState { copy(isError = isError.not()) } }
     )
 }
 
 /**
- * Encabezado de la pantalla de registro con barra de progreso y título.
+ * Header for the registration screen with a progress bar and title.
  *
- * @param currentRoute Ruta actual de la navegación interna.
- * @param navControllerRegister Controlador de navegación interno.
+ * @param currentRoute Current route in the internal navigation.
+ * @param navControllerRegister Internal navigation controller.
+ * @param navController Main navigation controller.
  */
 @Composable
 private fun RegisterHeader(
@@ -153,7 +154,7 @@ private fun RegisterHeader(
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.arrow_back_ios_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
-                    contentDescription = "Atrás",
+                    contentDescription = "Back Screen",
                     modifier = Modifier.size(50.dp),
                     tint = colorScheme.primary
                 )
@@ -175,12 +176,12 @@ private fun RegisterHeader(
 }
 
 /**
- * Control de navegación para avanzar entre las pantallas del flujo de registro.
+ * Navigation control to advance between screens in the registration flow.
  *
- * @param navController Controlador de navegación principal.
- * @param navControllerRegister Controlador de navegación interno.
- * @param currentRoute Ruta actual de la navegación interna.
- * @param viewModel ViewModel para manejar las acciones y validaciones.
+ * @param navController Main navigation controller.
+ * @param navControllerRegister Internal navigation controller.
+ * @param currentRoute Current route in the internal navigation.
+ * @param viewModel ViewModel to handle actions and validations.
  */
 @Composable
 private fun RegisterBottomBar(
@@ -202,13 +203,13 @@ private fun RegisterBottomBar(
                         if (viewModel.validateEmailAndPassword())
                             navControllerRegister.navigate(RoutesRegister.InformationPersonal.route)
                         else
-                            viewModel.toggleError()
+                            viewModel.updateState { copy(isError = isError.not()) }
 
                     RoutesRegister.InformationPersonal.route ->
                         if (viewModel.validatePersonalInfo())
                             navControllerRegister.navigate(RoutesRegister.Approbation.route)
                         else
-                            viewModel.toggleError()
+                            viewModel.updateState { copy(isError = isError.not()) }
 
                     RoutesRegister.Approbation.route ->
                         if (viewModel.isTermsAndConditionsChecked()) {
@@ -218,7 +219,7 @@ private fun RegisterBottomBar(
                                     navController.navigate(RoutesStart.Start.route)
                                 },
                                 onError = {
-                                    viewModel.toggleError()
+                                    viewModel.updateState { copy(isError = isError.not()) }
                                 }
                             )
                         }
@@ -247,10 +248,10 @@ private fun RegisterBottomBar(
 }
 
 /**
- * Calcula el progreso de la barra de progreso según la ruta actual.
+ * Calculates the progress of the progress bar based on the current route.
  *
- * @param route Ruta actual de la navegación interna.
- * @return Progreso como un valor flotante entre 0 y 1.
+ * @param route Current route in the internal navigation.
+ * @return Progress as a float value between 0 and 1.
  */
 @Composable
 private fun calculateProgress(

@@ -33,4 +33,6 @@ fun TextFieldColorsApp(): TextFieldColors = TextFieldDefaults.colors(
     errorContainerColor = Color.Transparent,
     focusedLeadingIconColor = colorScheme.primary,
     unfocusedLeadingIconColor = colorScheme.tertiary,
+    focusedTrailingIconColor = colorScheme.primary,
+    unfocusedTrailingIconColor = colorScheme.tertiary
 )
