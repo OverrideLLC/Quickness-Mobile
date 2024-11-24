@@ -124,7 +124,7 @@ class RegisterViewModel(
         }
     }
 
-    fun isNameValid(): Boolean {
+    private fun isNameValid(): Boolean {
         return when {
             _state.value.name.isEmpty() -> {
                 errorMessage("Name is required.")
@@ -153,8 +153,8 @@ class RegisterViewModel(
         }
     }
 
-    fun isCurpValid(): Boolean {
-        val curpRegex = Regex("^[A-Z]{4}[0-9]{6}[HM]{1}[A-Z]{2}[A-Z]{3}[0-9A-Z]{2}$")
+    private fun isCurpValid(): Boolean {
+        val curpRegex = Regex("^[A-Z]{4}[0-9]{6}[HM][A-Z]{2}[A-Z]{3}[0-9A-Z]{2}$")
         val curp = _state.value.curp.uppercase()
 
         return when {
@@ -244,10 +244,8 @@ class RegisterViewModel(
     }
 
     private fun doesSexMatchCurp(curpSex: Char): Boolean {
-        var sexOptions = ' '
-        sexOptions = if (_state.value.sex == "Male") 'H' else 'M'
         val enteredSex = _state.value.curp[10].uppercaseChar()
-        return enteredSex == curpSex && enteredSex == sexOptions
+        return enteredSex == curpSex && enteredSex == if (_state.value.sex == "Male") 'H' else 'M'
     }
 
     private fun doesStateMatchCurp(curpState: String): Boolean {
@@ -311,7 +309,7 @@ class RegisterViewModel(
     private fun Char.isVowel(): Boolean = this in "AEIOU"
 
 
-    fun isPhoneNumberValid(): Boolean {
+    private fun isPhoneNumberValid(): Boolean {
         val phoneRegex = Regex("^\\+?[1-9]\\d{1,14}\$") // Patrón para E.164 (formato internacional)
         val phone = _state.value.phoneNumber
 
