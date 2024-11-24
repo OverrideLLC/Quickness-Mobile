@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -37,6 +36,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.quickness.Uri
 import org.quickness.ui.components.Message
 import org.quickness.ui.navegation.NavigationRegister
 import org.quickness.utils.RoutesRegister
@@ -47,56 +47,87 @@ import quickness.composeapp.generated.resources.arrow_back_ios_24dp_E8EAED_FILL0
 import quickness.composeapp.generated.resources.next
 import quickness.composeapp.generated.resources.register
 
+/**
+ * Composable principal para la pantalla de registro.
+ *
+ * @param navController Controlador de navegación principal.
+ */
 @Composable
-fun RegisterScreen(navController: NavController) = Screen(navController)
+fun RegisterScreen(
+    navController: NavController,
+    uri: Uri
+) = RegisterContent(navController, uri)
 
+/**
+ * Pantalla de registro que contiene el encabezado, contenido y barra inferior.
+ *
+ * @param navController Controlador de navegación principal.
+ * @param viewModel ViewModel para gestionar el estado y las acciones de la pantalla.
+ */
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun Screen(navController: NavController, viewModel: RegisterViewModel = koinViewModel()) {
+fun RegisterContent(
+    navController: NavController,
+    uri: Uri,
+    viewModel: RegisterViewModel = koinViewModel()
+) {
     val navControllerRegister = rememberNavController()
     val currentBackStackEntry by navControllerRegister.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
+    val state = viewModel.state.collectAsState().value
 
     Scaffold(
         topBar = {
-            Header(
+            RegisterHeader(
                 currentRoute = currentRoute ?: RoutesRegister.EmailAndPassword.route,
-                navControllerRegister = navControllerRegister
+                navControllerRegister = navControllerRegister,
+                navController = navController
             )
         },
         content = { padding ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
-                modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(16.dp)
             ) {
-                NavigationRegister(navControllerRegister, viewModel)
+                NavigationRegister(
+                    navController = navControllerRegister,
+                    viewModel = viewModel,
+                    state = state,
+                    uri = uri
+                )
             }
         },
         bottomBar = {
-            ControlNavigation(
+            RegisterBottomBar(
                 navController = navController,
                 navControllerRegister = navControllerRegister,
                 currentRoute = currentRoute ?: RoutesRegister.EmailAndPassword.route,
                 viewModel = viewModel
             )
-        },
-        modifier = Modifier.imePadding()
-    )
-
-    Message(
-        message = viewModel.state.collectAsState().value.errorMessage,
-        visibility = viewModel.state.collectAsState().value.isError,
-        actionPostDelayed = {
-            viewModel.toggleError()
         }
+    )
+    Message(
+        message = state.errorMessage,
+        visibility = state.isError,
+        actionPostDelayed = { viewModel.toggleError() }
     )
 }
 
+/**
+ * Encabezado de la pantalla de registro con barra de progreso y título.
+ *
+ * @param currentRoute Ruta actual de la navegación interna.
+ * @param navControllerRegister Controlador de navegación interno.
+ */
 @Composable
-private fun Header(
+private fun RegisterHeader(
     currentRoute: String,
     navControllerRegister: NavController,
+    navController: NavController
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = calculateProgress(currentRoute),
@@ -109,21 +140,16 @@ private fun Header(
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(start = 10.dp)
         ) {
             IconButton(
                 onClick = {
-                    if (
-                        currentRoute != RoutesRegister.EmailAndPassword.route
-                    ) {
+                    if (currentRoute != RoutesRegister.EmailAndPassword.route)
                         navControllerRegister.popBackStack()
-                    }else{
-                        navControllerRegister.popBackStack()
-                    }
+                    else
+                        navController.popBackStack()
                 },
-                colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = Color.Transparent
-                )
+                colors = IconButtonDefaults.iconButtonColors(Color.Transparent)
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.arrow_back_ios_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
@@ -140,7 +166,7 @@ private fun Header(
             )
         }
         LinearProgressIndicator(
-            progress = animatedProgress,
+            progress = { animatedProgress },
             modifier = Modifier.fillMaxWidth(),
             color = colorScheme.primary,
             trackColor = colorScheme.tertiary,
@@ -148,8 +174,16 @@ private fun Header(
     }
 }
 
+/**
+ * Control de navegación para avanzar entre las pantallas del flujo de registro.
+ *
+ * @param navController Controlador de navegación principal.
+ * @param navControllerRegister Controlador de navegación interno.
+ * @param currentRoute Ruta actual de la navegación interna.
+ * @param viewModel ViewModel para manejar las acciones y validaciones.
+ */
 @Composable
-private fun ControlNavigation(
+private fun RegisterBottomBar(
     navController: NavController,
     navControllerRegister: NavController,
     currentRoute: String,
@@ -164,33 +198,19 @@ private fun ControlNavigation(
             shape = RectangleShape,
             onClick = {
                 when (currentRoute) {
-                    RoutesRegister.EmailAndPassword.route -> {
-                        if (
-                            viewModel.isEmailValid() &&
-                            viewModel.isPasswordValid() &&
-                            viewModel.confirmPassword()
-                        ) {
-                            navControllerRegister.navigate(
-                                RoutesRegister.InformationPersonal.route
-                            )
-                        } else {
+                    RoutesRegister.EmailAndPassword.route ->
+                        if (viewModel.validateEmailAndPassword())
+                            navControllerRegister.navigate(RoutesRegister.InformationPersonal.route)
+                        else
                             viewModel.toggleError()
-                        }
-                    }
 
-                    RoutesRegister.InformationPersonal.route -> {
-                        if (
-                            viewModel.isNameValid() &&
-                            viewModel.isCurpValid() &&
-                            viewModel.isPhoneNumberValid()
-                        ) {
+                    RoutesRegister.InformationPersonal.route ->
+                        if (viewModel.validatePersonalInfo())
                             navControllerRegister.navigate(RoutesRegister.Approbation.route)
-                        } else {
+                        else
                             viewModel.toggleError()
-                        }
-                    }
 
-                    RoutesRegister.Approbation.route -> {
+                    RoutesRegister.Approbation.route ->
                         if (viewModel.isTermsAndConditionsChecked()) {
                             viewModel.register(
                                 onSuccess = {
@@ -202,7 +222,6 @@ private fun ControlNavigation(
                                 }
                             )
                         }
-                    }
                 }
             },
             modifier = Modifier.weight(1f),
@@ -220,15 +239,23 @@ private fun ControlNavigation(
                     text = stringResource(Res.string.next),
                     fontSize = 30.sp,
                     color = colorScheme.primary,
-                    fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light)),
+                    fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light))
                 )
             }
         }
     }
 }
 
+/**
+ * Calcula el progreso de la barra de progreso según la ruta actual.
+ *
+ * @param route Ruta actual de la navegación interna.
+ * @return Progreso como un valor flotante entre 0 y 1.
+ */
 @Composable
-private fun calculateProgress(route: String?): Float {
+private fun calculateProgress(
+    route: String?
+): Float {
     return when (route) {
         RoutesRegister.EmailAndPassword.route -> 0f
         RoutesRegister.InformationPersonal.route -> 0.5f

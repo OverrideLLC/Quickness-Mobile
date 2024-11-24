@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
@@ -24,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
+import org.quickness.Uri
 import org.quickness.ui.components.AgeInputFields
 import org.quickness.ui.components.SexField
 import org.quickness.ui.components.StateDropdown
@@ -51,43 +51,49 @@ import quickness.composeapp.generated.resources.terms_and_conditions
 import quickness.composeapp.generated.resources.terms_and_conditions_description
 
 @Composable
-fun EmailAndPassword(viewModel: RegisterViewModel) {
+fun EmailAndPassword(
+    viewModel: RegisterViewModel,
+    state: RegisterViewModel.RegisterState
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
         TextFieldCustomEmail(
-            value = viewModel.state.collectAsState().value.email,
+            value = state.email,
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { viewModel.onEmailChange(it) },
             text = stringResource(Res.string.email),
-            isError = viewModel.state.collectAsState().value.isError
+            isError = state.isError
         )
         Spacer(modifier = Modifier.height(20.dp))
         TextFieldCustomPassword(
-            value = viewModel.state.collectAsState().value.password,
+            value = state.password,
             text = stringResource(Res.string.password),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { viewModel.onPasswordChange(it) },
-            isPasswordVisible = viewModel.state.collectAsState().value.isVisiblePassword,
-            isError = viewModel.state.collectAsState().value.isError,
+            isPasswordVisible = state.isVisiblePassword,
+            isError = state.isError,
             togglePasswordVisibility = { viewModel.onIsVisiblePasswordChange() }
         )
         Spacer(modifier = Modifier.height(20.dp))
         TextFieldCustomPassword(
-            value = viewModel.state.collectAsState().value.confirmPassword,
+            value = state.confirmPassword,
             text = stringResource(Res.string.confirm_password),
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { viewModel.onConfirmPasswordChange(it) },
-            isPasswordVisible = viewModel.state.collectAsState().value.isVisibleConfirmPassword,
-            isError = viewModel.state.collectAsState().value.isError,
+            isPasswordVisible = state.isVisibleConfirmPassword,
+            isError = state.isError,
             togglePasswordVisibility = { viewModel.onIsVisibleConfirmPasswordChange() }
         )
     }
 }
 
 @Composable
-fun InformationPersonal(viewModel: RegisterViewModel) {
+fun InformationPersonal(
+    viewModel: RegisterViewModel,
+    state: RegisterViewModel.RegisterState
+) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
@@ -95,40 +101,40 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
     ) {
         item {
             TextFIelCustom(
-                value = viewModel.state.collectAsState().value.name,
+                value = state.name,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = { viewModel.onNameChange(it) },
                 text = stringResource(Res.string.name_complete),
                 placeholder = "surnames names",
                 keyboardType = KeyboardType.Text,
                 icon = Res.drawable.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                isError = viewModel.state.collectAsState().value.isError
+                isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
         item {
             TextFIelCustom(
-                value = viewModel.state.collectAsState().value.curp,
+                value = state.curp,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardType = KeyboardType.Text,
                 placeholder = "##################",
                 onValueChange = { viewModel.onCurpChange(it) },
                 icon = Res.drawable.person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
                 text = stringResource(Res.string.curp),
-                isError = viewModel.state.collectAsState().value.isError
+                isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
         item {
             TextFIelCustom(
-                value = viewModel.state.collectAsState().value.phoneNumber,
+                value = state.phoneNumber,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardType = KeyboardType.Phone,
                 placeholder = "452 903 932",
                 onValueChange = { viewModel.onPhoneNumberChange(it) },
                 text = stringResource(Res.string.number_phone),
                 icon = Res.drawable.phone_iphone_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                isError = viewModel.state.collectAsState().value.isError
+                isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -139,10 +145,10 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
                 fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light)),
             )
             AgeInputFields(
-                day = viewModel.state.collectAsState().value.day,
-                month = viewModel.state.collectAsState().value.month,
-                year = viewModel.state.collectAsState().value.year,
-                isError = viewModel.state.collectAsState().value.isError,
+                day = state.day,
+                month = state.month,
+                year = state.year,
+                isError = state.isError,
                 onDayChange = { viewModel.onDayChange(it) },
                 onMonthChange = { viewModel.onMonthChange(it) },
                 onYearChange = { viewModel.onYearChange(it) }
@@ -151,8 +157,8 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
         }
         item {
             StateDropdown(
-                selectedState = viewModel.state.collectAsState().value.selectedState,
-                isError = viewModel.state.collectAsState().value.isError,
+                selectedState = state.selectedState,
+                isError = state.isError,
                 onStateSelected = { viewModel.onStateSelected(it) },
                 onValueChange = { viewModel.onStateSelected(it) }
             )
@@ -160,8 +166,8 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
         }
         item {
             SexField(
-                selectedOption = viewModel.state.collectAsState().value.sex,
-                isError = viewModel.state.collectAsState().value.isError,
+                selectedOption = state.sex,
+                isError = state.isError,
                 onSexChange = { viewModel.onSexSelected(it) }
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -170,39 +176,40 @@ fun InformationPersonal(viewModel: RegisterViewModel) {
 }
 
 @Composable
-fun Approbation(viewModel: RegisterViewModel) {
+fun Approbation(
+    viewModel: RegisterViewModel,
+    state: RegisterViewModel.RegisterState,
+    uri: Uri
+) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
         modifier = Modifier.padding(16.dp)
     ) {
         item {
-            // Términos y condiciones
             ItemWithLink(
                 title = stringResource(Res.string.terms_and_conditions),
                 description = stringResource(Res.string.terms_and_conditions_description),
-                url = "https://example.com/terms",
-                checked = viewModel.state.collectAsState().value.termsAndConditions,
+                checked = state.termsAndConditions,
+                uri = uri,
                 onCheckedChange = { viewModel.onTermsAndConditionsChange() }
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Política de privacidad
             ItemWithLink(
                 title = stringResource(Res.string.privacy_policy),
                 description = stringResource(Res.string.privacy_policy_description),
-                url = "https://example.com/privacy",
-                checked = viewModel.state.collectAsState().value.privacyPolicy,
+                uri = uri,
+                checked = state.privacyPolicy,
                 onCheckedChange = { viewModel.onPrivacyPolicyChange() }
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Analítica de datos
             ItemWithLink(
                 title = stringResource(Res.string.data_analytics),
                 description = stringResource(Res.string.data_analytics_description),
-                url = "https://example.com/analytics",
-                checked = viewModel.state.collectAsState().value.dataAnalytics,
+                checked = state.dataAnalytics,
+                uri = uri,
                 onCheckedChange = { viewModel.onDataAnalyticsChange() }
             )
         }
@@ -213,7 +220,8 @@ fun Approbation(viewModel: RegisterViewModel) {
 private fun ItemWithLink(
     title: String,
     description: String,
-    url: String,
+    uri: Uri,
+    url: String = "https://override.com.mx",
     checked: Boolean,
     onCheckedChange: () -> Unit
 ) {
@@ -240,7 +248,7 @@ private fun ItemWithLink(
         Spacer(modifier = Modifier.height(8.dp))
         TextButton(
             onClick = {
-
+                uri.navigate()
             },
             content = {
                 Text(

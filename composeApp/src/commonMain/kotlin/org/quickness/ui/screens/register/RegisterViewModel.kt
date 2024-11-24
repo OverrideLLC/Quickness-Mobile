@@ -45,9 +45,17 @@ class RegisterViewModel(
         _state.value = _state.value.copy(errorMessage = errorMessage)
     }
 
-    fun isEmailValid(): Boolean {
+    fun validateEmailAndPassword(): Boolean {
+        return isEmailValid() && isPasswordValid() && confirmPassword()
+    }
+
+    fun validatePersonalInfo(): Boolean {
+        return isNameValid() && isCurpValid() && isPhoneNumberValid()
+    }
+
+    private fun isEmailValid(): Boolean {
         val emailRegex =
-            Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$") // Patrón actualizado para emails válidos
+            Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$")
         return when {
             _state.value.email.isEmpty() -> {
                 errorMessage("Email is required")
@@ -63,7 +71,7 @@ class RegisterViewModel(
         }
     }
 
-    fun isPasswordValid(): Boolean {
+    private fun isPasswordValid(): Boolean {
         val password = _state.value.password
         return when {
             password.isEmpty() -> {
@@ -100,7 +108,7 @@ class RegisterViewModel(
         }
     }
 
-    fun confirmPassword(): Boolean {
+    private fun confirmPassword(): Boolean {
         return when {
             _state.value.confirmPassword.isEmpty() -> {
                 errorMessage("Please confirm your password.")
