@@ -2,6 +2,7 @@ package org.quickness.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +23,7 @@ class LoginViewModel(
     }
 
     private fun getSessionToken(): String? {
-        // Implementación que lee el token de un almacenamiento seguro
-        return null // Aquí va tu lógica para obtener el token, si existe
+        return null
     }
 
     fun login(
@@ -61,7 +61,8 @@ class LoginViewModel(
             updateState { copy(isLoading = true) }
             try {
                 val result = authRepository.login(_state.value.email, _state.value.password)
-                if (result?.status == "success") {
+                if (result?.status == "Success") {
+                    updateState { copy(isError = false, isWarning = false) }
                     onSuccess()
                 } else {
                     updateState { copy(isError = true, isWarning = true) }

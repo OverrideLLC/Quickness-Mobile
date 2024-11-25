@@ -1,5 +1,6 @@
 package org.quickness.data.remote
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.tasks.await
@@ -13,27 +14,27 @@ actual class FirebaseService : FirebaseAuth {
             if (email.isBlank() || password.isBlank()) {
                 throw IllegalArgumentException("El correo electrónico o la contraseña no pueden estar vacíos.")
             }
-
+            Log.e("FirebaseService", "signIn: $email $password")
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             val user = result.user
-
+            Log.e("FirebaseService", "Sigue aquí")
             user?.let {
-                AuthResult(status = "Success", uid = it.uid)
+                return@let AuthResult(status = "Success", uid = it.uid)
             } ?: run {
-                AuthResult(status = "Failure", message = "Usuario no encontrado.")
+                return@run AuthResult(status = "Failure", message = "Usuario no encontrado.")
             }
         } catch (e: FirebaseAuthInvalidCredentialsException) {
-            AuthResult(
+            return AuthResult(
                 status = "Failure",
                 message = "Credenciales inválidas. Verifique su correo y contraseña."
             )
         } catch (e: FirebaseAuthInvalidUserException) {
-            AuthResult(
+            return AuthResult(
                 status = "Failure",
                 message = "Usuario no encontrado. Verifique su correo electrónico."
             )
         } catch (e: Exception) {
-            AuthResult(status = "Failure", message = "Error inesperado: ${e.message}")
+            return AuthResult(status = "Failure", message = "Error inesperado: ${e.message}")
         }
     }
 

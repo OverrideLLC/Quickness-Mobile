@@ -46,7 +46,10 @@ fun LoginScreen(
 ) = Screen(navController, viewModel)
 
 @Composable
-private fun Screen(navController: NavController, viewModel: LoginViewModel) {
+private fun Screen(
+    navController: NavController,
+    viewModel: LoginViewModel
+) {
     val state by viewModel.state.collectAsState()
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,9 +62,8 @@ private fun Screen(navController: NavController, viewModel: LoginViewModel) {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (state.isLoading) {
+                if (state.isLoading)
                     CircularProgressIndicator()
-                }
                 Spacer(modifier = Modifier.weight(1f))
                 LogoAndTitle(stringResource(Res.string.login))
                 Spacer(modifier = Modifier.weight(1f))
@@ -77,7 +79,12 @@ private fun Screen(navController: NavController, viewModel: LoginViewModel) {
                         viewModel.login(
                             onSuccess = {
                                 viewModel.login(
-                                    onSuccess = { navController.navigate(RoutesStart.Home.route) },
+                                    onSuccess = {
+                                        viewModel.updateState { copy(isLoading = state.isLoading.not()) }
+                                        navController.popBackStack()
+                                        navController.popBackStack()
+                                        navController.navigate(RoutesStart.Home.route)
+                                    },
                                     onError = {
                                         viewModel.updateState {
                                             copy(
