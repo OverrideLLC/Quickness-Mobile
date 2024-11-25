@@ -7,6 +7,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.logger.Level
 import org.quickness.di.NativeModule
 import org.quickness.di.appModule
+import org.quickness.di.firebaseModule
 import org.quickness.di.initKoin
 import org.quickness.di.networkModule
 import org.quickness.di.repositoryModule
@@ -19,11 +20,12 @@ class MyApp : Application(), KoinComponent {
             androidLogger(Level.DEBUG)
             androidContext(this@MyApp)
             modules(
-                appModule,          // Módulo compartido que configura el HttpClient
-                networkModule,      // Módulo para servicios de red
-                repositoryModule,   // Módulo para repositorios
-                viewModelsModule,   // Módulo para ViewModels
-                NativeModule        // Módulo específico para Android
+                appModule,
+                networkModule,
+                repositoryModule,
+                viewModelsModule,
+                NativeModule,
+                firebaseModule,
             )
         }
     }

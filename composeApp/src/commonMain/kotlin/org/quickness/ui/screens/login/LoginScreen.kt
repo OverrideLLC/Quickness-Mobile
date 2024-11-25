@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
@@ -13,9 +14,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
@@ -48,65 +46,104 @@ fun LoginScreen(
 ) = Screen(navController, viewModel)
 
 @Composable
-private fun Screen(navController: NavController, viewModel: LoginViewModel) {
-    var errorString by remember { mutableStateOf("") }
-    Column(
+private fun Screen(
+    navController: NavController,
+    viewModel: LoginViewModel
+) {
+    val state by viewModel.state.collectAsState()
+    LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().padding(horizontal = 40.dp, vertical = 40.dp)
+        modifier = Modifier.fillMaxSize().padding(horizontal = 40.dp)
     ) {
-        if (viewModel.isLoading.collectAsState().value) {
-            CircularProgressIndicator()
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        LogoAndTitle(stringResource(Res.string.login))
-        Spacer(modifier = Modifier.weight(1f))
-        Body(viewModel)
-        Spacer(modifier = Modifier.weight(1f))
-        forgotPassword(navController)
-        ButtonAccess(
-            onLoginClick = {
-                viewModel.login(
-                    onSuccess = { navController.navigate(RoutesStart.Home.route) },
-                    onError = { errorString = it }
+        item {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                if (state.isLoading)
+                    CircularProgressIndicator()
+                Spacer(modifier = Modifier.weight(1f))
+                LogoAndTitle(stringResource(Res.string.login))
+                Spacer(modifier = Modifier.weight(1f))
+                Body(
+                    viewModel = viewModel,
+                    state = state
                 )
-            },
-            onRegisterClick = { navController.navigate(RoutesStart.Register.route) }
-        )
-        powered()
-        Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
+                forgotPassword(navController)
+                powered()
+                ButtonAccess(
+                    onLoginClick = {
+                        viewModel.login(
+                            onSuccess = {
+                                viewModel.login(
+                                    onSuccess = {
+                                        viewModel.updateState { copy(isLoading = state.isLoading.not()) }
+                                        navController.popBackStack()
+                                        navController.popBackStack()
+                                        navController.navigate(RoutesStart.Home.route)
+                                    },
+                                    onError = {
+                                        viewModel.updateState {
+                                            copy(
+                                                isError = true,
+                                                isWarning = true,
+                                                errorMessage = it
+                                            )
+                                        }
+                                    }
+                                )
+                            },
+                            onError = {
+                                viewModel.updateState {
+                                    copy(
+                                        isError = true,
+                                        isWarning = true,
+                                        errorMessage = it
+                                    )
+                                }
+                            }
+                        )
+                    },
+                    onRegisterClick = { navController.navigate(RoutesStart.Register.route) }
+                )
+                Spacer(modifier = Modifier.weight(1f))
+            }
+        }
     }
     Message(
-        message = errorString,
-        visibility = viewModel.isError.collectAsState().value,
-        isWarning = viewModel.isWarning.collectAsState().value,
+        message = state.errorMessage,
+        visibility = state.isError,
+        isWarning = state.isWarning,
         actionPostDelayed = {
-            viewModel.toggleError()
+            viewModel.updateState { copy(isError = false, isWarning = false) }
         }
     )
 }
 
 @Composable
-private fun Body(viewModel: LoginViewModel) {
+private fun Body(viewModel: LoginViewModel, state: LoginState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.wrapContentSize()
     ) {
         TextFieldCustomEmail(
-            value = viewModel.email.collectAsState().value,
-            isError = viewModel.isError.collectAsState().value,
+            value = state.email,
+            isError = state.isError,
             text = stringResource(Res.string.email),
-            onValueChange = { viewModel.onEmailChange(it) }
+            onValueChange = { viewModel.updateState { copy(email = it) } }
         )
         Spacer(modifier = Modifier.padding(10.dp))
         TextFieldCustomPassword(
-            value = viewModel.password.collectAsState().value,
-            isError = viewModel.isError.collectAsState().value,
+            value = state.password,
+            isError = state.isError,
             text = stringResource(Res.string.password),
-            isPasswordVisible = viewModel.isPasswordVisible.collectAsState().value,
-            togglePasswordVisibility = { viewModel.togglePasswordVisibility() },
-            onValueChange = { viewModel.onPasswordChange(it) }
+            isPasswordVisible = state.isPasswordVisible,
+            togglePasswordVisibility = { viewModel.updateState { copy(isPasswordVisible = !isPasswordVisible) } },
+            onValueChange = { viewModel.updateState { copy(password = it) } }
         )
     }
 }

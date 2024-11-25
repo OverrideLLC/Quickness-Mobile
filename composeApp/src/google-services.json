@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "322358291466",
+    "project_id": "quickness-backend-7f4ac",
+    "storage_bucket": "quickness-backend-7f4ac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322358291466:android:51cb9064cb7ea5605983f3",
+        "android_client_info": {
+          "package_name": "com.override.quicknessApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5JHtOZ7xIXcDrjOH09TCG8UQcnCl6lok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322358291466:android:deae4165d9cabb925983f3",
+        "android_client_info": {
+          "package_name": "org.quickness"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5JHtOZ7xIXcDrjOH09TCG8UQcnCl6lok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
