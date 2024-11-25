@@ -69,6 +69,7 @@ private fun Screen(navController: NavController, viewModel: LoginViewModel) {
                 LogoAndTitle(stringResource(Res.string.login))
                 Spacer(modifier = Modifier.weight(1f))
                 Body(viewModel)
+
                 Spacer(modifier = Modifier.weight(1f))
                 forgotPassword(navController)
                 powered()
