@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
@@ -50,31 +51,39 @@ fun LoginScreen(
 @Composable
 private fun Screen(navController: NavController, viewModel: LoginViewModel) {
     var errorString by remember { mutableStateOf("") }
-    Column(
+    LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize().padding(horizontal = 40.dp, vertical = 40.dp)
     ) {
-        if (viewModel.isLoading.collectAsState().value) {
-            CircularProgressIndicator()
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        LogoAndTitle(stringResource(Res.string.login))
-        Spacer(modifier = Modifier.weight(1f))
-        Body(viewModel)
-        Spacer(modifier = Modifier.weight(1f))
-        forgotPassword(navController)
-        ButtonAccess(
-            onLoginClick = {
-                viewModel.login(
-                    onSuccess = { navController.navigate(RoutesStart.Home.route) },
-                    onError = { errorString = it }
+        item {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                if (viewModel.isLoading.collectAsState().value) {
+                    CircularProgressIndicator()
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                LogoAndTitle(stringResource(Res.string.login))
+                Spacer(modifier = Modifier.weight(1f))
+                Body(viewModel)
+                Spacer(modifier = Modifier.weight(1f))
+                forgotPassword(navController)
+                powered()
+                ButtonAccess(
+                    onLoginClick = {
+                        viewModel.login(
+                            onSuccess = { navController.navigate(RoutesStart.Home.route) },
+                            onError = { errorString = it }
+                        )
+                    },
+                    onRegisterClick = { navController.navigate(RoutesStart.Register.route) }
                 )
-            },
-            onRegisterClick = { navController.navigate(RoutesStart.Register.route) }
-        )
-        powered()
-        Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
+            }
+        }
     }
     Message(
         message = errorString,
