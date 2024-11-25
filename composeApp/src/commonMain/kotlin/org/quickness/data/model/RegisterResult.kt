@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RegisterResult(
-    val message: String,
+    val status: String,
     val uid: String
 )

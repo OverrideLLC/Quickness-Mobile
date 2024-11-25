@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.quickness.data.remote.FirebaseService
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
                 darkIcons = Color(0xFF1b1b1b).luminance() > 0.5f
             )
             App(
-                uri
+                uri,
             )
         }
     }

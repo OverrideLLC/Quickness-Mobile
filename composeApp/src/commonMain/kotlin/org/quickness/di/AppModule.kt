@@ -42,6 +42,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
             repositoryModule,
             viewModelsModule,
             networkModule,
-            NativeModule
+            NativeModule,
+            firebaseModule
         )
     }

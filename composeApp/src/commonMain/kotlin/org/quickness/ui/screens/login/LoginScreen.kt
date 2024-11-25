@@ -14,9 +14,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
@@ -50,11 +47,11 @@ fun LoginScreen(
 
 @Composable
 private fun Screen(navController: NavController, viewModel: LoginViewModel) {
-    var errorString by remember { mutableStateOf("") }
+    val state by viewModel.state.collectAsState()
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().padding(horizontal = 40.dp, vertical = 40.dp)
+        modifier = Modifier.fillMaxSize().padding(horizontal = 40.dp)
     ) {
         item {
             Column(
@@ -62,22 +59,45 @@ private fun Screen(navController: NavController, viewModel: LoginViewModel) {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (viewModel.isLoading.collectAsState().value) {
+                if (state.isLoading) {
                     CircularProgressIndicator()
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 LogoAndTitle(stringResource(Res.string.login))
                 Spacer(modifier = Modifier.weight(1f))
-                Body(viewModel)
-
+                Body(
+                    viewModel = viewModel,
+                    state = state
+                )
                 Spacer(modifier = Modifier.weight(1f))
                 forgotPassword(navController)
                 powered()
                 ButtonAccess(
                     onLoginClick = {
                         viewModel.login(
-                            onSuccess = { navController.navigate(RoutesStart.Home.route) },
-                            onError = { errorString = it }
+                            onSuccess = {
+                                viewModel.login(
+                                    onSuccess = { navController.navigate(RoutesStart.Home.route) },
+                                    onError = {
+                                        viewModel.updateState {
+                                            copy(
+                                                isError = true,
+                                                isWarning = true,
+                                                errorMessage = it
+                                            )
+                                        }
+                                    }
+                                )
+                            },
+                            onError = {
+                                viewModel.updateState {
+                                    copy(
+                                        isError = true,
+                                        isWarning = true,
+                                        errorMessage = it
+                                    )
+                                }
+                            }
                         )
                     },
                     onRegisterClick = { navController.navigate(RoutesStart.Register.route) }
@@ -87,36 +107,36 @@ private fun Screen(navController: NavController, viewModel: LoginViewModel) {
         }
     }
     Message(
-        message = errorString,
-        visibility = viewModel.isError.collectAsState().value,
-        isWarning = viewModel.isWarning.collectAsState().value,
+        message = state.errorMessage,
+        visibility = state.isError,
+        isWarning = state.isWarning,
         actionPostDelayed = {
-            viewModel.toggleError()
+            viewModel.updateState { copy(isError = false, isWarning = false) }
         }
     )
 }
 
 @Composable
-private fun Body(viewModel: LoginViewModel) {
+private fun Body(viewModel: LoginViewModel, state: LoginState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier.wrapContentSize()
     ) {
         TextFieldCustomEmail(
-            value = viewModel.email.collectAsState().value,
-            isError = viewModel.isError.collectAsState().value,
+            value = state.email,
+            isError = state.isError,
             text = stringResource(Res.string.email),
-            onValueChange = { viewModel.onEmailChange(it) }
+            onValueChange = { viewModel.updateState { copy(email = it) } }
         )
         Spacer(modifier = Modifier.padding(10.dp))
         TextFieldCustomPassword(
-            value = viewModel.password.collectAsState().value,
-            isError = viewModel.isError.collectAsState().value,
+            value = state.password,
+            isError = state.isError,
             text = stringResource(Res.string.password),
-            isPasswordVisible = viewModel.isPasswordVisible.collectAsState().value,
-            togglePasswordVisibility = { viewModel.togglePasswordVisibility() },
-            onValueChange = { viewModel.onPasswordChange(it) }
+            isPasswordVisible = state.isPasswordVisible,
+            togglePasswordVisibility = { viewModel.updateState { copy(isPasswordVisible = !isPasswordVisible) } },
+            onValueChange = { viewModel.updateState { copy(password = it) } }
         )
     }
 }
