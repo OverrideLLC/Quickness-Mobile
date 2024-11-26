@@ -1,0 +1,246 @@
+package org.quickness.ui.screens.home
+
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.Font
+import org.jetbrains.compose.resources.painterResource
+import org.quickness.ui.navegation.NavigationHome
+import org.quickness.utils.routes.RoutesHome
+import quickness.composeapp.generated.resources.Poppins_Medium
+import quickness.composeapp.generated.resources.Res
+import quickness.composeapp.generated.resources.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.warning_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
+
+@Composable
+fun HomeScreen() = Screen()
+
+@Composable
+private fun Screen() {
+    val navController = rememberNavController()
+    Scaffold(
+        topBar = { TopBar() },
+        content = { Content(navController) },
+        bottomBar = { BottomBar(navController) },
+        snackbarHost = { SnackBar() },
+        floatingActionButton = { FloatingAction() },
+        containerColor = colorScheme.background,
+        floatingActionButtonPosition = FabPosition.End,
+        modifier = Modifier.fillMaxSize(),
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBar(
+    back: Boolean = false,
+    title: String = "Qr",
+    onBackClick: () -> Unit = {},
+    onEmergencyClick: () -> Unit = {}
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = title,
+                fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
+                fontSize = 50.sp
+            )
+        },
+        navigationIcon = {
+            if (back) IconButton(
+                onClick = onBackClick,
+                content = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = null
+                    )
+                }
+            )
+        },
+        actions = {
+            IconButton(
+                onClick = onEmergencyClick,
+                content = {
+                    Icon(
+                        painter = painterResource(Res.drawable.warning_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24),
+                        contentDescription = "Boton de enmergencia",
+                        tint = colorScheme.error,
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
+            )
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = colorScheme.background,
+            titleContentColor = colorScheme.tertiary,
+            navigationIconContentColor = colorScheme.tertiary,
+            actionIconContentColor = colorScheme.tertiary,
+        ),
+    )
+}
+
+@Composable
+private fun BottomBar(
+    navigationController: NavController
+) {
+    var selected by remember { mutableStateOf(Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        BottomAppBar(
+            modifier = Modifier
+                .background(colorScheme.onBackground, shape = RoundedCornerShape(20.dp))
+                .fillMaxWidth(),
+            containerColor = Color.Transparent,
+            contentColor = Color.Black,
+            content = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    content = {
+                        BottomAppBarIcon(
+                            iconRes = if (selected != Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                            isSelected = selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                            onClick = {
+                                selected =
+                                    Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                navigationController.navigate(RoutesHome.Shop.route) { popUpTo(0) }
+                            }
+                        )
+                        BottomAppBarIcon(
+                            iconRes = Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                            isSelected = selected == Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                            onClick = {
+                                selected =
+                                    Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                navigationController.navigate(RoutesHome.Qr.route) { popUpTo(0) }
+                            }
+                        )
+                        BottomAppBarIcon(
+                            iconRes = if (selected != Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                            isSelected = selected == Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                            onClick = {
+                                selected = Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                navigationController.navigate(RoutesHome.Service.route) { popUpTo(0) }
+                            }
+                        )
+                        BottomAppBarIcon(
+                            iconRes = if (selected != Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                            isSelected = selected == Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24 == selected,
+                            onClick = {
+                                selected =
+                                    Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                navigationController.navigate(RoutesHome.Settings.route) { popUpTo(0) }
+                            }
+                        )
+                    }
+                )
+            }
+        )
+    }
+}
+
+@Composable
+private fun BottomAppBarIcon(
+    iconRes: DrawableResource,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+) {
+    val scale = remember { Animatable(1f) }
+    LaunchedEffect(isSelected) {
+        scale.animateTo(
+            targetValue = if (isSelected) 1.4f else 1.2f,
+            animationSpec = tween(
+                durationMillis = 300,
+                easing = FastOutSlowInEasing
+            )
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .wrapContentSize()
+            .clip(RoundedCornerShape(10.dp))
+            .background(Color.Transparent)
+            .scale(scale.value),
+        content = {
+            IconButton(
+                onClick = onClick,
+                content = {
+                    Icon(
+                        painter = painterResource(iconRes),
+                        contentDescription = null,
+                        modifier = Modifier.size(90.dp),
+                        tint = if (isSelected) colorScheme.primary else colorScheme.secondary
+                    )
+                }
+            )
+        }
+    )
+}
+
+
+@Composable
+private fun Content(navigationController: NavHostController) {
+    NavigationHome(navController = navigationController)
+}
+
+@Composable
+private fun SnackBar() {
+
+}
+
+@Composable
+private fun FloatingAction() {
+
+}

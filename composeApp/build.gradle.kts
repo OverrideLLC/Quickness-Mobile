@@ -39,6 +39,7 @@ kotlin {
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.auth)
+            implementation("com.google.zxing:core:3.5.2")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
