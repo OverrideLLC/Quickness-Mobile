@@ -11,14 +11,17 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import org.quickness.QRCodeGeneratorImpl
+import org.quickness.interfaces.QRCodeGenerator
 
 val appModule: Module = module {
     single { crateHttpClient(get()) }
+    single<QRCodeGenerator> { QRCodeGeneratorImpl() }
 }
 
 fun crateHttpClient(engine: HttpClientEngine): HttpClient {
     return HttpClient(engine) {
-        install(Logging){
+        install(Logging) {
             level = LogLevel.ALL
         }
         install(ContentNegotiation) {
@@ -42,6 +45,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
             repositoryModule,
             viewModelsModule,
             networkModule,
-            NativeModule
+            NativeModule,
+            firebaseModule
         )
     }

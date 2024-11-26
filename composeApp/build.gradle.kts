@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.googleService)
 }
 
 kotlin {
@@ -35,6 +36,10 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.accompanist.systemuicontroller)
+            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.firebase.analytics)
+            implementation(libs.firebase.auth)
+            implementation("com.google.zxing:core:3.5.2")
         }
         commonMain.dependencies {
             implementation(compose.runtime)

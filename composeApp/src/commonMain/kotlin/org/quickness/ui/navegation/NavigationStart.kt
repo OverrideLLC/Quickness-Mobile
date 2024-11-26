@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.quickness.Uri
 import org.quickness.ui.animations.NavAnimations
+import org.quickness.ui.screens.home.HomeScreen
 import org.quickness.ui.screens.login.LoginScreen
 import org.quickness.ui.screens.register.RegisterScreen
 import org.quickness.ui.screens.start.StartScreen
@@ -23,13 +24,13 @@ fun NavigationStart(uri: Uri) {
         modifier = Modifier.fillMaxSize().background(colorScheme.background),
         enterTransition = { NavAnimations.enterTransition },
         exitTransition = { NavAnimations.exitTransition },
-        startDestination = RoutesStart.Start.route
+        startDestination = RoutesStart.Home.route
     ) {
         composable(RoutesStart.Start.route) {
             StartScreen(navController)
         }
         composable(RoutesStart.Home.route) {
-            //HomeScreen(navController)
+            HomeScreen()
         }
         composable(RoutesStart.Login.route) {
             LoginScreen(navController)
