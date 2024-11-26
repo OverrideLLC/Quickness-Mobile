@@ -1,5 +1,5 @@
 package org.quickness.data.remote
 
-import org.quickness.data.firebase.FirebaseAuth
+import org.quickness.interfaces.FirebaseAuth
 
 actual class FirebaseService : FirebaseAuth

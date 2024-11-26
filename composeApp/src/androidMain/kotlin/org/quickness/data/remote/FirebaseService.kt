@@ -4,12 +4,12 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.tasks.await
-import org.quickness.data.firebase.FirebaseAuth
+import org.quickness.interfaces.FirebaseAuth
 import org.quickness.data.model.AuthResult
 
 actual class FirebaseService : FirebaseAuth {
     private val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
-    override suspend fun signIn(email: String, password: String): AuthResult? {
+    actual override suspend fun signIn(email: String, password: String): AuthResult? {
         return try {
             if (email.isBlank() || password.isBlank()) {
                 throw IllegalArgumentException("El correo electrónico o la contraseña no pueden estar vacíos.")

@@ -7,6 +7,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.logger.Level
 import org.quickness.di.NativeModule
 import org.quickness.di.appModule
+import org.quickness.di.dataModule
 import org.quickness.di.firebaseModule
 import org.quickness.di.initKoin
 import org.quickness.di.networkModule
@@ -21,12 +22,14 @@ class MyApp : Application(), KoinComponent {
             androidContext(this@MyApp)
             modules(
                 appModule,
-                networkModule,
+                dataModule,
                 repositoryModule,
                 viewModelsModule,
+                networkModule,
                 NativeModule,
-                firebaseModule,
+                firebaseModule
             )
+            printLogger()
         }
     }
 }

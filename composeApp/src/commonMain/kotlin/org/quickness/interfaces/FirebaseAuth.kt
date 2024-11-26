@@ -1,4 +1,4 @@
-package org.quickness.data.firebase
+package org.quickness.interfaces
 
 import org.quickness.data.model.AuthResult
 
