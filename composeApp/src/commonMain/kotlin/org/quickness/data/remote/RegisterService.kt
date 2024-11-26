@@ -34,7 +34,7 @@ class RegisterService(private val httpClient: HttpClient) {
                 )
             }.body()
         } catch (e: Exception) {
-            RegisterResult(uid = "", message = e.message ?: "Error connecting to server")
+            RegisterResult(uid = "", status = e.message ?: "Error connecting to server")
         }
     }
 }
