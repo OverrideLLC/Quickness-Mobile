@@ -122,7 +122,6 @@ private fun TicketScreen(viewModel: QrViewModel, sharedPreference: SharedPrefere
                             isExpanded = !isExpanded
                         }
 
-                        // Info Animation
                         AnimatedVisibility(
                             visible = !isExpanded,
                             enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
@@ -133,6 +132,7 @@ private fun TicketScreen(viewModel: QrViewModel, sharedPreference: SharedPrefere
                             Spacer(modifier = Modifier.height(16.dp))
                             ImportantInfoItem("Este ticket es válido para un solo uso.")
                         }
+                        Spacer(Modifier.padding(10.dp))
                     }
                 }
             }
@@ -145,7 +145,7 @@ private fun TicketQRCode(
     viewModel: QrViewModel,
     sharedPreference: SharedPreference,
     isExpanded: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     var qrCodeBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
@@ -232,11 +232,6 @@ private fun TicketHeader() {
                 style = typography.titleMedium,
                 color = colorScheme.tertiary,
                 fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "Ticket #12345",
-                style = typography.bodySmall,
-                color = colorScheme.tertiary
             )
         }
         Icon(
