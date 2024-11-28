@@ -20,3 +20,5 @@ actual class QRCodeGeneratorImpl actual constructor() : QRCodeGenerator {
         TODO("Not yet implemented")
     }
 }
+
+actual class SharedPreference actual constructor() : SharedPreference
