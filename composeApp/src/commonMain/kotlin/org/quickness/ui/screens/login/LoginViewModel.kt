@@ -2,7 +2,6 @@ package org.quickness.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +11,7 @@ import org.quickness.utils.`object`.ValidatesData
 import org.quickness.utils.`object`.ValidatesData.isPasswordValid
 
 class LoginViewModel(
-    private val authRepository: LoginRepository
+    private val authRepository: LoginRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
@@ -27,6 +26,7 @@ class LoginViewModel(
     }
 
     fun login(
+        uid: (String?) -> Unit,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
@@ -63,6 +63,7 @@ class LoginViewModel(
                 val result = authRepository.login(_state.value.email, _state.value.password)
                 if (result?.status == "Success") {
                     updateState { copy(isError = false, isWarning = false) }
+                    uid(result.uid)
                     onSuccess()
                 } else {
                     updateState { copy(isError = true, isWarning = true) }

@@ -9,8 +9,9 @@ import org.quickness.ui.theme.MaterialThemeApp
 @Preview
 fun App(
     uri: Uri,
+    sharedPreference: SharedPreference
 ) {
     MaterialThemeApp {
-        NavigationStart(uri)
+        NavigationStart(uri, sharedPreference)
     }
 }

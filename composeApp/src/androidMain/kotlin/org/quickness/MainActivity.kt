@@ -17,13 +17,15 @@ class MainActivity : ComponentActivity() {
                 url = "https://github.com/Quickness-student/logic_gates_book_KMM.git",
                 context = this
             )
+            val sharedPreference = SharedPreference(this)
 
             systemUiController.setSystemBarsColor(
                 color = Color(0xFF1b1b1b),
                 darkIcons = Color(0xFF1b1b1b).luminance() > 0.5f
             )
             App(
-                uri
+                uri,
+                sharedPreference
             )
         }
     }

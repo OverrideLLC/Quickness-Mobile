@@ -48,22 +48,23 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.quickness.SharedPreference
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 
 @Composable
-fun QrScreen() = Screen()
+fun QrScreen(sharedPreference: SharedPreference) = Screen(sharedPreference = sharedPreference)
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-private fun Screen(viewModel: QrViewModel = koinViewModel()) {
-    TicketScreen(viewModel)
+private fun Screen(viewModel: QrViewModel = koinViewModel(), sharedPreference: SharedPreference) {
+    TicketScreen(viewModel, sharedPreference)
 }
 
 @Composable
-private fun TicketScreen(viewModel: QrViewModel) {
+private fun TicketScreen(viewModel: QrViewModel, sharedPreference: SharedPreference) {
     var isClick by remember { mutableStateOf(false) }
     var isVisible by remember { mutableStateOf(false) }
 
@@ -92,8 +93,8 @@ private fun TicketScreen(viewModel: QrViewModel) {
                             .padding(32.dp),
                         content = {
                             TicketQRCode(
-                                viewModel,
-                                "xictSvjOWQlEpOXDB9Jj8rfEyQc4mC9z9EIyS1HTOGf2m",
+                                viewModel = viewModel,
+                                sharedPreference = sharedPreference,
                                 isClick = { isClick = !isClick })
                             AnimatedVisibility(
                                 visible = isClick,
@@ -238,15 +239,14 @@ private fun ImportantInfoItem(text: String) {
 @Composable
 private fun TicketQRCode(
     viewModel: QrViewModel,
-    qrContent: String = "dani te amo",
+    sharedPreference: SharedPreference,
     isClick: () -> Unit
 ) {
     var qrCodeBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
-    LaunchedEffect(qrContent) {
+    LaunchedEffect(Unit) {
         qrCodeBitmap = withContext(Dispatchers.IO) {
-            viewModel.generateQRCode(qrContent)
-            viewModel.qrCode.value
+            viewModel.generateQRCode(sharedPreference)
         }
     }
 
