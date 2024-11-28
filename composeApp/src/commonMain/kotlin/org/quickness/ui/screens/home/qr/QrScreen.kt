@@ -1,11 +1,14 @@
 package org.quickness.ui.screens.home.qr
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.scaleIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.Canvas
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,10 +39,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +54,7 @@ import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.logo_swiftid_centrado
 
 @Composable
 fun QrScreen(sharedPreference: SharedPreference) = Screen(sharedPreference = sharedPreference)
@@ -65,8 +67,8 @@ private fun Screen(viewModel: QrViewModel = koinViewModel(), sharedPreference: S
 
 @Composable
 private fun TicketScreen(viewModel: QrViewModel, sharedPreference: SharedPreference) {
-    var isClick by remember { mutableStateOf(false) }
     var isVisible by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { isVisible = true }
 
@@ -77,170 +79,73 @@ private fun TicketScreen(viewModel: QrViewModel, sharedPreference: SharedPrefere
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        content = {
-            item {
-                AnimatedVisibility(
-                    visible = isVisible,
-                    enter = enterTransition,
-                    exit = exitTransition
+    ) {
+        item {
+            AnimatedVisibility(
+                visible = isVisible,
+                enter = enterTransition,
+                exit = exitTransition
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    colorScheme.background,
+                                    colorScheme.background,
+                                    colorScheme.background
+                                )
+                            )
+                        )
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(30.dp))
-                            .background(colorScheme.onBackground)
-                            .padding(32.dp),
-                        content = {
-                            TicketQRCode(
-                                viewModel = viewModel,
-                                sharedPreference = sharedPreference,
-                                isClick = { isClick = !isClick })
-                            AnimatedVisibility(
-                                visible = isClick,
-                                enter = fadeIn(animationSpec = tween(durationMillis = 200)) +
-                                        scaleIn(
-                                            initialScale = 0.7f,
-                                            animationSpec = tween(durationMillis = 200)
-                                        ) +
-                                        slideInVertically(
-                                            initialOffsetY = { -it },
-                                            animationSpec = tween(durationMillis = 200)
-                                        ),
-                                content = {
-                                    DottedLine()
-                                    TicketHeader()
-                                }
-                            )
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        // Header Animation
+                        AnimatedVisibility(
+                            visible = !isExpanded,
+                            enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
+                                    slideInVertically(initialOffsetY = { -it / 2 }),
+                            exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
+                                    slideOutVertically(targetOffsetY = { -it / 2 })
+                        ) {
+                            TicketHeader()
                         }
-                    )
+
+                        // QR Code with smooth animation
+                        TicketQRCode(viewModel, sharedPreference, isExpanded) {
+                            isExpanded = !isExpanded
+                        }
+
+                        // Info Animation
+                        AnimatedVisibility(
+                            visible = !isExpanded,
+                            enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
+                                    slideInVertically(initialOffsetY = { it / 2 }),
+                            exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
+                                    slideOutVertically(targetOffsetY = { it / 2 })
+                        ) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            ImportantInfoItem("Este ticket es válido para un solo uso.")
+                        }
+                    }
                 }
             }
         }
-    )
-}
-
-
-@Composable
-private fun DottedLine() {
-    Canvas(
-        modifier = Modifier.fillMaxWidth(),
-        onDraw = {
-            val dashWidth = 50f
-            val dashGap = 50f
-            drawLine(
-                color = Color.White,
-                start = Offset(0f, 0f),
-                end = Offset(size.width, 0f),
-                strokeWidth = 15f,
-                pathEffect = PathEffect.dashPathEffect(floatArrayOf(dashWidth, dashGap), 0f)
-            )
-        }
-    )
-}
-
-@Composable
-private fun TicketHeader() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Ticket Information",
-            style = typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            content = {
-                TicketInfoItem(
-                    title = "Company",
-                    content = "Collectives"
-                )
-                TicketInfoItem(
-                    title = "issues date",
-                    content = "8 de sep 2024"
-                )
-            }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        DottedLine()
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(vertical = 16.dp),
-            content = {
-                Text(
-                    text = "Important information",
-                    style = typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                ImportantInfoItem(text = "valid: 8 de sep 2024")
-                ImportantInfoItem(text = "Single use")
-                ImportantInfoItem(text = "Not shared code")
-            }
-        )
     }
 }
-
-@Composable
-private fun TicketInfoItem(title: String, content: String) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        content = {
-            Text(
-                text = title,
-                style = typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.White
-            )
-            Text(text = content, style = typography.bodySmall, color = Color.White)
-        }
-    )
-}
-
-@Composable
-private fun ImportantInfoItem(text: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(vertical = 4.dp),
-        content = {
-            Icon(
-                painter = painterResource(Res.drawable.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
-                contentDescription = "Info Icon",
-                tint = Color.White,
-                modifier = Modifier.size(20.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = text,
-                style = typography.bodyMedium,
-                color = Color.White,
-                fontWeight = FontWeight.Medium
-            )
-        }
-    )
-}
-
 
 @Composable
 private fun TicketQRCode(
     viewModel: QrViewModel,
     sharedPreference: SharedPreference,
-    isClick: () -> Unit
+    isExpanded: Boolean,
+    onClick: () -> Unit
 ) {
     var qrCodeBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
 
@@ -250,25 +155,95 @@ private fun TicketQRCode(
         }
     }
 
+    val transition = updateTransition(targetState = isExpanded, label = "QR Code Transition")
+    val qrSize by transition.animateDp(
+        transitionSpec = { tween(durationMillis = 500) },
+        label = "QR Size Animation"
+    ) { expanded ->
+        if (expanded) 400.dp else 200.dp
+    }
+    val padding by transition.animateDp(
+        transitionSpec = { tween(durationMillis = 500) },
+        label = "Padding Animation"
+    ) { expanded ->
+        if (expanded) 0.dp else 16.dp
+    }
+
     Box(
         modifier = Modifier
-            .size(400.dp)
             .clip(RoundedCornerShape(8.dp))
-            .clickable {
-                isClick()
-            }
-            .background(colorScheme.onBackground),
-        contentAlignment = Alignment.Center,
-        content = {
-            qrCodeBitmap?.let {
-                Image(
-                    bitmap = it,
-                    contentDescription = "Generated QR Code",
-                    modifier = Modifier.size(600.dp)
-                )
-            } ?: run {
-                CircularProgressIndicator()
-            }
+            .background(colorScheme.tertiary)
+            .padding(padding)
+            .clickable { onClick() }
+            .animateContentSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        qrCodeBitmap?.let {
+            Image(
+                bitmap = it,
+                contentDescription = "Código QR generado",
+                modifier = Modifier.size(qrSize)
+            )
+        } ?: run {
+            CircularProgressIndicator(color = colorScheme.onPrimary)
         }
-    )
+    }
+}
+
+
+@Composable
+private fun ImportantInfoItem(text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Icon(
+            painter = painterResource(Res.drawable.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
+            contentDescription = "Info Icon",
+            tint = colorScheme.tertiary,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            style = typography.bodyMedium,
+            color = colorScheme.tertiary,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}
+
+@Composable
+private fun TicketHeader() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(colorScheme.onBackground)
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = "Transporte Público",
+                style = typography.titleMedium,
+                color = colorScheme.tertiary,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Ticket #12345",
+                style = typography.bodySmall,
+                color = colorScheme.tertiary
+            )
+        }
+        Icon(
+            painter = painterResource(Res.drawable.logo_swiftid_centrado),
+            contentDescription = "Logo",
+            tint = colorScheme.tertiary,
+            modifier = Modifier.size(60.dp)
+        )
+    }
 }

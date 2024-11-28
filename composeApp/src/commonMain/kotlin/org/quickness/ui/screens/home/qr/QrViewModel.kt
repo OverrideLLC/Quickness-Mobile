@@ -6,10 +6,9 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
-import org.quickness.interfaces.QRCodeGenerator
 import org.quickness.utils.`object`.KeysCache.TOKENS_BITMAP_KEY
 
-class QrViewModel(private val qrCodeGenerator: QRCodeGenerator) : ViewModel() {
+class QrViewModel : ViewModel() {
     fun generateQRCode(sharedPreference: SharedPreference): ImageBitmap? {
         val bitmaps: Map<String, ImageBitmap>? = sharedPreference.getBitmap(TOKENS_BITMAP_KEY)
         val totalTokens = 144

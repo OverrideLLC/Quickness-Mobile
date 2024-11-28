@@ -1,6 +1,5 @@
 package org.quickness.ui.screens.home
 
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +28,8 @@ class HomeViewModel(
     fun getTokens(uid: String, sharedPreference: SharedPreference) {
         viewModelScope.launch(Dispatchers.Default) {
             val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-            val lastRequestDateString = sharedPreference.getString(key = LAST_REQUEST_KEY, defaultValue = null)
+            val lastRequestDateString =
+                sharedPreference.getString(key = LAST_REQUEST_KEY, defaultValue = null)
             val lastRequestDate = try {
                 lastRequestDateString.let { LocalDateTime.parse(it) }
             } catch (e: Exception) {
