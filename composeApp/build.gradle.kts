@@ -8,12 +8,6 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.googleService)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.androidxRoom)
-}
-
-room {
-    schemaDirectory("$projectDir/schemas")
 }
 
 kotlin {
@@ -75,9 +69,6 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
     }
-    sourceSets.commonMain {
-        kotlin.srcDir("build/generated/ksp/metadata")
-    }
 }
 
 android {
@@ -109,11 +100,4 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
-    add("kspCommonMainMetadata", libs.androidx.room.compiler)
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
 }

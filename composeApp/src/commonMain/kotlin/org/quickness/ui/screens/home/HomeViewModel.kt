@@ -13,6 +13,7 @@ import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
 import org.quickness.data.repository.TokensRepository
 import org.quickness.interfaces.QRCodeGenerator
+import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
 import org.quickness.utils.`object`.KeysCache.TOKENS_BITMAP_KEY
 import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
@@ -70,11 +71,12 @@ class HomeViewModel(
     ) {
         withContext(Dispatchers.IO) {
             val bitmaps = tokens.mapValues { (_, token) ->
-                qrCodeGenerator.generateQRCode(token)
+                qrCodeGenerator.generateQRCode(
+                    data = token,
+                    format = sharedPreference.getBoolean(FORMAT_KEY, true)
+                )
             }
             sharedPreference.setBitmap(TOKENS_BITMAP_KEY, bitmaps)
         }
     }
-
-
 }

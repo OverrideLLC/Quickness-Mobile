@@ -6,4 +6,5 @@ object KeysCache {
     const val TOKENS_KEY = "tokens_key"
     const val UID_KEY = "uid_key"
     const val TOKENS_BITMAP_KEY = "tokens_bitmap_key"
+    const val FORMAT_KEY = "format_key"
 }

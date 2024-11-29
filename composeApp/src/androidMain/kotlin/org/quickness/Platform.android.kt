@@ -12,12 +12,15 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.quickness.interfaces.QRCodeGenerator
 import org.quickness.interfaces.SharedPreference
 import org.quickness.utils.`object`.KeysCache
+import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
 import org.quickness.utils.`object`.KeysCache.TOKENS_BITMAP_KEY
 import java.io.ByteArrayOutputStream
 
@@ -35,13 +38,14 @@ actual class Uri(private val context: Context, url: String) {
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class QRCodeGeneratorImpl actual constructor() : QRCodeGenerator {
-    actual override fun generateQRCode(data: String, width: Int, height: Int): ImageBitmap {
+    actual override fun generateQRCode(data: String, width: Int, height: Int, format: Boolean): ImageBitmap {
         val qrCodeWriter = QRCodeWriter()
         val bitMatrix = qrCodeWriter.encode(
             data,
             BarcodeFormat.QR_CODE,
             width,
             height,
+            mapOf(EncodeHintType.ERROR_CORRECTION to if (format)ErrorCorrectionLevel.L else ErrorCorrectionLevel.H)
         )
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
         for (x in 0 until width) {
@@ -151,5 +155,13 @@ actual class SharedPreference(contextActual: Context?) : SharedPreference {
         val bitmap =
             BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size) // Decodificar ByteArray
         return bitmap.asImageBitmap()
+    }
+
+    actual override fun setBoolean(key: String, value: Boolean) {
+        sharedPreferences.edit().putBoolean(key, value).apply()
+    }
+
+    actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
     }
 }

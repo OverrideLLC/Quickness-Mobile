@@ -1,6 +1,9 @@
 package org.quickness.ui.navegation
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,11 +15,13 @@ import org.quickness.utils.routes.RoutesHome
 @Composable
 fun NavigationHome(
     navController: NavHostController,
-    sharedPreference: SharedPreference
+    sharedPreference: SharedPreference,
+    paddingValues: PaddingValues,
 ) {
     NavHost(
         navController = navController,
         startDestination = RoutesHome.Qr.route,
+        modifier = Modifier.padding(paddingValues),
         enterTransition = { ContentSwitchAnimation.enterTransition },
         exitTransition = { ContentSwitchAnimation.exitTransition },
     ) {
@@ -24,7 +29,9 @@ fun NavigationHome(
             QrScreen(sharedPreference)
         }
         composable(RoutesHome.Shop.route) { }
-        composable(RoutesHome.Settings.route) { }
+        composable(RoutesHome.Settings.route) {
+            NavigationSettings(sharedPreference)
+        }
         composable(RoutesHome.Service.route) { }
     }
 }

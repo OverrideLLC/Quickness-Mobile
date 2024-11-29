@@ -15,7 +15,7 @@ expect class Uri {
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect class QRCodeGeneratorImpl(): QRCodeGenerator{
-    override fun generateQRCode(data: String, width: Int, height: Int): ImageBitmap
+    override fun generateQRCode(data: String, width: Int, height: Int, format: Boolean): ImageBitmap
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
@@ -32,4 +32,6 @@ expect class SharedPreference : SharedPreference{
     override fun getLong(key: String, defaultValue: Long): Long
     override fun setBitmap(key: String, value: Map<String, ImageBitmap>)
     override fun getBitmap(key: String): Map<String, ImageBitmap>?
+    override fun setBoolean(key: String, value: Boolean)
+    override fun getBoolean(key: String, defaultValue: Boolean): Boolean
 }

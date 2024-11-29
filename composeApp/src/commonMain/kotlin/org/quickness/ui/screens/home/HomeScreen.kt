@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -64,16 +65,29 @@ import quickness.composeapp.generated.resources.warning_24dp_E8EAED_FILL1_wght40
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun HomeScreen(sharedPreference: SharedPreference) = Screen(sharedPreference, homeViewModel = koinViewModel())
+fun HomeScreen(sharedPreference: SharedPreference) =
+    Screen(sharedPreference, homeViewModel = koinViewModel())
 
 @Composable
 private fun Screen(sharedPreference: SharedPreference, homeViewModel: HomeViewModel) {
-    val navController = rememberNavController()
     homeViewModel.getTokens(sharedPreference.getString(UID_KEY, ""), sharedPreference)
+    val navController = rememberNavController()
+    var topName by remember { mutableStateOf("Qr") }
     Scaffold(
-        topBar = { TopBar() },
-        content = { Content(navController, sharedPreference) },
-        bottomBar = { BottomBar(navController) },
+        topBar = {
+            TopBar(
+                title = topName,
+                onEmergencyClick = {}
+            )
+        },
+        content = { padding ->
+            Content(
+                navigationController = navController,
+                sharedPreference = sharedPreference,
+                padding = padding,
+            )
+        },
+        bottomBar = { BottomBar(navController) { topName = it } },
         snackbarHost = { SnackBar() },
         floatingActionButton = { FloatingAction() },
         containerColor = colorScheme.background,
@@ -86,7 +100,7 @@ private fun Screen(sharedPreference: SharedPreference, homeViewModel: HomeViewMo
 @Composable
 private fun TopBar(
     back: Boolean = false,
-    title: String = "Qr",
+    title: String,
     onBackClick: () -> Unit = {},
     onEmergencyClick: () -> Unit = {}
 ) {
@@ -133,7 +147,8 @@ private fun TopBar(
 
 @Composable
 private fun BottomBar(
-    navigationController: NavController
+    navigationController: NavController,
+    topName: (String) -> Unit
 ) {
     var selected by remember { mutableStateOf(Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) }
     Box(
@@ -147,7 +162,7 @@ private fun BottomBar(
                 .background(colorScheme.onBackground, shape = RoundedCornerShape(20.dp))
                 .fillMaxWidth(),
             containerColor = Color.Transparent,
-            contentColor = Color.Black,
+            contentColor = Color.White,
             content = {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -160,6 +175,7 @@ private fun BottomBar(
                             onClick = {
                                 selected =
                                     Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                topName("Shop")
                                 navigationController.navigate(RoutesHome.Shop.route) { popUpTo(0) }
                             }
                         )
@@ -169,6 +185,7 @@ private fun BottomBar(
                             onClick = {
                                 selected =
                                     Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                topName("Qr")
                                 navigationController.navigate(RoutesHome.Qr.route) { popUpTo(0) }
                             }
                         )
@@ -177,6 +194,7 @@ private fun BottomBar(
                             isSelected = selected == Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
                             onClick = {
                                 selected = Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                topName("Service")
                                 navigationController.navigate(RoutesHome.Service.route) { popUpTo(0) }
                             }
                         )
@@ -186,6 +204,7 @@ private fun BottomBar(
                             onClick = {
                                 selected =
                                     Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                topName("Settings")
                                 navigationController.navigate(RoutesHome.Settings.route) { popUpTo(0) }
                             }
                         )
@@ -227,7 +246,7 @@ private fun BottomAppBarIcon(
                         painter = painterResource(iconRes),
                         contentDescription = null,
                         modifier = Modifier.size(90.dp),
-                        tint = if (isSelected) colorScheme.primary else colorScheme.secondary
+                        tint = if (isSelected) colorScheme.primary else colorScheme.tertiary
                     )
                 }
             )
@@ -237,8 +256,16 @@ private fun BottomAppBarIcon(
 
 
 @Composable
-private fun Content(navigationController: NavHostController, sharedPreference: SharedPreference) {
-    NavigationHome(navController = navigationController, sharedPreference)
+private fun Content(
+    navigationController: NavHostController,
+    sharedPreference: SharedPreference,
+    padding: PaddingValues,
+) {
+    NavigationHome(
+        navController = navigationController,
+        sharedPreference = sharedPreference,
+        paddingValues = padding,
+    )
 }
 
 @Composable
