@@ -14,10 +14,10 @@ actual class FirebaseService : FirebaseAuth {
             if (email.isBlank() || password.isBlank()) {
                 throw IllegalArgumentException("El correo electrónico o la contraseña no pueden estar vacíos.")
             }
-            Log.e("FirebaseService", "signIn: $email $password")
+            Log.v("FirebaseService", "signIn: $email $password")
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             val user = result.user
-            Log.e("FirebaseService", "Sigue aquí")
+            Log.v("FirebaseService", "Sigue aquí")
             user?.let {
                 return@let AuthResult(status = "Success", uid = it.uid)
             } ?: run {

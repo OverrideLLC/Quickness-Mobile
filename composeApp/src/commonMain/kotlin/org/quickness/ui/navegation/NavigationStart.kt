@@ -19,7 +19,7 @@ import org.quickness.utils.`object`.KeysCache.UID_KEY
 import org.quickness.utils.routes.RoutesStart
 
 @Composable
-fun NavigationStart(uri: Uri) {
+fun NavigationStart() {
     val navController = rememberNavController()
     val sharedPreference = SharedPreference()
     NavHost(
@@ -39,7 +39,7 @@ fun NavigationStart(uri: Uri) {
             LoginScreen(navController)
         }
         composable(RoutesStart.Register.route) {
-            RegisterScreen(navController, uri)
+            RegisterScreen(navController)
         }
         composable(RoutesStart.ForgotPassword.route) {
             //ForgotPasswordScreen(navController)

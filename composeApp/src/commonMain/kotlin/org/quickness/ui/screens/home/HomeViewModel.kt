@@ -1,12 +1,10 @@
 package org.quickness.ui.screens.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
@@ -16,7 +14,6 @@ import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
 import org.quickness.data.repository.TokensRepository
 import org.quickness.interfaces.QRCodeGenerator
-import org.quickness.utils.`object`.KeysCache
 import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
 import org.quickness.utils.`object`.KeysCache.TOKENS_BITMAP_KEY
@@ -29,23 +26,26 @@ class HomeViewModel(
     private val sharedPreference: SharedPreference
 ) : ViewModel() {
     companion object {
-        const val MIN_REQUEST_HOUR = 1 // Hora mínima para solicitar claves
+        const val MIN_REQUEST_HOUR = 1
     }
 
     fun getTokens() {
         val uid = sharedPreference.getString(UID_KEY, "")
         viewModelScope.launch(Dispatchers.IO) {
-            val sharedPreference = SharedPreference()
             val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-            val lastRequestDateString = sharedPreference.getString(key = LAST_REQUEST_KEY, defaultValue = null)
+            val lastRequestDateString =
+                sharedPreference.getString(key = LAST_REQUEST_KEY, defaultValue = null)
             val lastRequestDate = try {
                 lastRequestDateString.let { LocalDateTime.parse(it) }
             } catch (e: Exception) {
-                null // Si no es parseable, asumir que no hay una fecha previa
+                null
             }
 
-            // Verificar si ya se realizó una solicitud hoy después de la hora mínima
-            if (lastRequestDate == null || shouldRequestTokens(currentTime, lastRequestDate)) {
+            if (
+                lastRequestDate == null
+                || shouldRequestTokens(currentTime, lastRequestDate)
+                || sharedPreference.getMap(TOKENS_KEY)?.isEmpty()!!
+            ) {
                 val tokens = tokensRepository.getTokens(uid)
                 println("Tokens fetched: $tokens")
 
@@ -56,9 +56,7 @@ class HomeViewModel(
                 sharedPreference.setString(LAST_REQUEST_KEY, currentTime.toString())
 
                 // Convertir tokens a mapas de bits
-                convertTokensToBitmaps(
-                    tokens.tokens,
-                )
+                convertTokensToBitmaps(tokens.tokens)
             } else {
                 println("Tokens already fetched today.")
             }

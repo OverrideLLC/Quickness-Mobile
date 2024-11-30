@@ -18,10 +18,10 @@ import org.quickness.di.viewModelsModule
 class MyApp : Application(), KoinComponent {
     override fun onCreate() {
         super.onCreate()
+        ContextProvider.initialize(this@MyApp.applicationContext)
         initKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@MyApp)
-            ContextProvider.initialize(this@MyApp)
             modules(
                 appModule,
                 dataModule,

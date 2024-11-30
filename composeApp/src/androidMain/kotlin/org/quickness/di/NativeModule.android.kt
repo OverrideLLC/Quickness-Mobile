@@ -12,7 +12,7 @@ actual val NativeModule = module {
 object ContextProvider {
     private var applicationContext: Context? = null
     fun initialize(context: Context) {
-        applicationContext = context.applicationContext
+        applicationContext = context
     }
 
     fun getContext(): Context? {

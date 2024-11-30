@@ -2,6 +2,7 @@ package org.quickness.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -64,9 +65,9 @@ class LoginViewModel(
             try {
                 val result = authRepository.login(_state.value.email, _state.value.password)
                 if (result?.status == "Success") {
-                    updateState { copy(isError = false, isWarning = false) }
-                    sharedPreference.getString(UID_KEY, result.uid)
                     onSuccess()
+                    updateState { copy(isError = false, isWarning = false) }
+                    sharedPreference.setString(UID_KEY, result.uid!!)
                 } else {
                     updateState { copy(isError = true, isWarning = true) }
                     onError(result?.status ?: "Error connecting to server")
@@ -75,7 +76,7 @@ class LoginViewModel(
                 updateState { copy(isError = true, isWarning = true) }
                 onError(e.message ?: "Error connecting to server")
             } finally {
-                updateState { copy(isLoading = true) }
+                updateState { copy(isLoading = false) }
             }
         }
     }

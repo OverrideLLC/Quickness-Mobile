@@ -31,10 +31,10 @@ class AndroidPlatform : Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class Uri(private val context: Context, url: String) {
+actual class Uri actual constructor(url: String) {
     private val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     actual fun navigate() {
-        context.startActivity(intent)
+        ContextProvider.getContext()!!.startActivity(intent)
     }
 }
 

@@ -29,7 +29,6 @@ import quickness.composeapp.generated.resources.read_more
 fun ItemWithLink(
     title: String,
     description: String,
-    uri: Uri,
     checked: Boolean,
     onCheckedChange: () -> Unit
 ) {
@@ -56,7 +55,7 @@ fun ItemWithLink(
         Spacer(modifier = Modifier.height(8.dp))
         TextButton(
             onClick = {
-                uri.navigate()
+                Uri("https://override.com.mx/Terminos-y-CondicionesQuickness.html#parrafo1").navigate()
             },
             content = {
                 Text(
