@@ -15,8 +15,8 @@ actual class Uri {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class QRCodeGeneratorImpl actual constructor() : QRCodeGenerator {
-    override fun generateQRCode(data: String, width: Int, height: Int): ImageBitmap {
+actual class QRCodeGeneratorImpl actual constructor(sharedPreference: SharedPreference) : QRCodeGenerator {
+    actual override fun generateQRCode(data: String, width: Int, height: Int): ImageBitmap {
         TODO("Not yet implemented")
     }
 }

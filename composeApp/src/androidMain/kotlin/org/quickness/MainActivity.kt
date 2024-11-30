@@ -15,10 +15,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val systemUiController = rememberSystemUiController()
             val uri = Uri(
-                url = "https://github.com/Quickness-student/logic_gates_book_KMM.git",
+                url = "https://override.com.mx/Terminos-y-CondicionesQuickness.html",
                 context = this
             )
-            val sharedPreference = SharedPreference(this)
 
             systemUiController.setSystemBarsColor(
                 color = Color(0xFF1b1b1b),
@@ -27,7 +26,6 @@ class MainActivity : ComponentActivity() {
 
             App(
                 uri,
-                sharedPreference
             )
         }
     }

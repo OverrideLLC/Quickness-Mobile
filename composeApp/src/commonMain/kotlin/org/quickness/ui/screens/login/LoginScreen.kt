@@ -45,14 +45,12 @@ import quickness.composeapp.generated.resources.password
 fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = koinViewModel(),
-    sharedPreference: SharedPreference
-) = Screen(navController, viewModel, sharedPreference)
+) = Screen(navController, viewModel)
 
 @Composable
 private fun Screen(
     navController: NavController,
     viewModel: LoginViewModel,
-    sharedPreference: SharedPreference
 ) {
     val state by viewModel.state.collectAsState()
     LazyColumn(
@@ -95,9 +93,6 @@ private fun Screen(
                                         errorMessage = it
                                     )
                                 }
-                            },
-                            uid = {
-                                sharedPreference.setString(UID_KEY, it ?: "")
                             }
                         )
                     },

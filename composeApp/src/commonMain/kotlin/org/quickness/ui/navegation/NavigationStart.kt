@@ -19,8 +19,9 @@ import org.quickness.utils.`object`.KeysCache.UID_KEY
 import org.quickness.utils.routes.RoutesStart
 
 @Composable
-fun NavigationStart(uri: Uri, sharedPreference: SharedPreference) {
+fun NavigationStart(uri: Uri) {
     val navController = rememberNavController()
+    val sharedPreference = SharedPreference()
     NavHost(
         navController = navController,
         modifier = Modifier.fillMaxSize().background(colorScheme.background),
@@ -32,10 +33,10 @@ fun NavigationStart(uri: Uri, sharedPreference: SharedPreference) {
             StartScreen(navController)
         }
         composable(RoutesStart.Home.route) {
-            HomeScreen(sharedPreference)
+            HomeScreen()
         }
         composable(RoutesStart.Login.route) {
-            LoginScreen(navController, sharedPreference = sharedPreference)
+            LoginScreen(navController)
         }
         composable(RoutesStart.Register.route) {
             RegisterScreen(navController, uri)

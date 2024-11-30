@@ -4,6 +4,8 @@ import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 import org.quickness.ui.screens.home.HomeViewModel
 import org.quickness.ui.screens.home.qr.QrViewModel
+import org.quickness.ui.screens.home.settings.SettingsViewModel
+import org.quickness.ui.screens.home.settings.screens.settings_qr.QrSettingsViewModel
 import org.quickness.ui.screens.login.LoginViewModel
 import org.quickness.ui.screens.register.RegisterViewModel
 
@@ -12,4 +14,6 @@ val viewModelsModule = module {
     viewModelOf(::RegisterViewModel)
     viewModelOf(::QrViewModel)
     viewModelOf(::HomeViewModel)
+    viewModelOf(::SettingsViewModel)
+    viewModelOf(::QrSettingsViewModel)
 }

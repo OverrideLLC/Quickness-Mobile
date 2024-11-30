@@ -1,6 +1,7 @@
 package org.quickness.interfaces
 
 import androidx.compose.ui.graphics.ImageBitmap
+import kotlinx.coroutines.flow.StateFlow
 
 interface SharedPreference {
     fun getString(key: String, defaultValue: String?): String
@@ -15,4 +16,6 @@ interface SharedPreference {
     fun getLong(key: String, defaultValue: Long): Long
     fun setBitmap(key: String, value: Map<String, ImageBitmap>)
     fun getBitmap(key: String): Map<String, ImageBitmap>?
+    fun setBoolean(key: String, value: Boolean)
+    fun getBoolean(key: String, defaultValue: Boolean): Boolean
 }
