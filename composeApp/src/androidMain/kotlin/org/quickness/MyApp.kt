@@ -5,6 +5,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.component.KoinComponent
 import org.koin.core.logger.Level
+import org.quickness.di.ContextProvider
 import org.quickness.di.NativeModule
 import org.quickness.di.appModule
 import org.quickness.di.dataModule
@@ -20,6 +21,7 @@ class MyApp : Application(), KoinComponent {
         initKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@MyApp)
+            ContextProvider.initialize(this@MyApp)
             modules(
                 appModule,
                 dataModule,

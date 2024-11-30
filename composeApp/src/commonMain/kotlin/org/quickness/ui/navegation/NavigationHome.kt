@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import org.quickness.SharedPreference
 import org.quickness.ui.animations.ContentSwitchAnimation
 import org.quickness.ui.screens.home.qr.QrScreen
 import org.quickness.utils.routes.RoutesHome
@@ -15,7 +14,6 @@ import org.quickness.utils.routes.RoutesHome
 @Composable
 fun NavigationHome(
     navController: NavHostController,
-    sharedPreference: SharedPreference,
     paddingValues: PaddingValues,
 ) {
     NavHost(
@@ -25,13 +23,9 @@ fun NavigationHome(
         enterTransition = { ContentSwitchAnimation.enterTransition },
         exitTransition = { ContentSwitchAnimation.exitTransition },
     ) {
-        composable(RoutesHome.Qr.route) {
-            QrScreen(sharedPreference)
-        }
+        composable(RoutesHome.Qr.route) { QrScreen() }
         composable(RoutesHome.Shop.route) { }
-        composable(RoutesHome.Settings.route) {
-            NavigationSettings(sharedPreference)
-        }
+        composable(RoutesHome.Settings.route) { NavigationSettings() }
         composable(RoutesHome.Service.route) { }
     }
 }

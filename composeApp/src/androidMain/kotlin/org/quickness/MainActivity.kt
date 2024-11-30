@@ -18,7 +18,6 @@ class MainActivity : ComponentActivity() {
                 url = "https://override.com.mx/Terminos-y-CondicionesQuickness.html",
                 context = this
             )
-            val sharedPreference = SharedPreference(this)
 
             systemUiController.setSystemBarsColor(
                 color = Color(0xFF1b1b1b),
@@ -27,7 +26,6 @@ class MainActivity : ComponentActivity() {
 
             App(
                 uri,
-                sharedPreference
             )
         }
     }

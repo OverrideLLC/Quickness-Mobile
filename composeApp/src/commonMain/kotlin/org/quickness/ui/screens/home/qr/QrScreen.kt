@@ -57,16 +57,16 @@ import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_
 import quickness.composeapp.generated.resources.logo_swiftid_centrado
 
 @Composable
-fun QrScreen(sharedPreference: SharedPreference) = Screen(sharedPreference = sharedPreference)
+fun QrScreen() = Screen()
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-private fun Screen(viewModel: QrViewModel = koinViewModel(), sharedPreference: SharedPreference) {
-    TicketScreen(viewModel, sharedPreference)
+private fun Screen(viewModel: QrViewModel = koinViewModel()) {
+    TicketScreen(viewModel)
 }
 
 @Composable
-private fun TicketScreen(viewModel: QrViewModel, sharedPreference: SharedPreference) {
+private fun TicketScreen(viewModel: QrViewModel) {
     var isVisible by remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -118,7 +118,7 @@ private fun TicketScreen(viewModel: QrViewModel, sharedPreference: SharedPrefere
                         }
 
                         // QR Code with smooth animation
-                        TicketQRCode(viewModel, sharedPreference, isExpanded) {
+                        TicketQRCode(viewModel, isExpanded) {
                             isExpanded = !isExpanded
                         }
 
@@ -143,7 +143,6 @@ private fun TicketScreen(viewModel: QrViewModel, sharedPreference: SharedPrefere
 @Composable
 private fun TicketQRCode(
     viewModel: QrViewModel,
-    sharedPreference: SharedPreference,
     isExpanded: Boolean,
     onClick: () -> Unit,
 ) {
@@ -151,7 +150,7 @@ private fun TicketQRCode(
 
     LaunchedEffect(Unit) {
         qrCodeBitmap = withContext(Dispatchers.IO) {
-            viewModel.generateQRCode(sharedPreference)
+            viewModel.generateQRCode()
         }
     }
 

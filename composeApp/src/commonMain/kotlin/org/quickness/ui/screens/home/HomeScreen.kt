@@ -65,12 +65,11 @@ import quickness.composeapp.generated.resources.warning_24dp_E8EAED_FILL1_wght40
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun HomeScreen(sharedPreference: SharedPreference) =
-    Screen(sharedPreference, homeViewModel = koinViewModel())
+fun HomeScreen() = Screen(homeViewModel = koinViewModel())
 
 @Composable
-private fun Screen(sharedPreference: SharedPreference, homeViewModel: HomeViewModel) {
-    homeViewModel.getTokens(sharedPreference.getString(UID_KEY, ""), sharedPreference)
+private fun Screen(homeViewModel: HomeViewModel) {
+    homeViewModel.getTokens()
     val navController = rememberNavController()
     var topName by remember { mutableStateOf("Qr") }
     Scaffold(
@@ -83,7 +82,6 @@ private fun Screen(sharedPreference: SharedPreference, homeViewModel: HomeViewMo
         content = { padding ->
             Content(
                 navigationController = navController,
-                sharedPreference = sharedPreference,
                 padding = padding,
             )
         },
@@ -258,12 +256,10 @@ private fun BottomAppBarIcon(
 @Composable
 private fun Content(
     navigationController: NavHostController,
-    sharedPreference: SharedPreference,
     padding: PaddingValues,
 ) {
     NavigationHome(
         navController = navigationController,
-        sharedPreference = sharedPreference,
         paddingValues = padding,
     )
 }

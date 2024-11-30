@@ -1,6 +1,7 @@
 package org.quickness.interfaces
 
 import androidx.compose.ui.graphics.ImageBitmap
+import kotlinx.coroutines.flow.StateFlow
 
 interface SharedPreference {
     fun getString(key: String, defaultValue: String?): String

@@ -12,11 +12,13 @@ import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import org.quickness.QRCodeGeneratorImpl
+import org.quickness.SharedPreference
 import org.quickness.interfaces.QRCodeGenerator
 
 val appModule: Module = module {
     single { crateHttpClient(get()) }
     single<QRCodeGenerator> { QRCodeGeneratorImpl() }
+    single { SharedPreference() }
 }
 
 fun crateHttpClient(engine: HttpClientEngine): HttpClient {

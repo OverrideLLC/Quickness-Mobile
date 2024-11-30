@@ -6,12 +6,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.quickness.SharedPreference
 import org.quickness.data.repository.LoginRepository
+import org.quickness.utils.`object`.KeysCache.UID_KEY
 import org.quickness.utils.`object`.ValidatesData
 import org.quickness.utils.`object`.ValidatesData.isPasswordValid
 
 class LoginViewModel(
     private val authRepository: LoginRepository,
+    private val sharedPreference: SharedPreference
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
@@ -26,7 +29,6 @@ class LoginViewModel(
     }
 
     fun login(
-        uid: (String?) -> Unit,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
@@ -63,7 +65,7 @@ class LoginViewModel(
                 val result = authRepository.login(_state.value.email, _state.value.password)
                 if (result?.status == "Success") {
                     updateState { copy(isError = false, isWarning = false) }
-                    uid(result.uid)
+                    sharedPreference.getString(UID_KEY, result.uid)
                     onSuccess()
                 } else {
                     updateState { copy(isError = true, isWarning = true) }

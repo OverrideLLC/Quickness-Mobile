@@ -16,7 +16,7 @@ import org.quickness.ui.screens.home.settings.screens.settings_qr.QrScreenSettin
 import org.quickness.utils.routes.RoutesSettings
 
 @Composable
-fun NavigationSettings(sharedPreference: SharedPreference) {
+fun NavigationSettings() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -25,7 +25,7 @@ fun NavigationSettings(sharedPreference: SharedPreference) {
         exitTransition = { NavAnimations.exitTransition }
     ) {
         composable(RoutesSettings.Settings.route) { SettingsScreen(navController) }
-        composable(RoutesSettings.SettingsQr.route) { QrScreenSettings(sharedPreference) }
+        composable(RoutesSettings.SettingsQr.route) { QrScreenSettings() }
         composable(RoutesSettings.AccountSettings.route) { }
         composable(RoutesSettings.PrivacySettings.route) { }
         composable(RoutesSettings.NotificationSettings.route) { }

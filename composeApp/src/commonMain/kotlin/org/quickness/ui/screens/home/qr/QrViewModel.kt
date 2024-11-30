@@ -8,8 +8,10 @@ import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
 import org.quickness.utils.`object`.KeysCache.TOKENS_BITMAP_KEY
 
-class QrViewModel : ViewModel() {
-    fun generateQRCode(sharedPreference: SharedPreference): ImageBitmap? {
+class QrViewModel(
+    private val sharedPreference: SharedPreference
+) : ViewModel() {
+    fun generateQRCode(): ImageBitmap? {
         val bitmaps: Map<String, ImageBitmap>? = sharedPreference.getBitmap(TOKENS_BITMAP_KEY)
         val totalTokens = 144
         val minutesPerToken = 10

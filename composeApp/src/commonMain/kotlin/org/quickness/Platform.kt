@@ -1,5 +1,6 @@
 package org.quickness
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import org.quickness.interfaces.QRCodeGenerator
 import org.quickness.interfaces.SharedPreference
@@ -14,12 +15,19 @@ expect class Uri {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect class QRCodeGeneratorImpl(): QRCodeGenerator{
-    override fun generateQRCode(data: String, width: Int, height: Int, format: Boolean): ImageBitmap
+expect class QRCodeGeneratorImpl() : QRCodeGenerator {
+    override fun generateQRCode(
+        data: String,
+        width: Int,
+        height: Int,
+        format: Boolean,
+        colorBackground: Color,
+        colorMapBits: Color
+    ): ImageBitmap
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect class SharedPreference : SharedPreference{
+expect class SharedPreference() : SharedPreference {
     override fun getString(key: String, defaultValue: String?): String
     override fun setString(key: String, value: String)
     override fun getInt(key: String, defaultValue: Int): Int
