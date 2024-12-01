@@ -21,4 +21,80 @@
     <string name="verification_code">Verification Code</string>
     <string name="read_more">Read more</string>
     <string name="next">Next</string>
+    <string name="settings">Settings</string>
+
+    <!-- Qr Settings -->
+    <string name="qr_settings">QR Settings</string>
+    <string name="format_qr_settings">QR Format (BETA)</string>
+    <string name="color_qr_settings">QR Color (BETA)</string>
+    <string name="improve_qr_readability">Activating this option improves the readability of the QR code by adjusting its design, ensuring better scanning compatibility with most devices.</string>
+    <string name="expire_qr_code">Expire QR Code: </string>
+
+
+    <!-- General Settings -->
+    <string name="account_settings">Account Settings</string>
+    <string name="privacy_settings">Privacy Settings</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="display_settings">Display Settings</string>
+    <string name="language_settings">Language</string>
+    <string name="security_settings">Security</string>
+    <string name="app_settings">App Settings</string>
+
+    <!-- Account Settings -->
+    <string name="profile">Profile</string>
+    <string name="change_email">Change Email</string>
+    <string name="change_password">Change Password</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="logout">Logout</string>
+
+    <!-- Privacy Settings -->
+    <string name="manage_data">Manage My Data</string>
+    <string name="data_download">Download My Data</string>
+    <string name="data_deletion_request">Request Data Deletion</string>
+
+    <!-- Notification Settings -->
+    <string name="push_notifications">Push Notifications</string>
+    <string name="email_notifications">Email Notifications</string>
+    <string name="sms_notifications">SMS Notifications</string>
+    <string name="in_app_notifications">In-App Notifications</string>
+    <string name="sound_and_vibration">Sound and Vibration</string>
+
+    <!-- Display Settings -->
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="system_default">System Default</string>
+    <string name="font_size">Font Size</string>
+    <string name="theme">Theme</string>
+
+    <!-- Language Settings -->
+    <string name="select_language">Select Language</string>
+    <string name="language_english">English</string>
+    <string name="language_spanish">Spanish</string>
+    <string name="language_french">French</string>
+    <string name="language_german">German</string>
+
+    <!-- Security Settings -->
+    <string name="enable_2fa">Enable Two-Factor Authentication</string>
+    <string name="change_pin">Change PIN</string>
+    <string name="biometric_authentication">Biometric Authentication</string>
+    <string name="session_management">Manage Sessions</string>
+
+    <!-- App Settings -->
+    <string name="version">Version</string>
+    <string name="about_us">About Us</string>
+    <string name="feedback">Send Feedback</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="help_center">Help Center</string>
+    <string name="contact_support">Contact Support</string>
+    <string name="legal">Legal</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
+
+    <!-- Advanced Settings -->
+    <string name="developer_options">Developer Options</string>
+    <string name="reset_app">Reset App</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="log_out_everywhere">Log Out Everywhere</string>
+    <string name="diagnostics">Diagnostics</string>
+
 </resources>

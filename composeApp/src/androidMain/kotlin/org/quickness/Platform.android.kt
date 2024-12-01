@@ -1,6 +1,5 @@
 package org.quickness
 
-import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Bitmap
@@ -8,13 +7,17 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.util.Base64
+import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.quickness.di.ContextProvider
 import org.quickness.interfaces.QRCodeGenerator
 import org.quickness.interfaces.SharedPreference
 import org.quickness.utils.`object`.KeysCache
@@ -26,22 +29,30 @@ class AndroidPlatform : Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class Uri(private val context: Context, url: String) {
+actual class Uri actual constructor(url: String): org.quickness.interfaces.Uri {
     private val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-    actual fun navigate() {
-        context.startActivity(intent)
+    actual override fun navigate() {
+        ContextProvider.getContext()!!.startActivity(intent)
     }
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class QRCodeGeneratorImpl actual constructor() : QRCodeGenerator {
-    actual override fun generateQRCode(data: String, width: Int, height: Int): ImageBitmap {
+    actual override fun generateQRCode(
+        data: String,
+        width: Int,
+        height: Int,
+        format: Boolean,
+        colorBackground: Int,
+        colorMapBits: Int
+    ): ImageBitmap {
         val qrCodeWriter = QRCodeWriter()
         val bitMatrix = qrCodeWriter.encode(
             data,
             BarcodeFormat.QR_CODE,
             width,
             height,
+            mapOf(EncodeHintType.ERROR_CORRECTION to if (format) ErrorCorrectionLevel.L else ErrorCorrectionLevel.H)
         )
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
         for (x in 0 until width) {
@@ -49,7 +60,7 @@ actual class QRCodeGeneratorImpl actual constructor() : QRCodeGenerator {
                 bitmap.setPixel(
                     x,
                     y,
-                    if (bitMatrix[x, y]) android.graphics.Color.BLACK else android.graphics.Color.WHITE
+                    if (bitMatrix[x, y]) colorMapBits else colorBackground
                 )
             }
         }
@@ -58,9 +69,9 @@ actual class QRCodeGeneratorImpl actual constructor() : QRCodeGenerator {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class SharedPreference(contextActual: Context?) : SharedPreference {
+actual class SharedPreference actual constructor() : SharedPreference {
     private val sharedPreferences =
-        contextActual!!.getSharedPreferences(KeysCache.MY_PREFS, MODE_PRIVATE)
+        ContextProvider.getContext()!!.getSharedPreferences(KeysCache.MY_PREFS, MODE_PRIVATE)
     private val json = Json { ignoreUnknownKeys = true }  // Configuración de JSON
 
     actual override fun getString(key: String, defaultValue: String?): String {
@@ -72,6 +83,9 @@ actual class SharedPreference(contextActual: Context?) : SharedPreference {
     }
 
     actual override fun getInt(key: String, defaultValue: Int): Int {
+        if (!sharedPreferences.contains(key)) {
+            sharedPreferences.edit().putInt(key, defaultValue).apply()
+        }
         return sharedPreferences.getInt(key, defaultValue)
     }
 
@@ -89,7 +103,6 @@ actual class SharedPreference(contextActual: Context?) : SharedPreference {
 
     // Función para guardar un mapa (Map<String, String>)
     actual override fun setMap(key: String, value: Map<String, String>) {
-        // Convertir el mapa a JSON usando Kotlin Serialization
         val jsonString = json.encodeToString(value)
         sharedPreferences.edit().putString(key, jsonString).apply()
     }
@@ -113,18 +126,18 @@ actual class SharedPreference(contextActual: Context?) : SharedPreference {
         return sharedPreferences.getLong(key, defaultValue)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     actual override fun setBitmap(key: String, value: Map<String, ImageBitmap>) {
-        // Convertir cada ImageBitmap a ByteArray y luego a Base64
         val bitmapMap = value.mapValues { (_, bitmap) ->
             val byteArray = imageBitmapToByteArray(bitmap)
-            Base64.encodeToString(byteArray, Base64.DEFAULT) // Codificar a Base64
+            Base64.encodeToString(byteArray, Base64.DEFAULT)
         }
-        // Serializar el mapa a JSON
         val serializedMap = Json.encodeToString(bitmapMap)
-        // Guardar el JSON en SharedPreferences
         sharedPreferences.edit().putString(key, serializedMap).apply()
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     actual override fun getBitmap(key: String): Map<String, ImageBitmap>? {
         val mapString = sharedPreferences.getString(TOKENS_BITMAP_KEY, null)
         return if (mapString != null) {
@@ -151,5 +164,13 @@ actual class SharedPreference(contextActual: Context?) : SharedPreference {
         val bitmap =
             BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size) // Decodificar ByteArray
         return bitmap.asImageBitmap()
+    }
+
+    actual override fun setBoolean(key: String, value: Boolean) {
+        sharedPreferences.edit().putBoolean(key, value).apply()
+    }
+
+    actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
     }
 }
