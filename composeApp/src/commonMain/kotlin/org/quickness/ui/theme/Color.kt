@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
  * Color de fondo principal de la aplicación.
  * Este color se utiliza como fondo predominante de la interfaz.
  */
-val Background = Color(0xFF1b1b1b) // Background
+val Background = Color(0xFF000000) // Background
 
 /**
  * Color secundario.
@@ -20,7 +20,7 @@ val Secondary = Color(0xFF000000) // Secondary
  * Color para elementos que aparecen sobre el fondo principal.
  * Adecuado para texto u otros componentes que necesitan contraste con el fondo.
  */
-val OnBackground = Color(0xFF292929) // OnBackground
+val OnBackground = Color(0xFF0f0f0f) // OnBackground
 
 /**
  * Color primario de la aplicación.
