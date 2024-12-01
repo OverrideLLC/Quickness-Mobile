@@ -22,3 +22,8 @@ actual class QRCodeGeneratorImpl actual constructor(sharedPreference: SharedPref
 }
 
 actual class SharedPreference actual constructor() : SharedPreference
+actual class EncryptPasswordPBKDF2 actual constructor(password: String) {
+    actual fun encrypt(): String {
+        TODO("Not yet implemented")
+    }
+}

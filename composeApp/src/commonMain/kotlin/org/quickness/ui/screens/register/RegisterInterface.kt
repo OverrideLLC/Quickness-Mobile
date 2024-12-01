@@ -1,0 +1,9 @@
+package org.quickness.ui.screens.register
+
+interface RegisterInterface {
+    fun validateEmailAndPassword(): Boolean
+    fun validatePersonalInfo(): Boolean
+    fun isTermsAndConditionsChecked(): Boolean
+    fun capitalizeWords(): String
+    fun register(onSuccess: () -> Unit, onError: () -> Unit)
+}
