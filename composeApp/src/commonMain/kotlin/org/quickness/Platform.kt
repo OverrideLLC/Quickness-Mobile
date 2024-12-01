@@ -21,8 +21,8 @@ expect class QRCodeGeneratorImpl() : QRCodeGenerator {
         width: Int,
         height: Int,
         format: Boolean,
-        colorBackground: Color,
-        colorMapBits: Color
+        colorBackground: Int,
+        colorMapBits: Int
     ): ImageBitmap
 }
 

@@ -2,6 +2,8 @@ package org.quickness.ui.screens.home.settings
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.quickness.SharedPreference
+import org.quickness.interfaces.QRCodeGenerator
 import org.quickness.utils.routes.RoutesSettings
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.about_us
@@ -17,7 +19,9 @@ import quickness.composeapp.generated.resources.qr_settings
 import quickness.composeapp.generated.resources.security_settings
 import quickness.composeapp.generated.resources.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(
+    private val sharedPreference: SharedPreference,
+) : ViewModel() {
     data class SettingsState(
         val settingsMap: Map<String, List<Any>> = mapOf(
             "settings" to listOf(
@@ -76,6 +80,4 @@ class SettingsViewModel : ViewModel() {
 
     private val _settingsState = MutableStateFlow(SettingsState())
     val settingsState = _settingsState
-
-
 }

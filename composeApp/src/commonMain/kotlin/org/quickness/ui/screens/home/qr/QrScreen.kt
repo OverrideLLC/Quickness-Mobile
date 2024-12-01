@@ -49,7 +49,6 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.SharedPreference
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import quickness.composeapp.generated.resources.Res
@@ -159,20 +158,13 @@ private fun TicketQRCode(
         transitionSpec = { tween(durationMillis = 500) },
         label = "QR Size Animation"
     ) { expanded ->
-        if (expanded) 400.dp else 200.dp
-    }
-    val padding by transition.animateDp(
-        transitionSpec = { tween(durationMillis = 500) },
-        label = "Padding Animation"
-    ) { expanded ->
-        if (expanded) 0.dp else 16.dp
+        if (expanded) 400.dp else 250.dp
     }
 
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
             .background(colorScheme.tertiary)
-            .padding(padding)
             .clickable { onClick() }
             .animateContentSize(),
         contentAlignment = Alignment.Center
@@ -184,7 +176,7 @@ private fun TicketQRCode(
                 modifier = Modifier.size(qrSize)
             )
         } ?: run {
-            CircularProgressIndicator(color = colorScheme.onPrimary)
+            CircularProgressIndicator(color = colorScheme.primary)
         }
     }
 }
