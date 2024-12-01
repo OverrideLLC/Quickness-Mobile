@@ -11,29 +11,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.asStateFlow
-import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.ui.components.SettingsItem
 
 @Composable
 fun SettingsScreen(navController: NavController) = Screen(navController)
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 private fun Screen(navController: NavController, viewModel: SettingsViewModel = koinViewModel()) {
-    val states = viewModel.settingsState.asStateFlow().value
+    val states = viewModel.settingsEnum.asStateFlow().value
     LazyColumn(
         content = {
-            states.settingsMap.forEach { (_, values) ->
-                val name = values[0] as StringResource
-                val icon = values[1] as DrawableResource
-                val route = values[2] as String
-
+            states.getAllSettings().forEach { setting ->
                 item {
+                    // Acceder a las propiedades de cada elemento de la enumeración
                     SettingsItem(
-                        name = name,
-                        icon = icon,
-                        navigator = { navController.navigate(route) }
+                        name = setting.titleRes,  // Referencia al recurso de nombre
+                        icon = setting.iconRes,   // Referencia al recurso de ícono
+                        navigator = { navController.navigate(setting.route) }  // Ruta de navegación
                     )
                     Spacer(Modifier.padding(10.dp))
                 }

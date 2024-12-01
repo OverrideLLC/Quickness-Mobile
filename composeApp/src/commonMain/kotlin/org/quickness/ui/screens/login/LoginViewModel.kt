@@ -16,7 +16,7 @@ import org.quickness.utils.`object`.ValidatesData.isPasswordValid
 class LoginViewModel(
     private val authRepository: LoginRepository,
     private val sharedPreference: SharedPreference
-) : ViewModel() {
+) : ViewModel(), LoginInterface {
 
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state.asStateFlow()
@@ -29,7 +29,7 @@ class LoginViewModel(
         return null
     }
 
-    fun login(
+    override fun login(
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
