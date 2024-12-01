@@ -4,12 +4,16 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.RenderEffect.createBlurEffect
+import android.graphics.Shader
 import android.net.Uri
 import android.os.Build
 import android.util.Base64
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.RenderEffect
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.asImageBitmap
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
@@ -29,7 +33,7 @@ class AndroidPlatform : Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class Uri actual constructor(url: String): org.quickness.interfaces.Uri {
+actual class Uri actual constructor(url: String) : org.quickness.interfaces.Uri {
     private val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     actual override fun navigate() {
         ContextProvider.getContext()!!.startActivity(intent)
@@ -172,5 +176,19 @@ actual class SharedPreference actual constructor() : SharedPreference {
 
     actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
         return sharedPreferences.getBoolean(key, defaultValue)
+    }
+}
+
+actual class RenderEffect actual constructor() {
+    @RequiresApi(Build.VERSION_CODES.S)
+    actual fun createBlurEffect(
+        radius: Float,
+        dy: Float
+    ): RenderEffect {
+        return createBlurEffect(
+            16f,
+            16f,
+            Shader.TileMode.CLAMP
+        ).asComposeRenderEffect()
     }
 }

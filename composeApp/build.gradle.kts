@@ -99,5 +99,6 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.ui.graphics.android)
     debugImplementation(compose.uiTooling)
 }
