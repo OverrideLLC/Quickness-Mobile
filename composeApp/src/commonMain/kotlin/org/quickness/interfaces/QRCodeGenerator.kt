@@ -9,7 +9,7 @@ interface QRCodeGenerator {
         width: Int = 300,
         height: Int = 300,
         format: Boolean = true,
-        colorBackground: Color,
-        colorMapBits: Color
+        colorBackground: Int,
+        colorMapBits: Int
     ): ImageBitmap
 }

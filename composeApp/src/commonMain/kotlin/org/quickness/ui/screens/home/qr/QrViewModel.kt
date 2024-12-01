@@ -12,27 +12,32 @@ class QrViewModel(
     private val sharedPreference: SharedPreference
 ) : ViewModel() {
     fun generateQRCode(): ImageBitmap? {
-        val bitmaps: Map<String, ImageBitmap>? = sharedPreference.getBitmap(TOKENS_BITMAP_KEY)
-        val totalTokens = 144
-        val minutesPerToken = 10
-
-        // Verificar si hay tokens almacenados
-        if (bitmaps.isNullOrEmpty()) {
-            println("No tokens available in SharedPreference")
+        val bitmaps = sharedPreference.getBitmap(TOKENS_BITMAP_KEY) ?: run {
+            println("No bitmaps found")
             return null
         }
 
-        // Obtener el tiempo actual
-        val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        val totalTokens = 144
+        val minutesPerToken = 10
 
-        // Calcular minutos desde medianoche manualmente
+        val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         val minutesSinceStartOfDay = currentTime.hour * 60 + currentTime.minute
+        println("Current time: $currentTime")
+        println("Minutes since start of day: $minutesSinceStartOfDay")
 
         // Calcular el índice del token
         val tokenIndex = (minutesSinceStartOfDay / minutesPerToken) % totalTokens
 
-        // Obtener el token correspondiente
-        val tokenKey = bitmaps.keys.sorted()[tokenIndex]
+        // Verificar que el índice sea válido
+        val sortedKeys = bitmaps.keys.sortedBy { it.toIntOrNull() ?: 0 }
+        if (tokenIndex >= sortedKeys.size) {
+            println("Token index exceeds available tokens")
+            return null
+        }
+
+        val tokenKey = sortedKeys[tokenIndex]
+        println("Token key: $tokenKey")
+
         return bitmaps[tokenKey]
     }
 }

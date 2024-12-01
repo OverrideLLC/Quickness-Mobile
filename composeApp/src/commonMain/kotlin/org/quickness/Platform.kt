@@ -10,7 +10,7 @@ interface Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect class Uri {
+expect class Uri(url: String) {
     fun navigate()
 }
 
@@ -21,8 +21,8 @@ expect class QRCodeGeneratorImpl() : QRCodeGenerator {
         width: Int,
         height: Int,
         format: Boolean,
-        colorBackground: Color,
-        colorMapBits: Color
+        colorBackground: Int,
+        colorMapBits: Int
     ): ImageBitmap
 }
 

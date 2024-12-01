@@ -1,12 +1,12 @@
 package org.quickness.ui.screens.home
 
-import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
@@ -16,9 +16,10 @@ import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
 import org.quickness.data.repository.TokensRepository
 import org.quickness.interfaces.QRCodeGenerator
-import org.quickness.utils.`object`.KeysCache
 import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
+import org.quickness.utils.`object`.KeysCache.QR_BACKGROUND_KEY
+import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
 import org.quickness.utils.`object`.KeysCache.TOKENS_BITMAP_KEY
 import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
 import org.quickness.utils.`object`.KeysCache.UID_KEY
@@ -29,23 +30,26 @@ class HomeViewModel(
     private val sharedPreference: SharedPreference
 ) : ViewModel() {
     companion object {
-        const val MIN_REQUEST_HOUR = 1 // Hora mínima para solicitar claves
+        const val MIN_REQUEST_HOUR = 0 // Hora de reinicio (medianoche)
     }
 
     fun getTokens() {
         val uid = sharedPreference.getString(UID_KEY, "")
         viewModelScope.launch(Dispatchers.IO) {
-            val sharedPreference = SharedPreference()
             val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-            val lastRequestDateString = sharedPreference.getString(key = LAST_REQUEST_KEY, defaultValue = null)
+            val lastRequestDateString =
+                sharedPreference.getString(key = LAST_REQUEST_KEY, defaultValue = null)
             val lastRequestDate = try {
                 lastRequestDateString.let { LocalDateTime.parse(it) }
             } catch (e: Exception) {
-                null // Si no es parseable, asumir que no hay una fecha previa
+                null
             }
 
-            // Verificar si ya se realizó una solicitud hoy después de la hora mínima
-            if (lastRequestDate == null || shouldRequestTokens(currentTime, lastRequestDate)) {
+            if (
+                lastRequestDate == null
+                || shouldRequestTokens(currentTime, lastRequestDate)
+                || sharedPreference.getMap(TOKENS_KEY)?.isEmpty() == true
+            ) {
                 val tokens = tokensRepository.getTokens(uid)
                 println("Tokens fetched: $tokens")
 
@@ -56,9 +60,7 @@ class HomeViewModel(
                 sharedPreference.setString(LAST_REQUEST_KEY, currentTime.toString())
 
                 // Convertir tokens a mapas de bits
-                convertTokensToBitmaps(
-                    tokens.tokens,
-                )
+                convertTokensToBitmaps(tokens.tokens)
             } else {
                 println("Tokens already fetched today.")
             }
@@ -66,9 +68,9 @@ class HomeViewModel(
     }
 
     private fun shouldRequestTokens(current: LocalDateTime, lastRequest: LocalDateTime): Boolean {
-        val isSameDay = current.date == lastRequest.date
+        val isNewDay = current.date > lastRequest.date
         val isAfterMinHour = current.hour >= MIN_REQUEST_HOUR
-        return !isSameDay || (isSameDay && !isAfterMinHour)
+        return isNewDay || (isNewDay && isAfterMinHour)
     }
 
     private suspend fun convertTokensToBitmaps(tokens: Map<String, String>) {
@@ -89,16 +91,19 @@ class HomeViewModel(
             val currentTokenIndex = (minutesSinceStartOfDay / minutesPerToken) % totalTokens
 
             // Obtener la clave del token actual
-            val sortedKeys = tokens.keys.sorted()
+            val sortedKeys = tokens.keys.sortedBy { it.toIntOrNull() ?: 0 }
             val currentKey = sortedKeys.getOrNull(currentTokenIndex)
+
+            val backgroundColor = sharedPreference.getInt(QR_BACKGROUND_KEY, Color.White.toArgb())
+            val colorMapBits = sharedPreference.getInt(QR_COLOR_KEY, Color.Black.toArgb())
 
             // Generar primero el token actual
             if (currentKey != null) {
                 val bitmap = qrCodeGenerator.generateQRCode(
                     data = tokens[currentKey] ?: "",
                     format = sharedPreference.getBoolean(FORMAT_KEY, true),
-                    colorBackground = androidx.compose.ui.graphics.Color.White,
-                    colorMapBits = androidx.compose.ui.graphics.Color.Blue
+                    colorBackground = backgroundColor,
+                    colorMapBits = colorMapBits
                 )
                 bitmaps[currentKey] = bitmap
                 sharedPreference.setBitmap(TOKENS_BITMAP_KEY, bitmaps.toMap())
@@ -109,8 +114,8 @@ class HomeViewModel(
                 val bitmap = qrCodeGenerator.generateQRCode(
                     data = token,
                     format = sharedPreference.getBoolean(FORMAT_KEY, true),
-                    colorBackground = androidx.compose.ui.graphics.Color.White,
-                    colorMapBits = androidx.compose.ui.graphics.Color.Blue
+                    colorBackground = backgroundColor,
+                    colorMapBits = colorMapBits
                 )
                 bitmaps[key] = bitmap
                 sharedPreference.setBitmap(TOKENS_BITMAP_KEY, bitmaps.toMap())
@@ -119,5 +124,4 @@ class HomeViewModel(
     }
 
     private fun generatePlaceholderBitmap(): ImageBitmap = ImageBitmap(1, 1)
-
 }

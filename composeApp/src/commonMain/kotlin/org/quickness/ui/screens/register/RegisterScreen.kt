@@ -53,10 +53,7 @@ import quickness.composeapp.generated.resources.register
  * @param navController Main navigation controller.
  */
 @Composable
-fun RegisterScreen(
-    navController: NavController,
-    uri: Uri
-) = RegisterContent(navController, uri)
+fun RegisterScreen(navController: NavController) = RegisterContent(navController)
 
 /**
  * Registration screen that contains the header, content, and bottom bar.
@@ -68,7 +65,6 @@ fun RegisterScreen(
 @Composable
 fun RegisterContent(
     navController: NavController,
-    uri: Uri,
     viewModel: RegisterViewModel = koinViewModel()
 ) {
     val navControllerRegister = rememberNavController()
@@ -97,7 +93,6 @@ fun RegisterContent(
                     navController = navControllerRegister,
                     viewModel = viewModel,
                     state = state,
-                    uri = uri
                 )
             }
         },

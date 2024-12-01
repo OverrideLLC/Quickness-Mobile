@@ -1,6 +1,5 @@
 package org.quickness
 
-import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Bitmap
@@ -8,15 +7,15 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.util.Base64
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.toArgb
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.quickness.di.ContextProvider
@@ -31,10 +30,10 @@ class AndroidPlatform : Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class Uri(private val context: Context, url: String) {
+actual class Uri actual constructor(url: String) {
     private val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     actual fun navigate() {
-        context.startActivity(intent)
+        ContextProvider.getContext()!!.startActivity(intent)
     }
 }
 
@@ -45,8 +44,8 @@ actual class QRCodeGeneratorImpl actual constructor() : QRCodeGenerator {
         width: Int,
         height: Int,
         format: Boolean,
-        colorBackground: Color,
-        colorMapBits: Color
+        colorBackground: Int,
+        colorMapBits: Int
     ): ImageBitmap {
         val qrCodeWriter = QRCodeWriter()
         val bitMatrix = qrCodeWriter.encode(
@@ -62,7 +61,7 @@ actual class QRCodeGeneratorImpl actual constructor() : QRCodeGenerator {
                 bitmap.setPixel(
                     x,
                     y,
-                    if (bitMatrix[x, y]) colorMapBits.toArgb() else colorBackground.toArgb()
+                    if (bitMatrix[x, y]) colorMapBits else colorBackground
                 )
             }
         }
@@ -85,6 +84,9 @@ actual class SharedPreference actual constructor() : SharedPreference {
     }
 
     actual override fun getInt(key: String, defaultValue: Int): Int {
+        if (!sharedPreferences.contains(key)) {
+            sharedPreferences.edit().putInt(key, defaultValue).apply()
+        }
         return sharedPreferences.getInt(key, defaultValue)
     }
 
@@ -128,13 +130,12 @@ actual class SharedPreference actual constructor() : SharedPreference {
     actual override fun setBitmap(key: String, value: Map<String, ImageBitmap>) {
         val bitmapMap = value.mapValues { (_, bitmap) ->
             val byteArray = imageBitmapToByteArray(bitmap)
-            Base64.encodeToString(byteArray, Base64.DEFAULT) // Codificar a Base64
+            Base64.encodeToString(byteArray, Base64.DEFAULT)
         }
-        // Serializar el mapa a JSON
         val serializedMap = Json.encodeToString(bitmapMap)
-        // Guardar el JSON en SharedPreferences
         sharedPreferences.edit().putString(key, serializedMap).apply()
     }
+
 
     actual override fun getBitmap(key: String): Map<String, ImageBitmap>? {
         val mapString = sharedPreferences.getString(TOKENS_BITMAP_KEY, null)
