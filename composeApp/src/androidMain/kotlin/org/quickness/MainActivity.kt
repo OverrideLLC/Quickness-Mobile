@@ -16,8 +16,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val systemUiController = rememberSystemUiController()
             systemUiController.setSystemBarsColor(
-                color = Color(0xFF1b1b1b),
-                darkIcons = Color(0xFF1b1b1b).luminance() > 0.5f
+                color = Color(0xFF000000),
+                darkIcons = Color(0xFF000000).luminance() > 0.5f
             )
             App()
         }

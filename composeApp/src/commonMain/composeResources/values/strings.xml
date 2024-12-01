@@ -51,8 +51,6 @@
     <string name="manage_data">Manage My Data</string>
     <string name="data_download">Download My Data</string>
     <string name="data_deletion_request">Request Data Deletion</string>
-    <string name="ad_preferences">Ad Preferences</string>
-    <string name="block_list">Blocked Users</string>
 
     <!-- Notification Settings -->
     <string name="push_notifications">Push Notifications</string>
