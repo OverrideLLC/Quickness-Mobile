@@ -29,9 +29,9 @@ class AndroidPlatform : Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class Uri actual constructor(url: String) {
+actual class Uri actual constructor(url: String): org.quickness.interfaces.Uri {
     private val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-    actual fun navigate() {
+    actual override fun navigate() {
         ContextProvider.getContext()!!.startActivity(intent)
     }
 }

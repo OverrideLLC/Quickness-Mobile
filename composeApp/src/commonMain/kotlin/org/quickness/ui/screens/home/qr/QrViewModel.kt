@@ -10,8 +10,8 @@ import org.quickness.utils.`object`.KeysCache.TOKENS_BITMAP_KEY
 
 class QrViewModel(
     private val sharedPreference: SharedPreference
-) : ViewModel() {
-    fun generateQRCode(): ImageBitmap? {
+) : ViewModel(), QrInterface {
+    override fun generateQRCode(): ImageBitmap? {
         val bitmaps = sharedPreference.getBitmap(TOKENS_BITMAP_KEY) ?: run {
             println("No bitmaps found")
             return null

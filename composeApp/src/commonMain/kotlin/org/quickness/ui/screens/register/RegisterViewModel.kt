@@ -23,7 +23,7 @@ import org.quickness.utils.`object`.ValidatesData.isPhoneNumberValid
  */
 class RegisterViewModel(
     private val registerRepository: RegisterRepository,
-) : ViewModel() {
+) : ViewModel(), RegisterInterface {
 
     /**
      * Holds the current state of the registration process as a [RegisterState].
@@ -49,7 +49,7 @@ class RegisterViewModel(
      *
      * @return `true` if the email and password fields are valid; `false` otherwise.
      */
-    fun validateEmailAndPassword(): Boolean =
+    override fun validateEmailAndPassword(): Boolean =
         isEmailValid(
             email = _state.value.email,
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } }
@@ -69,7 +69,7 @@ class RegisterViewModel(
      *
      * @return `true` if all personal information fields are valid; `false` otherwise.
      */
-    fun validatePersonalInfo(): Boolean =
+    override fun validatePersonalInfo(): Boolean =
         isNameValid(
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } },
             capitalizeWords = { capitalizeWords() },
@@ -94,7 +94,7 @@ class RegisterViewModel(
      *
      * @return `true` if all required terms are checked; `false` otherwise.
      */
-    fun isTermsAndConditionsChecked(): Boolean =
+    override fun isTermsAndConditionsChecked(): Boolean =
         if (_state.value.termsAndConditions && _state.value.privacyPolicy && _state.value.dataAnalytics)
             true
         else {
@@ -107,7 +107,7 @@ class RegisterViewModel(
      *
      * @return The capitalized name as a [String].
      */
-    private fun capitalizeWords(): String =
+    override fun capitalizeWords(): String =
         _state.value.name.split(" ")
             .joinToString(" ") { word -> word.replaceFirstChar { it.uppercaseChar() } }
 
@@ -118,7 +118,7 @@ class RegisterViewModel(
      * @param onSuccess A callback executed when the registration is successful.
      * @param onError A callback executed when the registration fails.
      */
-    fun register(
+    override fun register(
         onSuccess: () -> Unit,
         onError: () -> Unit
     ) {

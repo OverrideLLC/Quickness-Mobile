@@ -18,6 +18,7 @@ import org.quickness.data.repository.TokensRepository
 import org.quickness.interfaces.QRCodeGenerator
 import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
+import org.quickness.utils.`object`.KeysCache.MIN_REQUEST_HOUR
 import org.quickness.utils.`object`.KeysCache.QR_BACKGROUND_KEY
 import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
 import org.quickness.utils.`object`.KeysCache.TOKENS_BITMAP_KEY
@@ -28,12 +29,8 @@ class HomeViewModel(
     private val tokensRepository: TokensRepository,
     private val qrCodeGenerator: QRCodeGenerator,
     private val sharedPreference: SharedPreference
-) : ViewModel() {
-    companion object {
-        const val MIN_REQUEST_HOUR = 0 // Hora de reinicio (medianoche)
-    }
-
-    fun getTokens() {
+) : ViewModel(), HomeInterface {
+    override fun getTokens() {
         val uid = sharedPreference.getString(UID_KEY, "")
         viewModelScope.launch(Dispatchers.IO) {
             val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
@@ -67,13 +64,13 @@ class HomeViewModel(
         }
     }
 
-    private fun shouldRequestTokens(current: LocalDateTime, lastRequest: LocalDateTime): Boolean {
+    override fun shouldRequestTokens(current: LocalDateTime, lastRequest: LocalDateTime): Boolean {
         val isNewDay = current.date > lastRequest.date
         val isAfterMinHour = current.hour >= MIN_REQUEST_HOUR
         return isNewDay || (isNewDay && isAfterMinHour)
     }
 
-    private suspend fun convertTokensToBitmaps(tokens: Map<String, String>) {
+    override suspend fun convertTokensToBitmaps(tokens: Map<String, String>) {
         withContext(Dispatchers.IO) {
             val bitmaps = mutableMapOf<String, ImageBitmap>() // Mapa para almacenar resultados
 
@@ -123,5 +120,5 @@ class HomeViewModel(
         }
     }
 
-    private fun generatePlaceholderBitmap(): ImageBitmap = ImageBitmap(1, 1)
+    override fun generatePlaceholderBitmap(): ImageBitmap = ImageBitmap(1, 1)
 }

@@ -9,8 +9,8 @@ interface Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect class Uri(url: String) {
-    fun navigate()
+expect class Uri(url: String): org.quickness.interfaces.Uri {
+    override fun navigate()
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")

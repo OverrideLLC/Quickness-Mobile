@@ -10,5 +10,6 @@ object KeysCache {
     const val QR_COLOR_KEY = "qr_color_key"
     const val QR_BACKGROUND_KEY = "qr_size_key"
     const val QR_TAG_KEY = "qr_tag_key"
+    const val MIN_REQUEST_HOUR = 0
     const val THEME_KEY = "theme_key"
 }

@@ -1,8 +1,6 @@
 package org.quickness.ui.screens.home.settings.screens.settings_qr
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -26,28 +24,15 @@ import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
 class QrSettingsViewModel(
     private val sharedPreference: SharedPreference,
     private val qrCodeGenerator: QRCodeGenerator
-) : ViewModel() {
-    data class QrSettingsState(
-        val format: Boolean = SharedPreference().getBoolean(FORMAT_KEY, true),
-        val readability: Boolean = false,
-        val colorTag: String = SharedPreference().getString(QR_TAG_KEY, "White"),
-        val colorQr: Int = SharedPreference().getInt(QR_COLOR_KEY, Color.Black.toArgb()),
-        val colorBackground: Int = SharedPreference().getInt(
-            QR_BACKGROUND_KEY,
-            Color.White.toArgb()
-        ),
-        val size: Boolean = false,
-        val isLoadings: Boolean = false
-    )
-
-    private val _state = MutableStateFlow(QrSettingsState())
+) : ViewModel(), QrSettingsInterface {
+    private val _state = MutableStateFlow(QrSettingsState(sharedPreference))
     val state = _state.asStateFlow()
 
-    fun updateState(update: QrSettingsState.() -> QrSettingsState) {
+    private fun updateState(update: QrSettingsState.() -> QrSettingsState) {
         _state.value = _state.value.update()
     }
 
-    fun toggleFormat() {
+    override fun toggleFormat() {
         updateState { copy(format = !format, isLoadings = true) }
         sharedPreference.setBoolean(FORMAT_KEY, _state.value.format)
 
@@ -62,7 +47,7 @@ class QrSettingsViewModel(
         )
     }
 
-    fun toggleColor(colorQr: Int, colorBackground: Int, colorTag: String) {
+    override fun toggleColor(colorQr: Int, colorBackground: Int, colorTag: String) {
         updateState {
             copy(
                 colorQr = colorQr,
@@ -84,7 +69,7 @@ class QrSettingsViewModel(
         )
     }
 
-    private fun restartTokens(
+    override fun restartTokens(
         onSuccessfulRestart: (Boolean) -> Unit,
         onFailedRestart: () -> Unit
     ) {
@@ -144,5 +129,5 @@ class QrSettingsViewModel(
         }
     }
 
-    private fun generatePlaceholderBitmap(): ImageBitmap = ImageBitmap(1, 1)
+    override fun generatePlaceholderBitmap(): ImageBitmap = ImageBitmap(1, 1)
 }
