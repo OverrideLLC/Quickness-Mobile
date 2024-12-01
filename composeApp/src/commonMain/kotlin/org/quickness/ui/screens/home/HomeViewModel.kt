@@ -94,13 +94,16 @@ class HomeViewModel(
             val sortedKeys = tokens.keys.sortedBy { it.toIntOrNull() ?: 0 }
             val currentKey = sortedKeys.getOrNull(currentTokenIndex)
 
+            val backgroundColor = sharedPreference.getInt(QR_BACKGROUND_KEY, Color.White.toArgb())
+            val colorMapBits = sharedPreference.getInt(QR_COLOR_KEY, Color.Black.toArgb())
+
             // Generar primero el token actual
             if (currentKey != null) {
                 val bitmap = qrCodeGenerator.generateQRCode(
                     data = tokens[currentKey] ?: "",
                     format = sharedPreference.getBoolean(FORMAT_KEY, true),
-                    colorBackground = sharedPreference.getInt(QR_COLOR_KEY, Color.Black.toArgb()),
-                    colorMapBits = sharedPreference.getInt(QR_BACKGROUND_KEY, Color.White.toArgb())
+                    colorBackground = backgroundColor,
+                    colorMapBits = colorMapBits
                 )
                 bitmaps[currentKey] = bitmap
                 sharedPreference.setBitmap(TOKENS_BITMAP_KEY, bitmaps.toMap())
@@ -111,8 +114,8 @@ class HomeViewModel(
                 val bitmap = qrCodeGenerator.generateQRCode(
                     data = token,
                     format = sharedPreference.getBoolean(FORMAT_KEY, true),
-                    colorBackground = sharedPreference.getInt(QR_COLOR_KEY, Color.Black.toArgb()),
-                    colorMapBits = sharedPreference.getInt(QR_BACKGROUND_KEY, Color.White.toArgb())
+                    colorBackground = backgroundColor,
+                    colorMapBits = colorMapBits
                 )
                 bitmaps[key] = bitmap
                 sharedPreference.setBitmap(TOKENS_BITMAP_KEY, bitmaps.toMap())

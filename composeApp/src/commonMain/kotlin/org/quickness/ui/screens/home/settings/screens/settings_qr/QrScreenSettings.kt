@@ -19,7 +19,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.SharedPreference
 import org.quickness.ui.components.DropdownSettings
 import org.quickness.ui.components.SettingsItemSwitch
-import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.color_qr_settings
 import quickness.composeapp.generated.resources.format_qr_settings
@@ -61,7 +60,7 @@ private fun Screen(
             )
             Spacer(Modifier.padding(10.dp))
         }
-        item{
+        item {
             DropdownSettings(
                 name = Res.string.color_qr_settings,
                 icon = Res.drawable.palette_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
@@ -71,21 +70,21 @@ private fun Screen(
                 onOptionSelected = {
                     when (it) {
                         "Blue" -> viewModel.toggleColor(
-                            Color(0xFF5ce1e6).toArgb(),
-                            Color.Black.toArgb(),
-                            it
+                            colorQr = Color(0xFF5ce1e6).toArgb(),
+                            colorBackground = Color.Black.toArgb(),
+                            colorTag = it
                         )
 
                         "Black" -> viewModel.toggleColor(
-                            Color.Black.toArgb(),
-                            Color.White.toArgb(),
-                            it
+                            colorQr = Color.Black.toArgb(),
+                            colorBackground = Color.White.toArgb(),
+                            colorTag = it
                         )
 
                         "White" -> viewModel.toggleColor(
-                            Color.White.toArgb(),
-                            Color.Black.toArgb(),
-                            it
+                            colorQr = Color.White.toArgb(),
+                            colorBackground = Color.Black.toArgb(),
+                            colorTag = it
                         )
                     }
                 },

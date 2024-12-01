@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -164,7 +165,7 @@ private fun TicketQRCode(
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(colorScheme.tertiary)
+            .background(Color.Transparent)
             .clickable { onClick() }
             .animateContentSize(),
         contentAlignment = Alignment.Center
@@ -184,6 +185,25 @@ private fun TicketQRCode(
 
 @Composable
 private fun ImportantInfoItem(text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Icon(
+            painter = painterResource(Res.drawable.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
+            contentDescription = "Info Icon",
+            tint = colorScheme.tertiary,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            style = typography.bodyMedium,
+            color = colorScheme.tertiary,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(vertical = 4.dp),
