@@ -22,14 +22,12 @@ import org.quickness.utils.routes.RoutesRegister
  * @param navController The [NavHostController] used to navigate between composable screens.
  * @param viewModel The [RegisterViewModel] containing the business logic and state for the registration process.
  * @param state The [RegisterState] representing the current state of the registration process.
- * @param uri The [Uri] required for the Approbation screen, used for displaying or processing additional resources.
  */
 @Composable
 fun NavigationRegister(
     navController: NavHostController,
     viewModel: RegisterViewModel,
     state: RegisterState,
-    uri: Uri
 ) {
     NavHost(
         navController = navController,
@@ -69,7 +67,6 @@ fun NavigationRegister(
             Approbation(
                 viewModel = viewModel,
                 state = state,
-                uri = uri
             )
         }
     }

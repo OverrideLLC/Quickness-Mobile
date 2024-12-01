@@ -31,7 +31,6 @@ import org.quickness.ui.components.Message
 import org.quickness.ui.components.TextFieldCustomEmail
 import org.quickness.ui.components.TextFieldCustomPassword
 import org.quickness.ui.components.powered
-import org.quickness.utils.`object`.KeysCache.UID_KEY
 import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
@@ -45,14 +44,12 @@ import quickness.composeapp.generated.resources.password
 fun LoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = koinViewModel(),
-    sharedPreference: SharedPreference
-) = Screen(navController, viewModel, sharedPreference)
+) = Screen(navController, viewModel)
 
 @Composable
 private fun Screen(
     navController: NavController,
     viewModel: LoginViewModel,
-    sharedPreference: SharedPreference
 ) {
     val state by viewModel.state.collectAsState()
     LazyColumn(
@@ -82,22 +79,18 @@ private fun Screen(
                     onLoginClick = {
                         viewModel.login(
                             onSuccess = {
-                                viewModel.updateState { copy(isLoading = state.isLoading.not()) }
-                                navController.popBackStack()
-                                navController.popBackStack()
                                 navController.navigate(RoutesStart.Home.route)
+                                viewModel.updateState { copy(isLoading = state.isLoading.not()) }
                             },
                             onError = {
                                 viewModel.updateState {
                                     copy(
                                         isError = true,
                                         isWarning = true,
-                                        errorMessage = it
+                                        errorMessage = it,
+                                        isLoading = state.isLoading.not()
                                     )
                                 }
-                            },
-                            uid = {
-                                sharedPreference.setString(UID_KEY, it ?: "")
                             }
                         )
                     },

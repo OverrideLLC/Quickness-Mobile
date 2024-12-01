@@ -196,7 +196,6 @@ fun InformationPersonal(
 fun Approbation(
     viewModel: RegisterViewModel,
     state: RegisterState,
-    uri: Uri
 ) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -208,7 +207,6 @@ fun Approbation(
                 title = stringResource(Res.string.terms_and_conditions),
                 description = stringResource(Res.string.terms_and_conditions_description),
                 checked = state.termsAndConditions,
-                uri = uri,
                 onCheckedChange = { viewModel.updateState { copy(termsAndConditions = termsAndConditions.not()) } }
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -216,7 +214,6 @@ fun Approbation(
             ItemWithLink(
                 title = stringResource(Res.string.privacy_policy),
                 description = stringResource(Res.string.privacy_policy_description),
-                uri = uri,
                 checked = state.privacyPolicy,
                 onCheckedChange = { viewModel.updateState { copy(privacyPolicy = privacyPolicy.not()) } }
             )
@@ -226,7 +223,6 @@ fun Approbation(
                 title = stringResource(Res.string.data_analytics),
                 description = stringResource(Res.string.data_analytics_description),
                 checked = state.dataAnalytics,
-                uri = uri,
                 onCheckedChange = { viewModel.updateState { copy(dataAnalytics = dataAnalytics.not()) } }
             )
         }
