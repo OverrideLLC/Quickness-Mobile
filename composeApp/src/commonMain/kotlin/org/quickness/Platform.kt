@@ -1,6 +1,5 @@
 package org.quickness
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import org.quickness.interfaces.QRCodeGenerator
 import org.quickness.interfaces.SharedPreference

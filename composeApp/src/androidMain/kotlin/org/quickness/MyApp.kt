@@ -13,7 +13,8 @@ import org.quickness.di.firebaseModule
 import org.quickness.di.initKoin
 import org.quickness.di.networkModule
 import org.quickness.di.repositoryModule
-import org.quickness.di.viewModelsModule
+import org.quickness.di.viewModelsHome
+import org.quickness.di.viewModelsStart
 
 class MyApp : Application(), KoinComponent {
     override fun onCreate() {
@@ -26,7 +27,8 @@ class MyApp : Application(), KoinComponent {
                 appModule,
                 dataModule,
                 repositoryModule,
-                viewModelsModule,
+                viewModelsHome,
+                viewModelsStart,
                 networkModule,
                 NativeModule,
                 firebaseModule

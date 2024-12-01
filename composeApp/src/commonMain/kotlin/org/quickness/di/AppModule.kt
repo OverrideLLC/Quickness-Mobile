@@ -27,7 +27,7 @@ val appModule: Module = module {
  * @param engine Motor de cliente HTTP utilizado para crear la instancia.
  * @return Instancia de [HttpClient] configurada.
  */
-private fun createHttpClient(engine: HttpClientEngine): HttpClient {
+fun createHttpClient(engine: HttpClientEngine): HttpClient {
     return HttpClient(engine) {
         installLogging()
         installContentNegotiation()

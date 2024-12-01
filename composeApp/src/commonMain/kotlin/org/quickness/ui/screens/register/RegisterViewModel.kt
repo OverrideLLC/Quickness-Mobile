@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.quickness.data.repository.RegisterRepository
-import org.quickness.encrypt.EncryptPasswordSHA256.encryptPasswordSHA256
 import org.quickness.utils.`object`.ValidatesData.confirmPassword
 import org.quickness.utils.`object`.ValidatesData.formatPhoneNumber
 import org.quickness.utils.`object`.ValidatesData.isCurpValid
@@ -128,7 +127,7 @@ class RegisterViewModel(
             try {
                 val result = registerRepository.register(
                     email = _state.value.email,
-                    password = encryptPasswordSHA256(_state.value.password),
+                    password = _state.value.password,
                     name = _state.value.name,
                     curp = _state.value.curp,
                     phoneNumber = formatPhoneNumber(_state.value.phoneNumber)

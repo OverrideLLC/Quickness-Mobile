@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.util.Base64
+import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -14,8 +15,6 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.quickness.di.ContextProvider
@@ -127,6 +126,7 @@ actual class SharedPreference actual constructor() : SharedPreference {
         return sharedPreferences.getLong(key, defaultValue)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     actual override fun setBitmap(key: String, value: Map<String, ImageBitmap>) {
         val bitmapMap = value.mapValues { (_, bitmap) ->
             val byteArray = imageBitmapToByteArray(bitmap)
@@ -137,6 +137,7 @@ actual class SharedPreference actual constructor() : SharedPreference {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     actual override fun getBitmap(key: String): Map<String, ImageBitmap>? {
         val mapString = sharedPreferences.getString(TOKENS_BITMAP_KEY, null)
         return if (mapString != null) {
