@@ -1,6 +1,7 @@
 package org.quickness.di
 
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -9,35 +10,59 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import org.quickness.QRCodeGeneratorImpl
-import org.quickness.SharedPreference
-import org.quickness.interfaces.QRCodeGenerator
 
+/**
+ * Módulo de Koin que define las dependencias de la aplicación.
+ */
 val appModule: Module = module {
-    single { crateHttpClient(get()) }
-    single<QRCodeGenerator> { QRCodeGeneratorImpl() }
-    single { SharedPreference() }
+    singleOf(::createHttpClient)
 }
 
-fun crateHttpClient(engine: HttpClientEngine): HttpClient {
+/**
+ * Crea un cliente HTTP configurado con los plugins y opciones necesarias.
+ *
+ * @param engine Motor de cliente HTTP utilizado para crear la instancia.
+ * @return Instancia de [HttpClient] configurada.
+ */
+private fun createHttpClient(engine: HttpClientEngine): HttpClient {
     return HttpClient(engine) {
-        install(Logging) {
-            level = LogLevel.ALL
-        }
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                }
-            )
-        }
+        installLogging()
+        installContentNegotiation()
     }
 }
 
+/**
+ * Configura el plugin de logging del cliente HTTP.
+ */
+private fun HttpClientConfig<*>.installLogging() {
+    install(Logging) {
+        level = LogLevel.ALL // Muestra todos los niveles de log para la depuración
+    }
+}
+
+/**
+ * Configura el plugin de negociación de contenido para el cliente HTTP.
+ */
+private fun HttpClientConfig<*>.installContentNegotiation() {
+    install(ContentNegotiation) {
+        json(
+            Json {
+                prettyPrint = true // Formateo legible de la salida JSON
+                isLenient = true // Permite la tolerancia a errores en el parsing de JSON
+                ignoreUnknownKeys = true // Ignora claves desconocidas en la deserialización
+            }
+        )
+    }
+}
+
+/**
+ * Inicializa el contenedor de dependencias de Koin con los módulos especificados.
+ *
+ * @param appDeclaration Declaración de la configuración de la aplicación (opcional).
+ */
 fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
     startKoin {
         appDeclaration?.invoke(this)
@@ -45,7 +70,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
             appModule,
             dataModule,
             repositoryModule,
-            viewModelsModule,
+            viewModelsHome,
+            viewModelsStart,
             networkModule,
             NativeModule,
             firebaseModule

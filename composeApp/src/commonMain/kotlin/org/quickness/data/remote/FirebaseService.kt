@@ -7,7 +7,7 @@ import org.quickness.data.model.AuthResult
  * Servicio de autenticación Firebase para Kotlin Multiplatform.
  * Define las expectativas para la implementación de autenticación en cada plataforma.
  */
-expect class FirebaseService : FirebaseAuth {
+expect class FirebaseService() : FirebaseAuth {
     /**
      * Realiza el inicio de sesión en Firebase con las credenciales proporcionadas.
      *
