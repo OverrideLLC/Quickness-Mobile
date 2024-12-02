@@ -1,6 +1,7 @@
 package org.quickness
 
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.RenderEffect
 import org.quickness.interfaces.QRCodeGenerator
 import org.quickness.interfaces.SharedPreference
 
@@ -9,7 +10,7 @@ interface Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect class Uri(url: String): org.quickness.interfaces.Uri {
+expect class Uri(url: String) : org.quickness.interfaces.Uri {
     override fun navigate()
 }
 
@@ -23,6 +24,10 @@ expect class QRCodeGeneratorImpl() : QRCodeGenerator {
         colorBackground: Int,
         colorMapBits: Int
     ): ImageBitmap
+}
+
+expect class RenderEffect() {
+    fun createBlurEffect(radius: Float, dy: Float): RenderEffect
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")

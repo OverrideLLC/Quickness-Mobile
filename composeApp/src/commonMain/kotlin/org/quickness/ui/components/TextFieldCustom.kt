@@ -1,6 +1,7 @@
 package org.quickness.ui.components
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +41,7 @@ fun TextFieldCustomEmail(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         placeholder = { Text(placeholder) },
         onValueChange = { onValueChange(it) },
+        shape = RoundedCornerShape(40.dp),
         label = { Text(text) },
         leadingIcon = {
             Icon(
@@ -72,6 +74,7 @@ fun TextFieldCustomPassword(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         isError = isError,
         label = { Text(text) },
+        shape = RoundedCornerShape(40.dp),
         leadingIcon = {
             Icon(
                 painterResource(icon),
@@ -117,6 +120,7 @@ fun TextFIelCustom(
         singleLine = true,
         isError = isError,
         modifier = modifier,
+        shape = RoundedCornerShape(40.dp),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         leadingIcon = {
             Icon(
