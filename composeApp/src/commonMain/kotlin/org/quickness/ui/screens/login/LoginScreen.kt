@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +26,6 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.SharedPreference
 import org.quickness.ui.components.ButtonAccess
 import org.quickness.ui.components.LogoAndTitle
 import org.quickness.ui.components.Message
@@ -55,7 +56,7 @@ private fun Screen(
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().padding(horizontal = 40.dp)
+        modifier = Modifier.fillMaxSize().padding(horizontal = 40.dp).imePadding()
     ) {
         item {
             Column(
@@ -120,6 +121,7 @@ private fun Body(viewModel: LoginViewModel, state: LoginState) {
         TextFieldCustomEmail(
             value = state.email,
             isError = state.isError,
+            modifier = Modifier.fillMaxWidth(),
             text = stringResource(Res.string.email),
             onValueChange = { viewModel.updateState { copy(email = it) } }
         )
@@ -128,6 +130,7 @@ private fun Body(viewModel: LoginViewModel, state: LoginState) {
             value = state.password,
             isError = state.isError,
             text = stringResource(Res.string.password),
+            modifier = Modifier.fillMaxWidth(),
             isPasswordVisible = state.isPasswordVisible,
             togglePasswordVisibility = { viewModel.updateState { copy(isPasswordVisible = !isPasswordVisible) } },
             onValueChange = { viewModel.updateState { copy(password = it) } }

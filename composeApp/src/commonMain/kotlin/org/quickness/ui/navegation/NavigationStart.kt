@@ -33,7 +33,7 @@ fun NavigationStart() {
             StartScreen(navController)
         }
         composable(RoutesStart.Home.route) {
-            HomeScreen()
+            HomeScreen(rememberNavController())
         }
         composable(RoutesStart.Login.route) {
             LoginScreen(navController)

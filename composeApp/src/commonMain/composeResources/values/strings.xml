@@ -22,6 +22,7 @@
     <string name="read_more">Read more</string>
     <string name="next">Next</string>
     <string name="settings">Settings</string>
+    <string name="info_token">This ticket is valid for one use only.</string>
 
     <!-- Qr Settings -->
     <string name="qr_settings">QR Settings</string>

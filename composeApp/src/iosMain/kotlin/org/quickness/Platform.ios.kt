@@ -27,3 +27,12 @@ actual class EncryptPasswordPBKDF2 actual constructor(password: String) {
         TODO("Not yet implemented")
     }
 }
+
+actual class RenderEffect actual constructor() {
+    actual fun createBlurEffect(
+        radius: Float,
+        dy: Float
+    ): RenderEffect {
+        TODO("Not yet implemented")
+    }
+}
