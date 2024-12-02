@@ -20,3 +20,15 @@ val TitleStyle = TextStyle(
         blurRadius = 30f
     ),
 )
+
+val TitleStylePrimary = TextStyle(
+    fontSize = 50.sp,
+    fontWeight = FontWeight.Normal,
+    fontStyle = FontStyle.Normal,
+    textAlign = TextAlign.Center,
+    shadow = Shadow(
+        color = Color(0xff42b2dc),
+        offset = Offset(0.0f, 0.0f),
+        blurRadius = 30f
+    ),
+)

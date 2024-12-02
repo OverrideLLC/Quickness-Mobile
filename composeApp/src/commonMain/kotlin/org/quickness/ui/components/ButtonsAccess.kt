@@ -41,7 +41,7 @@ fun ButtonAccess(
     Box(
         modifier = Modifier
             .wrapContentSize()
-            .background(color = colorScheme.onBackground, shape = RoundedCornerShape(20.dp))
+            .background(color = colorScheme.background, shape = RoundedCornerShape(20.dp))
             .padding(vertical = 10.dp),
         contentAlignment = Alignment.Center,
         content = {
@@ -53,8 +53,8 @@ fun ButtonAccess(
                     onClick = { onLoginClick() },
                     modifier = Modifier.height(50.dp).fillMaxWidth().padding(horizontal = 20.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorScheme.secondary,
-                        contentColor = colorScheme.primary
+                        containerColor = colorScheme.tertiary,
+                        contentColor = colorScheme.secondary
                     )
                 ) {
                     Row(
@@ -67,7 +67,7 @@ fun ButtonAccess(
                             text = stringResource(Res.string.login),
                             fontSize = 18.sp,
                             fontFamily = FontFamily(Font(resource = Res.font.Poppins_Medium)),
-                            color = colorScheme.primary
+                            color = colorScheme.secondary
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
@@ -83,7 +83,7 @@ fun ButtonAccess(
                     modifier = Modifier.height(50.dp).fillMaxWidth().padding(horizontal = 20.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorScheme.secondary,
-                        contentColor = colorScheme.primary
+                        contentColor = colorScheme.tertiary,
                     )
                 ) {
                     Text(
