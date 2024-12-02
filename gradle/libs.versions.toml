@@ -18,6 +18,7 @@ junit = "4.13.2"
 kotlin = "2.0.21"
 kotlinxDatetime = "0.6.0"
 krypto = "3.0.0"
+mapsCompose = "4.3.0"
 navigationCompose = "2.8.0-alpha10"
 koin = "3.6.0-Beta4"
 koinCompose = "1.2.0-Beta4"
@@ -28,6 +29,9 @@ ksp = "2.0.21-1.0.25"
 androidx-room = "2.7.0-alpha11"
 androidx-sqliteBundled = "2.5.0-alpha11"
 coreSplashscreen = "1.0.1"
+playServicesLocation = "21.3.0"
+playServicesMaps = "19.0.0"
+uiGraphicsAndroid = "1.7.5"
 
 [libraries]
 core = { module = "com.google.zxing:core", version.ref = "core" }
@@ -48,6 +52,7 @@ androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", nam
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 krypto = { module = "com.soywiz.korlibs.krypto:krypto", version.ref = "krypto" }
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }
@@ -64,6 +69,9 @@ accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
 androidx-sqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqliteBundled" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -21,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,22 +37,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.SharedPreference
+import org.quickness.RenderEffect
+import org.quickness.ui.components.TitleStyle
 import org.quickness.ui.navegation.NavigationHome
-import org.quickness.utils.`object`.KeysCache.UID_KEY
 import org.quickness.utils.routes.RoutesHome
+import org.quickness.utils.routes.RoutesSettings
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -65,13 +70,14 @@ import quickness.composeapp.generated.resources.warning_24dp_E8EAED_FILL1_wght40
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun HomeScreen() = Screen(homeViewModel = koinViewModel())
+fun HomeScreen(navController: NavHostController) = Screen(homeViewModel = koinViewModel(), navController = navController)
 
 @Composable
-private fun Screen(homeViewModel: HomeViewModel) {
+private fun Screen(homeViewModel: HomeViewModel, navController: NavHostController) {
     homeViewModel.getTokens()
-    val navController = rememberNavController()
+
     var topName by remember { mutableStateOf("Qr") }
+
     Scaffold(
         topBar = {
             TopBar(
@@ -88,7 +94,6 @@ private fun Screen(homeViewModel: HomeViewModel) {
         bottomBar = { BottomBar(navController) { topName = it } },
         snackbarHost = { SnackBar() },
         floatingActionButton = { FloatingAction() },
-        containerColor = colorScheme.background,
         floatingActionButtonPosition = FabPosition.End,
         modifier = Modifier.fillMaxSize(),
     )
@@ -97,8 +102,8 @@ private fun Screen(homeViewModel: HomeViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    back: Boolean = false,
     title: String,
+    showBackButton: Boolean = false,
     onBackClick: () -> Unit = {},
     onEmergencyClick: () -> Unit = {}
 ) {
@@ -107,11 +112,12 @@ private fun TopBar(
             Text(
                 text = title,
                 fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
-                fontSize = 50.sp
+                fontSize = 50.sp,
+                style = TitleStyle
             )
         },
         navigationIcon = {
-            if (back) IconButton(
+            if (showBackButton) IconButton(
                 onClick = onBackClick,
                 content = {
                     Icon(
@@ -140,6 +146,7 @@ private fun TopBar(
             navigationIconContentColor = colorScheme.tertiary,
             actionIconContentColor = colorScheme.tertiary,
         ),
+        modifier = Modifier.background(Color.Transparent)
     )
 }
 
@@ -157,7 +164,7 @@ private fun BottomBar(
     ) {
         BottomAppBar(
             modifier = Modifier
-                .background(colorScheme.onBackground, shape = RoundedCornerShape(20.dp))
+                .background(colorScheme.onBackground, shape = RoundedCornerShape(40.dp))
                 .fillMaxWidth(),
             containerColor = Color.Transparent,
             contentColor = Color.White,
@@ -200,8 +207,7 @@ private fun BottomBar(
                             iconRes = if (selected != Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
                             isSelected = selected == Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24 == selected,
                             onClick = {
-                                selected =
-                                    Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                selected = Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
                                 topName("Settings")
                                 navigationController.navigate(RoutesHome.Settings.route) { popUpTo(0) }
                             }
@@ -239,6 +245,8 @@ private fun BottomAppBarIcon(
         content = {
             IconButton(
                 onClick = onClick,
+                colors = IconButtonDefaults.iconButtonColors(
+                ),
                 content = {
                     Icon(
                         painter = painterResource(iconRes),

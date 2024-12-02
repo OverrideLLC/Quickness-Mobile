@@ -4,13 +4,29 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.RenderEffect.createBlurEffect
+import android.graphics.Shader
 import android.net.Uri
 import android.os.Build
 import android.util.Base64
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.RenderEffect
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.asImageBitmap
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapType
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.qrcode.QRCodeWriter
@@ -29,7 +45,7 @@ class AndroidPlatform : Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class Uri actual constructor(url: String): org.quickness.interfaces.Uri {
+actual class Uri actual constructor(url: String) : org.quickness.interfaces.Uri {
     private val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     actual override fun navigate() {
         ContextProvider.getContext()!!.startActivity(intent)
@@ -172,5 +188,47 @@ actual class SharedPreference actual constructor() : SharedPreference {
 
     actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
         return sharedPreferences.getBoolean(key, defaultValue)
+    }
+}
+
+actual class RenderEffect actual constructor() {
+    @RequiresApi(Build.VERSION_CODES.S)
+    actual fun createBlurEffect(
+        radius: Float,
+        dy: Float
+    ): RenderEffect {
+        return createBlurEffect(
+            16f,
+            16f,
+            Shader.TileMode.CLAMP
+        ).asComposeRenderEffect()
+    }
+}
+
+actual class GoogleMaps actual constructor() {
+    @Composable
+    actual fun Map() {
+        val cameraPositionState = rememberCameraPositionState {
+            position = CameraPosition.fromLatLngZoom(
+                LatLng(19.475426, -102.072805),
+                15f
+            )
+        }
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            properties = MapProperties(
+                mapType = MapType.NORMAL,
+                isMyLocationEnabled = true,
+                isTrafficEnabled = true,
+                isIndoorEnabled = true,
+                isBuildingEnabled = true
+            ),
+            cameraPositionState = cameraPositionState
+        ) {
+            Marker(
+                state = MarkerState(position = LatLng(19.475426, -102.072805)),
+                title = "TecNm"
+            )
+        }
     }
 }
