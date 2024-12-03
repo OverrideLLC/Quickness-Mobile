@@ -39,8 +39,12 @@ kotlin {
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.auth)
+            implementation(libs.firebase.firestore)
             implementation(libs.core)
             implementation(libs.androidx.core.splashscreen)
+            implementation(libs.maps.compose)
+            implementation(libs.play.services.maps)
+            implementation (libs.play.services.location)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -99,5 +103,6 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.ui.graphics.android)
     debugImplementation(compose.uiTooling)
 }

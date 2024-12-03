@@ -33,7 +33,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.quickness.ui.theme.Success
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
-import quickness.composeapp.generated.resources.check_circle_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 
 
@@ -66,7 +65,7 @@ fun Message(
             Card(
                 modifier = Modifier.fillMaxWidth().size(150.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (isWarning) colorScheme.error else Success
+                    containerColor = colorScheme.error
                 )
             ) {
                 Column(
@@ -81,21 +80,12 @@ fun Message(
                         color = colorScheme.tertiary
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    if (isWarning) {
-                        Icon(
-                            painterResource(Res.drawable.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
-                            contentDescription = "Warning",
-                            tint = colorScheme.tertiary,
-                            modifier = Modifier.size(25.dp)
-                        )
-                    } else {
-                        Icon(
-                            painterResource(Res.drawable.check_circle_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
-                            contentDescription = "Success",
-                            tint = colorScheme.tertiary,
-                            modifier = Modifier.size(25.dp)
-                        )
-                    }
+                    Icon(
+                        painterResource(Res.drawable.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
+                        contentDescription = "Warning",
+                        tint = colorScheme.tertiary,
+                        modifier = Modifier.size(25.dp)
+                    )
                 }
             }
         }

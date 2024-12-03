@@ -2,6 +2,9 @@ package org.quickness.ui.screens.home
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,21 +40,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.SharedPreference
+import org.quickness.ui.components.TitleStyle
 import org.quickness.ui.navegation.NavigationHome
-import org.quickness.utils.`object`.KeysCache.UID_KEY
 import org.quickness.utils.routes.RoutesHome
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
@@ -65,13 +69,49 @@ import quickness.composeapp.generated.resources.warning_24dp_E8EAED_FILL1_wght40
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun HomeScreen() = Screen(homeViewModel = koinViewModel())
+fun HomeScreen(navController: NavHostController) =
+    Screen(homeViewModel = koinViewModel(), navController = navController)
 
 @Composable
-private fun Screen(homeViewModel: HomeViewModel) {
-    homeViewModel.getTokens()
-    val navController = rememberNavController()
+private fun Screen(homeViewModel: HomeViewModel, navController: NavHostController) {
+    LaunchedEffect(Unit) {
+        homeViewModel.getTokens()
+    }
+
     var topName by remember { mutableStateOf("Qr") }
+
+    val animatedBrush = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            animatedBrush.animateTo(
+                targetValue = 1f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(durationMillis = 5000, easing = LinearEasing),
+                    repeatMode = RepeatMode.Reverse
+                )
+            )
+        }
+    }
+
+    // Crea un gradiente de colores dorados que cambia de forma animada
+    val brush = Brush.linearGradient(
+        colors = listOf(
+            colorScheme.primary.copy(alpha = 0.8f * animatedBrush.value), // Dorado suave
+            colorScheme.primary.copy(alpha = 0.7f * animatedBrush.value), // Dorado más fuerte
+            colorScheme.primary.copy(alpha = 0.6f * animatedBrush.value),
+            colorScheme.primary.copy(alpha = 0.5f * animatedBrush.value),
+            colorScheme.primary.copy(alpha = 0.4f * animatedBrush.value),
+            colorScheme.primary.copy(alpha = 0.3f * animatedBrush.value),
+            colorScheme.primary.copy(alpha = 0.2f * animatedBrush.value),
+            colorScheme.primary.copy(alpha = 0.1f * animatedBrush.value),
+            colorScheme.background.copy(alpha = 1f * animatedBrush.value),
+            colorScheme.background.copy(alpha = 1f * animatedBrush.value),
+        ),
+        start = Offset(0f, 0f),
+        end = Offset(1000f, 1000f)
+    )
+
     Scaffold(
         topBar = {
             TopBar(
@@ -80,25 +120,31 @@ private fun Screen(homeViewModel: HomeViewModel) {
             )
         },
         content = { padding ->
-            Content(
-                navigationController = navController,
-                padding = padding,
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(brush) // Aplica el fondo animado
+            ) {
+                Content(
+                    navigationController = navController,
+                    padding = padding,
+                )
+            }
         },
         bottomBar = { BottomBar(navController) { topName = it } },
         snackbarHost = { SnackBar() },
         floatingActionButton = { FloatingAction() },
-        containerColor = colorScheme.background,
         floatingActionButtonPosition = FabPosition.End,
         modifier = Modifier.fillMaxSize(),
     )
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    back: Boolean = false,
     title: String,
+    showBackButton: Boolean = false,
     onBackClick: () -> Unit = {},
     onEmergencyClick: () -> Unit = {}
 ) {
@@ -107,11 +153,12 @@ private fun TopBar(
             Text(
                 text = title,
                 fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
-                fontSize = 50.sp
+                fontSize = 50.sp,
+                style = TitleStyle
             )
         },
         navigationIcon = {
-            if (back) IconButton(
+            if (showBackButton) IconButton(
                 onClick = onBackClick,
                 content = {
                     Icon(
@@ -135,11 +182,12 @@ private fun TopBar(
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = colorScheme.background,
+            containerColor = Color.Transparent,
             titleContentColor = colorScheme.tertiary,
             navigationIconContentColor = colorScheme.tertiary,
             actionIconContentColor = colorScheme.tertiary,
         ),
+        modifier = Modifier.background(Color.Transparent)
     )
 }
 
@@ -149,67 +197,92 @@ private fun BottomBar(
     topName: (String) -> Unit
 ) {
     var selected by remember { mutableStateOf(Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color.Transparent)
             .padding(horizontal = 20.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
-        BottomAppBar(
+        // Fondo transparente con una capa alrededor de los íconos
+        Box(
             modifier = Modifier
-                .background(colorScheme.onBackground, shape = RoundedCornerShape(20.dp))
-                .fillMaxWidth(),
-            containerColor = Color.Transparent,
-            contentColor = Color.White,
-            content = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    content = {
-                        BottomAppBarIcon(
-                            iconRes = if (selected != Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
-                            isSelected = selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
-                            onClick = {
-                                selected =
-                                    Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-                                topName("Shop")
-                                navigationController.navigate(RoutesHome.Shop.route) { popUpTo(0) }
-                            }
-                        )
-                        BottomAppBarIcon(
-                            iconRes = Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                            isSelected = selected == Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                            onClick = {
-                                selected =
-                                    Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-                                topName("Qr")
-                                navigationController.navigate(RoutesHome.Qr.route) { popUpTo(0) }
-                            }
-                        )
-                        BottomAppBarIcon(
-                            iconRes = if (selected != Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
-                            isSelected = selected == Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
-                            onClick = {
-                                selected = Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-                                topName("Service")
-                                navigationController.navigate(RoutesHome.Service.route) { popUpTo(0) }
-                            }
-                        )
-                        BottomAppBarIcon(
-                            iconRes = if (selected != Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
-                            isSelected = selected == Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24 == selected,
-                            onClick = {
-                                selected =
-                                    Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-                                topName("Settings")
-                                navigationController.navigate(RoutesHome.Settings.route) { popUpTo(0) }
-                            }
-                        )
-                    }
+                .fillMaxWidth()
+                .background(
+                    color = colorScheme.onBackground.copy(alpha = 0.5f), // Fondo transparente
+                    shape = RoundedCornerShape(40.dp)
                 )
-            }
-        )
+        ) {
+            BottomAppBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = Color.Transparent, // Fondo de la barra es transparente
+                        shape = RoundedCornerShape(40.dp)
+                    ),
+                containerColor = Color.Transparent, // También la propiedad containerColor
+                contentColor = Color.White,
+                content = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        content = {
+                            // Agrega los íconos con un fondo alrededor para resaltar
+                            BottomAppBarIcon(
+                                iconRes = if (selected != Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                                isSelected = selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                                onClick = {
+                                    selected =
+                                        Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                    topName("Shop")
+                                    navigationController.navigate(RoutesHome.Shop.route) { popUpTo(0) }
+                                }
+                            )
+                            BottomAppBarIcon(
+                                iconRes = Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                                isSelected = selected == Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                                onClick = {
+                                    selected =
+                                        Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                    topName("Qr")
+                                    navigationController.navigate(RoutesHome.Qr.route) { popUpTo(0) }
+                                }
+                            )
+                            BottomAppBarIcon(
+                                iconRes = if (selected != Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                                isSelected = selected == Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                                onClick = {
+                                    selected =
+                                        Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                    topName("Service")
+                                    navigationController.navigate(RoutesHome.Service.route) {
+                                        popUpTo(
+                                            0
+                                        )
+                                    }
+                                }
+                            )
+                            BottomAppBarIcon(
+                                iconRes = if (selected != Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                                isSelected = selected == Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24 == selected,
+                                onClick = {
+                                    selected =
+                                        Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                    topName("Settings")
+                                    navigationController.navigate(RoutesHome.Settings.route) {
+                                        popUpTo(
+                                            0
+                                        )
+                                    }
+                                }
+                            )
+                        }
+                    )
+                }
+            )
+        }
     }
 }
 
@@ -239,6 +312,8 @@ private fun BottomAppBarIcon(
         content = {
             IconButton(
                 onClick = onClick,
+                colors = IconButtonDefaults.iconButtonColors(
+                ),
                 content = {
                     Icon(
                         painter = painterResource(iconRes),
