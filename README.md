@@ -1,4 +1,7 @@
-# **Instalación de la Aplicación Móvil de Quickness**
+
+# **Quickness 0.0.8 Alpha**
+
+## **Instalación de la Aplicación Móvil de Quickness**
 
 Este documento detalla los pasos necesarios para configurar, desarrollar y ejecutar la aplicación móvil de **Quickness** en tu entorno de desarrollo local. La aplicación está construida utilizando **Kotlin Multiplataforma** y **Jetpack Compose Multiplataforma** para una experiencia moderna y eficiente.
 
