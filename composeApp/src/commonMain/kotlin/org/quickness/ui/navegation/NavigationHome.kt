@@ -15,6 +15,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import org.quickness.ui.animations.ContentSwitchAnimation
 import org.quickness.ui.screens.home.qr.QrScreen
+import org.quickness.ui.screens.home.service.ServiceScreen
+import org.quickness.ui.screens.home.shop.ShopScreen
 import org.quickness.utils.routes.RoutesHome
 
 @Composable
@@ -32,8 +34,8 @@ fun NavigationHome(
         exitTransition = { ContentSwitchAnimation.exitTransition },
     ) {
         composable(RoutesHome.Qr.route) { QrScreen() }
-        composable(RoutesHome.Shop.route) { }
+        composable(RoutesHome.Shop.route) { ShopScreen() }
         composable(RoutesHome.Settings.route) { NavigationSettings() }
-        composable(RoutesHome.Service.route) { }
+        composable(RoutesHome.Service.route) { ServiceScreen() }
     }
 }

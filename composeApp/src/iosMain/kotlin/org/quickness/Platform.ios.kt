@@ -36,3 +36,5 @@ actual class RenderEffect actual constructor() {
         TODO("Not yet implemented")
     }
 }
+
+actual class GoogleMaps actual constructor()

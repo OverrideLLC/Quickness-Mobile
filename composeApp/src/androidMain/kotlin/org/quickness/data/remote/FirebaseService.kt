@@ -1,14 +1,21 @@
 package org.quickness.data.remote
 
+import android.preference.PreferenceDataStore
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.tasks.await
-import org.quickness.interfaces.FirebaseAuth
+import org.quickness.SharedPreference
 import org.quickness.data.model.AuthResult
+import org.quickness.data.model.DataFirestore
+import org.quickness.interfaces.FirebaseAuth
+import org.quickness.interfaces.FirebaseFirestore
+import org.quickness.utils.`object`.KeysCache.UID_KEY
 
-actual class FirebaseService : FirebaseAuth {
+actual class FirebaseService : FirebaseAuth, FirebaseFirestore {
     private val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
+    private val firebaseFirestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+
     actual override suspend fun signIn(email: String, password: String): AuthResult? {
         return try {
             if (email.isBlank() || password.isBlank()) {
@@ -35,6 +42,30 @@ actual class FirebaseService : FirebaseAuth {
             )
         } catch (e: Exception) {
             return AuthResult(status = "Failure", message = "Error inesperado: ${e.message}")
+        }
+    }
+
+    actual override suspend fun getData(): DataFirestore {
+
+        // Definición de la función de recuperación de datos
+        return try {
+            // Obtén la referencia a la colección y documento específico
+            val documentSnapshot = firebaseFirestore.collection("Users")
+                .document(SharedPreference().getString(UID_KEY,"")) // Asegúrate de tener el ID correcto del documento
+                .get()
+                .await() // Espera de forma asincrónica el resultado de la llamada
+
+            // Verifica si el documento existe y extrae el campo "credits"
+            if (documentSnapshot.exists()) {
+                val credits = documentSnapshot.get("balance") ?: 0 // Valor pordefecto si no existe
+                SharedPreference().setString("credits", credits.toString())
+                DataFirestore(credits.toString())
+            } else {
+                throw Exception("Documento no encontrado")
+            }
+        } catch (e: Exception) {
+            // Manejo de errores
+            throw Exception("Error al obtener los datos: ${e.message}", e)
         }
     }
 
