@@ -1,5 +1,6 @@
 package org.quickness
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.RenderEffect
 import org.quickness.interfaces.QRCodeGenerator
@@ -28,6 +29,11 @@ expect class QRCodeGeneratorImpl() : QRCodeGenerator {
 
 expect class RenderEffect() {
     fun createBlurEffect(radius: Float, dy: Float): RenderEffect
+}
+
+expect class GoogleMaps(){
+    @Composable
+    fun Map()
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")

@@ -41,6 +41,9 @@ kotlin {
             implementation(libs.firebase.auth)
             implementation(libs.core)
             implementation(libs.androidx.core.splashscreen)
+            implementation(libs.maps.compose)
+            implementation(libs.play.services.maps)
+            implementation (libs.play.services.location)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
