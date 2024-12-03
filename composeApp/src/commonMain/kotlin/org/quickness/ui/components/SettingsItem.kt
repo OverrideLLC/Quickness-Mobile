@@ -55,7 +55,7 @@ fun SettingsItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = colorScheme.onBackground, shape = RoundedCornerShape(10.dp))
+            .background(color = colorScheme.onBackground.copy(alpha = 0.5f), shape = RoundedCornerShape(10.dp))
             .clickable { navigator() }
             .padding(15.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -86,7 +86,7 @@ fun SettingsItemSwitch(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = colorScheme.onBackground, shape = RoundedCornerShape(10.dp))
+            .background(color = colorScheme.onBackground.copy(alpha = 0.5f), shape = RoundedCornerShape(10.dp))
             .clickable { isActive() }
             .padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -144,7 +144,7 @@ fun DropdownSettings(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = colorScheme.onBackground, shape = RoundedCornerShape(10.dp))
+            .background(color = colorScheme.onBackground.copy(alpha = 0.5f), shape = RoundedCornerShape(10.dp))
             .clickable { expanded = !expanded }
             .padding(15.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -182,7 +182,7 @@ fun DropdownSettings(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = colorScheme.background, shape = RoundedCornerShape(10.dp))
+                .background(color = colorScheme.background.copy(alpha = 0.5f), shape = RoundedCornerShape(10.dp))
                 .padding(horizontal = 15.dp)
         ) {
             Column (

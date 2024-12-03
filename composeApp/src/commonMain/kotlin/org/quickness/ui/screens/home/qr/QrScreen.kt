@@ -97,7 +97,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
-                        .background(if (!isExpanded) colorScheme.onBackground else colorScheme.background)
+                        .background(if (!isExpanded) colorScheme.onBackground.copy(alpha = 0.5f) else colorScheme.background)
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {

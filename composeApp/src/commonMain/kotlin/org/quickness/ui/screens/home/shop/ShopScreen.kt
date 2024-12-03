@@ -54,6 +54,8 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
+import org.quickness.SharedPreference
+import org.quickness.data.remote.FirebaseService
 import quickness.composeapp.generated.resources.LogoQuicknessQC
 import quickness.composeapp.generated.resources.Poppins_Bold
 import quickness.composeapp.generated.resources.Poppins_Light
@@ -76,12 +78,16 @@ private fun Screen() {
     var showBottomSheetFamily by remember { mutableStateOf(false) }
     var showBottomSheetShop by remember { mutableStateOf(false) }
 
+    scope.launch {
+        FirebaseService().getData()
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Balance()
+        Balance(SharedPreference().getString("credits", "0"))
         Spacer(modifier = Modifier.padding(10.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -345,7 +351,7 @@ private fun BottomSheet(
 }
 
 @Composable
-private fun Balance() {
+private fun Balance(credits: String) {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
@@ -376,7 +382,7 @@ private fun Balance() {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Credits 100",
+                    text = "Credits $credits",
                     fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
                     fontSize = 25.sp,
                     color = colorScheme.tertiary,
