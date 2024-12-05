@@ -23,6 +23,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -56,6 +58,7 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.quickness.SharedPreference
 import org.quickness.data.remote.FirebaseService
+import org.quickness.ui.theme.Success
 import quickness.composeapp.generated.resources.LogoQuicknessQC
 import quickness.composeapp.generated.resources.Poppins_Bold
 import quickness.composeapp.generated.resources.Poppins_Light
@@ -64,6 +67,7 @@ import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.book_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.family_restroom_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.logo_swiftid_centrado
+import quickness.composeapp.generated.resources.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
 
 @Composable
 fun ShopScreen() = Screen()
@@ -141,6 +145,22 @@ private fun Screen() {
                     }
                 )
             }
+            item {
+                Products(
+                    text = "Quickness Shop",
+                    icon = Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                    containerColor = colorScheme.primary,
+                    iconTint = colorScheme.tertiary,
+                    colorText = colorScheme.tertiary,
+                    brushStartColor = Success,
+                    onClick = {
+                        scope.launch {
+                            showBottomSheetShop = true
+                            sheetState.show()
+                        }
+                    }
+                )
+            }
         }
     }
     if (showBottomSheetPlus) {
@@ -195,7 +215,7 @@ private fun Screen() {
     if (showBottomSheetShop) {
         BottomSheet(
             sheetState = sheetState,
-            colorBackground = colorScheme.background,
+            colorBackground = Success,
             onDismissRequest = {
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
                     if (!sheetState.isVisible) {
@@ -204,7 +224,51 @@ private fun Screen() {
                 }
             },
             content = {
-                Text(text = "Bottom sheet content")
+                QuicknessShop()
+            }
+        )
+    }
+}
+
+@Composable
+private fun QuicknessShop() {
+    val scope = rememberCoroutineScope()
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            painter = painterResource(Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24),
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier
+                .size(60.dp)
+                .padding(bottom = 16.dp)
+        )
+        Text(
+            text = "Quickness Shop",
+            fontFamily = FontFamily(Font(Res.font.Poppins_Bold)),
+            fontSize = 36.sp,
+            color = Color.White
+        )
+        Spacer(modifier = Modifier.padding(10.dp))
+        Button(
+            onClick = {
+                scope.launch { FirebaseService().updateField("balance", 200)
+                }
+            },
+            modifier = Modifier.padding(16.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+            ),
+            content = {
+                Text(
+                    text = "Buy Now",
+                    fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
+                    fontSize = 24.sp,
+                    color = Success,
+                )
             }
         )
     }

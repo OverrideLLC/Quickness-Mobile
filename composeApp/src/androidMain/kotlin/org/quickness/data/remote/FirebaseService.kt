@@ -1,6 +1,5 @@
 package org.quickness.data.remote
 
-import android.preference.PreferenceDataStore
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -46,12 +45,16 @@ actual class FirebaseService : FirebaseAuth, FirebaseFirestore {
     }
 
     actual override suspend fun getData(): DataFirestore {
-
         // Definición de la función de recuperación de datos
         return try {
             // Obtén la referencia a la colección y documento específico
             val documentSnapshot = firebaseFirestore.collection("Users")
-                .document(SharedPreference().getString(UID_KEY,"")) // Asegúrate de tener el ID correcto del documento
+                .document(
+                    SharedPreference().getString(
+                        UID_KEY,
+                        ""
+                    )
+                ) // Asegúrate de tener el ID correcto del documento
                 .get()
                 .await() // Espera de forma asincrónica el resultado de la llamada
 
@@ -68,5 +71,26 @@ actual class FirebaseService : FirebaseAuth, FirebaseFirestore {
             throw Exception("Error al obtener los datos: ${e.message}", e)
         }
     }
+
+    actual override suspend fun updateField(fieldName: String, value: Any) {
+        try {
+            // Obtén el UID del usuario
+            val userId = SharedPreference().getString(UID_KEY, "")
+            if (userId.isNullOrEmpty()) {
+                throw IllegalArgumentException("El UID no puede estar vacío")
+            }
+
+            // Actualiza el campo específico
+            firebaseFirestore.collection("Users")
+                .document(userId)
+                .update(fieldName, value) // Actualiza el campo con el valor proporcionado
+                .await() // Espera de forma asincrónica a que se complete
+        } catch (e: Exception) {
+            // Manejo de errores
+            throw Exception("Error al actualizar el campo: ${e.message}", e)
+        }
+    }
+
+
 
 }

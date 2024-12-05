@@ -19,4 +19,5 @@ expect class FirebaseService() : FirebaseAuth, FirebaseFirestore {
      */
     override suspend fun signIn(email: String, password: String): AuthResult?
     override suspend fun getData(): DataFirestore
+    override suspend fun updateField(fieldName: String, value: Any)
 }
