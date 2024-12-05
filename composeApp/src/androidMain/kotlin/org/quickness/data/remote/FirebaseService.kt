@@ -11,86 +11,48 @@ import org.quickness.interfaces.FirebaseAuth
 import org.quickness.interfaces.FirebaseFirestore
 import org.quickness.utils.`object`.KeysCache.UID_KEY
 
-actual class FirebaseService : FirebaseAuth, FirebaseFirestore {
+actual class FirebaseService : FirebaseAuth {
     private val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
-    private val firebaseFirestore = com.google.firebase.firestore.FirebaseFirestore.getInstance()
 
     actual override suspend fun signIn(email: String, password: String): AuthResult? {
         return try {
+            // Validación de campos vacíos
             if (email.isBlank() || password.isBlank()) {
                 throw IllegalArgumentException("El correo electrónico o la contraseña no pueden estar vacíos.")
             }
-            Log.v("FirebaseService", "signIn: $email $password")
+
+            Log.v("FirebaseService", "Iniciando sesión con correo: $email")
+
+            // Intentar iniciar sesión con Firebase
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            val user = result.user
-            Log.v("FirebaseService", "Sigue aquí")
-            user?.let {
-                return@let AuthResult(status = "Success", uid = it.uid)
-            } ?: run {
-                return@run AuthResult(status = "Failure", message = "Usuario no encontrado.")
+
+            // Verificar si el usuario existe en el resultado
+            result.user?.let { user ->
+                Log.v("FirebaseService", "Inicio de sesión exitoso. UID: ${user.uid}")
+                return AuthResult(status = "Success", uid = user.uid)
             }
+
+            // Si `user` es nulo, algo falló
+            Log.e("FirebaseService", "Usuario no encontrado tras inicio de sesión.")
+            return AuthResult(status = "Failure", message = "Usuario no encontrado.")
         } catch (e: FirebaseAuthInvalidCredentialsException) {
+            Log.e("FirebaseService", "Credenciales inválidas: ${e.message}")
             return AuthResult(
                 status = "Failure",
                 message = "Credenciales inválidas. Verifique su correo y contraseña."
             )
         } catch (e: FirebaseAuthInvalidUserException) {
+            Log.e("FirebaseService", "Usuario no encontrado: ${e.message}")
             return AuthResult(
                 status = "Failure",
                 message = "Usuario no encontrado. Verifique su correo electrónico."
             )
         } catch (e: Exception) {
-            return AuthResult(status = "Failure", message = "Error inesperado: ${e.message}")
+            Log.e("FirebaseService", "Error inesperado: ${e.message}")
+            return AuthResult(
+                status = "Failure",
+                message = "Error inesperado: ${e.message}"
+            )
         }
     }
-
-    actual override suspend fun getData(): DataFirestore {
-        // Definición de la función de recuperación de datos
-        return try {
-            // Obtén la referencia a la colección y documento específico
-            val documentSnapshot = firebaseFirestore.collection("Users")
-                .document(
-                    SharedPreference().getString(
-                        UID_KEY,
-                        ""
-                    )
-                ) // Asegúrate de tener el ID correcto del documento
-                .get()
-                .await() // Espera de forma asincrónica el resultado de la llamada
-
-            // Verifica si el documento existe y extrae el campo "credits"
-            if (documentSnapshot.exists()) {
-                val credits = documentSnapshot.get("balance") ?: 0 // Valor pordefecto si no existe
-                SharedPreference().setString("credits", credits.toString())
-                DataFirestore(credits.toString())
-            } else {
-                throw Exception("Documento no encontrado")
-            }
-        } catch (e: Exception) {
-            // Manejo de errores
-            throw Exception("Error al obtener los datos: ${e.message}", e)
-        }
-    }
-
-    actual override suspend fun updateField(fieldName: String, value: Any) {
-        try {
-            // Obtén el UID del usuario
-            val userId = SharedPreference().getString(UID_KEY, "")
-            if (userId.isNullOrEmpty()) {
-                throw IllegalArgumentException("El UID no puede estar vacío")
-            }
-
-            // Actualiza el campo específico
-            firebaseFirestore.collection("Users")
-                .document(userId)
-                .update(fieldName, value) // Actualiza el campo con el valor proporcionado
-                .await() // Espera de forma asincrónica a que se complete
-        } catch (e: Exception) {
-            // Manejo de errores
-            throw Exception("Error al actualizar el campo: ${e.message}", e)
-        }
-    }
-
-
-
 }
