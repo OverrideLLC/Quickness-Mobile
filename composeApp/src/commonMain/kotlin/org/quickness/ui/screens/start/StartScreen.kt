@@ -1,16 +1,11 @@
 package org.quickness.ui.screens.start
 
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.EaseIn
-import androidx.compose.animation.core.Easing
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,17 +26,10 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -50,7 +38,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.quickness.ui.components.LogoAndTitle
 import org.quickness.utils.routes.RoutesStart
-import quickness.composeapp.generated.resources.LogoQuicknessQC
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.app_name
@@ -118,13 +105,16 @@ fun ButtonAccessStart(
             .fillMaxWidth()
             .height(200.dp)
             .offset(y = 20.dp)
-            .background(color = colorScheme.background, shape = RoundedCornerShape(20.dp)),
+            .background(
+                color = colorScheme.background.copy(alpha = 0.8f),
+                shape = RoundedCornerShape(20.dp)
+            ),
         contentAlignment = Alignment.BottomCenter,
         content = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(bottom = 40.dp)
+                modifier = Modifier.padding(bottom = 50.dp)
             ) {
                 Button(
                     onClick = { onLoginClick() },

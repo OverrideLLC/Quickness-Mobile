@@ -1,6 +1,14 @@
 package org.quickness.ui.screens.login
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,48 +62,69 @@ private fun Screen(
     viewModel: LoginViewModel,
 ) {
     val state by viewModel.state.collectAsState()
+    val infiniteTransition = rememberInfiniteTransition()
+    // Animación de colores oscuros
+    val color1 by infiniteTransition.animateColor(
+        initialValue = colorScheme.background, // Background oscuro
+        targetValue = colorScheme.onBackground, // Turquesa oscuro (Primary)
+        animationSpec = infiniteRepeatable(
+            animation = tween(3000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    val color2 by infiniteTransition.animateColor(
+        initialValue = colorScheme.onBackground, // Secundario oscuro
+        targetValue = colorScheme.primary, // Verde oscuro (Success)
+        animationSpec = infiniteRepeatable(
+            animation = tween(4000, easing = LinearEasing, delayMillis = 1000),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    if (state.isLoading)
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colorScheme.scrim)
+        ) {
+            CircularProgressIndicator()
+        }
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().padding(horizontal = 40.dp).imePadding()
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding()
+            .background(
+                brush = Brush.linearGradient(
+                    listOf(
+                        color2,
+                        color1,
+                        colorScheme.secondary
+                    )
+                )
+            )
     ) {
         item {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().padding(16.dp)
             ) {
-                if (state.isLoading)
-                    CircularProgressIndicator()
                 Spacer(modifier = Modifier.weight(1f))
                 LogoAndTitle(stringResource(Res.string.login))
                 Spacer(modifier = Modifier.weight(1f))
                 Body(
                     viewModel = viewModel,
-                    state = state
+                    state = state,
+                    navController = navController
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 forgotPassword(navController)
                 powered()
                 ButtonAccess(
-                    onLoginClick = {
-                        viewModel.login(
-                            onSuccess = {
-                                navController.navigate(RoutesStart.Home.route)
-                                viewModel.updateState { copy(isLoading = state.isLoading.not()) }
-                            },
-                            onError = {
-                                viewModel.updateState {
-                                    copy(
-                                        isError = true,
-                                        isWarning = true,
-                                        errorMessage = it,
-                                        isLoading = state.isLoading.not()
-                                    )
-                                }
-                            }
-                        )
-                    },
+                    onLoginClick = { onDone(navController, viewModel) },
                     onRegisterClick = { navController.navigate(RoutesStart.Register.route) }
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -106,13 +136,13 @@ private fun Screen(
         visibility = state.isError,
         isWarning = state.isWarning,
         actionPostDelayed = {
-            viewModel.updateState { copy(isError = false, isWarning = false) }
+            viewModel.updateState { copy(isError = false, isWarning = false, isLoading = false) }
         }
     )
 }
 
 @Composable
-private fun Body(viewModel: LoginViewModel, state: LoginState) {
+private fun Body(viewModel: LoginViewModel, state: LoginState, navController: NavController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -123,7 +153,11 @@ private fun Body(viewModel: LoginViewModel, state: LoginState) {
             isError = state.isError,
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(Res.string.email),
-            onValueChange = { viewModel.updateState { copy(email = it) } }
+            onDone = { onDone(navController, viewModel) },
+            onValueChange = {
+                if (state.isError) viewModel.updateState { copy(isError = false) }
+                viewModel.updateState { copy(email = it) }
+            }
         )
         Spacer(modifier = Modifier.padding(10.dp))
         TextFieldCustomPassword(
@@ -133,9 +167,35 @@ private fun Body(viewModel: LoginViewModel, state: LoginState) {
             modifier = Modifier.fillMaxWidth(),
             isPasswordVisible = state.isPasswordVisible,
             togglePasswordVisibility = { viewModel.updateState { copy(isPasswordVisible = !isPasswordVisible) } },
-            onValueChange = { viewModel.updateState { copy(password = it) } }
+            onValueChange = {
+                if (state.isError) viewModel.updateState { copy(isError = false) }
+                viewModel.updateState { copy(password = it) }
+            },
+            onDone = { onDone(navController, viewModel) }
         )
     }
+}
+
+private fun onDone(
+    navController: NavController,
+    viewModel: LoginViewModel
+) {
+    viewModel.login(
+        onSuccess = {
+            navController.navigate(RoutesStart.Home.route)
+            viewModel.updateState { copy(isLoading = false) }
+        },
+        onError = {
+            viewModel.updateState {
+                copy(
+                    isError = true,
+                    isWarning = true,
+                    errorMessage = it,
+                    isLoading = false
+                )
+            }
+        }
+    )
 }
 
 @Composable

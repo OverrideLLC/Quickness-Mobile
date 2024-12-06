@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import org.quickness.SharedPreference
 import org.quickness.Uri
 import org.quickness.ui.animations.NavAnimations
+import org.quickness.ui.screens.forgot_password.ForgotPasswordScreen
 import org.quickness.ui.screens.home.HomeScreen
 import org.quickness.ui.screens.login.LoginScreen
 import org.quickness.ui.screens.register.RegisterScreen
@@ -42,7 +43,7 @@ fun NavigationStart() {
             RegisterScreen(navController)
         }
         composable(RoutesStart.ForgotPassword.route) {
-            //ForgotPasswordScreen(navController)
+            ForgotPasswordScreen()
         }
     }
 }

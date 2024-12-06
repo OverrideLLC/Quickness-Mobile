@@ -1,6 +1,7 @@
 package org.quickness.interfaces
 
 import org.quickness.data.model.AuthResult
+import org.quickness.data.model.ForgotPasswordResult
 
 /**
  * Interfaz que define la funcionalidad de autenticación de Firebase.
@@ -18,4 +19,6 @@ interface FirebaseAuth {
      *         o `null` si la autenticación falla o no se puede completar.
      */
     suspend fun signIn(email: String, password: String): AuthResult?
+
+    suspend fun forgotPassword(email: String): ForgotPasswordResult?
 }

@@ -2,7 +2,9 @@ package org.quickness.ui.screens.register
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -36,7 +39,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.Uri
 import org.quickness.ui.components.Message
 import org.quickness.ui.navegation.NavigationRegister
 import org.quickness.utils.routes.RoutesRegister
@@ -73,6 +75,7 @@ fun RegisterContent(
     val state = viewModel.state.collectAsState().value
 
     Scaffold(
+        modifier = Modifier.padding(vertical = 50.dp),
         topBar = {
             RegisterHeader(
                 currentRoute = currentRoute ?: RoutesRegister.EmailAndPassword.route,
@@ -103,8 +106,17 @@ fun RegisterContent(
                 currentRoute = currentRoute ?: RoutesRegister.EmailAndPassword.route,
                 viewModel = viewModel
             )
-        }
+        },
     )
+    if (state.isLoading)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colorScheme.scrim),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
+        }
     Message(
         message = state.errorMessage,
         visibility = state.isError,
