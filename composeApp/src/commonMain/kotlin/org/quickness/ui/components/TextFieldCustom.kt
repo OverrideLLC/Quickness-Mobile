@@ -2,6 +2,7 @@ package org.quickness.ui.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,6 +32,7 @@ fun TextFieldCustomEmail(
     icons: DrawableResource = Res.drawable.alternate_email_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
     text: String = "Email",
     modifier: Modifier = Modifier,
+    onDone: () -> Unit = {},
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -39,7 +41,11 @@ fun TextFieldCustomEmail(
         modifier = modifier,
         isError = isError,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        keyboardActions = KeyboardActions(onDone = { onDone() }),
+        keyboardOptions = KeyboardOptions().copy(
+            keyboardType = KeyboardType.Email,
+            imeAction = androidx.compose.ui.text.input.ImeAction.Done
+        ),
         placeholder = { Text(placeholder) },
         onValueChange = { onValueChange(it) },
         shape = RoundedCornerShape(40.dp),
@@ -64,6 +70,7 @@ fun TextFieldCustomPassword(
     modifier: Modifier = Modifier,
     icon: DrawableResource = Res.drawable.password_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
     isPasswordVisible: Boolean,
+    onDone: () -> Unit = {},
     togglePasswordVisibility: () -> Unit,
     onValueChange: (String) -> Unit
 ) {
@@ -73,7 +80,11 @@ fun TextFieldCustomPassword(
         maxLines = 1,
         modifier = modifier,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardActions = KeyboardActions(onDone = { onDone() }),
+        keyboardOptions = KeyboardOptions().copy(
+            keyboardType = KeyboardType.Password,
+            imeAction = androidx.compose.ui.text.input.ImeAction.Done
+        ),
         isError = isError,
         label = { Text(text) },
         shape = RoundedCornerShape(40.dp),
@@ -114,6 +125,7 @@ fun TextFIelCustom(
     text: String = "Name",
     keyboardType: KeyboardType = KeyboardType.Text,
     icon: DrawableResource = Res.drawable.border_color_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+    onDone: () -> Unit = {},
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -123,7 +135,11 @@ fun TextFIelCustom(
         isError = isError,
         modifier = modifier,
         shape = RoundedCornerShape(40.dp),
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        keyboardActions = KeyboardActions(onDone = { onDone() }),
+        keyboardOptions = KeyboardOptions().copy(
+            keyboardType = keyboardType,
+            imeAction = androidx.compose.ui.text.input.ImeAction.Done
+        ),
         leadingIcon = {
             Icon(
                 painterResource(icon),
