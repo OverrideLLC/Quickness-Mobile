@@ -73,6 +73,7 @@ fun RegisterContent(
     val state = viewModel.state.collectAsState().value
 
     Scaffold(
+        modifier = Modifier.padding(vertical = 50.dp),
         topBar = {
             RegisterHeader(
                 currentRoute = currentRoute ?: RoutesRegister.EmailAndPassword.route,
@@ -103,7 +104,7 @@ fun RegisterContent(
                 currentRoute = currentRoute ?: RoutesRegister.EmailAndPassword.route,
                 viewModel = viewModel
             )
-        }
+        },
     )
     Message(
         message = state.errorMessage,

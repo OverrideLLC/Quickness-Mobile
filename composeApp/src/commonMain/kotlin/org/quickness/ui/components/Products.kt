@@ -175,9 +175,6 @@ fun QuicknessShop() {
         Spacer(modifier = Modifier.padding(10.dp))
         Button(
             onClick = {
-                scope.launch {
-                    FirebaseService().updateField("balance", 200)
-                }
             },
             modifier = Modifier.padding(16.dp),
             colors = ButtonDefaults.buttonColors(

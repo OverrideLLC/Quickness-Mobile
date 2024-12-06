@@ -1,6 +1,8 @@
 package org.quickness.ui.screens.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,10 +55,23 @@ private fun Screen(
     viewModel: LoginViewModel,
 ) {
     val state by viewModel.state.collectAsState()
+
+    if (state.isLoading)
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colorScheme.scrim)
+        ) {
+            CircularProgressIndicator()
+        }
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize().padding(horizontal = 40.dp).imePadding()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 40.dp)
+            .imePadding()
     ) {
         item {
             Column(
@@ -64,8 +79,6 @@ private fun Screen(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (state.isLoading)
-                    CircularProgressIndicator()
                 Spacer(modifier = Modifier.weight(1f))
                 LogoAndTitle(stringResource(Res.string.login))
                 Spacer(modifier = Modifier.weight(1f))
@@ -81,7 +94,7 @@ private fun Screen(
                         viewModel.login(
                             onSuccess = {
                                 navController.navigate(RoutesStart.Home.route)
-                                viewModel.updateState { copy(isLoading = state.isLoading.not()) }
+                                viewModel.updateState { copy(isLoading = false) }
                             },
                             onError = {
                                 viewModel.updateState {
@@ -89,7 +102,7 @@ private fun Screen(
                                         isError = true,
                                         isWarning = true,
                                         errorMessage = it,
-                                        isLoading = state.isLoading.not()
+                                        isLoading = false
                                     )
                                 }
                             }
@@ -106,7 +119,7 @@ private fun Screen(
         visibility = state.isError,
         isWarning = state.isWarning,
         actionPostDelayed = {
-            viewModel.updateState { copy(isError = false, isWarning = false) }
+            viewModel.updateState { copy(isError = false, isWarning = false, isLoading = false) }
         }
     )
 }

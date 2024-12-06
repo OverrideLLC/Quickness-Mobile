@@ -4,12 +4,9 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.tasks.await
-import org.quickness.SharedPreference
 import org.quickness.data.model.AuthResult
-import org.quickness.data.model.DataFirestore
+import org.quickness.data.model.ForgotPasswordResult
 import org.quickness.interfaces.FirebaseAuth
-import org.quickness.interfaces.FirebaseFirestore
-import org.quickness.utils.`object`.KeysCache.UID_KEY
 
 actual class FirebaseService : FirebaseAuth {
     private val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
@@ -52,6 +49,21 @@ actual class FirebaseService : FirebaseAuth {
             return AuthResult(
                 status = "Failure",
                 message = "Error inesperado: ${e.message}"
+            )
+        }
+    }
+
+    actual override suspend fun forgotPassword(email: String): ForgotPasswordResult? {
+        return try {
+            firebaseAuth.sendPasswordResetEmail(email).await()
+            ForgotPasswordResult(
+                success = true,
+                message = "Se ha enviado un correo electrónico para restablecer su contraseña."
+            )
+        } catch (e: Exception) {
+            ForgotPasswordResult(
+                success = false,
+                error = "No se pudo enviar el correo electrónico de restablecimiento de contraseña: ${e.message}"
             )
         }
     }

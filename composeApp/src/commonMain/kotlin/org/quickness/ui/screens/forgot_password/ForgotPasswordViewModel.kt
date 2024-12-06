@@ -1,0 +1,34 @@
+package org.quickness.ui.screens.forgot_password
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import org.quickness.data.remote.FirebaseService
+
+class ForgotPasswordViewModel(private val firebaseService: FirebaseService): ViewModel() {
+    data class ForgotPasswordState(
+        val email: String = "",
+        val isLoading: Boolean = false,
+        val success: Boolean = false,
+        val error: Boolean = false
+    )
+    private val _state = MutableStateFlow(ForgotPasswordState())
+    val state = _state.asStateFlow()
+
+    fun update(update: ForgotPasswordState.() -> ForgotPasswordState) {
+        _state.value = _state.value.update()
+    }
+
+    fun reset() {
+        viewModelScope.launch {
+            val result = firebaseService.forgotPassword(_state.value.email)
+            if (result?.success == true) {
+                update { copy(success = true) }
+            } else {
+                update { copy(error = true) }
+            }
+        }
+    }
+}
