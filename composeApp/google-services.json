@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:322358291466:android:51cb9064cb7ea5605983f3",
+        "mobilesdk_app_id": "1:322358291466:android:c8bdc5c432152ce45983f3",
         "android_client_info": {
-          "package_name": "com.override.quicknessApp"
+          "package_name": "com.Fleetmanager"
         }
       },
       "oauth_client": [],
