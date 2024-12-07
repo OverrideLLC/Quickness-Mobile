@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -34,6 +33,7 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,9 +46,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -74,6 +71,7 @@ private fun Screen(viewModel: QrViewModel = koinViewModel()) {
 
 @Composable
 private fun TicketScreen(viewModel: QrViewModel) {
+    val state = viewModel.qrState.collectAsState().value
     var isVisible by remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(false) }
     var isBlurred by remember { mutableStateOf(false) }
@@ -128,7 +126,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                         }
 
                         // QR Code with smooth animation
-                        TicketQRCode(viewModel, isExpanded, isBlurred) {
+                        TicketQRCode(isExpanded, isBlurred, state.qrCode) {
                             isExpanded = !isExpanded
                         }
 
@@ -177,19 +175,11 @@ private fun blurQr(
 
 @Composable
 private fun TicketQRCode(
-    viewModel: QrViewModel,
     isExpanded: Boolean,
     isBlurred: Boolean,
+    qrCodeBitmap: ImageBitmap?,
     onClick: () -> Unit,
 ) {
-    var qrCodeBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
-
-    LaunchedEffect(Unit) {
-        qrCodeBitmap = withContext(Dispatchers.IO) {
-            viewModel.generateQRCode()
-        }
-    }
-
     val transition = updateTransition(targetState = isExpanded, label = "QR Code Transition")
     val qrSize by transition.animateDp(
         transitionSpec = { tween(durationMillis = 500) },
