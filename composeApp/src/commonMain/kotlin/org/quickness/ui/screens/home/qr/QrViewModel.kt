@@ -81,25 +81,10 @@ class QrViewModel(
         // Evitar regenerar si el dato no ha cambiado
         if (token == _qrState.value.lastQrData && interval == _qrState.value.currentInterval) return
 
-        generateQrCode(
-            url = token,
-            onFailure = {
-                _qrState.value = _qrState.value.copy(
-                    qrCode = null,
-                    lastQrData = null,
-                    currentInterval = interval
-                )
-            },
-            onSuccess = { _, image ->
-                _qrState.value = _qrState.value.copy(
-                    qrCode = image,
-                    lastQrData = token,
-                    currentInterval = interval
-                )
-            }
+        _qrState.value = _qrState.value.copy(
+            lastQrData = token,
+            currentInterval = interval
         )
-
-
     }
 
     override fun onCleared() {

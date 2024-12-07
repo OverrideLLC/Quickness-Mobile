@@ -44,15 +44,34 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.quickness.SharedPreference
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import org.quickness.ui.components.ShimmerItem
+import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
+import qrgenerator.qrkitpainter.QrKitBallShape
+import qrgenerator.qrkitpainter.QrKitBrush
+import qrgenerator.qrkitpainter.QrKitColors
+import qrgenerator.qrkitpainter.QrKitErrorCorrection
+import qrgenerator.qrkitpainter.QrKitFrameShape
+import qrgenerator.qrkitpainter.QrKitLogo
+import qrgenerator.qrkitpainter.QrKitLogoKitShape
+import qrgenerator.qrkitpainter.QrKitOptions
+import qrgenerator.qrkitpainter.QrKitPixelShape
+import qrgenerator.qrkitpainter.QrKitShapes
+import qrgenerator.qrkitpainter.createRoundCorners
+import qrgenerator.qrkitpainter.rememberQrKitPainter
+import qrgenerator.qrkitpainter.solidBrush
+import quickness.composeapp.generated.resources.Blanco
+import quickness.composeapp.generated.resources.LogoQuicknessQC
+import quickness.composeapp.generated.resources.Negro
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.info_token
@@ -126,7 +145,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                         }
 
                         // QR Code with smooth animation
-                        TicketQRCode(isExpanded, isBlurred, state.qrCode) {
+                        TicketQRCode(isExpanded, isBlurred, state.qrCode, state.lastQrData) {
                             isExpanded = !isExpanded
                         }
 
@@ -178,6 +197,7 @@ private fun TicketQRCode(
     isExpanded: Boolean,
     isBlurred: Boolean,
     qrCodeBitmap: ImageBitmap?,
+    qrCode: String?,
     onClick: () -> Unit,
 ) {
     val transition = updateTransition(targetState = isExpanded, label = "QR Code Transition")
@@ -195,11 +215,40 @@ private fun TicketQRCode(
             .animateContentSize(),
         contentAlignment = Alignment.Center
     ) {
-        qrCodeBitmap?.let {
+        qrCode?.let {
             Image(
-                bitmap = it,
+                painter = rememberQrKitPainter(
+                    data = it,
+                    qrOptions = {
+                        shapes = QrKitShapes(
+                            darkPixelShape = QrKitPixelShape.createRoundCorners(.5f),
+                            ballShape = QrKitBallShape.createRoundCorners(.1f),
+                        )
+                        colors = QrKitColors(
+                            lightBrush = QrKitBrush.solidBrush(color = Color.Transparent),
+                            ballBrush = QrKitBrush.solidBrush(color = Color.Black),
+                            frameBrush = QrKitBrush.solidBrush(color = Color.Black),
+                            darkBrush = QrKitBrush.solidBrush(
+                                color = Color(
+                                    SharedPreference().getInt(
+                                        QR_COLOR_KEY,
+                                        Color.Black.toArgb()
+                                    )
+                                )
+                            )
+                        )
+                        errorCorrection = QrKitErrorCorrection.Low
+                        QrKitOptions()
+                    }
+                ),
                 contentDescription = "Código QR generado",
-                modifier = Modifier.size(qrSize).blur(if (isBlurred) 20.dp else 0.dp)
+                modifier = Modifier
+                    .size(qrSize)
+                    .blur(if (isBlurred) 20.dp else 0.dp)
+                    .background(
+                        Color.White
+                    )
+                    .padding(5.dp)
             )
         } ?: run {
             ShimmerItem()
