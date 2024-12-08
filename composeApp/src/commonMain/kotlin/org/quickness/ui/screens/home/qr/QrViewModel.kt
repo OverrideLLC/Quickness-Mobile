@@ -124,7 +124,7 @@ class QrViewModel(
                                 color = Color(
                                     sharedPreference.getInt(
                                         QR_COLOR_KEY,
-                                        Color.Black.toArgb()
+                                        Color.White.toArgb()
                                     )
                                 )
                             ),
@@ -132,7 +132,7 @@ class QrViewModel(
                                 color = Color(
                                     sharedPreference.getInt(
                                         QR_COLOR_KEY,
-                                        Color.Black.toArgb()
+                                        Color.White.toArgb()
                                     )
                                 )
                             ),
@@ -140,7 +140,7 @@ class QrViewModel(
                                 color = Color(
                                     sharedPreference.getInt(
                                         QR_COLOR_KEY,
-                                        Color.Black.toArgb()
+                                        Color.White.toArgb()
                                     )
                                 )
                             )

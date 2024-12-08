@@ -35,7 +35,7 @@ private fun Screen(
 ) {
     val state = viewModel.state.collectAsState().value
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -53,8 +53,8 @@ private fun Screen(
             DropdownSettings(
                 name = Res.string.color_qr_settings,
                 icon = Res.drawable.palette_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                options = listOf("Blue", "Black", "White"),
-                exposedHeight = 200.dp,
+                options = listOf("Blue", "Black", "White", "Cream", "warm"),
+                exposedHeight = 400.dp,
                 selectedOption = state.colorTag,
                 onOptionSelected = {
                     when (it) {
@@ -73,6 +73,18 @@ private fun Screen(
                         "White" -> viewModel.toggleColor(
                             colorQr = Color.White.toArgb(),
                             colorBackground = Color.Black.toArgb(),
+                            colorTag = it
+                        )
+
+                        "Cream" -> viewModel.toggleColor(
+                            colorQr = Color(0xff2B3A67).toArgb(),
+                            colorBackground = Color(0xFFFAF3E0).toArgb(),
+                            colorTag = it
+                        )
+
+                        "warm" -> viewModel.toggleColor(
+                            colorQr = Color(0xff3E2723).toArgb(),
+                            colorBackground = Color(0xffFFF8E1).toArgb(),
                             colorTag = it
                         )
                     }

@@ -97,11 +97,11 @@ private fun Screen(
             .fillMaxSize()
             .imePadding()
             .background(
-                brush = Brush.linearGradient(
+                brush = Brush.verticalGradient(
                     listOf(
                         color2,
                         color1,
-                        colorScheme.secondary
+                        colorScheme.background,
                     )
                 )
             )

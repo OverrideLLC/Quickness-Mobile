@@ -121,7 +121,7 @@ fun ButtonAccessStart(
                     modifier = Modifier.height(50.dp).fillMaxWidth().padding(horizontal = 20.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorScheme.tertiary,
-                        contentColor = colorScheme.secondary
+                        contentColor = colorScheme.background
                     )
                 ) {
                     Row(
@@ -134,7 +134,7 @@ fun ButtonAccessStart(
                             text = stringResource(Res.string.login),
                             fontSize = 18.sp,
                             fontFamily = FontFamily(Font(resource = Res.font.Poppins_Medium)),
-                            color = colorScheme.secondary
+                            color = colorScheme.background
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
@@ -149,7 +149,7 @@ fun ButtonAccessStart(
                     onClick = { onRegisterClick() },
                     modifier = Modifier.height(50.dp).fillMaxWidth().padding(horizontal = 20.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorScheme.secondary,
+                        containerColor = colorScheme.background,
                         contentColor = colorScheme.tertiary,
                     )
                 ) {
