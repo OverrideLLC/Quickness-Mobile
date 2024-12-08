@@ -109,4 +109,5 @@ interface SharedPreference {
 
     fun setFloat(key: String, value: Float)
     fun getFloat(key: String, defaultValue: Float): Float
+    fun logOut()
 }

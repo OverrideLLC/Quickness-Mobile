@@ -34,4 +34,5 @@ expect class SharedPreference() : SharedPreference {
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean
     override fun setFloat(key: String, value: Float)
     override fun getFloat(key: String, defaultValue: Float): Float
+    override fun logOut()
 }

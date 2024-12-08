@@ -13,7 +13,7 @@ data class QrSettingsState(
     private val sharedPreference: SharedPreference,
     val format: Boolean = sharedPreference.getBoolean(FORMAT_KEY, true),
     val colorTag: String = sharedPreference.getString(QR_TAG_KEY, "White"),
-    val colorQr: Int = sharedPreference.getInt(QR_COLOR_KEY, Color.Black.toArgb()),
+    val colorQr: Int = sharedPreference.getInt(QR_COLOR_KEY, Color.White.toArgb()),
     val colorBackground: Int = sharedPreference.getInt(QR_BACKGROUND_KEY, Color.White.toArgb()),
     val rounded: String = sharedPreference.getString(ROUNDED_ROUNDED_QR_KEY, "circular"),
     val readability: Boolean = false,

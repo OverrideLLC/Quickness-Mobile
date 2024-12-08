@@ -21,4 +21,25 @@ interface FirebaseAuth {
     suspend fun signIn(email: String, password: String): AuthResult?
 
     suspend fun forgotPassword(email: String): ForgotPasswordResult?
+
+    suspend fun reauthenticateAndChangePassword(
+        email: String,
+        currentPassword: String,
+        newPassword: String,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    )
+
+    fun changePassword(newPassword: String, onSuccess: () -> Unit, onError: (Exception) -> Unit)
+
+    fun changeEmail(newEmail: String, onSuccess: () -> Unit, onError: (Exception) -> Unit)
+
+    suspend fun logOut(onSuccess: () -> Unit, onError: (Exception) -> Unit)
+
+    suspend fun reauthenticate(
+        email: String,
+        currentPassword: String,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    )
 }

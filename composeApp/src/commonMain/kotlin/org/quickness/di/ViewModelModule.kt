@@ -6,6 +6,7 @@ import org.quickness.ui.screens.forgot_password.ForgotPasswordViewModel
 import org.quickness.ui.screens.home.HomeViewModel
 import org.quickness.ui.screens.home.qr.QrViewModel
 import org.quickness.ui.screens.home.settings.SettingsViewModel
+import org.quickness.ui.screens.home.settings.screens.settings_account.AccountSettingsViewModel
 import org.quickness.ui.screens.home.settings.screens.settings_qr.QrSettingsViewModel
 import org.quickness.ui.screens.home.shop.ShopViewModel
 import org.quickness.ui.screens.login.LoginViewModel
@@ -26,9 +27,6 @@ val viewModelsHome = module {
     // Registro de SettingsViewModel para gestionar la lógica de la pantalla de configuración.
     viewModelOf(::SettingsViewModel)
 
-    // Registro de QrSettingsViewModel para gestionar la lógica de la pantalla de configuración de QR.
-    viewModelOf(::QrSettingsViewModel)
-
     viewModelOf(::ShopViewModel)
 }
 
@@ -44,4 +42,9 @@ val viewModelsStart = module {
     viewModelOf(::HomeViewModel)
 
     viewModelOf(::ForgotPasswordViewModel)
+}
+
+val viewModelsSetting = module {
+    viewModelOf(::QrSettingsViewModel)
+    viewModelOf(::AccountSettingsViewModel)
 }

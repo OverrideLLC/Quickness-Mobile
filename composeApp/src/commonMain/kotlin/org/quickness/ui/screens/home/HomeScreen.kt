@@ -210,7 +210,7 @@ private fun BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = colorScheme.onBackground.copy(alpha = 0.5f), // Fondo transparente
+                    color = colorScheme.onBackground.copy(alpha = 0.8f), // Fondo transparente
                     shape = RoundedCornerShape(40.dp)
                 )
         ) {
