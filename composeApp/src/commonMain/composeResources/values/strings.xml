@@ -26,8 +26,9 @@
 
     <!-- Qr Settings -->
     <string name="qr_settings">QR Settings</string>
-    <string name="format_qr_settings">QR Format (BETA)</string>
-    <string name="color_qr_settings">QR Color (BETA)</string>
+    <string name="format_qr_settings">QR Format</string>
+    <string name="color_qr_settings">QR Color</string>
+    <string name="rounded_qr_settings">Rounded QR</string>
     <string name="improve_qr_readability">Activating this option improves the readability of the QR code by adjusting its design, ensuring better scanning compatibility with most devices.</string>
     <string name="expire_qr_code">Expire QR Code: </string>
 

@@ -1,7 +1,6 @@
 package org.quickness.ui.screens.home.qr
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -10,26 +9,29 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.painterResource
 import org.quickness.SharedPreference
+import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
 import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
-import org.quickness.utils.`object`.KeysCache.QR_TAG_KEY
+import org.quickness.utils.`object`.KeysCache.ROUNDED_ROUNDED_QR_KEY
 import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
-import qrgenerator.generateQrCode
 import qrgenerator.qrkitpainter.QrKitBallShape
 import qrgenerator.qrkitpainter.QrKitBrush
 import qrgenerator.qrkitpainter.QrKitColors
 import qrgenerator.qrkitpainter.QrKitErrorCorrection
+import qrgenerator.qrkitpainter.QrKitLogo
 import qrgenerator.qrkitpainter.QrKitOptions
 import qrgenerator.qrkitpainter.QrKitPixelShape
 import qrgenerator.qrkitpainter.QrKitShapes
 import qrgenerator.qrkitpainter.QrPainter
+import qrgenerator.qrkitpainter.createCircle
 import qrgenerator.qrkitpainter.createRoundCorners
+import qrgenerator.qrkitpainter.createSquare
 import qrgenerator.qrkitpainter.solidBrush
 
 class QrViewModel(
@@ -79,13 +81,16 @@ class QrViewModel(
         val adjustedStartMinute = startMinute % 60
         val adjustedEndMinute = endMinute % 60
 
-        return "${startHour.toString().padStart(2, '0')}:${adjustedStartMinute.toString().padStart(2, '0')}-${endHour.toString().padStart(2, '0')}:${adjustedEndMinute.toString().padStart(2, '0')}"
+        return "${startHour.toString().padStart(2, '0')}:${
+            adjustedStartMinute.toString().padStart(2, '0')
+        }-${endHour.toString().padStart(2, '0')}:${adjustedEndMinute.toString().padStart(2, '0')}"
     }
 
     private fun getCurrentToken(): String {
         val tokensMap = sharedPreference.getMap(TOKENS_KEY) ?: emptyMap()
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        val currentTokenIndex = (now.hour * 6) + (now.minute / 10) // Índice basado en bloques de 10 minutos
+        val currentTokenIndex =
+            (now.hour * 6) + (now.minute / 10) // Índice basado en bloques de 10 minutos
         return tokensMap[currentTokenIndex.toString()] ?: "default_token"
     }
 
@@ -100,23 +105,52 @@ class QrViewModel(
                     content = token,
                     config = QrKitOptions(
                         shapes = QrKitShapes(
-                            darkPixelShape = QrKitPixelShape.createRoundCorners(.5f),
+                            darkPixelShape = when (
+                                sharedPreference.getString(
+                                    ROUNDED_ROUNDED_QR_KEY,
+                                    "Rounded"
+                                )
+                            ) {
+                                "Rounded" -> QrKitPixelShape.createRoundCorners(.5f)
+                                "Circular" -> QrKitPixelShape.createCircle(1f)
+                                "Rectangular" -> QrKitPixelShape.createSquare(1f)
+                                else -> QrKitPixelShape.createRoundCorners(.5f)
+                            },
                             ballShape = QrKitBallShape.createRoundCorners(.1f),
                         ),
                         colors = QrKitColors(
                             lightBrush = QrKitBrush.solidBrush(color = Color.Transparent),
-                            ballBrush = QrKitBrush.solidBrush(color = Color.Black),
-                            frameBrush = QrKitBrush.solidBrush(color = Color.Black),
+                            ballBrush = QrKitBrush.solidBrush(
+                                color = Color(
+                                    sharedPreference.getInt(
+                                        QR_COLOR_KEY,
+                                        Color.Black.toArgb()
+                                    )
+                                )
+                            ),
+                            frameBrush = QrKitBrush.solidBrush(
+                                color = Color(
+                                    sharedPreference.getInt(
+                                        QR_COLOR_KEY,
+                                        Color.Black.toArgb()
+                                    )
+                                )
+                            ),
                             darkBrush = QrKitBrush.solidBrush(
                                 color = Color(
-                                    SharedPreference().getInt(
+                                    sharedPreference.getInt(
                                         QR_COLOR_KEY,
                                         Color.Black.toArgb()
                                     )
                                 )
                             )
                         ),
-                        errorCorrection = QrKitErrorCorrection.Low
+                        errorCorrection = if (
+                            sharedPreference.getBoolean(
+                                FORMAT_KEY,
+                                true
+                            )
+                        ) QrKitErrorCorrection.Low else QrKitErrorCorrection.High
                     )
                 )
             }

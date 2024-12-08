@@ -1,12 +1,10 @@
 package org.quickness.ui.screens.home.settings.screens.settings_qr
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -16,7 +14,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.SharedPreference
 import org.quickness.ui.components.DropdownSettings
 import org.quickness.ui.components.SettingsItemSwitch
 import quickness.composeapp.generated.resources.Res
@@ -25,6 +22,8 @@ import quickness.composeapp.generated.resources.format_qr_settings
 import quickness.composeapp.generated.resources.improve_qr_readability
 import quickness.composeapp.generated.resources.palette_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.rounded_corner_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+import quickness.composeapp.generated.resources.rounded_qr_settings
 
 @Composable
 fun QrScreenSettings() = Screen()
@@ -35,16 +34,6 @@ private fun Screen(
     viewModel: QrSettingsViewModel = koinViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
-    val sharedPreference = SharedPreference()
-
-    if (state.isLoadings)
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -86,6 +75,25 @@ private fun Screen(
                             colorBackground = Color.Black.toArgb(),
                             colorTag = it
                         )
+                    }
+                },
+            )
+            Spacer(Modifier.padding(10.dp))
+        }
+        item {
+            DropdownSettings(
+                name = Res.string.rounded_qr_settings,
+                icon = Res.drawable.rounded_corner_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                options = listOf("Rounded", "Circular", "Rectangular"),
+                exposedHeight = 200.dp,
+                selectedOption = state.rounded,
+                onOptionSelected = {
+                    when (it) {
+                        "Rounded" -> viewModel.toggleRounded("Rounded")
+
+                        "Circular" -> viewModel.toggleRounded("Circular")
+
+                        "Rectangular" -> viewModel.toggleRounded("Rectangular")
                     }
                 },
             )

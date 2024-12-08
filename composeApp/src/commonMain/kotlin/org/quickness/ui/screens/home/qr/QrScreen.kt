@@ -43,7 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -55,24 +54,8 @@ import org.quickness.SharedPreference
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import org.quickness.ui.components.ShimmerItem
-import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
-import qrgenerator.qrkitpainter.QrKitBallShape
-import qrgenerator.qrkitpainter.QrKitBrush
-import qrgenerator.qrkitpainter.QrKitColors
-import qrgenerator.qrkitpainter.QrKitErrorCorrection
-import qrgenerator.qrkitpainter.QrKitFrameShape
-import qrgenerator.qrkitpainter.QrKitLogo
-import qrgenerator.qrkitpainter.QrKitLogoKitShape
-import qrgenerator.qrkitpainter.QrKitOptions
-import qrgenerator.qrkitpainter.QrKitPixelShape
-import qrgenerator.qrkitpainter.QrKitShapes
+import org.quickness.utils.`object`.KeysCache.QR_BACKGROUND_KEY
 import qrgenerator.qrkitpainter.QrPainter
-import qrgenerator.qrkitpainter.createRoundCorners
-import qrgenerator.qrkitpainter.rememberQrKitPainter
-import qrgenerator.qrkitpainter.solidBrush
-import quickness.composeapp.generated.resources.Blanco
-import quickness.composeapp.generated.resources.LogoQuicknessQC
-import quickness.composeapp.generated.resources.Negro
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.info_token
@@ -210,7 +193,6 @@ private fun TicketQRCode(
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(Color.Transparent)
             .clickable { onClick() }
             .animateContentSize(),
         contentAlignment = Alignment.Center
@@ -222,9 +204,6 @@ private fun TicketQRCode(
                 modifier = Modifier
                     .size(qrSize)
                     .blur(if (isBlurred) 20.dp else 0.dp)
-                    .background(
-                        Color.White
-                    )
                     .padding(5.dp)
             )
         } ?: run {
