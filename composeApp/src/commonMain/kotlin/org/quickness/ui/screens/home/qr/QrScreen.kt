@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -34,6 +33,7 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,18 +44,35 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.quickness.SharedPreference
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import org.quickness.ui.components.ShimmerItem
+import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
+import qrgenerator.qrkitpainter.QrKitBallShape
+import qrgenerator.qrkitpainter.QrKitBrush
+import qrgenerator.qrkitpainter.QrKitColors
+import qrgenerator.qrkitpainter.QrKitErrorCorrection
+import qrgenerator.qrkitpainter.QrKitFrameShape
+import qrgenerator.qrkitpainter.QrKitLogo
+import qrgenerator.qrkitpainter.QrKitLogoKitShape
+import qrgenerator.qrkitpainter.QrKitOptions
+import qrgenerator.qrkitpainter.QrKitPixelShape
+import qrgenerator.qrkitpainter.QrKitShapes
+import qrgenerator.qrkitpainter.QrPainter
+import qrgenerator.qrkitpainter.createRoundCorners
+import qrgenerator.qrkitpainter.rememberQrKitPainter
+import qrgenerator.qrkitpainter.solidBrush
+import quickness.composeapp.generated.resources.Blanco
+import quickness.composeapp.generated.resources.LogoQuicknessQC
+import quickness.composeapp.generated.resources.Negro
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.info_token
@@ -74,6 +91,7 @@ private fun Screen(viewModel: QrViewModel = koinViewModel()) {
 
 @Composable
 private fun TicketScreen(viewModel: QrViewModel) {
+    val state = viewModel.qrState.collectAsState().value
     var isVisible by remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(false) }
     var isBlurred by remember { mutableStateOf(false) }
@@ -128,7 +146,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                         }
 
                         // QR Code with smooth animation
-                        TicketQRCode(viewModel, isExpanded, isBlurred) {
+                        TicketQRCode(isExpanded, isBlurred, state.qrCode) {
                             isExpanded = !isExpanded
                         }
 
@@ -177,19 +195,11 @@ private fun blurQr(
 
 @Composable
 private fun TicketQRCode(
-    viewModel: QrViewModel,
     isExpanded: Boolean,
     isBlurred: Boolean,
+    qrCode: QrPainter?,
     onClick: () -> Unit,
 ) {
-    var qrCodeBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
-
-    LaunchedEffect(Unit) {
-        qrCodeBitmap = withContext(Dispatchers.IO) {
-            viewModel.generateQRCode()
-        }
-    }
-
     val transition = updateTransition(targetState = isExpanded, label = "QR Code Transition")
     val qrSize by transition.animateDp(
         transitionSpec = { tween(durationMillis = 500) },
@@ -205,18 +215,23 @@ private fun TicketQRCode(
             .animateContentSize(),
         contentAlignment = Alignment.Center
     ) {
-        qrCodeBitmap?.let {
+        qrCode?.let {
             Image(
-                bitmap = it,
+                painter = qrCode,
                 contentDescription = "Código QR generado",
-                modifier = Modifier.size(qrSize).blur(if (isBlurred) 20.dp else 0.dp)
+                modifier = Modifier
+                    .size(qrSize)
+                    .blur(if (isBlurred) 20.dp else 0.dp)
+                    .background(
+                        Color.White
+                    )
+                    .padding(5.dp)
             )
         } ?: run {
             ShimmerItem()
         }
     }
 }
-
 
 @Composable
 private fun ImportantInfoItem() {

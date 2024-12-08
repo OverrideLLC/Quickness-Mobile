@@ -93,22 +93,6 @@ interface SharedPreference {
     fun getLong(key: String, defaultValue: Long): Long
 
     /**
-     * Almacena un mapa de imágenes [ImageBitmap] en las preferencias compartidas.
-     *
-     * @param key La clave para identificar el mapa.
-     * @param value El mapa de imágenes a almacenar.
-     */
-    fun setBitmap(key: String, value: Map<String, ImageBitmap>)
-
-    /**
-     * Recupera un mapa de imágenes [ImageBitmap] de las preferencias compartidas.
-     *
-     * @param key La clave para identificar el mapa.
-     * @return El mapa de imágenes asociado a la clave, o `null` si la clave no existe.
-     */
-    fun getBitmap(key: String): Map<String, ImageBitmap>?
-
-    /**
      * Almacena un valor de tipo [Boolean] en las preferencias compartidas.
      *
      * @param key La clave para identificar el valor.

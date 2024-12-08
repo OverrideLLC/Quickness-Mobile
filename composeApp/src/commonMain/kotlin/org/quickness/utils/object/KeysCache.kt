@@ -12,4 +12,5 @@ object KeysCache {
     const val QR_TAG_KEY = "qr_tag_key"
     const val MIN_REQUEST_HOUR = 0
     const val THEME_KEY = "theme_key"
+    const val CURRENT_QR_BITMAP_KEY = "current_qr_bitmap_key"
 }
