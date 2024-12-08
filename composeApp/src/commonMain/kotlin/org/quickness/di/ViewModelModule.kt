@@ -7,6 +7,7 @@ import org.quickness.ui.screens.home.HomeViewModel
 import org.quickness.ui.screens.home.qr.QrViewModel
 import org.quickness.ui.screens.home.settings.SettingsViewModel
 import org.quickness.ui.screens.home.settings.screens.settings_account.AccountSettingsViewModel
+import org.quickness.ui.screens.home.settings.screens.settings_privacy.PrivacySettingsViewModel
 import org.quickness.ui.screens.home.settings.screens.settings_qr.QrSettingsViewModel
 import org.quickness.ui.screens.home.shop.ShopViewModel
 import org.quickness.ui.screens.login.LoginViewModel
@@ -47,4 +48,5 @@ val viewModelsStart = module {
 val viewModelsSetting = module {
     viewModelOf(::QrSettingsViewModel)
     viewModelOf(::AccountSettingsViewModel)
+    viewModelOf(::PrivacySettingsViewModel)
 }

@@ -60,7 +60,8 @@ private fun Screen(viewModel: ShopViewModel = koinViewModel()) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(horizontal = 8.dp)
         ) {
             items(productList) { product ->
                 Products(
