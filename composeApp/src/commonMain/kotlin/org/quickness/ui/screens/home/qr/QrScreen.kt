@@ -66,6 +66,7 @@ import qrgenerator.qrkitpainter.QrKitLogoKitShape
 import qrgenerator.qrkitpainter.QrKitOptions
 import qrgenerator.qrkitpainter.QrKitPixelShape
 import qrgenerator.qrkitpainter.QrKitShapes
+import qrgenerator.qrkitpainter.QrPainter
 import qrgenerator.qrkitpainter.createRoundCorners
 import qrgenerator.qrkitpainter.rememberQrKitPainter
 import qrgenerator.qrkitpainter.solidBrush
@@ -145,7 +146,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                         }
 
                         // QR Code with smooth animation
-                        TicketQRCode(isExpanded, isBlurred, state.qrCode, state.lastQrData) {
+                        TicketQRCode(isExpanded, isBlurred, state.qrCode) {
                             isExpanded = !isExpanded
                         }
 
@@ -196,8 +197,7 @@ private fun blurQr(
 private fun TicketQRCode(
     isExpanded: Boolean,
     isBlurred: Boolean,
-    qrCodeBitmap: ImageBitmap?,
-    qrCode: String?,
+    qrCode: QrPainter?,
     onClick: () -> Unit,
 ) {
     val transition = updateTransition(targetState = isExpanded, label = "QR Code Transition")
@@ -217,30 +217,7 @@ private fun TicketQRCode(
     ) {
         qrCode?.let {
             Image(
-                painter = rememberQrKitPainter(
-                    data = it,
-                    qrOptions = {
-                        shapes = QrKitShapes(
-                            darkPixelShape = QrKitPixelShape.createRoundCorners(.5f),
-                            ballShape = QrKitBallShape.createRoundCorners(.1f),
-                        )
-                        colors = QrKitColors(
-                            lightBrush = QrKitBrush.solidBrush(color = Color.Transparent),
-                            ballBrush = QrKitBrush.solidBrush(color = Color.Black),
-                            frameBrush = QrKitBrush.solidBrush(color = Color.Black),
-                            darkBrush = QrKitBrush.solidBrush(
-                                color = Color(
-                                    SharedPreference().getInt(
-                                        QR_COLOR_KEY,
-                                        Color.Black.toArgb()
-                                    )
-                                )
-                            )
-                        )
-                        errorCorrection = QrKitErrorCorrection.Low
-                        QrKitOptions()
-                    }
-                ),
+                painter = qrCode,
                 contentDescription = "Código QR generado",
                 modifier = Modifier
                     .size(qrSize)
@@ -255,7 +232,6 @@ private fun TicketQRCode(
         }
     }
 }
-
 
 @Composable
 private fun ImportantInfoItem() {

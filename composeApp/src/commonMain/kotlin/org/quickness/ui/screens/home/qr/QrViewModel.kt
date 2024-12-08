@@ -1,6 +1,8 @@
 package org.quickness.ui.screens.home.qr
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -10,20 +12,32 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
+import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
 import org.quickness.utils.`object`.KeysCache.QR_TAG_KEY
 import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
 import qrgenerator.generateQrCode
+import qrgenerator.qrkitpainter.QrKitBallShape
+import qrgenerator.qrkitpainter.QrKitBrush
+import qrgenerator.qrkitpainter.QrKitColors
+import qrgenerator.qrkitpainter.QrKitErrorCorrection
+import qrgenerator.qrkitpainter.QrKitOptions
+import qrgenerator.qrkitpainter.QrKitPixelShape
+import qrgenerator.qrkitpainter.QrKitShapes
+import qrgenerator.qrkitpainter.QrPainter
+import qrgenerator.qrkitpainter.createRoundCorners
+import qrgenerator.qrkitpainter.solidBrush
 
 class QrViewModel(
     private val sharedPreference: SharedPreference,
 ) : ViewModel(), QrInterface {
 
     data class QrState(
-        var qrCode: ImageBitmap? = null,
+        var qrCode: QrPainter? = null,
         var lastQrData: String? = null, // Último dato utilizado para el QR
         var currentInterval: String? = null // Intervalo actual en formato HH:mm-HH:mm
     )
@@ -78,14 +92,43 @@ class QrViewModel(
     override fun updateQrCodeForToken(token: String, interval: String) {
         println("Generating QR for token: $token at interval $interval")
 
-        // Evitar regenerar si el dato no ha cambiado
         if (token == _qrState.value.lastQrData && interval == _qrState.value.currentInterval) return
 
-        _qrState.value = _qrState.value.copy(
-            lastQrData = token,
-            currentInterval = interval
-        )
+        viewModelScope.launch {
+            val qr = withContext(Dispatchers.Default) {
+                QrPainter(
+                    content = token,
+                    config = QrKitOptions(
+                        shapes = QrKitShapes(
+                            darkPixelShape = QrKitPixelShape.createRoundCorners(.5f),
+                            ballShape = QrKitBallShape.createRoundCorners(.1f),
+                        ),
+                        colors = QrKitColors(
+                            lightBrush = QrKitBrush.solidBrush(color = Color.Transparent),
+                            ballBrush = QrKitBrush.solidBrush(color = Color.Black),
+                            frameBrush = QrKitBrush.solidBrush(color = Color.Black),
+                            darkBrush = QrKitBrush.solidBrush(
+                                color = Color(
+                                    SharedPreference().getInt(
+                                        QR_COLOR_KEY,
+                                        Color.Black.toArgb()
+                                    )
+                                )
+                            )
+                        ),
+                        errorCorrection = QrKitErrorCorrection.Low
+                    )
+                )
+            }
+
+            _qrState.value = _qrState.value.copy(
+                qrCode = qr,
+                lastQrData = token,
+                currentInterval = interval
+            )
+        }
     }
+
 
     override fun onCleared() {
         super.onCleared()
