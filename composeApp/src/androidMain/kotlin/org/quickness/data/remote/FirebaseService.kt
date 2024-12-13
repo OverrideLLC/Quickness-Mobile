@@ -35,9 +35,8 @@ actual class FirebaseService : FirebaseAuth {
                 return AuthResult(status = "Success", uid = user.uid)
             }
 
-            // Si `user` es nulo, algo falló
             Log.e("FirebaseService", "Usuario no encontrado tras inicio de sesión.")
-            return AuthResult(status = "Failure", message = "Usuario no encontrado.")
+            AuthResult(status = "Failure", message = "Usuario no encontrado.")
         } catch (e: FirebaseAuthInvalidCredentialsException) {
             Log.e("FirebaseService", "Credenciales inválidas: ${e.message}")
             return AuthResult(
