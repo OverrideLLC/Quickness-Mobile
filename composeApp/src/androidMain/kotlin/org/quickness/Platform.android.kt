@@ -98,6 +98,15 @@ actual class SharedPreference actual constructor() : SharedPreference {
     actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
         return sharedPreferences.getBoolean(key, defaultValue)
     }
+    actual override fun setFloat(key: String, value: Float) {
+        sharedPreferences.edit().putFloat(key, value).apply()
+    }
+    actual override fun getFloat(key: String, defaultValue: Float): Float {
+        return sharedPreferences.getFloat(key, defaultValue)
+    }
+    actual override fun logOut() {
+        sharedPreferences.edit().clear().apply()
+    }
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")

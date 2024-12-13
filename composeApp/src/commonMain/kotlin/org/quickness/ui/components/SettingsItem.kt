@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,22 +17,18 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -55,7 +50,10 @@ fun SettingsItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = colorScheme.onBackground.copy(alpha = 0.5f), shape = RoundedCornerShape(10.dp))
+            .background(
+                color = colorScheme.onBackground.copy(alpha = 0.5f),
+                shape = RoundedCornerShape(10.dp)
+            )
             .clickable { navigator() }
             .padding(15.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -86,7 +84,10 @@ fun SettingsItemSwitch(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = colorScheme.onBackground.copy(alpha = 0.5f), shape = RoundedCornerShape(10.dp))
+            .background(
+                color = colorScheme.onBackground.copy(alpha = 0.5f),
+                shape = RoundedCornerShape(10.dp)
+            )
             .clickable { isActive() }
             .padding(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -144,7 +145,10 @@ fun DropdownSettings(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = colorScheme.onBackground.copy(alpha = 0.5f), shape = RoundedCornerShape(10.dp))
+            .background(
+                color = colorScheme.onBackground.copy(alpha = 0.5f),
+                shape = RoundedCornerShape(10.dp)
+            )
             .clickable { expanded = !expanded }
             .padding(15.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -182,10 +186,9 @@ fun DropdownSettings(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = colorScheme.background.copy(alpha = 0.5f), shape = RoundedCornerShape(10.dp))
                 .padding(horizontal = 15.dp)
         ) {
-            Column (
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(max = exposedHeight)

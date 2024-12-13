@@ -1,7 +1,5 @@
 package org.quickness.interfaces
 
-import androidx.compose.ui.graphics.ImageBitmap
-
 /**
  * Interfaz que define las operaciones de lectura y escritura para preferencias compartidas.
  *
@@ -108,4 +106,8 @@ interface SharedPreference {
      * @return El valor asociado a la clave, o el valor por defecto si la clave no existe.
      */
     fun getBoolean(key: String, defaultValue: Boolean): Boolean
+
+    fun setFloat(key: String, value: Float)
+    fun getFloat(key: String, defaultValue: Float): Float
+    fun logOut()
 }
