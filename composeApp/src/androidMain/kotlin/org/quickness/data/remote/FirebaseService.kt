@@ -1,15 +1,18 @@
 package org.quickness.data.remote
 
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.tasks.await
+import org.quickness.MainActivity
 import org.quickness.SharedPreference
 import org.quickness.data.model.AuthResult
-import org.quickness.data.model.DataFirestore
+import org.quickness.data.model.ForgotPasswordResult
+import org.quickness.di.ContextProvider
 import org.quickness.interfaces.FirebaseAuth
-import org.quickness.interfaces.FirebaseFirestore
-import org.quickness.utils.`object`.KeysCache.UID_KEY
 
 actual class FirebaseService : FirebaseAuth {
     private val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
@@ -53,6 +56,120 @@ actual class FirebaseService : FirebaseAuth {
                 status = "Failure",
                 message = "Error inesperado: ${e.message}"
             )
+        }
+    }
+
+    actual override suspend fun forgotPassword(email: String): ForgotPasswordResult? {
+        return try {
+            firebaseAuth.sendPasswordResetEmail(email).await()
+            ForgotPasswordResult(
+                success = true,
+                message = "Se ha enviado un correo electrónico para restablecer su contraseña."
+            )
+        } catch (e: Exception) {
+            ForgotPasswordResult(
+                success = false,
+                error = "No se pudo enviar el correo electrónico de restablecimiento de contraseña: ${e.message}"
+            )
+        }
+    }
+
+    actual override suspend fun reauthenticateAndChangePassword(
+        email: String,
+        currentPassword: String,
+        newPassword: String,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            val credential = EmailAuthProvider.getCredential(email, currentPassword)
+            user.reauthenticate(credential)
+                .addOnCompleteListener { reauthTask ->
+                    if (reauthTask.isSuccessful) {
+                        changePassword(
+                            newPassword = newPassword,
+                            onSuccess = onSuccess,
+                            onError = onError
+                        )
+                    } else {
+                        reauthTask.exception?.let { onError(it) }
+                    }
+                }
+        } else {
+            onError(Exception("User is not authenticated."))
+        }
+    }
+
+    actual override fun changePassword(
+        newPassword: String,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            user.updatePassword(newPassword)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        task.exception?.let { onError(it) }
+                    }
+                }
+        } else {
+            onError(Exception("User is not authenticated."))
+        }
+    }
+
+    actual override fun changeEmail(
+        newEmail: String,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            user.verifyBeforeUpdateEmail(newEmail)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) onSuccess()
+                    task.exception?.let { onError(it) }
+                }
+        } else {
+            onError(Exception("User is not authenticated."))
+        }
+    }
+
+    actual override suspend fun logOut(onSuccess: () -> Unit, onError: (Exception) -> Unit) {
+        firebaseAuth.signOut()
+        SharedPreference().logOut()
+        val context = ContextProvider.getContext()
+        val intent = Intent(context, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        context!!.startActivity(intent)
+        if (context is Activity)
+            context.finish()
+        Runtime.getRuntime().exit(0)
+        onSuccess()
+    }
+
+    actual override suspend fun reauthenticate(
+        email: String,
+        currentPassword: String,
+        onSuccess: () -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            val credential = EmailAuthProvider.getCredential(email, currentPassword)
+            user.reauthenticate(credential)
+                .addOnCompleteListener { reauthTask ->
+                    if (reauthTask.isSuccessful) {
+                        onSuccess()
+                    } else {
+                        reauthTask.exception?.let { onError(it) }
+                    }
+                }
+        } else {
+            onError(Exception("User is not authenticated."))
         }
     }
 }

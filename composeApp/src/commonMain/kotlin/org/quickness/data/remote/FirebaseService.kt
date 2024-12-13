@@ -1,6 +1,7 @@
 package org.quickness.data.remote
 
 import org.quickness.data.model.AuthResult
+import org.quickness.data.model.ForgotPasswordResult
 import org.quickness.interfaces.FirebaseAuth
 
 /**
@@ -16,4 +17,10 @@ expect class FirebaseService() : FirebaseAuth {
      * @return [AuthResult] con el estado y la información del usuario, o `null` si falla.
      */
     override suspend fun signIn(email: String, password: String): AuthResult?
+    override suspend fun forgotPassword(email: String): ForgotPasswordResult?
+    override suspend fun reauthenticateAndChangePassword(email: String, currentPassword: String, newPassword: String, onSuccess: () -> Unit, onError: (Exception) -> Unit)
+    override fun changePassword(newPassword: String, onSuccess: () -> Unit, onError: (Exception) -> Unit)
+    override fun changeEmail(newEmail: String, onSuccess: () -> Unit, onError: (Exception) -> Unit)
+    override suspend fun logOut(onSuccess: () -> Unit, onError: (Exception) -> Unit)
+    override suspend fun reauthenticate(email: String, currentPassword: String, onSuccess: () -> Unit, onError: (Exception) -> Unit)
 }

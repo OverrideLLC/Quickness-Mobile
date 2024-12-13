@@ -68,6 +68,7 @@ kotlin {
             implementation(libs.krypto)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqliteBundled)
+            implementation(libs.qr.kit)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

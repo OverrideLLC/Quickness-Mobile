@@ -136,7 +136,7 @@ fun InformationPersonal(
                 value = state.phoneNumber,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardType = KeyboardType.Phone,
-                placeholder = "452 903 932",
+                placeholder = "### ### ####",
                 onValueChange = { phoneNumber -> viewModel.updateState { copy(phoneNumber = phoneNumber) } },
                 text = stringResource(Res.string.number_phone),
                 icon = Res.drawable.phone_iphone_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,

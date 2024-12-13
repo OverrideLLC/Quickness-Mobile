@@ -1,9 +1,6 @@
 package org.quickness
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.RenderEffect
-import org.quickness.interfaces.QRCodeGenerator
 import org.quickness.interfaces.SharedPreference
 
 interface Platform {
@@ -16,22 +13,7 @@ expect class Uri(url: String) : org.quickness.interfaces.Uri {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect class QRCodeGeneratorImpl() : QRCodeGenerator {
-    override fun generateQRCode(
-        data: String,
-        width: Int,
-        height: Int,
-        format: Boolean,
-        colorBackground: Int,
-        colorMapBits: Int
-    ): ImageBitmap
-}
-
-expect class RenderEffect() {
-    fun createBlurEffect(radius: Float, dy: Float): RenderEffect
-}
-
-expect class GoogleMaps(){
+expect class GoogleMaps() {
     @Composable
     fun Map()
 }
@@ -48,8 +30,9 @@ expect class SharedPreference() : SharedPreference {
     override fun getMap(key: String): Map<String, String>?
     override fun setLong(key: String, value: Long)
     override fun getLong(key: String, defaultValue: Long): Long
-    override fun setBitmap(key: String, value: Map<String, ImageBitmap>)
-    override fun getBitmap(key: String): Map<String, ImageBitmap>?
     override fun setBoolean(key: String, value: Boolean)
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean
+    override fun setFloat(key: String, value: Float)
+    override fun getFloat(key: String, defaultValue: Float): Float
+    override fun logOut()
 }

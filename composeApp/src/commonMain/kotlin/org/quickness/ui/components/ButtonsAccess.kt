@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +42,7 @@ fun ButtonAccess(
     Box(
         modifier = Modifier
             .wrapContentSize()
-            .background(color = colorScheme.background, shape = RoundedCornerShape(20.dp))
+            .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
             .padding(vertical = 10.dp),
         contentAlignment = Alignment.Center,
         content = {
@@ -54,7 +55,7 @@ fun ButtonAccess(
                     modifier = Modifier.height(50.dp).fillMaxWidth().padding(horizontal = 20.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorScheme.tertiary,
-                        contentColor = colorScheme.secondary
+                        contentColor = colorScheme.background
                     )
                 ) {
                     Row(
@@ -67,7 +68,7 @@ fun ButtonAccess(
                             text = stringResource(Res.string.login),
                             fontSize = 18.sp,
                             fontFamily = FontFamily(Font(resource = Res.font.Poppins_Medium)),
-                            color = colorScheme.secondary
+                            color = colorScheme.background
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
@@ -82,7 +83,7 @@ fun ButtonAccess(
                     onClick = { onRegisterClick() },
                     modifier = Modifier.height(50.dp).fillMaxWidth().padding(horizontal = 20.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorScheme.secondary,
+                        containerColor = colorScheme.background,
                         contentColor = colorScheme.tertiary,
                     )
                 ) {

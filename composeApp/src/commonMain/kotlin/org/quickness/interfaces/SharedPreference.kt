@@ -1,7 +1,5 @@
 package org.quickness.interfaces
 
-import androidx.compose.ui.graphics.ImageBitmap
-
 /**
  * Interfaz que define las operaciones de lectura y escritura para preferencias compartidas.
  *
@@ -93,22 +91,6 @@ interface SharedPreference {
     fun getLong(key: String, defaultValue: Long): Long
 
     /**
-     * Almacena un mapa de imágenes [ImageBitmap] en las preferencias compartidas.
-     *
-     * @param key La clave para identificar el mapa.
-     * @param value El mapa de imágenes a almacenar.
-     */
-    fun setBitmap(key: String, value: Map<String, ImageBitmap>)
-
-    /**
-     * Recupera un mapa de imágenes [ImageBitmap] de las preferencias compartidas.
-     *
-     * @param key La clave para identificar el mapa.
-     * @return El mapa de imágenes asociado a la clave, o `null` si la clave no existe.
-     */
-    fun getBitmap(key: String): Map<String, ImageBitmap>?
-
-    /**
      * Almacena un valor de tipo [Boolean] en las preferencias compartidas.
      *
      * @param key La clave para identificar el valor.
@@ -124,4 +106,8 @@ interface SharedPreference {
      * @return El valor asociado a la clave, o el valor por defecto si la clave no existe.
      */
     fun getBoolean(key: String, defaultValue: Boolean): Boolean
+
+    fun setFloat(key: String, value: Float)
+    fun getFloat(key: String, defaultValue: Float): Float
+    fun logOut()
 }

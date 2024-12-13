@@ -14,6 +14,7 @@ import org.quickness.di.initKoin
 import org.quickness.di.networkModule
 import org.quickness.di.repositoryModule
 import org.quickness.di.viewModelsHome
+import org.quickness.di.viewModelsSetting
 import org.quickness.di.viewModelsStart
 
 class MyApp : Application(), KoinComponent {
@@ -29,6 +30,7 @@ class MyApp : Application(), KoinComponent {
                 repositoryModule,
                 viewModelsHome,
                 viewModelsStart,
+                viewModelsSetting,
                 networkModule,
                 NativeModule,
                 firebaseModule

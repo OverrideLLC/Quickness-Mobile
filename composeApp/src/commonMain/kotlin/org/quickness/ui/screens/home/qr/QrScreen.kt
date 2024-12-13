@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -34,6 +33,7 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,19 +43,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.quickness.SharedPreference
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import org.quickness.ui.components.ShimmerItem
+import org.quickness.utils.`object`.KeysCache.QR_BACKGROUND_KEY
+import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
+import qrgenerator.qrkitpainter.QrPainter
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.info_token
@@ -74,6 +75,9 @@ private fun Screen(viewModel: QrViewModel = koinViewModel()) {
 
 @Composable
 private fun TicketScreen(viewModel: QrViewModel) {
+    val state = viewModel.qrState.collectAsState().value
+    val sharedPreference = SharedPreference()
+    val color = Color(sharedPreference.getInt(QR_COLOR_KEY, Color.White.toArgb()))
     var isVisible by remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(false) }
     var isBlurred by remember { mutableStateOf(false) }
@@ -97,7 +101,17 @@ private fun TicketScreen(viewModel: QrViewModel) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
-                        .background(if (!isExpanded) colorScheme.onBackground.copy(alpha = 0.5f) else colorScheme.background)
+                        .background(
+                            if (!isExpanded)
+                                Color(
+                                    sharedPreference.getInt(
+                                        QR_BACKGROUND_KEY,
+                                        Color.Black.toArgb()
+                                    )
+                                ).copy(0.5f)
+                            else
+                                Color.Transparent
+                        )
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -121,18 +135,28 @@ private fun TicketScreen(viewModel: QrViewModel) {
                                 Icon(
                                     painter = painterResource(Res.drawable.logo_swiftid_centrado),
                                     contentDescription = "Logo",
-                                    tint = colorScheme.tertiary,
+                                    tint = color,
                                     modifier = Modifier.size(100.dp)
                                 )
                             }
                         }
 
                         // QR Code with smooth animation
-                        TicketQRCode(viewModel, isExpanded, isBlurred) {
+                        TicketQRCode(
+                            isExpanded = isExpanded,
+                            isBlurred = isBlurred,
+                            qrCode = state.qrCode,
+                            colorBackground = Color(
+                                sharedPreference.getInt(
+                                    QR_BACKGROUND_KEY,
+                                    Color.Black.toArgb()
+                                )
+                            )
+                        ) {
                             isExpanded = !isExpanded
                         }
 
-                        blurQr(isBlurred) {
+                        blurQr(isBlurred, color) {
                             isBlurred = !isBlurred
                         }
 
@@ -144,7 +168,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                                     slideOutVertically(targetOffsetY = { it / 2 })
                         ) {
                             Spacer(modifier = Modifier.height(16.dp))
-                            ImportantInfoItem()
+                            ImportantInfoItem(color)
                         }
                         Spacer(Modifier.padding(10.dp))
                     }
@@ -157,18 +181,20 @@ private fun TicketScreen(viewModel: QrViewModel) {
 @Composable
 private fun blurQr(
     isBlurred: Boolean,
+    color: Color,
     onClick: () -> Unit
 ) {
     IconButton(
         onClick = { onClick() },
         modifier = Modifier.size(30.dp),
         colors = IconButtonDefaults.iconButtonColors(
-            containerColor = colorScheme.background,
+            containerColor = Color.Transparent,
             contentColor = colorScheme.tertiary
         ),
         content = {
             Icon(
                 painter = painterResource(if (isBlurred) Res.drawable.lock_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.lock_open_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
+                tint = color,
                 contentDescription = "Boton de ocultar qr",
             )
         }
@@ -177,19 +203,12 @@ private fun blurQr(
 
 @Composable
 private fun TicketQRCode(
-    viewModel: QrViewModel,
     isExpanded: Boolean,
     isBlurred: Boolean,
+    qrCode: QrPainter?,
+    colorBackground: Color,
     onClick: () -> Unit,
 ) {
-    var qrCodeBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
-
-    LaunchedEffect(Unit) {
-        qrCodeBitmap = withContext(Dispatchers.IO) {
-            viewModel.generateQRCode()
-        }
-    }
-
     val transition = updateTransition(targetState = isExpanded, label = "QR Code Transition")
     val qrSize by transition.animateDp(
         transitionSpec = { tween(durationMillis = 500) },
@@ -200,16 +219,19 @@ private fun TicketQRCode(
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(Color.Transparent)
             .clickable { onClick() }
-            .animateContentSize(),
+            .animateContentSize()
+            .background(colorBackground),
         contentAlignment = Alignment.Center
     ) {
-        qrCodeBitmap?.let {
+        qrCode?.let {
             Image(
-                bitmap = it,
+                painter = qrCode,
                 contentDescription = "Código QR generado",
-                modifier = Modifier.size(qrSize).blur(if (isBlurred) 20.dp else 0.dp)
+                modifier = Modifier
+                    .size(qrSize)
+                    .blur(if (isBlurred) 20.dp else 0.dp)
+                    .padding(5.dp)
             )
         } ?: run {
             ShimmerItem()
@@ -217,9 +239,8 @@ private fun TicketQRCode(
     }
 }
 
-
 @Composable
-private fun ImportantInfoItem() {
+private fun ImportantInfoItem(color: Color) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(vertical = 4.dp),
@@ -228,14 +249,14 @@ private fun ImportantInfoItem() {
         Icon(
             painter = painterResource(Res.drawable.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
             contentDescription = "Info Icon",
-            tint = colorScheme.tertiary,
+            tint = color,
             modifier = Modifier.size(20.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = stringResource(Res.string.info_token),
             style = typography.bodyMedium,
-            color = colorScheme.tertiary,
+            color = color,
             fontWeight = FontWeight.SemiBold
         )
     }
