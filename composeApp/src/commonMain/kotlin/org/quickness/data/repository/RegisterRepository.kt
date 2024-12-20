@@ -1,5 +1,6 @@
 package org.quickness.data.repository
 
+import org.quickness.data.Result.ApiResponse
 import org.quickness.data.Result.RegisterResult
 import org.quickness.data.service.RegisterService
 
@@ -21,7 +22,7 @@ class RegisterRepository(private val registerService: RegisterService) {
         name: String,
         curp: String,
         phoneNumber: String
-    ): RegisterResult {
+    ): ApiResponse {
         // Llamada al servicio de registro para crear un nuevo usuario
         return registerService.register(email, password, name, curp, phoneNumber)
     }

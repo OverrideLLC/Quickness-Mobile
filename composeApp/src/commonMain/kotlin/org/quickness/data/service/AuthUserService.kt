@@ -10,13 +10,13 @@ import io.ktor.http.contentType
 import kotlinx.serialization.json.buildJsonObject
 import org.quickness.data.Result.ApiResponse
 import org.quickness.data.request.AuthUserRequest
-import org.quickness.utils.`object`.Constants.URL_BACK_END_MOBILE
+import org.quickness.utils.`object`.ApiLinks
 
 class AuthUserService(private val client: HttpClient) {
     suspend fun jwt(authRequest: AuthUserRequest): ApiResponse {
         return try {
             client.post {
-                url("${URL_BACK_END_MOBILE}/auth")
+                url(ApiLinks.AUTH_API_LINK)
                 contentType(ContentType.Application.Json)
                 setBody(authRequest)
             }.body<ApiResponse>()
@@ -24,7 +24,7 @@ class AuthUserService(private val client: HttpClient) {
             return ApiResponse(
                 message = "Error: ${e.message}",
                 status = 500,
-                data = buildJsonObject {  }
+                data = buildJsonObject { }
             )
         }
     }

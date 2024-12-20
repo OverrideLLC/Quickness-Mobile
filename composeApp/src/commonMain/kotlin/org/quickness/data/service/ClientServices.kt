@@ -6,12 +6,11 @@ import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.request.get
 import io.ktor.http.headers
-import org.quickness.utils.`object`.Constants.URL_BACK_END
 
 class ClientServices(private val httpClient: HttpClient) {
     suspend fun downloadUserData(): ByteArray {
         return try {
-            httpClient.get(URL_BACK_END) {
+            httpClient.get() {
                 headers {
                     append("Content-Type", "application/json")
                 }

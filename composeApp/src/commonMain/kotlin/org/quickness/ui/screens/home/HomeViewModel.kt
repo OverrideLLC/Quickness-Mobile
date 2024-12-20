@@ -10,21 +10,21 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
+import org.quickness.data.model.User
 import org.quickness.data.repository.TokensRepository
-import org.quickness.utils.`object`.KeysCache.JWT_KEY
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
 import org.quickness.utils.`object`.KeysCache.MIN_REQUEST_HOUR
 import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
-import org.quickness.utils.`object`.KeysCache.UID_KEY
 
 class HomeViewModel(
     private val tokensRepository: TokensRepository,
-    private val sharedPreference: SharedPreference
+    private val sharedPreference: SharedPreference,
+    user: User
 ) : ViewModel(), HomeInterface {
+    private val uid = user.uid
 
     override fun getTokens() {
-        val uid = sharedPreference.getString(UID_KEY, "")
-        println(sharedPreference.getString(JWT_KEY, ""))
+        println(uid)
         viewModelScope.launch(Dispatchers.IO) {
             val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
@@ -34,7 +34,11 @@ class HomeViewModel(
 
             // Comprobar si es necesario obtener nuevos tokens
             val tokensMap = sharedPreference.getMap(TOKENS_KEY)
-            if (lastRequestDate == null || shouldRequestTokens(currentTime, lastRequestDate) || tokensMap.isNullOrEmpty()) {
+            if (lastRequestDate == null || shouldRequestTokens(
+                    currentTime,
+                    lastRequestDate
+                ) || tokensMap.isNullOrEmpty()
+            ) {
                 try {
                     // Obtener tokens del repositorio
                     val tokensResponse = tokensRepository.getTokens(uid)

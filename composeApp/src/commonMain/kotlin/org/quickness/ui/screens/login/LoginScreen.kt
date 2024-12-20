@@ -38,8 +38,8 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.ui.components.ButtonAccess
 import org.quickness.ui.components.LogoAndTitle
 import org.quickness.ui.components.Message
-import org.quickness.ui.components.TextFieldCustomEmail
-import org.quickness.ui.components.TextFieldCustomPassword
+import org.quickness.ui.components.fields.TextFieldCustomEmail
+import org.quickness.ui.components.fields.TextFieldCustomPassword
 import org.quickness.ui.components.powered
 import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Poppins_Medium

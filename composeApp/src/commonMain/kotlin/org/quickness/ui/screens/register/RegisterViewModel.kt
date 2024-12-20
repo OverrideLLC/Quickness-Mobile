@@ -132,19 +132,22 @@ class RegisterViewModel(
                     curp = _state.value.curp,
                     phoneNumber = formatPhoneNumber(_state.value.phoneNumber)
                 )
-                if (result.uid != "") {
+                if (result.status == 200) {
                     onSuccess()
                 } else {
                     onError()
-                    _state.value = _state.value.copy(isError = true)
-                    _state.value = _state.value.copy(errorMessage = result.status)
+                    _state.value = _state.value.copy(
+                        isError = true,
+                        errorMessage = result.message
+                    )
                     println(result.status)
                 }
             } catch (e: Exception) {
                 onError()
-                _state.value = _state.value.copy(isError = true)
-                _state.value =
-                    _state.value.copy(errorMessage = e.message ?: "Error connecting to server")
+                _state.value = _state.value.copy(
+                    isError = true,
+                    errorMessage = e.message ?: "Error connecting to server"
+                )
                 println(e.message)
             } finally {
                 _state.value = _state.value.copy(isLoading = false)

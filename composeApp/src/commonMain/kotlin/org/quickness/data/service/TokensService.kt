@@ -11,7 +11,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import org.quickness.data.Result.TokensResult
 import org.quickness.data.request.TokensRequest
-import org.quickness.utils.`object`.Constants
+import org.quickness.utils.`object`.ApiLinks
 
 class TokensService(private val httpClient: HttpClient) {
 
@@ -24,10 +24,13 @@ class TokensService(private val httpClient: HttpClient) {
     suspend fun getTokens(uid: String): TokensResult {
         return try {
             // Construcción y envío de la solicitud HTTP
-            val request = TokensRequest(uid = uid)
+            val request = TokensRequest(
+                uid = uid,
+                root = "qr_tokens_generate"
+            )
 
             httpClient.post {
-                url("${Constants.URL_BACK_END}/tokens")
+                url(urlString = ApiLinks.TOKENS_API_LINK)
                 contentType(ContentType.Application.Json)
                 setBody(request)
             }.body()

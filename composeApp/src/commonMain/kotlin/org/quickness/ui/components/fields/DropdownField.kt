@@ -1,4 +1,4 @@
-package org.quickness.ui.components
+package org.quickness.ui.components.fields
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import org.quickness.ui.components.TextFieldColorsApp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

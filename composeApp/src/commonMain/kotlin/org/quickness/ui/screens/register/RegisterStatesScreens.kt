@@ -19,12 +19,12 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.quickness.Uri
-import org.quickness.ui.components.AgeInputFields
-import org.quickness.ui.components.DropdownField
+import org.quickness.ui.components.fields.AgeInputFields
+import org.quickness.ui.components.fields.DropdownField
 import org.quickness.ui.components.ItemWithLink
-import org.quickness.ui.components.TextFIelCustom
-import org.quickness.ui.components.TextFieldCustomEmail
-import org.quickness.ui.components.TextFieldCustomPassword
+import org.quickness.ui.components.fields.TextFIelCustom
+import org.quickness.ui.components.fields.TextFieldCustomEmail
+import org.quickness.ui.components.fields.TextFieldCustomPassword
 import org.quickness.utils.enums.MexicanState
 import quickness.composeapp.generated.resources.Poppins_Light
 import quickness.composeapp.generated.resources.Res

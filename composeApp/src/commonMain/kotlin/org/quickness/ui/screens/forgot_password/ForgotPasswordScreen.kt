@@ -29,7 +29,7 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.quickness.ui.components.MessageSuccess
-import org.quickness.ui.components.TextFieldCustomEmail
+import org.quickness.ui.components.fields.TextFieldCustomEmail
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.alternate_email_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24

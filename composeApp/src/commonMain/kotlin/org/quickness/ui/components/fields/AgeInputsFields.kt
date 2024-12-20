@@ -1,4 +1,4 @@
-package org.quickness.ui.components
+package org.quickness.ui.components.fields
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

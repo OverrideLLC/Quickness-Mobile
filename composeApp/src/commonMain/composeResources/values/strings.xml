@@ -4,6 +4,7 @@
     <string name="app_name">Quickness</string>
     <string name="override">Override</string>
     <string name="powered">Powered by</string>
+    <string name="credit">Credits</string>
     <string name="info_token">This ticket is valid for one use only.</string>
 
     <!-- Authentication -->

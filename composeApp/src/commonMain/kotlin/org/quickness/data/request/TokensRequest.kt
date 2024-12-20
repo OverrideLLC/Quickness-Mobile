@@ -9,5 +9,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class TokensRequest(
-    val uid: String
+    val uid: String,
+    val root: String
 )

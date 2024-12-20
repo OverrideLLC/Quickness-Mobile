@@ -13,6 +13,10 @@ class TokensRepository(private val tokensService: TokensService) {
      */
     suspend fun getTokens(uid: String): TokensResult {
         // Llamada al servicio de tokens para obtener los tokens del usuario
-        return tokensService.getTokens(uid)
+        return try {
+            tokensService.getTokens(uid)
+        } catch (e: Exception) {
+            TokensResult(status = e.message ?: "Error connecting to server", tokens = emptyMap())
+        }
     }
 }

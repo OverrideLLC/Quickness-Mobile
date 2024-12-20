@@ -9,8 +9,13 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonObjectBuilder
+import kotlinx.serialization.json.buildJsonObject
+import org.quickness.data.Result.ApiResponse
 import org.quickness.data.Result.RegisterResult
 import org.quickness.data.request.RegisterRequest
+import org.quickness.utils.`object`.ApiLinks
 import org.quickness.utils.`object`.Constants
 
 class RegisterService(private val httpClient: HttpClient) {
@@ -23,7 +28,7 @@ class RegisterService(private val httpClient: HttpClient) {
      * @param name Nombre del usuario.
      * @param curp CURP del usuario.
      * @param phoneNumber Número de teléfono del usuario.
-     * @return [RegisterResult] que contiene el estado del registro y el UID.
+     * @return [ApiResponse] que contiene el estado del registro y el UID.
      */
     suspend fun register(
         email: String,
@@ -31,27 +36,31 @@ class RegisterService(private val httpClient: HttpClient) {
         name: String,
         curp: String,
         phoneNumber: String,
-    ): RegisterResult {
+    ): ApiResponse {
         return try {
             // Construcción de la solicitud
             val request = RegisterRequest(
                 email = email,
                 password = password,
                 name = name,
-                CURP = curp,
-                phone_number = phoneNumber
+                curp = curp,
+                phone = phoneNumber
             )
 
             // Realizar la solicitud HTTP
             httpClient.post {
-                url("${Constants.URL_BACK_END}/register")
+                url(ApiLinks.REGISTER_API_LINK)
                 contentType(ContentType.Application.Json)
                 setBody(request)
-            }.body()
+            }.body<ApiResponse>()
         } catch (e: Exception) {
             // Manejo de errores y registro del problema
             Logger.DEFAULT.log("Error en el registro de usuario: ${e.message}")
-            RegisterResult(uid = "", status = e.message ?: "Error connecting to server")
+            ApiResponse(
+                status = 500,
+                message = "Error en el registro de usuario: ${e.message}",
+                data = buildJsonObject {  }
+            )
         }
     }
 }
