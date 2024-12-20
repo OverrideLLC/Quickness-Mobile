@@ -22,7 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.quickness.ui.components.TextFieldColorsApp
+import org.quickness.ui.components.styles.TextFieldColorsApp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

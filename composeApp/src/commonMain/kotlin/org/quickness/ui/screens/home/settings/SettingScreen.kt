@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.flow.asStateFlow
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.ui.components.SettingsItem
+import org.quickness.ui.components.component.SettingsItem
 
 @Composable
 fun SettingsScreen(navController: NavController) = Screen(navController)

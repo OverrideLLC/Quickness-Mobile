@@ -1,4 +1,4 @@
-package org.quickness.ui.components
+package org.quickness.ui.components.helpers
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween

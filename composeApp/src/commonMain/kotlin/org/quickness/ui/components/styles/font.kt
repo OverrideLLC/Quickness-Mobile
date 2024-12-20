@@ -1,4 +1,4 @@
-package org.quickness.ui.components
+package org.quickness.ui.components.styles
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color

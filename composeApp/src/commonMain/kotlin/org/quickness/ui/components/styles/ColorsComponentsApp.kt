@@ -1,4 +1,4 @@
-package org.quickness.ui.components
+package org.quickness.ui.components.styles
 
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.TextFieldColors

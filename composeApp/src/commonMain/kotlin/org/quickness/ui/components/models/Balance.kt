@@ -1,4 +1,4 @@
-package org.quickness.ui.components
+package org.quickness.ui.components.models
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
@@ -7,7 +7,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,17 +23,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -48,7 +44,6 @@ fun Balance(credits: String) {
     val rotationX = remember { Animatable(0f) }
     val rotationY = remember { Animatable(0f) }
     val density = LocalDensity.current.density
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -83,14 +78,6 @@ fun Balance(credits: String) {
                 shadowElevation = 8.dp.value,
                 cameraDistance = 12f * density,
             )
-            .pointerInput(Unit) {
-                detectTransformGestures { _, _, zoom, _ ->
-                    scope.launch {
-                        rotationX.snapTo(zoom * 10)
-                        rotationY.snapTo(zoom * -10)
-                    }
-                }
-            },
     ) {
         Box(
             modifier = Modifier
@@ -124,7 +111,7 @@ fun Balance(credits: String) {
                     Image(
                         painter = painterResource(Res.drawable.logo_swiftid_centrado),
                         modifier = Modifier.size(150.dp),
-                        contentDescription = null
+                        contentDescription = "Logo Override"
                     )
                 }
             }

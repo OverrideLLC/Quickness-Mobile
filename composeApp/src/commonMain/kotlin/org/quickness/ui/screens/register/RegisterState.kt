@@ -30,6 +30,7 @@ data class RegisterState(
     val password: String = "",
     val confirmPassword: String = "",
     val name: String = "",
+    val lastName: String = "",
     val curp: String = "",
     val phoneNumber: String = "",
     val termsAndConditions: Boolean = false,

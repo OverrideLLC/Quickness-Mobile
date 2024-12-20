@@ -1,4 +1,4 @@
-package org.quickness.ui.components
+package org.quickness.ui.components.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

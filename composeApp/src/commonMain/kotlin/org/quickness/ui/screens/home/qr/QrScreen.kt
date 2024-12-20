@@ -53,7 +53,7 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.SharedPreference
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
-import org.quickness.ui.components.ShimmerItem
+import org.quickness.ui.components.styles.ShimmerItem
 import org.quickness.utils.`object`.KeysCache.QR_BACKGROUND_KEY
 import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
 import qrgenerator.qrkitpainter.QrPainter

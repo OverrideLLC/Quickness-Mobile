@@ -1,4 +1,4 @@
-package org.quickness.ui.components
+package org.quickness.ui.components.styles
 
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable

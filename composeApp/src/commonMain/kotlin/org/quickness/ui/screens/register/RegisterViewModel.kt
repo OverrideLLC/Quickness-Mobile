@@ -73,14 +73,14 @@ class RegisterViewModel(
         isNameValid(
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } },
             capitalizeWords = { capitalizeWords() },
-            name = _state.value.name
+            name = "${_state.value.lastName} ${_state.value.name}"
         ) && isCurpValid(
             curp = _state.value.curp,
             day = _state.value.day,
             month = _state.value.month,
             year = _state.value.year,
             sex = _state.value.sex,
-            name = _state.value.name,
+            name = "${_state.value.lastName} ${_state.value.name}",
             selectedState = _state.value.selectedState,
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } }
         ) && isPhoneNumberValid(
@@ -108,7 +108,7 @@ class RegisterViewModel(
      * @return The capitalized name as a [String].
      */
     override fun capitalizeWords(): String =
-        _state.value.name.split(" ")
+        "${_state.value.lastName} ${_state.value.name}".split(" ")
             .joinToString(" ") { word -> word.replaceFirstChar { it.uppercaseChar() } }
 
     /**
@@ -128,7 +128,7 @@ class RegisterViewModel(
                 val result = registerRepository.register(
                     email = _state.value.email,
                     password = _state.value.password,
-                    name = _state.value.name,
+                    name = "${_state.value.lastName} ${_state.value.name}",
                     curp = _state.value.curp,
                     phoneNumber = formatPhoneNumber(_state.value.phoneNumber)
                 )

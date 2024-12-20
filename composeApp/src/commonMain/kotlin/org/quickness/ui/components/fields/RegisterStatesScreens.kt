@@ -1,4 +1,4 @@
-package org.quickness.ui.screens.register
+package org.quickness.ui.components.fields
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,16 +15,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.quickness.Uri
-import org.quickness.ui.components.fields.AgeInputFields
-import org.quickness.ui.components.fields.DropdownField
-import org.quickness.ui.components.ItemWithLink
-import org.quickness.ui.components.fields.TextFIelCustom
-import org.quickness.ui.components.fields.TextFieldCustomEmail
-import org.quickness.ui.components.fields.TextFieldCustomPassword
+import org.quickness.ui.components.component.ItemWithLink
+import org.quickness.ui.screens.register.RegisterState
+import org.quickness.ui.screens.register.RegisterViewModel
 import org.quickness.utils.enums.MexicanState
 import quickness.composeapp.generated.resources.Poppins_Light
 import quickness.composeapp.generated.resources.Res
@@ -34,7 +32,8 @@ import quickness.composeapp.generated.resources.curp
 import quickness.composeapp.generated.resources.data_analytics
 import quickness.composeapp.generated.resources.data_analytics_description
 import quickness.composeapp.generated.resources.email
-import quickness.composeapp.generated.resources.name_complete
+import quickness.composeapp.generated.resources.last_name
+import quickness.composeapp.generated.resources.name
 import quickness.composeapp.generated.resources.number_phone
 import quickness.composeapp.generated.resources.password
 import quickness.composeapp.generated.resources.person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -47,8 +46,8 @@ import quickness.composeapp.generated.resources.terms_and_conditions_description
 /**
  * Displays email and password input fields for user registration.
  *
- * @param viewModel The [RegisterViewModel] used to handle UI state and interactions.
- * @param state The current state of the registration screen, represented by [RegisterState].
+ * @param viewModel The [org.quickness.ui.screens.register.RegisterViewModel] used to handle UI state and interactions.
+ * @param state The current state of the registration screen, represented by [org.quickness.ui.screens.register.RegisterState].
  */
 @Composable
 fun EmailAndPassword(
@@ -86,6 +85,20 @@ fun EmailAndPassword(
             isError = state.isError,
             togglePasswordVisibility = { viewModel.updateState { copy(isVisibleConfirmPassword = isVisibleConfirmPassword.not()) } }
         )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = """
+                Password parameters:
+                8 characters.
+                1 special character.
+                1 number character.
+                1 uppercase character
+            """.trimIndent(),
+            color = colorScheme.primary,
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light)),
+        )
+        Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
@@ -110,8 +123,21 @@ fun InformationPersonal(
                 value = state.name,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = { name -> viewModel.updateState { copy(name = name) } },
-                text = stringResource(Res.string.name_complete),
-                placeholder = "surnames names",
+                text = stringResource(Res.string.name),
+                placeholder = "Names",
+                keyboardType = KeyboardType.Text,
+                icon = Res.drawable.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                isError = state.isError
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        item {
+            TextFIelCustom(
+                value = state.lastName,
+                modifier = Modifier.fillMaxWidth(),
+                onValueChange = { last -> viewModel.updateState { copy(lastName = last) } },
+                text = stringResource(Res.string.last_name),
+                placeholder = "Last names",
                 keyboardType = KeyboardType.Text,
                 icon = Res.drawable.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
                 isError = state.isError

@@ -18,7 +18,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
-import org.quickness.ui.components.TextFieldColorsApp
+import org.quickness.ui.components.styles.TextFieldColorsApp
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.password_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.visibility_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24

@@ -32,10 +32,10 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.quickness.ui.components.BottomSheetContent
-import org.quickness.ui.components.Message
-import org.quickness.ui.components.MessageSuccess
-import org.quickness.ui.components.SettingsItem
+import org.quickness.ui.components.component.BottomSheetContent
+import org.quickness.ui.components.helpers.Message
+import org.quickness.ui.components.helpers.MessageSuccess
+import org.quickness.ui.components.component.SettingsItem
 import org.quickness.ui.components.fields.TextFieldCustomEmail
 import org.quickness.ui.components.fields.TextFieldCustomPassword
 import quickness.composeapp.generated.resources.Poppins_Medium

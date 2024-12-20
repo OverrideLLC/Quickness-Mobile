@@ -1,4 +1,4 @@
-package org.quickness.ui.components
+package org.quickness.ui.components.models
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing

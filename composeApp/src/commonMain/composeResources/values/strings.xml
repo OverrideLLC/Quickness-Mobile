@@ -17,7 +17,7 @@
     <string name="verification_code">Verification Code</string>
 
     <!-- Personal Information -->
-    <string name="name_complete">Name Complete</string>
+    <string name="last_name">Last Name</string>
     <string name="curp">CURP</string>
     <string name="number_phone">Number Phone</string>
 
@@ -67,7 +67,7 @@
     <string name="confirm_log_out">Log Out</string>
 
     <!-- Profile -->
-    <string name="name">Name:</string>
+    <string name="name">Name</string>
     <string name="uid">UID:</string>
 
     <!-- Privacy Settings -->

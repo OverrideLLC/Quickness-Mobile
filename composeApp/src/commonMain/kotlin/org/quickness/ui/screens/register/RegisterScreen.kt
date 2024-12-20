@@ -39,7 +39,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.ui.components.Message
+import org.quickness.ui.components.helpers.Message
 import org.quickness.ui.navegation.NavigationRegister
 import org.quickness.utils.routes.RoutesRegister
 import org.quickness.utils.routes.RoutesStart

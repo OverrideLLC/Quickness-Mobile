@@ -106,5 +106,5 @@ android {
 dependencies {
     implementation(libs.androidx.ui.graphics.android)
     debugImplementation(compose.uiTooling)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation(libs.kotlinx.coroutines.core)
 }

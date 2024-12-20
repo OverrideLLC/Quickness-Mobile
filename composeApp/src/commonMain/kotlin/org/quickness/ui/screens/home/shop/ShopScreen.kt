@@ -23,14 +23,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.SharedPreference
-import org.quickness.ui.components.Balance
-import org.quickness.ui.components.BottomSheetContent
-import org.quickness.ui.components.Products
-import org.quickness.ui.components.QuicknessFamily
-import org.quickness.ui.components.QuicknessPlus
-import org.quickness.ui.components.QuicknessShop
-import org.quickness.ui.components.QuicknessStudent
+import org.quickness.ui.components.models.Balance
+import org.quickness.ui.components.component.BottomSheetContent
+import org.quickness.ui.components.models.Products
+import org.quickness.ui.components.models.QuicknessFamily
+import org.quickness.ui.components.models.QuicknessPlus
+import org.quickness.ui.components.models.QuicknessShop
+import org.quickness.ui.components.models.QuicknessStudent
 import org.quickness.ui.theme.Success
 import quickness.composeapp.generated.resources.LogoQuicknessQC
 import quickness.composeapp.generated.resources.Res
@@ -51,11 +50,11 @@ private fun Screen(viewModel: ShopViewModel = koinViewModel()) {
     val productList = ProductList(viewModel, scope, sheetState)
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(10.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Balance(SharedPreference().getString("credits", "0"))
+        Balance("0")
         Spacer(modifier = Modifier.padding(10.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
