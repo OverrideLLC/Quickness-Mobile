@@ -2,7 +2,7 @@ package org.quickness.di
 
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import org.quickness.data.remote.FirebaseService
+import org.quickness.data.service.FirebaseService
 
 /**
  * Módulo de Koin que proporciona la dependencia de [FirebaseService] para la autenticación

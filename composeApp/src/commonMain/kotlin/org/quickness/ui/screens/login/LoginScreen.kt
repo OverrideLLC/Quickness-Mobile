@@ -81,15 +81,6 @@ private fun Screen(
         )
     )
 
-    if (state.isLoading)
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colorScheme.scrim)
-        ) {
-            CircularProgressIndicator()
-        }
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -131,6 +122,15 @@ private fun Screen(
             }
         }
     }
+    if (state.isLoading)
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colorScheme.scrim.copy(alpha = 0.5f))
+        ) {
+            CircularProgressIndicator()
+        }
     Message(
         message = state.errorMessage,
         visibility = state.isError,

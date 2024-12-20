@@ -1,4 +1,4 @@
-package org.quickness.data.model
+package org.quickness.data.Result
 
 data class ForgotPasswordResult(
     val success: Boolean,

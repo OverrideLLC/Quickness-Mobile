@@ -1,4 +1,4 @@
-package org.quickness.data.remote
+package org.quickness.data.service
 
 import org.quickness.interfaces.FirebaseAuth
 

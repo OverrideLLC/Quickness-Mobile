@@ -46,7 +46,6 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
-import org.quickness.data.remote.FirebaseService
 import org.quickness.ui.theme.Success
 import quickness.composeapp.generated.resources.LogoQuicknessQC
 import quickness.composeapp.generated.resources.Poppins_Bold

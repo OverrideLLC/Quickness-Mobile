@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.data.remote.FirebaseService
+import org.quickness.data.service.FirebaseService
 import org.quickness.utils.`object`.ValidatesData
 
 class AccountSettingsViewModel(

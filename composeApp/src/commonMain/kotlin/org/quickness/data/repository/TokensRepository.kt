@@ -1,7 +1,7 @@
 package org.quickness.data.repository
 
-import org.quickness.data.model.TokensResult
-import org.quickness.data.remote.TokensService
+import org.quickness.data.Result.TokensResult
+import org.quickness.data.service.TokensService
 
 class TokensRepository(private val tokensService: TokensService) {
 

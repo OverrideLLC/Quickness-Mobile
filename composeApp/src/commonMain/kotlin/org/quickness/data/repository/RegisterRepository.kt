@@ -1,7 +1,7 @@
 package org.quickness.data.repository
 
-import org.quickness.data.model.RegisterResult
-import org.quickness.data.remote.RegisterService
+import org.quickness.data.Result.RegisterResult
+import org.quickness.data.service.RegisterService
 
 class RegisterRepository(private val registerService: RegisterService) {
 

@@ -1,6 +1,6 @@
 package org.quickness.ui.screens.login
 
-data class LoginState(
+data class  LoginState(
     val email: String = "",
     val password: String = "",
     val isPasswordVisible: Boolean = false,

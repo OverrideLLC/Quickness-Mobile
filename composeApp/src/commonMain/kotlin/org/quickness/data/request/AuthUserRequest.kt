@@ -8,6 +8,6 @@ import kotlinx.serialization.Serializable
  * @property token Token de identificación del usuario para autenticar la solicitud.
  */
 @Serializable
-data class LoginRequest(
+data class AuthUserRequest(
     val token: String
 )

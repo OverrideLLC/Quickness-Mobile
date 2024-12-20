@@ -11,6 +11,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
 import org.quickness.data.repository.TokensRepository
+import org.quickness.utils.`object`.KeysCache.JWT_KEY
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
 import org.quickness.utils.`object`.KeysCache.MIN_REQUEST_HOUR
 import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
@@ -23,6 +24,7 @@ class HomeViewModel(
 
     override fun getTokens() {
         val uid = sharedPreference.getString(UID_KEY, "")
+        println(sharedPreference.getString(JWT_KEY, ""))
         viewModelScope.launch(Dispatchers.IO) {
             val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 

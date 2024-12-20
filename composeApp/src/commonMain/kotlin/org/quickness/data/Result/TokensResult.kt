@@ -1,4 +1,4 @@
-package org.quickness.data.model
+package org.quickness.data.Result
 
 import kotlinx.serialization.Serializable
 

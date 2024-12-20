@@ -2,7 +2,7 @@ package org.quickness.di
 
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
-import org.quickness.data.repository.LoginRepository
+import org.quickness.data.repository.AuthRepository
 import org.quickness.data.repository.RegisterRepository
 import org.quickness.data.repository.TokensRepository
 
@@ -14,7 +14,7 @@ import org.quickness.data.repository.TokensRepository
  */
 val repositoryModule = module {
     // Registro de LoginRepository como una fábrica, creando una nueva instancia cada vez que se solicite.
-    factoryOf(::LoginRepository)
+    factoryOf(::AuthRepository)
 
     // Registro de RegisterRepository como una fábrica, creando una nueva instancia cada vez que se solicite.
     factoryOf(::RegisterRepository)

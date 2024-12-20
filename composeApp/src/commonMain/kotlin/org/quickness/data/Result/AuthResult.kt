@@ -1,4 +1,4 @@
-package org.quickness.data.model
+package org.quickness.data.Result
 
 /**
  * Representa el resultado de un proceso de autenticación.
@@ -10,5 +10,6 @@ package org.quickness.data.model
 data class AuthResult(
     val status: String, // Estado de la autenticación (por ejemplo, éxito o error).
     val uid: String? = null, // UID del usuario si la autenticación fue exitosa; null en caso contrario.
+    val jwt: String? = null,
     val message: String? = null // Mensaje opcional con información adicional sobre el resultado.
 )

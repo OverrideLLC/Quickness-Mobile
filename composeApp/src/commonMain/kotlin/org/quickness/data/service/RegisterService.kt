@@ -1,4 +1,4 @@
-package org.quickness.data.remote
+package org.quickness.data.service
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -9,7 +9,7 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import org.quickness.data.model.RegisterResult
+import org.quickness.data.Result.RegisterResult
 import org.quickness.data.request.RegisterRequest
 import org.quickness.utils.`object`.Constants
 
