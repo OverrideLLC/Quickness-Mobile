@@ -2,7 +2,7 @@ package org.quickness.data.service
 
 import org.quickness.data.Result.AuthResult
 import org.quickness.data.Result.ForgotPasswordResult
-import org.quickness.interfaces.FirebaseAuth
+import org.quickness.interfaces.plataform.FirebaseAuth
 
 /**
  * Servicio de autenticación Firebase para Kotlin Multiplatform.

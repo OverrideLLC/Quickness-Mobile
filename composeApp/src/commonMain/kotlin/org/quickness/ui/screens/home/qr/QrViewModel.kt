@@ -14,8 +14,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.compose.resources.painterResource
 import org.quickness.SharedPreference
+import org.quickness.interfaces.viewmodels.QrInterface
 import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
 import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
 import org.quickness.utils.`object`.KeysCache.ROUNDED_ROUNDED_QR_KEY
@@ -24,7 +24,6 @@ import qrgenerator.qrkitpainter.QrKitBallShape
 import qrgenerator.qrkitpainter.QrKitBrush
 import qrgenerator.qrkitpainter.QrKitColors
 import qrgenerator.qrkitpainter.QrKitErrorCorrection
-import qrgenerator.qrkitpainter.QrKitLogo
 import qrgenerator.qrkitpainter.QrKitOptions
 import qrgenerator.qrkitpainter.QrKitPixelShape
 import qrgenerator.qrkitpainter.QrKitShapes

@@ -1,4 +1,4 @@
-package org.quickness.ui.screens.login
+package org.quickness.interfaces.viewmodels
 
 interface LoginInterface {
     fun login(

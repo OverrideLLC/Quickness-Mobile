@@ -1,4 +1,4 @@
-package org.quickness.ui.screens.home
+package org.quickness.interfaces.viewmodels
 
 import kotlinx.datetime.LocalDateTime
 

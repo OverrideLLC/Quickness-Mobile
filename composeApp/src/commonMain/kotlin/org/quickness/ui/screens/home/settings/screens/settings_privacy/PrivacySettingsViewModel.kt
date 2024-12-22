@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.data.repository.RepositoryClient
+import org.quickness.data.repository.ClientRepositoryImpl
 
 class PrivacySettingsViewModel(
-    private val repositoryClient: RepositoryClient
+    private val repositoryClient: ClientRepositoryImpl
 ) : ViewModel() {
     data class PrivacySettingsState(
         val showBottomSheetDownload: Boolean = false,

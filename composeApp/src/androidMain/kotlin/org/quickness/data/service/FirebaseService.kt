@@ -12,7 +12,7 @@ import org.quickness.SharedPreference
 import org.quickness.data.Result.AuthResult
 import org.quickness.data.Result.ForgotPasswordResult
 import org.quickness.di.ContextProvider
-import org.quickness.interfaces.FirebaseAuth
+import org.quickness.interfaces.plataform.FirebaseAuth
 
 actual class FirebaseService : FirebaseAuth {
     private val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()

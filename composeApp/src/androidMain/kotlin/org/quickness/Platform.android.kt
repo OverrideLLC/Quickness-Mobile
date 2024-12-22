@@ -18,7 +18,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.quickness.di.ContextProvider
-import org.quickness.interfaces.SharedPreference
+import org.quickness.interfaces.plataform.SharedPreference
 import org.quickness.utils.`object`.KeysCache
 
 class AndroidPlatform : Platform {
@@ -26,7 +26,7 @@ class AndroidPlatform : Platform {
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class Uri actual constructor(url: String) : org.quickness.interfaces.Uri {
+actual class Uri actual constructor(url: String) : org.quickness.interfaces.plataform.Uri {
     private val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     actual override fun navigate() {
         ContextProvider.getContext()!!.startActivity(intent)

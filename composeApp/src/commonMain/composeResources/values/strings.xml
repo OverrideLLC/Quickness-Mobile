@@ -8,8 +8,8 @@
     <string name="info_token">This ticket is valid for one use only.</string>
 
     <!-- Authentication -->
-    <string name="login">Log in</string>
-    <string name="register">Register</string>
+    <string name="login">Sign In</string>
+    <string name="register">Sign Up</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="email">Email</string>
     <string name="password">Password</string>

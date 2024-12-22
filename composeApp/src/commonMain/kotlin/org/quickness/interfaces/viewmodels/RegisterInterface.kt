@@ -1,4 +1,4 @@
-package org.quickness.ui.screens.register
+package org.quickness.interfaces.viewmodels
 
 interface RegisterInterface {
     fun validateEmailAndPassword(): Boolean

@@ -11,13 +11,14 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
 import org.quickness.data.model.User
-import org.quickness.data.repository.TokensRepository
+import org.quickness.data.repository.TokensRepositoryImpl
+import org.quickness.interfaces.viewmodels.HomeInterface
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
 import org.quickness.utils.`object`.KeysCache.MIN_REQUEST_HOUR
 import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
 
 class HomeViewModel(
-    private val tokensRepository: TokensRepository,
+    private val tokensRepository: TokensRepositoryImpl,
     private val sharedPreference: SharedPreference,
     user: User
 ) : ViewModel(), HomeInterface {

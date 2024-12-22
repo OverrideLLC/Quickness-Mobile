@@ -6,7 +6,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.data.repository.RegisterRepository
+import org.quickness.data.repository.RegisterRepositoryImpl
+import org.quickness.interfaces.viewmodels.RegisterInterface
 import org.quickness.utils.`object`.ValidatesData.confirmPassword
 import org.quickness.utils.`object`.ValidatesData.formatPhoneNumber
 import org.quickness.utils.`object`.ValidatesData.isCurpValid
@@ -17,12 +18,12 @@ import org.quickness.utils.`object`.ValidatesData.isPhoneNumberValid
 
 /**
  * ViewModel responsible for managing the state and logic of the registration process.
- * Handles user input validation, state updates, and interaction with the [RegisterRepository].
+ * Handles user input validation, state updates, and interaction with the [RegisterRepositoryImpl].
  *
  * @property registerRepository The repository used for handling registration-related operations, such as submitting user data.
  */
 class RegisterViewModel(
-    private val registerRepository: RegisterRepository,
+    private val registerRepository: RegisterRepositoryImpl,
 ) : ViewModel(), RegisterInterface {
 
     /**
@@ -112,7 +113,7 @@ class RegisterViewModel(
             .joinToString(" ") { word -> word.replaceFirstChar { it.uppercaseChar() } }
 
     /**
-     * Attempts to register the user by interacting with the [RegisterRepository].
+     * Attempts to register the user by interacting with the [RegisterRepositoryImpl].
      * Handles state updates for loading, errors, and success based on the result.
      *
      * @param onSuccess A callback executed when the registration is successful.

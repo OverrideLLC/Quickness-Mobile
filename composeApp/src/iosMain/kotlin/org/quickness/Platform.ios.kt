@@ -1,9 +1,7 @@
 package org.quickness
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.ImageBitmap
-import org.quickness.interfaces.QRCodeGenerator
-import org.quickness.interfaces.Uri
+import org.quickness.interfaces.plataform.Uri
 
 actual class GoogleMaps actual constructor(){
     @Composable

@@ -1,6 +1,4 @@
-package org.quickness.ui.screens.home.settings.screens.settings_qr
-
-import androidx.compose.ui.graphics.ImageBitmap
+package org.quickness.interfaces.viewmodels
 
 interface QrSettingsInterface {
     fun toggleFormat()
