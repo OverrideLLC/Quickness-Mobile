@@ -13,6 +13,7 @@ kotlinxCoroutinesCore = "1.9.0"
 kotlinxDatetime = "0.6.0"
 krypto = "3.0.0"
 mapsCompose = "4.3.0"
+napier = "2.6.0"
 navigationCompose = "2.8.0-alpha10"
 koin = "4.0.0"
 koinCompose = "4.0.0"
@@ -40,6 +41,7 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 krypto = { module = "com.soywiz.korlibs.krypto:krypto", version.ref = "krypto" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android" }

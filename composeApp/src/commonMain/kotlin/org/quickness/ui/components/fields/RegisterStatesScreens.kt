@@ -21,7 +21,7 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.quickness.Uri
 import org.quickness.ui.components.component.ItemWithLink
-import org.quickness.ui.screens.register.RegisterState
+import org.quickness.ui.states.RegisterState
 import org.quickness.ui.screens.register.RegisterViewModel
 import org.quickness.utils.enums.MexicanState
 import quickness.composeapp.generated.resources.Poppins_Light
@@ -47,7 +47,7 @@ import quickness.composeapp.generated.resources.terms_and_conditions_description
  * Displays email and password input fields for user registration.
  *
  * @param viewModel The [org.quickness.ui.screens.register.RegisterViewModel] used to handle UI state and interactions.
- * @param state The current state of the registration screen, represented by [org.quickness.ui.screens.register.RegisterState].
+ * @param state The current state of the registration screen, represented by [RegisterState].
  */
 @Composable
 fun EmailAndPassword(

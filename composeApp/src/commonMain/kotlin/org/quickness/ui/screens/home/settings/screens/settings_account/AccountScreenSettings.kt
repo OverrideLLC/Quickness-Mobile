@@ -33,11 +33,12 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.quickness.ui.components.component.BottomSheetContent
-import org.quickness.ui.components.helpers.Message
-import org.quickness.ui.components.helpers.MessageSuccess
 import org.quickness.ui.components.component.SettingsItem
 import org.quickness.ui.components.fields.TextFieldCustomEmail
 import org.quickness.ui.components.fields.TextFieldCustomPassword
+import org.quickness.ui.components.helpers.Message
+import org.quickness.ui.components.helpers.MessageSuccess
+import org.quickness.ui.states.AccountState
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.alternate_email_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -124,7 +125,7 @@ private fun BottomSheets(
     sheetState: SheetState,
     viewModel: AccountSettingsViewModel,
     scope: CoroutineScope,
-    state: AccountSettingsViewModel.AccountState
+    state: AccountState
 ) {
     BottomSheetContent(
         sheetState = sheetState,
@@ -188,7 +189,7 @@ private fun BottomSheets(
 
 @Composable
 private fun ChangeEmailBottomSheet(
-    state: AccountSettingsViewModel.AccountState,
+    state: AccountState,
     viewModel: AccountSettingsViewModel,
     onEmailChange: () -> Unit
 ) {
@@ -273,7 +274,7 @@ private fun LogOutBottomSheet(onLogOut: () -> Unit) {
 @Composable
 private fun ChangePasswordBottomSheet(
     viewModel: AccountSettingsViewModel,
-    state: AccountSettingsViewModel.AccountState,
+    state: AccountState,
     onChangePasswordRequest: () -> Unit
 ) {
     Column(

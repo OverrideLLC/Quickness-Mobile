@@ -8,7 +8,7 @@ import org.quickness.ui.animations.ContentSwitchAnimation
 import org.quickness.ui.components.fields.Approbation
 import org.quickness.ui.components.fields.EmailAndPassword
 import org.quickness.ui.components.fields.InformationPersonal
-import org.quickness.ui.screens.register.RegisterState
+import org.quickness.ui.states.RegisterState
 import org.quickness.ui.screens.register.RegisterViewModel
 import org.quickness.utils.routes.RoutesRegister
 

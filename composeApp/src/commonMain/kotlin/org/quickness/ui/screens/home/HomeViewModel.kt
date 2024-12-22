@@ -2,6 +2,7 @@ package org.quickness.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -25,40 +26,33 @@ class HomeViewModel(
     private val uid = user.uid
 
     override fun getTokens() {
-        println(uid)
         viewModelScope.launch(Dispatchers.IO) {
             val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-
-            // Obtener la última solicitud
             val lastRequestDateString = sharedPreference.getString(LAST_REQUEST_KEY, null)
             val lastRequestDate = parseLocalDateTime(lastRequestDateString)
-
-            // Comprobar si es necesario obtener nuevos tokens
             val tokensMap = sharedPreference.getMap(TOKENS_KEY)
+
             if (lastRequestDate == null || shouldRequestTokens(
                     currentTime,
                     lastRequestDate
                 ) || tokensMap.isNullOrEmpty()
             ) {
                 try {
-                    // Obtener tokens del repositorio
                     val tokensResponse = tokensRepository.getTokens(uid)
 
-                    // Asegurar que las claves están ordenadas antes de almacenarlas
                     val sortedTokens = tokensResponse.tokens
                         .toList()
                         .sortedBy { it.first.toIntOrNull() ?: Int.MAX_VALUE }
                         .toMap()
 
-                    // Guardar tokens ordenados en SharedPreference
                     sharedPreference.setMap(TOKENS_KEY, sortedTokens)
                     sharedPreference.setString(LAST_REQUEST_KEY, currentTime.toString())
-                    println("Tokens fetched and saved successfully.")
+                    Napier.v { "Tokens fetched and saved successfully." }
                 } catch (e: Exception) {
-                    println("Error fetching tokens: ${e.message}")
+                    Napier.e { "Error fetching tokens: ${e.message}" }
                 }
             } else {
-                println("Tokens already fetched and up to date.")
+                Napier.v { "Tokens already fetched and up to date." }
             }
         }
     }
@@ -67,7 +61,7 @@ class HomeViewModel(
         return try {
             dateString?.let { LocalDateTime.parse(it) }
         } catch (e: Exception) {
-            println("Error parsing date: ${e.message}")
+            Napier.e { "Error parsing date: ${e.message}" }
             null
         }
     }

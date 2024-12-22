@@ -6,18 +6,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.quickness.data.repository.ClientRepositoryImpl
+import org.quickness.ui.states.PrivacySettingsState
 
 class PrivacySettingsViewModel(
     private val repositoryClient: ClientRepositoryImpl
 ) : ViewModel() {
-    data class PrivacySettingsState(
-        val showBottomSheetDownload: Boolean = false,
-        val isLoading: Boolean = false,
-        val error: Boolean = false,
-        val success: Boolean = false,
-        val message: String? = null
-    )
-
     private val _state = MutableStateFlow(PrivacySettingsState())
     val state = _state.asStateFlow()
 

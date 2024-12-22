@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.quickness.data.repository.RegisterRepositoryImpl
 import org.quickness.interfaces.viewmodels.RegisterInterface
+import org.quickness.ui.states.RegisterState
 import org.quickness.utils.`object`.ValidatesData.confirmPassword
 import org.quickness.utils.`object`.ValidatesData.formatPhoneNumber
 import org.quickness.utils.`object`.ValidatesData.isCurpValid
@@ -27,7 +28,7 @@ class RegisterViewModel(
 ) : ViewModel(), RegisterInterface {
 
     /**
-     * Holds the current state of the registration process as a [RegisterState].
+     * Holds the current state of the registration process as a [org.quickness.ui.states.RegisterState].
      */
     private val _state: MutableStateFlow<RegisterState> = MutableStateFlow(RegisterState())
 

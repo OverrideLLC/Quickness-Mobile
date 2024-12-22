@@ -26,11 +26,10 @@ private fun Screen(navController: NavController, viewModel: SettingsViewModel = 
         content = {
             states.getAllSettings().forEach { setting ->
                 item {
-                    // Acceder a las propiedades de cada elemento de la enumeración
                     SettingsItem(
-                        name = setting.titleRes,  // Referencia al recurso de nombre
-                        icon = setting.iconRes,   // Referencia al recurso de ícono
-                        navigator = { navController.navigate(setting.route) }  // Ruta de navegación
+                        name = setting.titleRes,
+                        icon = setting.iconRes,
+                        navigator = { navController.navigate(setting.route) }
                     )
                     Spacer(Modifier.padding(10.dp))
                 }

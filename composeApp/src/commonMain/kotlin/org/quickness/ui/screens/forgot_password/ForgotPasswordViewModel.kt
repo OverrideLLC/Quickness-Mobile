@@ -6,14 +6,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.quickness.data.service.FirebaseService
+import org.quickness.ui.states.ForgotPasswordState
 
-class ForgotPasswordViewModel(private val firebaseService: FirebaseService): ViewModel() {
-    data class ForgotPasswordState(
-        val email: String = "",
-        val isLoading: Boolean = false,
-        val success: Boolean = false,
-        val error: Boolean = false
-    )
+class ForgotPasswordViewModel(private val firebaseService: FirebaseService) : ViewModel() {
     private val _state = MutableStateFlow(ForgotPasswordState())
     val state = _state.asStateFlow()
 

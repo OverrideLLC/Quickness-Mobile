@@ -6,9 +6,7 @@ import org.quickness.SharedPreference
 import org.quickness.interfaces.viewmodels.SettingsInterface
 import org.quickness.utils.enums.Settings
 
-class SettingsViewModel(
-    private val sharedPreference: SharedPreference,
-) : ViewModel(), SettingsInterface {
+class SettingsViewModel() : ViewModel(), SettingsInterface {
     private val _settingsEnum = MutableStateFlow(Settings)
     val settingsEnum = _settingsEnum
 }

@@ -10,6 +10,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import org.quickness.SharedPreference
 import org.quickness.data.repository.AuthRepositoryImpl
 import org.quickness.interfaces.viewmodels.LoginInterface
+import org.quickness.ui.states.LoginState
 import org.quickness.utils.`object`.KeysCache.JWT_FIREBASE_KEY
 import org.quickness.utils.`object`.KeysCache.JWT_KEY
 import org.quickness.utils.`object`.KeysCache.UID_KEY

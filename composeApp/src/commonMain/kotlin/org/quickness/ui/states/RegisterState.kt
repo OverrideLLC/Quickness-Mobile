@@ -1,4 +1,4 @@
-package org.quickness.ui.screens.register
+package org.quickness.ui.states
 
 /**
  * Data class representing the state of the registration process.
