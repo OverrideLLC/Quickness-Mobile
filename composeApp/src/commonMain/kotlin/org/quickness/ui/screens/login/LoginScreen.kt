@@ -35,12 +35,13 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.ui.components.ButtonAccess
-import org.quickness.ui.components.LogoAndTitle
-import org.quickness.ui.components.Message
-import org.quickness.ui.components.TextFieldCustomEmail
-import org.quickness.ui.components.TextFieldCustomPassword
-import org.quickness.ui.components.powered
+import org.quickness.ui.components.component.ButtonAccess
+import org.quickness.ui.components.component.LogoAndTitle
+import org.quickness.ui.components.helpers.Message
+import org.quickness.ui.components.fields.TextFieldCustomEmail
+import org.quickness.ui.components.fields.TextFieldCustomPassword
+import org.quickness.ui.components.helpers.powered
+import org.quickness.ui.states.LoginState
 import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
@@ -81,15 +82,6 @@ private fun Screen(
         )
     )
 
-    if (state.isLoading)
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colorScheme.scrim)
-        ) {
-            CircularProgressIndicator()
-        }
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -131,6 +123,15 @@ private fun Screen(
             }
         }
     }
+    if (state.isLoading)
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colorScheme.scrim.copy(alpha = 0.5f))
+        ) {
+            CircularProgressIndicator()
+        }
     Message(
         message = state.errorMessage,
         visibility = state.isError,

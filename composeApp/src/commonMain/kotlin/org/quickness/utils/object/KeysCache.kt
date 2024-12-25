@@ -11,4 +11,6 @@ object KeysCache {
     const val QR_BACKGROUND_KEY = "qr_size_key"
     const val QR_TAG_KEY = "qr_tag_key"
     const val MIN_REQUEST_HOUR = 0
+    const val JWT_KEY = "jwt_key"
+    const val JWT_FIREBASE_KEY = "firebase_jwt_key"
 }

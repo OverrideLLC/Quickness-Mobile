@@ -1,14 +1,15 @@
 package org.quickness
 
 import androidx.compose.runtime.Composable
-import org.quickness.interfaces.SharedPreference
+import org.quickness.interfaces.plataform.SharedPreference
+import org.quickness.interfaces.plataform.Uri
 
 interface Platform {
     val name: String
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect class Uri(url: String) : org.quickness.interfaces.Uri {
+expect class Uri(url: String) : Uri {
     override fun navigate()
 }
 

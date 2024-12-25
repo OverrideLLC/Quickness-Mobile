@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.quickness.ui.components.SettingsItem
+import org.quickness.ui.components.component.SettingsItem
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.about_us
 import quickness.composeapp.generated.resources.contact_support

@@ -10,40 +10,40 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
-import org.quickness.data.repository.TokensRepository
+import org.quickness.data.model.User
+import org.quickness.data.repository.TokensRepositoryImpl
+import org.quickness.interfaces.viewmodels.HomeInterface
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
 import org.quickness.utils.`object`.KeysCache.MIN_REQUEST_HOUR
 import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
-import org.quickness.utils.`object`.KeysCache.UID_KEY
 
 class HomeViewModel(
-    private val tokensRepository: TokensRepository,
-    private val sharedPreference: SharedPreference
+    private val tokensRepository: TokensRepositoryImpl,
+    private val sharedPreference: SharedPreference,
+    user: User
 ) : ViewModel(), HomeInterface {
+    private val uid = user.uid
 
     override fun getTokens() {
-        val uid = sharedPreference.getString(UID_KEY, "")
         viewModelScope.launch(Dispatchers.IO) {
             val currentTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-
-            // Obtener la última solicitud
             val lastRequestDateString = sharedPreference.getString(LAST_REQUEST_KEY, null)
             val lastRequestDate = parseLocalDateTime(lastRequestDateString)
-
-            // Comprobar si es necesario obtener nuevos tokens
             val tokensMap = sharedPreference.getMap(TOKENS_KEY)
-            if (lastRequestDate == null || shouldRequestTokens(currentTime, lastRequestDate) || tokensMap.isNullOrEmpty()) {
+
+            if (lastRequestDate == null || shouldRequestTokens(
+                    currentTime,
+                    lastRequestDate
+                ) || tokensMap.isNullOrEmpty()
+            ) {
                 try {
-                    // Obtener tokens del repositorio
                     val tokensResponse = tokensRepository.getTokens(uid)
 
-                    // Asegurar que las claves están ordenadas antes de almacenarlas
                     val sortedTokens = tokensResponse.tokens
                         .toList()
                         .sortedBy { it.first.toIntOrNull() ?: Int.MAX_VALUE }
                         .toMap()
 
-                    // Guardar tokens ordenados en SharedPreference
                     sharedPreference.setMap(TOKENS_KEY, sortedTokens)
                     sharedPreference.setString(LAST_REQUEST_KEY, currentTime.toString())
                     println("Tokens fetched and saved successfully.")
@@ -51,7 +51,7 @@ class HomeViewModel(
                     println("Error fetching tokens: ${e.message}")
                 }
             } else {
-                println("Tokens already fetched and up to date.")
+                println("Tokens already fetched today.")
             }
         }
     }

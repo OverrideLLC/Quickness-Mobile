@@ -14,8 +14,9 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import org.jetbrains.compose.resources.painterResource
 import org.quickness.SharedPreference
+import org.quickness.interfaces.viewmodels.QrInterface
+import org.quickness.ui.states.QrState
 import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
 import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
 import org.quickness.utils.`object`.KeysCache.ROUNDED_ROUNDED_QR_KEY
@@ -24,7 +25,6 @@ import qrgenerator.qrkitpainter.QrKitBallShape
 import qrgenerator.qrkitpainter.QrKitBrush
 import qrgenerator.qrkitpainter.QrKitColors
 import qrgenerator.qrkitpainter.QrKitErrorCorrection
-import qrgenerator.qrkitpainter.QrKitLogo
 import qrgenerator.qrkitpainter.QrKitOptions
 import qrgenerator.qrkitpainter.QrKitPixelShape
 import qrgenerator.qrkitpainter.QrKitShapes
@@ -38,23 +38,14 @@ class QrViewModel(
     private val sharedPreference: SharedPreference,
 ) : ViewModel(), QrInterface {
 
-    data class QrState(
-        var qrCode: QrPainter? = null,
-        var lastQrData: String? = null, // Último dato utilizado para el QR
-        var currentInterval: String? = null // Intervalo actual en formato HH:mm-HH:mm
-    )
-
-    private val _qrState = MutableStateFlow(QrState())
+    private val _qrState = MutableStateFlow(QrState(sharedPreference))
     val qrState = _qrState
 
     private val viewModelScopeJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(Dispatchers.IO + viewModelScopeJob)
 
     init {
-        println("QrViewModel initialized")
-        viewModelScope.launch {
-            monitorQrUpdates()
-        }
+        viewModelScope.launch { monitorQrUpdates() }
     }
 
     override fun monitorQrUpdates() {
@@ -65,7 +56,7 @@ class QrViewModel(
                 if (_qrState.value.currentInterval != currentInterval || token != _qrState.value.lastQrData) {
                     updateQrCodeForToken(token, currentInterval)
                 }
-                delay(10 * 60 * 1000L) // Actualizar cada 10 minutos
+                delay(10 * 60 * 1000L)
             }
         }
     }
@@ -90,7 +81,7 @@ class QrViewModel(
         val tokensMap = sharedPreference.getMap(TOKENS_KEY) ?: emptyMap()
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         val currentTokenIndex =
-            (now.hour * 6) + (now.minute / 10) // Índice basado en bloques de 10 minutos
+            (now.hour * 6) + (now.minute / 10)
         return tokensMap[currentTokenIndex.toString()] ?: "default_token"
     }
 
@@ -166,6 +157,6 @@ class QrViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        viewModelScopeJob.cancel() // Cancelar tareas en segundo plano
+        viewModelScopeJob.cancel()
     }
 }
