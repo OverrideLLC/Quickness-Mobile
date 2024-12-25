@@ -53,7 +53,7 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.ui.components.TitleStyle
+import org.quickness.ui.components.styles.TitleStyle
 import org.quickness.ui.navegation.NavigationHome
 import org.quickness.utils.routes.RoutesHome
 import quickness.composeapp.generated.resources.Poppins_Medium
@@ -210,7 +210,7 @@ private fun BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = colorScheme.onBackground.copy(alpha = 0.5f), // Fondo transparente
+                    color = colorScheme.onBackground.copy(alpha = 0.8f), // Fondo transparente
                     shape = RoundedCornerShape(40.dp)
                 )
         ) {

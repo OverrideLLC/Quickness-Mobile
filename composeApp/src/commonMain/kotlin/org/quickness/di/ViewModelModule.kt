@@ -1,11 +1,15 @@
 package org.quickness.di
 
-import org.koin.compose.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
+import org.quickness.ui.screens.forgot_password.ForgotPasswordViewModel
 import org.quickness.ui.screens.home.HomeViewModel
 import org.quickness.ui.screens.home.qr.QrViewModel
 import org.quickness.ui.screens.home.settings.SettingsViewModel
+import org.quickness.ui.screens.home.settings.screens.settings_account.AccountSettingsViewModel
+import org.quickness.ui.screens.home.settings.screens.settings_privacy.PrivacySettingsViewModel
 import org.quickness.ui.screens.home.settings.screens.settings_qr.QrSettingsViewModel
+import org.quickness.ui.screens.home.shop.ShopViewModel
 import org.quickness.ui.screens.login.LoginViewModel
 import org.quickness.ui.screens.register.RegisterViewModel
 
@@ -24,8 +28,7 @@ val viewModelsHome = module {
     // Registro de SettingsViewModel para gestionar la lógica de la pantalla de configuración.
     viewModelOf(::SettingsViewModel)
 
-    // Registro de QrSettingsViewModel para gestionar la lógica de la pantalla de configuración de QR.
-    viewModelOf(::QrSettingsViewModel)
+    viewModelOf(::ShopViewModel)
 }
 
 // Módulo que incluye los ViewModels utilizados en las pantallas de inicio de sesión y registro.
@@ -38,4 +41,12 @@ val viewModelsStart = module {
 
     // Registro de HomeViewModel para gestionar la lógica de la pantalla principal de la aplicación.
     viewModelOf(::HomeViewModel)
+
+    viewModelOf(::ForgotPasswordViewModel)
+}
+
+val viewModelsSetting = module {
+    viewModelOf(::QrSettingsViewModel)
+    viewModelOf(::AccountSettingsViewModel)
+    viewModelOf(::PrivacySettingsViewModel)
 }

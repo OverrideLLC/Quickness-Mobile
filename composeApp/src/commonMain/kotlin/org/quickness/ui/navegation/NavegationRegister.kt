@@ -4,12 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import org.quickness.Uri
 import org.quickness.ui.animations.ContentSwitchAnimation
-import org.quickness.ui.screens.register.Approbation
-import org.quickness.ui.screens.register.EmailAndPassword
-import org.quickness.ui.screens.register.InformationPersonal
-import org.quickness.ui.screens.register.RegisterState
+import org.quickness.ui.components.fields.Approbation
+import org.quickness.ui.components.fields.EmailAndPassword
+import org.quickness.ui.components.fields.InformationPersonal
+import org.quickness.ui.states.RegisterState
 import org.quickness.ui.screens.register.RegisterViewModel
 import org.quickness.utils.routes.RoutesRegister
 
