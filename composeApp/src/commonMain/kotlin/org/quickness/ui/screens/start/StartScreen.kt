@@ -36,7 +36,7 @@ import androidx.navigation.NavController
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.quickness.ui.components.LogoAndTitle
+import org.quickness.ui.components.component.LogoAndTitle
 import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
@@ -51,21 +51,23 @@ fun StartScreen(navController: NavController) = Screen(navController)
 @Composable
 private fun Screen(navController: NavController) {
     val infiniteTransition = rememberInfiniteTransition()
-
-    // Animación de colores oscuros
     val color1 by infiniteTransition.animateColor(
-        initialValue = colorScheme.background, // Background oscuro
-        targetValue = colorScheme.onBackground, // Turquesa oscuro (Primary)
+        initialValue = colorScheme.background,
+        targetValue = colorScheme.onBackground,
         animationSpec = infiniteRepeatable(
             animation = tween(3000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
     val color2 by infiniteTransition.animateColor(
-        initialValue = colorScheme.onBackground, // Secundario oscuro
-        targetValue = colorScheme.primary, // Verde oscuro (Success)
+        initialValue = colorScheme.onBackground,
+        targetValue = colorScheme.primary,
         animationSpec = infiniteRepeatable(
-            animation = tween(4000, easing = LinearEasing, delayMillis = 1000),
+            animation = tween(
+                durationMillis = 4000,
+                easing = LinearEasing,
+                delayMillis = 1000
+            ),
             repeatMode = RepeatMode.Reverse
         )
     )
@@ -84,9 +86,7 @@ private fun Screen(navController: NavController) {
             )
     ) {
         Spacer(modifier = Modifier.weight(1f))
-        LogoAndTitle(
-            title = stringResource(Res.string.app_name)
-        )
+        LogoAndTitle(title = stringResource(Res.string.app_name))
         Spacer(modifier = Modifier.weight(1f))
         ButtonAccessStart(
             onLoginClick = { navController.navigate(RoutesStart.Login.route) },
@@ -118,7 +118,10 @@ fun ButtonAccessStart(
             ) {
                 Button(
                     onClick = { onLoginClick() },
-                    modifier = Modifier.height(50.dp).fillMaxWidth().padding(horizontal = 20.dp),
+                    modifier = Modifier
+                        .height(50.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorScheme.tertiary,
                         contentColor = colorScheme.background
@@ -147,7 +150,10 @@ fun ButtonAccessStart(
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(
                     onClick = { onRegisterClick() },
-                    modifier = Modifier.height(50.dp).fillMaxWidth().padding(horizontal = 20.dp),
+                    modifier = Modifier
+                        .height(50.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorScheme.background,
                         contentColor = colorScheme.tertiary,

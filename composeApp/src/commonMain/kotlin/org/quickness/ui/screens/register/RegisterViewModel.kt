@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.data.repository.RegisterRepository
+import org.quickness.data.repository.RegisterRepositoryImpl
+import org.quickness.interfaces.viewmodels.RegisterInterface
+import org.quickness.ui.states.RegisterState
 import org.quickness.utils.`object`.ValidatesData.confirmPassword
 import org.quickness.utils.`object`.ValidatesData.formatPhoneNumber
 import org.quickness.utils.`object`.ValidatesData.isCurpValid
@@ -17,16 +19,16 @@ import org.quickness.utils.`object`.ValidatesData.isPhoneNumberValid
 
 /**
  * ViewModel responsible for managing the state and logic of the registration process.
- * Handles user input validation, state updates, and interaction with the [RegisterRepository].
+ * Handles user input validation, state updates, and interaction with the [RegisterRepositoryImpl].
  *
  * @property registerRepository The repository used for handling registration-related operations, such as submitting user data.
  */
 class RegisterViewModel(
-    private val registerRepository: RegisterRepository,
+    private val registerRepository: RegisterRepositoryImpl,
 ) : ViewModel(), RegisterInterface {
 
     /**
-     * Holds the current state of the registration process as a [RegisterState].
+     * Holds the current state of the registration process as a [org.quickness.ui.states.RegisterState].
      */
     private val _state: MutableStateFlow<RegisterState> = MutableStateFlow(RegisterState())
 
@@ -73,14 +75,14 @@ class RegisterViewModel(
         isNameValid(
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } },
             capitalizeWords = { capitalizeWords() },
-            name = _state.value.name
+            name = "${_state.value.lastName} ${_state.value.name}"
         ) && isCurpValid(
             curp = _state.value.curp,
             day = _state.value.day,
             month = _state.value.month,
             year = _state.value.year,
             sex = _state.value.sex,
-            name = _state.value.name,
+            name = "${_state.value.lastName} ${_state.value.name}",
             selectedState = _state.value.selectedState,
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } }
         ) && isPhoneNumberValid(
@@ -108,11 +110,11 @@ class RegisterViewModel(
      * @return The capitalized name as a [String].
      */
     override fun capitalizeWords(): String =
-        _state.value.name.split(" ")
+        "${_state.value.lastName} ${_state.value.name}".split(" ")
             .joinToString(" ") { word -> word.replaceFirstChar { it.uppercaseChar() } }
 
     /**
-     * Attempts to register the user by interacting with the [RegisterRepository].
+     * Attempts to register the user by interacting with the [RegisterRepositoryImpl].
      * Handles state updates for loading, errors, and success based on the result.
      *
      * @param onSuccess A callback executed when the registration is successful.
@@ -128,23 +130,26 @@ class RegisterViewModel(
                 val result = registerRepository.register(
                     email = _state.value.email,
                     password = _state.value.password,
-                    name = _state.value.name,
+                    name = "${_state.value.lastName} ${_state.value.name}",
                     curp = _state.value.curp,
                     phoneNumber = formatPhoneNumber(_state.value.phoneNumber)
                 )
-                if (result.uid != "") {
+                if (result.status == 200) {
                     onSuccess()
                 } else {
                     onError()
-                    _state.value = _state.value.copy(isError = true)
-                    _state.value = _state.value.copy(errorMessage = result.status)
+                    _state.value = _state.value.copy(
+                        isError = true,
+                        errorMessage = result.message
+                    )
                     println(result.status)
                 }
             } catch (e: Exception) {
                 onError()
-                _state.value = _state.value.copy(isError = true)
-                _state.value =
-                    _state.value.copy(errorMessage = e.message ?: "Error connecting to server")
+                _state.value = _state.value.copy(
+                    isError = true,
+                    errorMessage = e.message ?: "Error connecting to server"
+                )
                 println(e.message)
             } finally {
                 _state.value = _state.value.copy(isLoading = false)

@@ -1,6 +1,6 @@
 [versions]
 accompanistSystemuicontroller = "0.31.3-beta"
-agp = "8.5.2"
+agp = "8.9.0-alpha06"
 android-compileSdk = "35"
 android-minSdk = "24"
 android-targetSdk = "35"
@@ -9,22 +9,23 @@ androidx-lifecycle = "2.8.4"
 compose-multiplatform = "1.7.0"
 core = "3.5.2"
 kotlin = "2.1.0"
+kotlinxCoroutinesCore = "1.9.0"
 kotlinxDatetime = "0.6.0"
 krypto = "3.0.0"
 mapsCompose = "4.3.0"
 navigationCompose = "2.8.0-alpha10"
-koin = "3.6.0-Beta4"
-koinCompose = "1.2.0-Beta4"
-ktor = "3.0.1"
+koin = "4.0.0"
+koinCompose = "4.0.0"
+ktor = "3.0.2"
 googleService = "4.4.2"
 firebase-bom = "33.7.0"
-androidx-room = "2.7.0-alpha11"
-androidx-sqliteBundled = "2.5.0-alpha11"
+androidx-room = "2.7.0-alpha12"
+androidx-sqliteBundled = "2.5.0-alpha12"
 coreSplashscreen = "1.0.1"
 playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 qrKit = "3.0.5"
-uiGraphicsAndroid = "1.7.5"
+uiGraphicsAndroid = "1.7.6"
 
 [libraries]
 core = { module = "com.google.zxing:core", version.ref = "core" }
@@ -35,6 +36,7 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 krypto = { module = "com.soywiz.korlibs.krypto:krypto", version.ref = "krypto" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }

@@ -50,12 +50,10 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.SharedPreference
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
-import org.quickness.ui.components.ShimmerItem
+import org.quickness.ui.components.styles.ShimmerItem
 import org.quickness.utils.`object`.KeysCache.QR_BACKGROUND_KEY
-import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
 import qrgenerator.qrkitpainter.QrPainter
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -76,8 +74,6 @@ private fun Screen(viewModel: QrViewModel = koinViewModel()) {
 @Composable
 private fun TicketScreen(viewModel: QrViewModel) {
     val state = viewModel.qrState.collectAsState().value
-    val sharedPreference = SharedPreference()
-    val color = Color(sharedPreference.getInt(QR_COLOR_KEY, Color.White.toArgb()))
     var isVisible by remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(false) }
     var isBlurred by remember { mutableStateOf(false) }
@@ -104,7 +100,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                         .background(
                             if (!isExpanded)
                                 Color(
-                                    sharedPreference.getInt(
+                                    state.sharedPreference.getInt(
                                         QR_BACKGROUND_KEY,
                                         Color.Black.toArgb()
                                     )
@@ -135,7 +131,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                                 Icon(
                                     painter = painterResource(Res.drawable.logo_swiftid_centrado),
                                     contentDescription = "Logo",
-                                    tint = color,
+                                    tint = state.color,
                                     modifier = Modifier.size(100.dp)
                                 )
                             }
@@ -147,7 +143,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                             isBlurred = isBlurred,
                             qrCode = state.qrCode,
                             colorBackground = Color(
-                                sharedPreference.getInt(
+                                state.sharedPreference.getInt(
                                     QR_BACKGROUND_KEY,
                                     Color.Black.toArgb()
                                 )
@@ -156,7 +152,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                             isExpanded = !isExpanded
                         }
 
-                        blurQr(isBlurred, color) {
+                        blurQr(isBlurred, state.color) {
                             isBlurred = !isBlurred
                         }
 
@@ -168,7 +164,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                                     slideOutVertically(targetOffsetY = { it / 2 })
                         ) {
                             Spacer(modifier = Modifier.height(16.dp))
-                            ImportantInfoItem(color)
+                            ImportantInfoItem(state.color)
                         }
                         Spacer(Modifier.padding(10.dp))
                     }

@@ -23,8 +23,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import org.quickness.ui.components.BottomSheetContent
-import org.quickness.ui.components.SettingsItem
+import org.quickness.ui.components.component.BottomSheetContent
+import org.quickness.ui.components.component.SettingsItem
+import org.quickness.ui.states.PrivacySettingsState
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.data_download
 import quickness.composeapp.generated.resources.download_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -64,7 +65,7 @@ fun bottomSheet(
     sheetState: SheetState,
     scope: CoroutineScope,
     viewModel: PrivacySettingsViewModel,
-    state: PrivacySettingsViewModel.PrivacySettingsState
+    state: PrivacySettingsState
 ) {
     BottomSheetContent(
         sheetState = sheetState,

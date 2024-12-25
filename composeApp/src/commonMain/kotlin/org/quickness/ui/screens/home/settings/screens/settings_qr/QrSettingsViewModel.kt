@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.quickness.SharedPreference
+import org.quickness.interfaces.viewmodels.QrSettingsInterface
+import org.quickness.ui.states.QrSettingsState
 import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
 import org.quickness.utils.`object`.KeysCache.QR_BACKGROUND_KEY
 import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY

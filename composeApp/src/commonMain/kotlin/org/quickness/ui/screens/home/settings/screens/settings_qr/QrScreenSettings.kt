@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.ui.components.DropdownSettings
-import org.quickness.ui.components.SettingsItemSwitch
+import org.quickness.ui.components.component.DropdownSettings
+import org.quickness.ui.components.component.SettingsItemSwitch
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.color_qr_settings
 import quickness.composeapp.generated.resources.format_qr_settings

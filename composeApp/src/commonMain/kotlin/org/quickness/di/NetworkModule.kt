@@ -2,8 +2,9 @@ package org.quickness.di
 
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
-import org.quickness.data.remote.RegisterService
-import org.quickness.data.remote.TokensService
+import org.quickness.data.service.AuthUserService
+import org.quickness.data.service.RegisterService
+import org.quickness.data.service.TokensService
 
 /**
  * Módulo de Koin que proporciona las dependencias de red necesarias para la aplicación.
@@ -17,4 +18,6 @@ val networkModule = module {
 
     // Registro de TokensService como una fábrica, creando una nueva instancia cada vez que se solicite.
     factoryOf(::TokensService)
+
+    factoryOf(::AuthUserService)
 }

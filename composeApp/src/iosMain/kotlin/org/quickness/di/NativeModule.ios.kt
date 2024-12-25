@@ -5,5 +5,5 @@ import org.koin.dsl.module
 
 actual val NativeModule = module {
     single { Darwin.create() }
-    single { crateHttpClient(get()) }
+    single { "crateHttpClient(get())" }
 }
