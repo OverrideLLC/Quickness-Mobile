@@ -3,7 +3,6 @@ package org.quickness.ui.screens.home.qr
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -87,7 +86,7 @@ class QrViewModel(
     }
 
     override fun updateQrCodeForToken(token: String, interval: String) {
-        Napier.v { "Generating QR for token: $token at interval $interval" }
+        println("Generating QR for token: $token at interval $interval")
 
         if (token == _qrState.value.lastQrData && interval == _qrState.value.currentInterval) return
 

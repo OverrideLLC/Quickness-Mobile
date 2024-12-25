@@ -8,6 +8,7 @@ import org.quickness.interfaces.plataform.FirebaseAuth
  * Servicio de autenticación Firebase para Kotlin Multiplatform.
  * Define las expectativas para la implementación de autenticación en cada plataforma.
  */
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect class FirebaseService() : FirebaseAuth {
     /**
      * Realiza el inicio de sesión en Firebase con las credenciales proporcionadas.

@@ -2,7 +2,6 @@ package org.quickness.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -47,12 +46,12 @@ class HomeViewModel(
 
                     sharedPreference.setMap(TOKENS_KEY, sortedTokens)
                     sharedPreference.setString(LAST_REQUEST_KEY, currentTime.toString())
-                    Napier.v { "Tokens fetched and saved successfully." }
+                    println("Tokens fetched and saved successfully.")
                 } catch (e: Exception) {
-                    Napier.e { "Error fetching tokens: ${e.message}" }
+                    println("Error fetching tokens: ${e.message}")
                 }
             } else {
-                Napier.v { "Tokens already fetched and up to date." }
+                println("Tokens already fetched today.")
             }
         }
     }
@@ -61,7 +60,7 @@ class HomeViewModel(
         return try {
             dateString?.let { LocalDateTime.parse(it) }
         } catch (e: Exception) {
-            Napier.e { "Error parsing date: ${e.message}" }
+            println("Error parsing date: ${e.message}")
             null
         }
     }

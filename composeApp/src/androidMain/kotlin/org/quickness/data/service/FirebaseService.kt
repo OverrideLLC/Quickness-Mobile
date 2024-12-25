@@ -14,6 +14,7 @@ import org.quickness.data.Result.ForgotPasswordResult
 import org.quickness.di.ContextProvider
 import org.quickness.interfaces.plataform.FirebaseAuth
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class FirebaseService : FirebaseAuth {
     private val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
 
