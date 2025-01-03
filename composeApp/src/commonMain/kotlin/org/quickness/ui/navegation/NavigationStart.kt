@@ -9,7 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.quickness.SharedPreference
-import org.quickness.Uri
 import org.quickness.ui.animations.NavAnimations
 import org.quickness.ui.screens.forgot_password.ForgotPasswordScreen
 import org.quickness.ui.screens.home.HomeScreen
@@ -30,20 +29,10 @@ fun NavigationStart() {
         exitTransition = { NavAnimations.exitTransition },
         startDestination = if (sharedPreference.getString(UID_KEY, "") == "") RoutesStart.Start.route else RoutesStart.Home.route,
     ) {
-        composable(RoutesStart.Start.route) {
-            StartScreen(navController)
-        }
-        composable(RoutesStart.Home.route) {
-            HomeScreen(rememberNavController())
-        }
-        composable(RoutesStart.Login.route) {
-            LoginScreen(navController)
-        }
-        composable(RoutesStart.Register.route) {
-            RegisterScreen(navController)
-        }
-        composable(RoutesStart.ForgotPassword.route) {
-            ForgotPasswordScreen()
-        }
+        composable(RoutesStart.Start.route) { StartScreen(navController) }
+        composable(RoutesStart.Home.route) { HomeScreen(rememberNavController()) }
+        composable(RoutesStart.Login.route) { LoginScreen(navController) }
+        composable(RoutesStart.Register.route) { RegisterScreen(navController) }
+        composable(RoutesStart.ForgotPassword.route) { ForgotPasswordScreen() }
     }
 }

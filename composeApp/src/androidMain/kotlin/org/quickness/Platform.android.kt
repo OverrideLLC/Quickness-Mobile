@@ -1,9 +1,10 @@
+@file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+
 package org.quickness
 
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,11 +22,6 @@ import org.quickness.di.ContextProvider
 import org.quickness.interfaces.plataform.SharedPreference
 import org.quickness.utils.`object`.KeysCache
 
-class AndroidPlatform : Platform {
-    override val name: String = "Android ${Build.VERSION.SDK_INT}"
-}
-
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class Uri actual constructor(url: String) : org.quickness.interfaces.plataform.Uri {
     private val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     actual override fun navigate() {
@@ -33,11 +29,10 @@ actual class Uri actual constructor(url: String) : org.quickness.interfaces.plat
     }
 }
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class SharedPreference actual constructor() : SharedPreference {
     private val sharedPreferences =
         ContextProvider.getContext()!!.getSharedPreferences(KeysCache.MY_PREFS, MODE_PRIVATE)
-    private val json = Json { ignoreUnknownKeys = true }  // Configuración de JSON
+    private val json = Json { ignoreUnknownKeys = true }
 
     actual override fun getString(key: String, defaultValue: String?): String {
         return sharedPreferences.getString(key, defaultValue) ?: defaultValue ?: ""
@@ -98,18 +93,20 @@ actual class SharedPreference actual constructor() : SharedPreference {
     actual override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
         return sharedPreferences.getBoolean(key, defaultValue)
     }
+
     actual override fun setFloat(key: String, value: Float) {
         sharedPreferences.edit().putFloat(key, value).apply()
     }
+
     actual override fun getFloat(key: String, defaultValue: Float): Float {
         return sharedPreferences.getFloat(key, defaultValue)
     }
+
     actual override fun logOut() {
         sharedPreferences.edit().clear().apply()
     }
 }
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class GoogleMaps actual constructor() {
     @Composable
     actual fun Map() {

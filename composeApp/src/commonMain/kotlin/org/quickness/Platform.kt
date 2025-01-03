@@ -1,25 +1,20 @@
+@file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+
 package org.quickness
 
 import androidx.compose.runtime.Composable
 import org.quickness.interfaces.plataform.SharedPreference
 import org.quickness.interfaces.plataform.Uri
 
-interface Platform {
-    val name: String
-}
-
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect class Uri(url: String) : Uri {
     override fun navigate()
 }
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect class GoogleMaps() {
     @Composable
     fun Map()
 }
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect class SharedPreference() : SharedPreference {
     override fun getString(key: String, defaultValue: String?): String
     override fun setString(key: String, value: String)

@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -9,6 +8,8 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.googleService)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidxRoom)
 }
 
 kotlin {
@@ -33,44 +34,46 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.koin.android)
-            implementation(libs.ktor.client.okhttp)
             implementation(libs.accompanist.systemuicontroller)
-            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.core.splashscreen)
+            implementation(libs.core)
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.auth)
             implementation(libs.firebase.firestore)
-            implementation(libs.core)
-            implementation(libs.androidx.core.splashscreen)
+            implementation(libs.koin.android)
+            implementation(libs.ktor.client.okhttp)
             implementation(libs.maps.compose)
+            implementation(libs.play.services.location)
             implementation(libs.play.services.maps)
-            implementation (libs.play.services.location)
+            implementation(project.dependencies.platform(libs.firebase.bom))
         }
+
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(libs.navigation.compose)
-            implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            implementation(compose.ui)
             implementation(libs.androidx.lifecycle.runtime.compose)
-            implementation(project.dependencies.platform(libs.koin.bom))
-            implementation(libs.koin.core)
+            implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewModel)
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-            implementation(libs.ktor.loggin)
+            implementation(libs.koin.core)
             implementation(libs.kotlinx.datetime)
             implementation(libs.krypto)
+            implementation(libs.navigation.compose)
+            implementation(libs.qr.kit)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.loggin)
+            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqliteBundled)
-            implementation(libs.qr.kit)
+            implementation(project.dependencies.platform(libs.koin.bom))
         }
+
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
@@ -102,10 +105,17 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    dependencies {
+        implementation(libs.androidx.ui.graphics.android)
+        implementation(libs.kotlinx.coroutines.core)
+        debugImplementation(compose.uiTooling)
+    }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
-    implementation(libs.androidx.ui.graphics.android)
-    debugImplementation(compose.uiTooling)
-    implementation(libs.kotlinx.coroutines.core)
+    add("kspAndroid", libs.androidx.room.compailer)
 }

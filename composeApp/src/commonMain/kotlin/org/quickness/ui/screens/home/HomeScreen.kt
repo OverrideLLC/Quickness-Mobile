@@ -69,8 +69,7 @@ import quickness.composeapp.generated.resources.warning_24dp_E8EAED_FILL1_wght40
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun HomeScreen(navController: NavHostController) =
-    Screen(homeViewModel = koinViewModel(), navController = navController)
+fun HomeScreen(navController: NavHostController) = Screen(homeViewModel = koinViewModel(), navController = navController)
 
 @Composable
 private fun Screen(homeViewModel: HomeViewModel, navController: NavHostController) {
@@ -97,8 +96,8 @@ private fun Screen(homeViewModel: HomeViewModel, navController: NavHostControlle
     // Crea un gradiente de colores dorados que cambia de forma animada
     val brush = Brush.linearGradient(
         colors = listOf(
-            colorScheme.primary.copy(alpha = 0.8f * animatedBrush.value), // Dorado suave
-            colorScheme.primary.copy(alpha = 0.7f * animatedBrush.value), // Dorado más fuerte
+            colorScheme.primary.copy(alpha = 0.8f * animatedBrush.value),
+            colorScheme.primary.copy(alpha = 0.7f * animatedBrush.value),
             colorScheme.primary.copy(alpha = 0.6f * animatedBrush.value),
             colorScheme.primary.copy(alpha = 0.5f * animatedBrush.value),
             colorScheme.primary.copy(alpha = 0.4f * animatedBrush.value),
@@ -123,7 +122,7 @@ private fun Screen(homeViewModel: HomeViewModel, navController: NavHostControlle
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(brush) // Aplica el fondo animado
+                    .background(brush)
             ) {
                 Content(
                     navigationController = navController,

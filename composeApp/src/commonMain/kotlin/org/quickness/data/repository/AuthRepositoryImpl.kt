@@ -4,7 +4,7 @@ import org.quickness.data.Result.ApiResponse
 import org.quickness.data.Result.AuthResult
 import org.quickness.data.request.AuthUserRequest
 import org.quickness.data.service.AuthUserService
-import org.quickness.data.service.FirebaseService
+import org.quickness.data.service.FirebaseAuthImpl
 import org.quickness.interfaces.repository.AuthRepository
 
 /**
@@ -17,7 +17,7 @@ import org.quickness.interfaces.repository.AuthRepository
  * @property authService An instance of `AuthUserService` used for JWT verification and user information retrieval.
  */
 class AuthRepositoryImpl(
-    private val firebaseService: FirebaseService,
+    private val firebaseService: FirebaseAuthImpl,
     private val authService: AuthUserService
 ) : AuthRepository {
 
@@ -30,8 +30,6 @@ class AuthRepositoryImpl(
      * @param password The user's password.
      * @return An [AuthResult] object indicating the success or failure of the login attempt.
      *         This object may contain the user's UID and other authentication details on success.
-     * @throws [FirebaseAuthException] if the login attempt fails.
-     *         Possible exceptions include invalid credentials, network errors, etc.
      */
     override suspend fun login(email: String, password: String): AuthResult {
         return firebaseService.signIn(email, password)

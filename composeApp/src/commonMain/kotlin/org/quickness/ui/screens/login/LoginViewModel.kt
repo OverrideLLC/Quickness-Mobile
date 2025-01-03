@@ -19,9 +19,8 @@ import org.quickness.utils.`object`.ValidatesData.isPasswordValid
 
 class LoginViewModel(
     private val authRepository: AuthRepositoryImpl,
-    private val sharedPreference: SharedPreference
+    private val sharedPreference: SharedPreference,
 ) : ViewModel(), LoginInterface {
-
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state.asStateFlow()
 
