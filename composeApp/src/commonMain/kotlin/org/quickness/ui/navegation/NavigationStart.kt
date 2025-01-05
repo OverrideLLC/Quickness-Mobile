@@ -4,30 +4,39 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import org.quickness.SharedPreference
+import org.koin.compose.viewmodel.koinViewModel
 import org.quickness.ui.animations.NavAnimations
 import org.quickness.ui.screens.forgot_password.ForgotPasswordScreen
 import org.quickness.ui.screens.home.HomeScreen
 import org.quickness.ui.screens.login.LoginScreen
 import org.quickness.ui.screens.register.RegisterScreen
 import org.quickness.ui.screens.start.StartScreen
-import org.quickness.utils.`object`.KeysCache.UID_KEY
 import org.quickness.utils.routes.RoutesStart
 
 @Composable
-fun NavigationStart() {
+fun NavigationStart(
+    viewModel: SharedNavigationViewModel = koinViewModel()
+) {
     val navController = rememberNavController()
-    val sharedPreference = SharedPreference()
+    val sharedNavigationState by remember { viewModel.sharedNavigationState }.collectAsState()
+    val startDestination = if (sharedNavigationState.uid.isEmpty()) {
+        RoutesStart.Start.route
+    } else {
+        RoutesStart.Home.route
+    }
     NavHost(
         navController = navController,
         modifier = Modifier.fillMaxSize().background(colorScheme.background),
         enterTransition = { NavAnimations.enterTransition },
         exitTransition = { NavAnimations.exitTransition },
-        startDestination = if (sharedPreference.getString(UID_KEY, "") == "") RoutesStart.Start.route else RoutesStart.Home.route,
+        startDestination = startDestination
     ) {
         composable(RoutesStart.Start.route) { StartScreen(navController) }
         composable(RoutesStart.Home.route) { HomeScreen(rememberNavController()) }

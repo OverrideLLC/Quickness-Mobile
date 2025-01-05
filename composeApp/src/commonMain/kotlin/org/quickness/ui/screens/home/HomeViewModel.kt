@@ -1,28 +1,31 @@
 package org.quickness.ui.screens.home
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.quickness.SharedPreference
-import org.quickness.data.model.User
 import org.quickness.data.repository.TokensRepositoryImpl
 import org.quickness.interfaces.viewmodels.HomeInterface
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
 import org.quickness.utils.`object`.KeysCache.MIN_REQUEST_HOUR
 import org.quickness.utils.`object`.KeysCache.TOKENS_KEY
+import org.quickness.utils.`object`.KeysCache.UID_KEY
 
 class HomeViewModel(
     private val tokensRepository: TokensRepositoryImpl,
     private val sharedPreference: SharedPreference,
-    user: User
+    private val dataStore: DataStore<Preferences>,
 ) : ViewModel(), HomeInterface {
-    private val uid = user.uid
 
     override fun getTokens() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -30,6 +33,12 @@ class HomeViewModel(
             val lastRequestDateString = sharedPreference.getString(LAST_REQUEST_KEY, null)
             val lastRequestDate = parseLocalDateTime(lastRequestDateString)
             val tokensMap = sharedPreference.getMap(TOKENS_KEY)
+            var uid: String? = null
+            dataStore.data.map {
+                it[UID_KEY] ?: ""
+            }.collectLatest {
+                uid = it
+            }
 
             if (lastRequestDate == null || shouldRequestTokens(
                     currentTime,
@@ -37,7 +46,7 @@ class HomeViewModel(
                 ) || tokensMap.isNullOrEmpty()
             ) {
                 try {
-                    val tokensResponse = tokensRepository.getTokens(uid)
+                    val tokensResponse = tokensRepository.getTokens(uid ?: "")
 
                     val sortedTokens = tokensResponse.tokens
                         .toList()

@@ -18,8 +18,8 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.quickness.di.ContextProvider
 import org.quickness.interfaces.plataform.SharedPreference
+import org.quickness.utils.ContextProvider
 import org.quickness.utils.`object`.KeysCache
 
 actual class Uri actual constructor(url: String) : org.quickness.interfaces.plataform.Uri {

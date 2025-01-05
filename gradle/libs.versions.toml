@@ -27,6 +27,7 @@ playServicesMaps = "19.0.0"
 qrKit = "3.0.5"
 uiGraphicsAndroid = "1.7.6"
 ksp = "2.1.0-1.0.29"
+dataStore = "1.1.1"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -62,6 +63,7 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 qr-kit = { module = "network.chaintech:qr-kit", version.ref = "qrKit" }
+datastore-preference = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -1,6 +1,5 @@
 package org.quickness.di
 
-import android.content.Context
 import androidx.room.RoomDatabase
 import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.core.module.dsl.singleOf
@@ -12,15 +11,4 @@ actual val NativeModule = module {
     single { OkHttp.create() }
     singleOf(::createHttpClient)
     single<RoomDatabase.Builder<TokenDatabase>> { androidDatabaseBuilder() }
-}
-
-object ContextProvider {
-    private var applicationContext: Context? = null
-    fun initialize(context: Context) {
-        applicationContext = context
-    }
-
-    fun getContext(): Context? {
-        return applicationContext
-    }
 }

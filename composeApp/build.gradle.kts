@@ -72,6 +72,7 @@ kotlin {
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqliteBundled)
             implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.datastore.preference)
         }
 
         iosMain.dependencies {
