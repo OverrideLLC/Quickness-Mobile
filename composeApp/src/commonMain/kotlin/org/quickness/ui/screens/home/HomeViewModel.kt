@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -36,7 +35,7 @@ class HomeViewModel(
             var uid: String? = null
             dataStore.data.map {
                 it[UID_KEY] ?: ""
-            }.collectLatest {
+            }.collect {
                 uid = it
             }
 

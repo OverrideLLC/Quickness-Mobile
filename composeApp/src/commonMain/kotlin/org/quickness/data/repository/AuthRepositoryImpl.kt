@@ -1,7 +1,7 @@
 package org.quickness.data.repository
 
-import org.quickness.data.Result.ApiResponse
-import org.quickness.data.Result.AuthResult
+import org.quickness.data.response.ApiResponse
+import org.quickness.data.response.AuthResponse
 import org.quickness.data.request.AuthUserRequest
 import org.quickness.data.service.AuthUserService
 import org.quickness.data.service.FirebaseAuthImpl
@@ -28,10 +28,10 @@ class AuthRepositoryImpl(
      *
      * @param email The user's email address.
      * @param password The user's password.
-     * @return An [AuthResult] object indicating the success or failure of the login attempt.
+     * @return An [AuthResponse] object indicating the success or failure of the login attempt.
      *         This object may contain the user's UID and other authentication details on success.
      */
-    override suspend fun login(email: String, password: String): AuthResult {
+    override suspend fun login(email: String, password: String): AuthResponse {
         return firebaseService.signIn(email, password)
     }
 

@@ -1,4 +1,4 @@
-package org.quickness.data.database.entity
+package org.quickness.data.room.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

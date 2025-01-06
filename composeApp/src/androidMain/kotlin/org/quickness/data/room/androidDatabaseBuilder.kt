@@ -1,8 +1,8 @@
-package org.quickness.data.database
+package org.quickness.data.room
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import org.quickness.data.database.db.TokenDatabase
+import org.quickness.data.room.db.TokenDatabase
 import org.quickness.utils.ContextProvider
 import org.quickness.utils.`object`.DatabaseObjects
 

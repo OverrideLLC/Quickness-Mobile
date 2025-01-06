@@ -2,8 +2,8 @@ package org.quickness.data.repository
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import org.quickness.data.database.db.TokenDatabase
-import org.quickness.data.database.entity.TokenEntity
+import org.quickness.data.room.db.TokenDatabase
+import org.quickness.data.room.entity.TokenEntity
 import org.quickness.interfaces.repository.TokenDatabaseRepository
 
 class TokenDatabaseRepositoryImpl(private val database: TokenDatabase) : TokenDatabaseRepository {

@@ -1,13 +1,13 @@
 @file:Suppress("KotlinNoActualForExpect", "EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 
-package org.quickness.data.database.db
+package org.quickness.data.room.db
 
 import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
-import org.quickness.data.database.dao.TokenDao
-import org.quickness.data.database.entity.TokenEntity
+import org.quickness.data.room.dao.TokenDao
+import org.quickness.data.room.entity.TokenEntity
 
 @Database(
     entities = [TokenEntity::class],

@@ -13,8 +13,8 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import org.quickness.data.database.db.TokenDatabase
-import org.quickness.data.database.localdb.CreateDatabase
+import org.quickness.data.room.db.TokenDatabase
+import org.quickness.data.room.localdb.CreateDatabase
 
 /**
  * Módulo de Koin que define las dependencias de la aplicación.

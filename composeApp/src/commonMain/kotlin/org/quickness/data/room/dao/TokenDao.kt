@@ -1,8 +1,8 @@
-package org.quickness.data.database.dao
+package org.quickness.data.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import org.quickness.data.database.entity.TokenEntity
+import org.quickness.data.room.entity.TokenEntity
 
 @Dao
 interface TokenDao {

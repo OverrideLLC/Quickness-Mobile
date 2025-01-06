@@ -3,9 +3,11 @@ package org.quickness.di
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 import org.quickness.data.repository.AuthRepositoryImpl
+import org.quickness.data.repository.DataStoreRepositoryImpl
 import org.quickness.data.repository.RegisterRepositoryImpl
 import org.quickness.data.repository.TokenDatabaseRepositoryImpl
 import org.quickness.data.repository.TokensRepositoryImpl
+import org.quickness.interfaces.repository.DataStoreRepository
 import org.quickness.interfaces.repository.TokenDatabaseRepository
 
 /**
@@ -15,14 +17,13 @@ import org.quickness.interfaces.repository.TokenDatabaseRepository
  * relacionados con el inicio de sesión, registro de usuarios y obtención de tokens.
  */
 val repositoryModule = module {
-    // Registro de LoginRepository como una fábrica, creando una nueva instancia cada vez que se solicite.
     factoryOf(::AuthRepositoryImpl)
 
-    // Registro de RegisterRepository como una fábrica, creando una nueva instancia cada vez que se solicite.
     factoryOf(::RegisterRepositoryImpl)
 
-    // Registro de TokensRepository como una fábrica, creando una nueva instancia cada vez que se solicite.
     factoryOf(::TokensRepositoryImpl)
 
     factory<TokenDatabaseRepository> { TokenDatabaseRepositoryImpl(get()) }
+
+    factoryOf(::DataStoreRepositoryImpl)
 }

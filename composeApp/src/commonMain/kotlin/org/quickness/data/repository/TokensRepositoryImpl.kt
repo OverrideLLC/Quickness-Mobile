@@ -1,6 +1,6 @@
 package org.quickness.data.repository
 
-import org.quickness.data.Result.TokensResult
+import org.quickness.data.response.TokensResponse
 import org.quickness.data.service.TokensService
 import org.quickness.interfaces.repository.TokensRepository
 
@@ -17,14 +17,14 @@ class TokensRepositoryImpl(
      * Obtiene los tokens de un usuario específico utilizando el servicio de tokens.
      *
      * @param uid Identificador único del usuario.
-     * @return [TokensResult] que contiene el estado y los tokens obtenidos.
+     * @return [TokensResponse] que contiene el estado y los tokens obtenidos.
      */
-    override suspend fun getTokens(uid: String): TokensResult {
+    override suspend fun getTokens(uid: String): TokensResponse {
         // Llamada al servicio de tokens para obtener los tokens del usuario
         return try {
             tokensService.getTokens(uid)
         } catch (e: Exception) {
-            TokensResult(status = e.message ?: "Error connecting to server", tokens = emptyMap())
+            TokensResponse(status = e.message ?: "Error connecting to server", tokens = emptyMap())
         }
     }
 }

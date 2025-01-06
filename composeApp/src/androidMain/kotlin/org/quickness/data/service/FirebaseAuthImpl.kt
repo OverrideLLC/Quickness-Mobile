@@ -12,15 +12,15 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.tasks.await
 import org.quickness.MainActivity
 import org.quickness.SharedPreference
-import org.quickness.data.Result.AuthResult
-import org.quickness.data.Result.ForgotPasswordResult
+import org.quickness.data.response.AuthResponse
+import org.quickness.data.response.ForgotPasswordResponse
 import org.quickness.interfaces.plataform.FirebaseAuth
 import org.quickness.utils.ContextProvider
 
 actual class FirebaseAuthImpl : FirebaseAuth {
     private val firebaseAuth = getInstance()
 
-    actual override suspend fun signIn(email: String, password: String): AuthResult {
+    actual override suspend fun signIn(email: String, password: String): AuthResponse {
         return try {
             // Validación de campos vacíos
             if (email.isBlank() || password.isBlank()) {
@@ -41,29 +41,29 @@ actual class FirebaseAuthImpl : FirebaseAuth {
                 val jwt = tokenResult.token
 
                 return if (jwt != null) {
-                    AuthResult(status = "Success", uid = user.uid, jwt = jwt)
+                    AuthResponse(status = "Success", uid = user.uid, jwt = jwt)
                 } else {
-                    AuthResult(status = "Failure", message = "No se pudo generar el token.")
+                    AuthResponse(status = "Failure", message = "No se pudo generar el token.")
                 }
             }
 
             Log.e("FirebaseService", "Usuario no encontrado tras inicio de sesión.")
-            AuthResult(status = "Failure", message = "Usuario no encontrado.")
+            AuthResponse(status = "Failure", message = "Usuario no encontrado.")
         } catch (e: FirebaseAuthInvalidCredentialsException) {
             Log.e("FirebaseService", "Credenciales inválidas: ${e.message}")
-            AuthResult(
+            AuthResponse(
                 status = "Failure",
                 message = "Credenciales inválidas. Verifique su correo y contraseña."
             )
         } catch (e: FirebaseAuthInvalidUserException) {
             Log.e("FirebaseService", "Usuario no encontrado: ${e.message}")
-            AuthResult(
+            AuthResponse(
                 status = "Failure",
                 message = "Usuario no encontrado. Verifique su correo electrónico."
             )
         } catch (e: Exception) {
             Log.e("FirebaseService", "Error inesperado: ${e.message}")
-            AuthResult(
+            AuthResponse(
                 status = "Failure",
                 message = "Error inesperado: ${e.message}"
             )
@@ -71,15 +71,15 @@ actual class FirebaseAuthImpl : FirebaseAuth {
     }
 
 
-    actual override suspend fun forgotPassword(email: String): ForgotPasswordResult? {
+    actual override suspend fun forgotPassword(email: String): ForgotPasswordResponse? {
         return try {
             firebaseAuth.sendPasswordResetEmail(email).await()
-            ForgotPasswordResult(
+            ForgotPasswordResponse(
                 success = true,
                 message = "Se ha enviado un correo electrónico para restablecer su contraseña."
             )
         } catch (e: Exception) {
-            ForgotPasswordResult(
+            ForgotPasswordResponse(
                 success = false,
                 error = "No se pudo enviar el correo electrónico de restablecimiento de contraseña: ${e.message}"
             )

@@ -32,6 +32,9 @@ kotlin {
     }
 
     sourceSets {
+        androidMain{
+            kotlin.srcDir("androidMain/kotlin")
+        }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.accompanist.systemuicontroller)
