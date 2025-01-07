@@ -1,4 +1,4 @@
-package org.quickness.data.Result
+package org.quickness.data.response
 
 /**
  * Representa el resultado de un proceso de autenticación.
@@ -7,7 +7,7 @@ package org.quickness.data.Result
  * @property uid Identificador único del usuario autenticado. Es opcional y puede ser `null` si la autenticación falla.
  * @property message Mensaje adicional relacionado con el resultado de la autenticación. Puede proporcionar detalles sobre errores o confirmaciones. Es opcional.
  */
-data class AuthResult(
+data class AuthResponse(
     val status: String, // Estado de la autenticación (por ejemplo, éxito o error).
     val uid: String? = null, // UID del usuario si la autenticación fue exitosa; null en caso contrario.
     val jwt: String? = null,

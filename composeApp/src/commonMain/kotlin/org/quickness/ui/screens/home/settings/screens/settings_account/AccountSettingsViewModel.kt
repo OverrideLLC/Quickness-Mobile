@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.data.service.FirebaseService
+import org.quickness.data.service.FirebaseAuthImpl
 import org.quickness.ui.states.AccountState
 import org.quickness.utils.`object`.ValidatesData
 
 class AccountSettingsViewModel(
-    private val firebaseService: FirebaseService
+    private val firebaseService: FirebaseAuthImpl
 ) : ViewModel() {
     private val _state = MutableStateFlow(AccountState())
     val state = _state.asStateFlow()

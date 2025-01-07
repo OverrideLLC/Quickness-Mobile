@@ -9,11 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.quickness.options.qr.ColorQrOptions
+import org.quickness.options.qr.FormatQrOptions
+import org.quickness.options.qr.RoundedQrOptions
 import org.quickness.ui.components.component.DropdownSettings
 import org.quickness.ui.components.component.SettingsItemSwitch
 import quickness.composeapp.generated.resources.Res
@@ -44,7 +45,7 @@ private fun Screen(
                 name = Res.string.format_qr_settings,
                 icon = Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
                 description = Res.string.improve_qr_readability,
-                active = state.format,
+                active = state.format == FormatQrOptions.Low.option,
                 isActive = { viewModel.toggleFormat() }
             )
             Spacer(Modifier.padding(10.dp))
@@ -53,41 +54,12 @@ private fun Screen(
             DropdownSettings(
                 name = Res.string.color_qr_settings,
                 icon = Res.drawable.palette_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                options = listOf("Blue", "Black", "White", "Cream", "warm"),
+                options = ColorQrOptions.entries.map { it.option },
                 exposedHeight = 400.dp,
-                selectedOption = state.colorTag,
+                selectedOption = state.colorQr,
                 onOptionSelected = {
-                    when (it) {
-                        "Blue" -> viewModel.toggleColor(
-                            colorQr = Color(0xFF5ce1e6).toArgb(),
-                            colorBackground = Color.Black.toArgb(),
-                            colorTag = it
-                        )
-
-                        "Black" -> viewModel.toggleColor(
-                            colorQr = Color.Black.toArgb(),
-                            colorBackground = Color.White.toArgb(),
-                            colorTag = it
-                        )
-
-                        "White" -> viewModel.toggleColor(
-                            colorQr = Color.White.toArgb(),
-                            colorBackground = Color.Black.toArgb(),
-                            colorTag = it
-                        )
-
-                        "Cream" -> viewModel.toggleColor(
-                            colorQr = Color(0xff2B3A67).toArgb(),
-                            colorBackground = Color(0xFFFAF3E0).toArgb(),
-                            colorTag = it
-                        )
-
-                        "warm" -> viewModel.toggleColor(
-                            colorQr = Color(0xff3E2723).toArgb(),
-                            colorBackground = Color(0xffFFF8E1).toArgb(),
-                            colorTag = it
-                        )
-                    }
+                    ColorQrOptions.fromOption(it)
+                        ?.let { color -> viewModel.toggleColor(color) }
                 },
             )
             Spacer(Modifier.padding(10.dp))
@@ -96,17 +68,12 @@ private fun Screen(
             DropdownSettings(
                 name = Res.string.rounded_qr_settings,
                 icon = Res.drawable.rounded_corner_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                options = listOf("Rounded", "Circular", "Rectangular"),
+                options = RoundedQrOptions.entries.map { it.option },
                 exposedHeight = 200.dp,
                 selectedOption = state.rounded,
                 onOptionSelected = {
-                    when (it) {
-                        "Rounded" -> viewModel.toggleRounded("Rounded")
-
-                        "Circular" -> viewModel.toggleRounded("Circular")
-
-                        "Rectangular" -> viewModel.toggleRounded("Rectangular")
-                    }
+                    RoundedQrOptions.fromOption(it)
+                        ?.let { rounded -> viewModel.toggleRounded(rounded) }
                 },
             )
         }

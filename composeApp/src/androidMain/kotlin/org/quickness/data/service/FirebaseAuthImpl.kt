@@ -1,24 +1,25 @@
+@file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+
 package org.quickness.data.service
 
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FirebaseAuth.getInstance
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.tasks.await
 import org.quickness.MainActivity
-import org.quickness.SharedPreference
-import org.quickness.data.Result.AuthResult
-import org.quickness.data.Result.ForgotPasswordResult
-import org.quickness.di.ContextProvider
+import org.quickness.data.response.AuthResponse
+import org.quickness.data.response.ForgotPasswordResponse
 import org.quickness.interfaces.plataform.FirebaseAuth
+import org.quickness.utils.ContextProvider
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class FirebaseService : FirebaseAuth {
-    private val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
+actual class FirebaseAuthImpl : FirebaseAuth {
+    private val firebaseAuth = getInstance()
 
-    actual override suspend fun signIn(email: String, password: String): AuthResult {
+    actual override suspend fun signIn(email: String, password: String): AuthResponse {
         return try {
             // Validación de campos vacíos
             if (email.isBlank() || password.isBlank()) {
@@ -39,29 +40,29 @@ actual class FirebaseService : FirebaseAuth {
                 val jwt = tokenResult.token
 
                 return if (jwt != null) {
-                    AuthResult(status = "Success", uid = user.uid, jwt = jwt)
+                    AuthResponse(status = "Success", uid = user.uid, jwt = jwt)
                 } else {
-                    AuthResult(status = "Failure", message = "No se pudo generar el token.")
+                    AuthResponse(status = "Failure", message = "No se pudo generar el token.")
                 }
             }
 
             Log.e("FirebaseService", "Usuario no encontrado tras inicio de sesión.")
-            AuthResult(status = "Failure", message = "Usuario no encontrado.")
+            AuthResponse(status = "Failure", message = "Usuario no encontrado.")
         } catch (e: FirebaseAuthInvalidCredentialsException) {
             Log.e("FirebaseService", "Credenciales inválidas: ${e.message}")
-            AuthResult(
+            AuthResponse(
                 status = "Failure",
                 message = "Credenciales inválidas. Verifique su correo y contraseña."
             )
         } catch (e: FirebaseAuthInvalidUserException) {
             Log.e("FirebaseService", "Usuario no encontrado: ${e.message}")
-            AuthResult(
+            AuthResponse(
                 status = "Failure",
                 message = "Usuario no encontrado. Verifique su correo electrónico."
             )
         } catch (e: Exception) {
             Log.e("FirebaseService", "Error inesperado: ${e.message}")
-            AuthResult(
+            AuthResponse(
                 status = "Failure",
                 message = "Error inesperado: ${e.message}"
             )
@@ -69,15 +70,15 @@ actual class FirebaseService : FirebaseAuth {
     }
 
 
-    actual override suspend fun forgotPassword(email: String): ForgotPasswordResult? {
+    actual override suspend fun forgotPassword(email: String): ForgotPasswordResponse? {
         return try {
             firebaseAuth.sendPasswordResetEmail(email).await()
-            ForgotPasswordResult(
+            ForgotPasswordResponse(
                 success = true,
                 message = "Se ha enviado un correo electrónico para restablecer su contraseña."
             )
         } catch (e: Exception) {
-            ForgotPasswordResult(
+            ForgotPasswordResponse(
                 success = false,
                 error = "No se pudo enviar el correo electrónico de restablecimiento de contraseña: ${e.message}"
             )
@@ -150,7 +151,6 @@ actual class FirebaseService : FirebaseAuth {
 
     actual override suspend fun logOut(onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         firebaseAuth.signOut()
-        SharedPreference().logOut()
         val context = ContextProvider.getContext()
         val intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

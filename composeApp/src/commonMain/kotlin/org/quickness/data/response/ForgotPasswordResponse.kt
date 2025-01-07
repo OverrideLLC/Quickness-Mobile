@@ -1,6 +1,6 @@
-package org.quickness.data.Result
+package org.quickness.data.response
 
-data class ForgotPasswordResult(
+data class ForgotPasswordResponse(
     val success: Boolean,
     val message: String? = null,
     val error: String? = null
