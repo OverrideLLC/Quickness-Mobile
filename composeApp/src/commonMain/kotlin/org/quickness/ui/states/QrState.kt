@@ -1,6 +1,6 @@
 package org.quickness.ui.states
 
-import androidx.compose.ui.graphics.Color
+import org.quickness.options.qr.ColorQrOptions
 import qrgenerator.qrkitpainter.QrPainter
 
 /**
@@ -17,4 +17,5 @@ data class QrState(
     var qrCode: QrPainter? = null,
     var lastQrData: String? = null,
     var currentInterval: String? = null,
+    val colors: List<Int> = ColorQrOptions.Black.colors,
 )

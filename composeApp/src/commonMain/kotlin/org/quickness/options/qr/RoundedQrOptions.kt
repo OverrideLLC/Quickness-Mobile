@@ -8,15 +8,15 @@ import qrgenerator.qrkitpainter.createSquare
 enum class RoundedQrOptions(val option: String, val qrKitShapes: QrKitPixelShape) {
     Rounded(
         option = "Rounded",
-        qrKitShapes = QrKitPixelShape.createRoundCorners(.1f)
+        qrKitShapes = QrKitPixelShape.createRoundCorners(1f)
     ),
     Circular(
         option = "Circular",
-        qrKitShapes = QrKitPixelShape.createCircle(.5f)
+        qrKitShapes = QrKitPixelShape.createCircle(1f)
     ),
     Rectangular(
         option = "Rectangular",
-        qrKitShapes = QrKitPixelShape.createSquare(.1f)
+        qrKitShapes = QrKitPixelShape.createSquare(1f)
     );
     companion object {
         fun fromOption(option: String): RoundedQrOptions? =

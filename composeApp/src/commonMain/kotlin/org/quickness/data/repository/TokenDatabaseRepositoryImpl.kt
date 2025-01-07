@@ -25,4 +25,10 @@ class TokenDatabaseRepositoryImpl(
         val tokenEntity = tokenDao.getTokenByIndex(index)
         return tokenEntity
     }
+
+    override suspend fun getTokenById(id: Int): TokenEntity? {
+        val tokenEntity = tokenDao.getTokenById(id)
+        return tokenEntity
+    }
+
 }

@@ -3,6 +3,7 @@ package org.quickness.data.repository
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -34,14 +35,13 @@ class DataStoreRepositoryImpl(
         key: String,
         defaultValue: String
     ): String? {
-        withContext(dispatcher) {
+        return withContext(dispatcher) {
             dataStore.data.map {
                 it[stringPreferencesKey(key)]
-            }.first().also { value ->
-                return@withContext value ?: saveString(mapOf(key to defaultValue))
+            }.first() ?: defaultValue.also { value ->
+                saveString(mapOf(key to value))
             }
         }
-        return null
     }
 
     override suspend fun saveInt(data: Map<String, Int>) {
@@ -55,14 +55,13 @@ class DataStoreRepositoryImpl(
     }
 
     override suspend fun getInt(key: String, defaultValue: Int): Int? {
-        withContext(dispatcher) {
+        return withContext(dispatcher) {
             dataStore.data.map {
                 it[intPreferencesKey(key)]
-            }.first().also { value ->
-                return@withContext value ?: saveInt(mapOf(key to defaultValue))
+            }.first() ?: defaultValue.also { value ->
+                saveInt(mapOf(key to value))
             }
         }
-        return null
     }
 
     override suspend fun saveLong(data: Map<String, Long>) {
@@ -76,14 +75,13 @@ class DataStoreRepositoryImpl(
     }
 
     override suspend fun getLong(key: String, defaultValue: Long): Long? {
-        withContext(dispatcher) {
+        return withContext(dispatcher) {
             dataStore.data.map {
-                it[intPreferencesKey(key)]
-            }.first().also { value ->
-                return@withContext value ?: saveLong(mapOf(key to defaultValue))
+                it[longPreferencesKey(key)]
+            }.first() ?: defaultValue.also { value ->
+                saveLong(mapOf(key to value))
             }
         }
-        return null
     }
 
     override suspend fun saveBoolean(data: Map<String, Boolean>) {
@@ -100,14 +98,13 @@ class DataStoreRepositoryImpl(
         key: String,
         defaultValue: Boolean
     ): Boolean? {
-        withContext(dispatcher) {
+        return withContext(dispatcher) {
             dataStore.data.map {
                 it[booleanPreferencesKey(key)]
-            }.first().also { value ->
-                return@withContext value ?: saveBoolean(mapOf(key to defaultValue))
+            }.first() ?: defaultValue.also { value ->
+                saveBoolean(mapOf(key to value))
             }
         }
-        return null
     }
 
     override suspend fun saveFloat(data: Map<String, Float>) {
@@ -121,14 +118,13 @@ class DataStoreRepositoryImpl(
     }
 
     override suspend fun getFloat(key: String, defaultValue: Float): Float? {
-        withContext(dispatcher) {
+        return withContext(dispatcher) {
             dataStore.data.map {
                 it[floatPreferencesKey(key)]
-            }.first().also { value ->
-                return@withContext value ?: saveFloat(mapOf(key to defaultValue))
+            }.first() ?: defaultValue.also { value ->
+                saveFloat(mapOf(key to defaultValue))
             }
         }
-        return null
     }
 
     override suspend fun saveDouble(data: Map<String, Double>) {
@@ -145,14 +141,13 @@ class DataStoreRepositoryImpl(
         key: String,
         defaultValue: Double
     ): Double? {
-        withContext(dispatcher) {
+        return withContext(dispatcher) {
             dataStore.data.map {
-                it[floatPreferencesKey(key)]
-            }.first().also { value ->
-                return@withContext value?.toDouble() ?: saveDouble(mapOf(key to defaultValue))
+                it[doublePreferencesKey(key)]
+            }.first() ?: defaultValue.also { value ->
+                saveDouble(mapOf(key to value))
             }
         }
-        return null
     }
 
     override suspend fun saveSet(key: String, value: Set<String>) {
@@ -167,13 +162,12 @@ class DataStoreRepositoryImpl(
         key: String,
         defaultValue: Set<String>
     ): Set<String>? {
-        withContext(dispatcher) {
+        return withContext(dispatcher) {
             dataStore.data.map {
                 it[stringSetPreferencesKey(key)]
-            }.first().also { value ->
-                return@withContext value ?: saveSet(key, defaultValue)
+            }.first() ?: defaultValue.also { value ->
+                saveSet(key, value)
             }
         }
-        return null
     }
 }

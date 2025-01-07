@@ -43,7 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
@@ -53,7 +52,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import org.quickness.ui.components.styles.ShimmerItem
-import org.quickness.utils.`object`.KeysCache.QR_BACKGROUND_KEY
 import qrgenerator.qrkitpainter.QrPainter
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.error_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -78,7 +76,13 @@ private fun TicketScreen(viewModel: QrViewModel) {
     var isExpanded by remember { mutableStateOf(false) }
     var isBlurred by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) { isVisible = true }
+    LaunchedEffect(Unit) {
+        isVisible = true
+        viewModel.getColors()
+    }
+    LaunchedEffect(Unit) {
+        viewModel.updateQrCodeForCurrentInterval()
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -100,10 +104,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                         .background(
                             if (!isExpanded)
                                 Color(
-                                    state.sharedPreference.getInt(
-                                        QR_BACKGROUND_KEY,
-                                        Color.Black.toArgb()
-                                    )
+                                    state.colors[1]
                                 ).copy(0.5f)
                             else
                                 Color.Transparent
@@ -131,7 +132,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                                 Icon(
                                     painter = painterResource(Res.drawable.logo_swiftid_centrado),
                                     contentDescription = "Logo",
-                                    tint = state.color,
+                                    tint = Color(state.colors[0]),
                                     modifier = Modifier.size(100.dp)
                                 )
                             }
@@ -142,17 +143,12 @@ private fun TicketScreen(viewModel: QrViewModel) {
                             isExpanded = isExpanded,
                             isBlurred = isBlurred,
                             qrCode = state.qrCode,
-                            colorBackground = Color(
-                                state.sharedPreference.getInt(
-                                    QR_BACKGROUND_KEY,
-                                    Color.Black.toArgb()
-                                )
-                            )
+                            colorBackground = Color(state.colors[1])
                         ) {
                             isExpanded = !isExpanded
                         }
 
-                        blurQr(isBlurred, state.color) {
+                        blurQr(isBlurred, Color(state.colors[0])) {
                             isBlurred = !isBlurred
                         }
 
@@ -164,7 +160,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                                     slideOutVertically(targetOffsetY = { it / 2 })
                         ) {
                             Spacer(modifier = Modifier.height(16.dp))
-                            ImportantInfoItem(state.color)
+                            ImportantInfoItem(Color(state.colors[0]))
                         }
                         Spacer(Modifier.padding(10.dp))
                     }
@@ -220,7 +216,7 @@ private fun TicketQRCode(
             .background(colorBackground),
         contentAlignment = Alignment.Center
     ) {
-        qrCode?.let {
+        qrCode?.also {
             Image(
                 painter = qrCode,
                 contentDescription = "Código QR generado",
