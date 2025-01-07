@@ -1,18 +1,28 @@
 package org.quickness.data.repository
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import org.quickness.data.room.db.TokenDatabase
+import org.quickness.data.room.dao.TokenDao
 import org.quickness.data.room.entity.TokenEntity
 import org.quickness.interfaces.repository.TokenDatabaseRepository
 
-class TokenDatabaseRepositoryImpl(private val database: TokenDatabase) : TokenDatabaseRepository {
-    private val dispatcher = Dispatchers.IO
+class TokenDatabaseRepositoryImpl(
+    private val tokenDao: TokenDao
+) : TokenDatabaseRepository {
 
-    override suspend fun insertTokens(tokens: List<TokenEntity>) {
-        with(dispatcher) {
-            database.tokenDao().insertTokens(tokens)
-        }
+    override suspend fun getAllTokens(): List<TokenEntity> {
+        return tokenDao.getAllTokens()
     }
 
+    override suspend fun saveTokens(tokens: Map<Int, String>, currentTime: Long) {
+        val tokenEntities = tokens.map { TokenEntity(it.key, it.value, currentTime) }
+        tokenDao.insertTokens(tokenEntities)
+    }
+
+    override suspend fun clearTokens() {
+        tokenDao.deleteAllTokens()
+    }
+
+    override suspend fun getTokenByIndex(index: Int): TokenEntity? {
+        val tokenEntity = tokenDao.getTokenByIndex(index)
+        return tokenEntity
+    }
 }

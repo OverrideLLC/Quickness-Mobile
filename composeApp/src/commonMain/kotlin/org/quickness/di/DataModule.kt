@@ -6,6 +6,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import org.quickness.SharedPreference
 import org.quickness.data.datastore.createDataStore
+import org.quickness.data.room.dao.TokenDao
 
 /**
  * Módulo de Koin que proporciona las dependencias relacionadas con los datos de la aplicación.

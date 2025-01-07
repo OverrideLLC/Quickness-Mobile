@@ -18,14 +18,14 @@ class TokensService(private val httpClient: HttpClient) {
     /**
      * Solicita los tokens para un usuario específico desde el backend.
      *
-     * @param uid Identificador único del usuario.
+     * @param JWT Identificador único del usuario.
      * @return [TokensResponse] que contiene el estado y el mapa de tokens obtenidos.
      */
-    suspend fun getTokens(uid: String): TokensResponse {
+    suspend fun getTokens(JWT: String): TokensResponse {
         return try {
             // Construcción y envío de la solicitud HTTP
             val request = TokensRequest(
-                uid = uid,
+                JWT = JWT,
                 root = "qr_tokens_generate"
             )
 

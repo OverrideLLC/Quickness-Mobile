@@ -13,6 +13,7 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import org.quickness.data.room.dao.TokenDao
 import org.quickness.data.room.db.TokenDatabase
 import org.quickness.data.room.localdb.CreateDatabase
 
@@ -21,9 +22,8 @@ import org.quickness.data.room.localdb.CreateDatabase
  */
 val appModule: Module = module {
     singleOf(::createHttpClient)
-    single<TokenDatabase> {
-        CreateDatabase(get()).getTokenDatabase()
-    }
+    single<TokenDatabase> { CreateDatabase(get()).getTokenDatabase() }
+    single<TokenDao> { get<TokenDatabase>().tokenDao() }
 }
 
 /**
