@@ -13,20 +13,17 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import org.quickness.SharedPreference
-import org.quickness.data.model.User
-import org.quickness.utils.`object`.KeysCache.UID_KEY
+import org.quickness.data.room.dao.TokenDao
+import org.quickness.data.room.db.TokenDatabase
+import org.quickness.data.room.localdb.CreateDatabase
 
 /**
  * Módulo de Koin que define las dependencias de la aplicación.
  */
 val appModule: Module = module {
     singleOf(::createHttpClient)
-    single {
-        User(
-            uid = SharedPreference().getString(UID_KEY, "")
-        )
-    }
+    single<TokenDatabase> { CreateDatabase(get()).getTokenDatabase() }
+    single<TokenDao> { get<TokenDatabase>().tokenDao() }
 }
 
 /**
@@ -80,7 +77,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
             repositoryModule,
             viewModelsHome,
             viewModelsStart,
-            networkModule,
+            serviceModule,
             NativeModule,
             firebaseModule
         )

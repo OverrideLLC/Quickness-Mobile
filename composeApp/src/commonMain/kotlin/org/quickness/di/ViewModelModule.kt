@@ -2,6 +2,7 @@ package org.quickness.di
 
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
+import org.quickness.ui.navegation.SharedNavigationViewModel
 import org.quickness.ui.screens.forgot_password.ForgotPasswordViewModel
 import org.quickness.ui.screens.home.HomeViewModel
 import org.quickness.ui.screens.home.qr.QrViewModel
@@ -43,6 +44,8 @@ val viewModelsStart = module {
     viewModelOf(::HomeViewModel)
 
     viewModelOf(::ForgotPasswordViewModel)
+
+    viewModelOf(::SharedNavigationViewModel)
 }
 
 val viewModelsSetting = module {

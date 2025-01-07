@@ -1,6 +1,6 @@
 package org.quickness.interfaces.repository
 
-import org.quickness.data.Result.ApiResponse
+import org.quickness.data.response.ApiResponse
 
 /**
  * Repository interface for user registration operations.

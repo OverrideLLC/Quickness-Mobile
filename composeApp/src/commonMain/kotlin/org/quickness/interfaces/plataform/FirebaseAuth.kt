@@ -1,7 +1,7 @@
 package org.quickness.interfaces.plataform
 
-import org.quickness.data.Result.AuthResult
-import org.quickness.data.Result.ForgotPasswordResult
+import org.quickness.data.response.AuthResponse
+import org.quickness.data.response.ForgotPasswordResponse
 
 /**
  * An interface that defines the contract for Firebase Authentication operations.
@@ -18,18 +18,18 @@ interface FirebaseAuth {
      * Signs in a user with the provided email and password.
      *
      * This function attempts to authenticate a user using their email and password.
-     * It returns an [AuthResult] object, which indicates whether the sign-in was successful
+     * It returns an [AuthResponse] object, which indicates whether the sign-in was successful
      * and provides information about the authenticated user.
      *
      * @param email The user's email address.
      * @param password The user's password.
-     * @return An [AuthResult] object representing the result of the sign-in attempt.
+     * @return An [AuthResponse] object representing the result of the sign-in attempt.
      *
      * @throws [FirebaseAuthException] If an error occurs during the sign-in process.
      * This could be due to invalid credentials, network issues, or other authentication errors.
      * Check the exception message for more details.
      */
-    suspend fun signIn(email: String, password: String): AuthResult
+    suspend fun signIn(email: String, password: String): AuthResponse
 
     /**
      * Initiates the password reset process for a user with the given email address.
@@ -39,7 +39,7 @@ interface FirebaseAuth {
      * their password.
      *
      * @param email The email address of the user who wants to reset their password.
-     * @return A [ForgotPasswordResult] object indicating the outcome of the operation.
+     * @return A [ForgotPasswordResponse] object indicating the outcome of the operation.
      *         This can be either `Success` if the email was sent successfully, or
      *         `Error` with a specific error code if something went wrong.
      *         Returns `null` if the user is not found.
@@ -48,7 +48,7 @@ interface FirebaseAuth {
      *                   due to network issues, database errors, or other unforeseen
      *                   circumstances.
      */
-    suspend fun forgotPassword(email: String): ForgotPasswordResult?
+    suspend fun forgotPassword(email: String): ForgotPasswordResponse?
 
     /**
      * Reauthenticates the user with their current password and then changes their password to a new one.

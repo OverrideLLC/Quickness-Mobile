@@ -1,4 +1,4 @@
-package org.quickness.data.Result
+package org.quickness.data.response
 
 import kotlinx.serialization.Serializable
 
@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  *                  y los valores son los tokens en sí.
  */
 @Serializable
-data class TokensResult(
+data class TokensResponse(
     val status: String, // Estado del proceso (por ejemplo, éxito o error).
     val tokens: Map<String, String>, // Mapa con los tokens obtenidos o actualizados.
 )

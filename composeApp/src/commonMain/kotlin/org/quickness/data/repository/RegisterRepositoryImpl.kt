@@ -1,7 +1,6 @@
 package org.quickness.data.repository
 
-import org.quickness.data.Result.ApiResponse
-import org.quickness.data.Result.RegisterResult
+import org.quickness.data.response.ApiResponse
 import org.quickness.data.service.RegisterService
 import org.quickness.interfaces.repository.RegisterRepository
 

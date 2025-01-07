@@ -1,6 +1,6 @@
 package org.quickness.interfaces.repository
 
-import org.quickness.data.Result.TokensResult
+import org.quickness.data.response.TokensResponse
 
 /**
  * Repository interface responsible for managing and accessing user authentication tokens.
@@ -22,12 +22,12 @@ interface TokensRepository {
      * This function fetches the access token and refresh token associated with the given user ID.
      * It is typically used to authenticate a user and provide access to protected resources.
      *
-     * @param uid The unique identifier of the user.
-     * @return A [TokensResult] object containing the access token and refresh token.
+     * @param JWT The unique identifier of the user.
+     * @return A [TokensResponse] object containing the access token and refresh token.
      *         If an error occurs during token retrieval, the result will contain an error message.
      *
      * @throws [Exception] if there is an issue retrieving the tokens. This could be due to
      *                     network connectivity problems, invalid credentials, or server errors.
      */
-    suspend fun getTokens(uid: String): TokensResult
+    suspend fun getTokens(JWT: String): TokensResponse
 }
