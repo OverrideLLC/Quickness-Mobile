@@ -9,14 +9,10 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonObjectBuilder
 import kotlinx.serialization.json.buildJsonObject
-import org.quickness.data.Result.ApiResponse
-import org.quickness.data.Result.RegisterResult
+import org.quickness.data.response.ApiResponse
 import org.quickness.data.request.RegisterRequest
 import org.quickness.utils.`object`.ApiLinks
-import org.quickness.utils.`object`.Constants
 
 class RegisterService(private val httpClient: HttpClient) {
 
@@ -59,7 +55,7 @@ class RegisterService(private val httpClient: HttpClient) {
             ApiResponse(
                 status = 500,
                 message = "Error en el registro de usuario: ${e.message}",
-                data = buildJsonObject {  }
+                data = buildJsonObject { }
             )
         }
     }

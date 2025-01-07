@@ -1,4 +1,4 @@
-package org.quickness.data.Result
+package org.quickness.data.response
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject

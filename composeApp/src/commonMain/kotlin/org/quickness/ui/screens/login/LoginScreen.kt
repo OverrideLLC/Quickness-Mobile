@@ -31,15 +31,17 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.quickness.tooling.Preview
 import org.quickness.ui.components.component.ButtonAccess
 import org.quickness.ui.components.component.LogoAndTitle
-import org.quickness.ui.components.helpers.Message
 import org.quickness.ui.components.fields.TextFieldCustomEmail
 import org.quickness.ui.components.fields.TextFieldCustomPassword
+import org.quickness.ui.components.helpers.Message
 import org.quickness.ui.components.helpers.powered
 import org.quickness.ui.states.LoginState
 import org.quickness.utils.routes.RoutesStart
@@ -64,18 +66,17 @@ private fun Screen(
 ) {
     val state by viewModel.state.collectAsState()
     val infiniteTransition = rememberInfiniteTransition()
-    // Animación de colores oscuros
     val color1 by infiniteTransition.animateColor(
-        initialValue = colorScheme.background, // Background oscuro
-        targetValue = colorScheme.onBackground, // Turquesa oscuro (Primary)
+        initialValue = colorScheme.background,
+        targetValue = colorScheme.onBackground,
         animationSpec = infiniteRepeatable(
             animation = tween(3000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
     val color2 by infiniteTransition.animateColor(
-        initialValue = colorScheme.onBackground, // Secundario oscuro
-        targetValue = colorScheme.primary, // Verde oscuro (Success)
+        initialValue = colorScheme.onBackground,
+        targetValue = colorScheme.primary,
         animationSpec = infiniteRepeatable(
             animation = tween(4000, easing = LinearEasing, delayMillis = 1000),
             repeatMode = RepeatMode.Reverse

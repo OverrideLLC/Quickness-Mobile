@@ -1,51 +1,88 @@
 package org.quickness.ui.screens.home.settings.screens.settings_qr
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import org.quickness.SharedPreference
+import kotlinx.coroutines.launch
+import org.quickness.interfaces.repository.DataStoreRepository
 import org.quickness.interfaces.viewmodels.QrSettingsInterface
+import org.quickness.options.qr.ColorQrOptions
+import org.quickness.options.qr.FormatQrOptions
+import org.quickness.options.qr.QrOptionsKeys.FORMAT_KEY
+import org.quickness.options.qr.QrOptionsKeys.QR_COLOR_KEY
+import org.quickness.options.qr.QrOptionsKeys.ROUNDED_QR_KEY
+import org.quickness.options.qr.RoundedQrOptions
 import org.quickness.ui.states.QrSettingsState
-import org.quickness.utils.`object`.KeysCache.FORMAT_KEY
-import org.quickness.utils.`object`.KeysCache.QR_BACKGROUND_KEY
-import org.quickness.utils.`object`.KeysCache.QR_COLOR_KEY
-import org.quickness.utils.`object`.KeysCache.QR_TAG_KEY
-import org.quickness.utils.`object`.KeysCache.ROUNDED_ROUNDED_QR_KEY
 
 class QrSettingsViewModel(
-    private val sharedPreference: SharedPreference,
+    private val dataStoreRepository: DataStoreRepository,
 ) : ViewModel(), QrSettingsInterface {
-    private val _state = MutableStateFlow(QrSettingsState(sharedPreference))
+    private val _state = MutableStateFlow(QrSettingsState())
     val state = _state.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            val format = dataStoreRepository.getString(
+                key = FORMAT_KEY,
+                defaultValue = FormatQrOptions.Low.option
+            ) ?: FormatQrOptions.Low.option
+            val colorQr = dataStoreRepository.getString(
+                key = QR_COLOR_KEY,
+                defaultValue = ColorQrOptions.Black.option
+            ) ?: ColorQrOptions.Black.option
+            val rounded = dataStoreRepository.getString(
+                key = ROUNDED_QR_KEY,
+                defaultValue = RoundedQrOptions.Rounded.option
+            ) ?: RoundedQrOptions.Rounded.option
+            updateState {
+                copy(
+                    format = format,
+                    colorQr = colorQr,
+                    rounded = rounded,
+                )
+            }
+        }
+    }
 
     private fun updateState(update: QrSettingsState.() -> QrSettingsState) {
         _state.value = _state.value.update()
     }
 
     override fun toggleFormat() {
-        updateState { copy(format = !format, isLoadings = true) }
-        sharedPreference.setBoolean(FORMAT_KEY, _state.value.format)
+        viewModelScope.launch {
+            val format = if (_state.value.format == FormatQrOptions.High.option) {
+                updateState { copy(format = FormatQrOptions.Low.option) }
+                FormatQrOptions.Low.option
+            } else {
+                updateState { copy(format = FormatQrOptions.High.option) }
+                FormatQrOptions.High.option
+            }
+            dataStoreRepository.saveString(mapOf(FORMAT_KEY to format))
+        }
     }
 
     override fun toggleColor(
-        colorQr: Int,
-        colorBackground: Int,
-        colorTag: String,
+        colorQr: ColorQrOptions,
     ) {
-        updateState {
-            copy(
-                colorQr = colorQr,
-                colorBackground = colorBackground,
-                colorTag = colorTag,
-            )
+        viewModelScope.launch {
+            updateState {
+                copy(
+                    colorQr = colorQr.option
+                )
+            }
+            dataStoreRepository.saveString(mapOf(QR_COLOR_KEY to colorQr.option))
         }
-        sharedPreference.setInt(QR_COLOR_KEY, colorQr)
-        sharedPreference.setInt(QR_BACKGROUND_KEY, colorBackground)
-        sharedPreference.setString(QR_TAG_KEY, colorTag)
     }
 
-    override fun toggleRounded(rounded: String) {
-        updateState { copy(rounded = rounded) }
-        sharedPreference.setString(ROUNDED_ROUNDED_QR_KEY, rounded)
+    override fun toggleRounded(rounded: RoundedQrOptions) {
+        viewModelScope.launch {
+            updateState {
+                copy(
+                    rounded = rounded.option
+                )
+            }
+            dataStoreRepository.saveString(mapOf(ROUNDED_QR_KEY to rounded.option))
+        }
     }
 }

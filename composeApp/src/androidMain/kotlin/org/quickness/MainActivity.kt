@@ -1,12 +1,15 @@
 package org.quickness
 
+import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AnticipateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
+import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -18,16 +21,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val systemUiController = rememberSystemUiController()
-
             WindowCompat.setDecorFitsSystemWindows(window, false)
             systemUiController.setStatusBarColor(
                 color = Color.Transparent,
-                darkIcons = false // Cambia a `true` si quieres íconos oscuros en la barra de estado
+                darkIcons = false
             )
-
             systemUiController.setNavigationBarColor(
                 color = Color.Transparent,
-                darkIcons = false // Cambia a `true` si quieres íconos oscuros en la barra de navegación
+                darkIcons = false
             )
             App()
         }
@@ -36,5 +37,16 @@ class MainActivity : ComponentActivity() {
     private fun setupSplashScreen() {
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition { false }
+        splashScreen.setOnExitAnimationListener { splashScreenViewProvider ->
+            val slideUp = ObjectAnimator.ofFloat(
+                splashScreenViewProvider.view,
+                View.TRANSLATION_Y,
+                0f,
+                -splashScreenViewProvider.view.height.toFloat()
+            )
+            slideUp.interpolator = AnticipateInterpolator()
+            slideUp.doOnEnd { splashScreenViewProvider.remove() }
+            slideUp.start()
+        }
     }
 }

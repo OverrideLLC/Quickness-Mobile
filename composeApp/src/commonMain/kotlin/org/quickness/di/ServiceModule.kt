@@ -12,7 +12,7 @@ import org.quickness.data.service.TokensService
  * Este módulo registra los servicios que se encargan de la interacción con el backend para el registro
  * de usuarios y la obtención de tokens de acceso.
  */
-val networkModule = module {
+val serviceModule = module {
     // Registro de RegisterService como una fábrica, creando una nueva instancia cada vez que se solicite.
     factoryOf(::RegisterService)
 

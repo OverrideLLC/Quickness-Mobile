@@ -1,7 +1,7 @@
 package org.quickness.interfaces.repository
 
-import org.quickness.data.Result.ApiResponse
-import org.quickness.data.Result.AuthResult
+import org.quickness.data.response.ApiResponse
+import org.quickness.data.response.AuthResponse
 
 /**
  * Repository interface for authentication-related operations.
@@ -16,13 +16,13 @@ interface AuthRepository {
      *
      * @param email The user's email address.
      * @param password The user's password.
-     * @return An [AuthResult] object indicating the success or failure of the login attempt.
+     * @return An [AuthResponse] object indicating the success or failure of the login attempt.
      *         This object will contain either the authenticated user or an error message.
      *
      * @throws [Exception] If an unexpected error occurs during the login process.
      *                     This could be due to network issues, server errors, etc.
      */
-    suspend fun login(email: String, password: String): AuthResult
+    suspend fun login(email: String, password: String): AuthResponse
     /**
      * Verifies and decodes the provided JWT token.
      *
