@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.tasks.await
 import org.quickness.MainActivity
-import org.quickness.SharedPreference
 import org.quickness.data.response.AuthResponse
 import org.quickness.data.response.ForgotPasswordResponse
 import org.quickness.interfaces.plataform.FirebaseAuth
@@ -152,7 +151,6 @@ actual class FirebaseAuthImpl : FirebaseAuth {
 
     actual override suspend fun logOut(onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         firebaseAuth.signOut()
-        SharedPreference().logOut()
         val context = ContextProvider.getContext()
         val intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
