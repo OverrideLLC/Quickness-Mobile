@@ -50,6 +50,7 @@ kotlin {
             implementation(libs.play.services.location)
             implementation(libs.play.services.maps)
             implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.androidx.biometric)
         }
 
         commonMain.dependencies {

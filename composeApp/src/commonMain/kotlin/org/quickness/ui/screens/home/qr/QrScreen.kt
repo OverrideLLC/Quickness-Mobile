@@ -49,6 +49,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.quickness.plataform.BiometricAuth
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import org.quickness.ui.components.styles.ShimmerItem
@@ -74,13 +75,12 @@ private fun TicketScreen(viewModel: QrViewModel) {
     val state = viewModel.qrState.collectAsState().value
     var isVisible by remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(false) }
-    var isBlurred by remember { mutableStateOf(false) }
+    var isBlurred by remember { mutableStateOf(true) }
+    var showBiometricPrompt by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         isVisible = true
         viewModel.getColors()
-    }
-    LaunchedEffect(Unit) {
         viewModel.updateQrCodeForCurrentInterval()
     }
 
@@ -148,9 +148,16 @@ private fun TicketScreen(viewModel: QrViewModel) {
                             isExpanded = !isExpanded
                         }
 
-                        blurQr(isBlurred, Color(state.colors[0])) {
-                            isBlurred = !isBlurred
-                        }
+                        blurQr(
+                            isBlurred = isBlurred,
+                            color = Color(state.colors[0]),
+                            onActive = {
+                                isBlurred = true
+                            },
+                            onInactive = {
+                                showBiometricPrompt = true
+                            }
+                        )
 
                         AnimatedVisibility(
                             visible = !isExpanded,
@@ -168,16 +175,40 @@ private fun TicketScreen(viewModel: QrViewModel) {
             }
         }
     }
+
+    // Prompt biométrico
+    if (showBiometricPrompt) {
+        BiometricAuth().Authenticate(
+            onSuccess = {
+                isBlurred = false // Desactiva el desenfoque del QR
+                showBiometricPrompt = false // Cierra el prompt biométrico
+            },
+            onError = {
+                isBlurred = true // Mantiene el QR desenfocado si hay error
+                showBiometricPrompt = false // Cierra el prompt incluso en error
+            }
+        )
+    }
+
+    // Reinicia el flujo cuando el QR se desenfoca nuevamente
+    LaunchedEffect(isBlurred) {
+        if (isBlurred) {
+            showBiometricPrompt = false
+        }
+    }
 }
 
 @Composable
 private fun blurQr(
     isBlurred: Boolean,
     color: Color,
-    onClick: () -> Unit
+    onActive: () -> Unit,
+    onInactive: () -> Unit
 ) {
     IconButton(
-        onClick = { onClick() },
+        onClick = {
+            if (isBlurred) onInactive() else onActive()
+        },
         modifier = Modifier.size(30.dp),
         colors = IconButtonDefaults.iconButtonColors(
             containerColor = Color.Transparent,
@@ -213,6 +244,7 @@ private fun TicketQRCode(
             .clip(RoundedCornerShape(8.dp))
             .clickable { onClick() }
             .animateContentSize()
+            .blur(if (isBlurred) 40.dp else 0.dp)
             .background(colorBackground),
         contentAlignment = Alignment.Center
     ) {
@@ -222,7 +254,6 @@ private fun TicketQRCode(
                 contentDescription = "Código QR generado",
                 modifier = Modifier
                     .size(qrSize)
-                    .blur(if (isBlurred) 20.dp else 0.dp)
                     .padding(5.dp)
             )
         } ?: run {

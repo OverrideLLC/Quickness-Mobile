@@ -41,14 +41,16 @@ class QrViewModel(
         _qrState.value = _qrState.value.update()
     }
 
-    suspend fun getColors() {
-        val colorOption = dataStoreRepository.getString(
-            key = QR_COLOR_KEY,
-            defaultValue = ColorQrOptions.Black.option
-        )
-        println("Color option: $colorOption")
-        ColorQrOptions.fromOption(colorOption ?: ColorQrOptions.Black.option)?.colors?.let { colors ->
-            update { copy(colors = colors) }
+    fun getColors() {
+        viewModelScope.launch {
+            val colorOption = dataStoreRepository.getString(
+                key = QR_COLOR_KEY,
+                defaultValue = ColorQrOptions.Black.option
+            )
+            println("Color option: $colorOption")
+            ColorQrOptions.fromOption(colorOption ?: ColorQrOptions.Black.option)?.colors?.let { colors ->
+                update { copy(colors = colors) }
+            }
         }
     }
 
