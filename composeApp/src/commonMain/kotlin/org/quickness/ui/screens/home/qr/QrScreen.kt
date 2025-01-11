@@ -35,7 +35,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -47,7 +49,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.plataform.BiometricAuth
 import org.quickness.ui.animations.ContentSwitchAnimation.enterTransition
 import org.quickness.ui.animations.ContentSwitchAnimation.exitTransition
 import org.quickness.ui.components.styles.ShimmerItem
@@ -70,10 +71,16 @@ private fun Screen(viewModel: QrViewModel = koinViewModel()) {
 
 @Composable
 private fun TicketScreen(viewModel: QrViewModel) {
-    val state by remember { viewModel.qrState }.collectAsState()
+    val state = viewModel.qrState.collectAsState().value
+    var isVisible by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(false) }
+    var isBlurred by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
+        isVisible = true
         viewModel.getColors()
+    }
+    LaunchedEffect(Unit) {
         viewModel.updateQrCodeForCurrentInterval()
     }
 
@@ -87,7 +94,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
     ) {
         item {
             AnimatedVisibility(
-                visible = state.isVisible,
+                visible = isVisible,
                 enter = enterTransition,
                 exit = exitTransition
             ) {
@@ -95,7 +102,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
                         .background(
-                            if (!state.isExpanded)
+                            if (!isExpanded)
                                 Color(
                                     state.colors[1]
                                 ).copy(0.5f)
@@ -110,8 +117,9 @@ private fun TicketScreen(viewModel: QrViewModel) {
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = Modifier.fillMaxWidth().background(Color.Transparent)
                     ) {
+                        // Header Animation
                         AnimatedVisibility(
-                            visible = !state.isExpanded,
+                            visible = !isExpanded,
                             enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
                                     slideInVertically(initialOffsetY = { -it / 2 }),
                             exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
@@ -130,28 +138,22 @@ private fun TicketScreen(viewModel: QrViewModel) {
                             }
                         }
 
+                        // QR Code with smooth animation
                         TicketQRCode(
-                            isExpanded = state.isExpanded,
-                            isBlurred = state.isBlurred,
+                            isExpanded = isExpanded,
+                            isBlurred = isBlurred,
                             qrCode = state.qrCode,
                             colorBackground = Color(state.colors[1])
                         ) {
-                            viewModel.update { copy(isExpanded = !isExpanded) }
+                            isExpanded = !isExpanded
                         }
 
-                        blurQr(
-                            isBlurred = state.isBlurred,
-                            color = Color(state.colors[0]),
-                            onActive = {
-                                viewModel.update { copy(isBlurred = true) }
-                            },
-                            onInactive = {
-                                viewModel.update { copy(showBiometricPrompt = true) }
-                            }
-                        )
+                        blurQr(isBlurred, Color(state.colors[0])) {
+                            isBlurred = !isBlurred
+                        }
 
                         AnimatedVisibility(
-                            visible = !state.isExpanded,
+                            visible = !isExpanded,
                             enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
                                     slideInVertically(initialOffsetY = { it / 2 }),
                             exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
@@ -166,44 +168,16 @@ private fun TicketScreen(viewModel: QrViewModel) {
             }
         }
     }
-
-    if (state.showBiometricPrompt)
-        BiometricAuth().Authenticate(
-            onSuccess = {
-                viewModel.update {
-                    copy(
-                        isBlurred = false,
-                        showBiometricPrompt = false
-                    )
-                }
-            },
-            onError = {
-                viewModel.update {
-                    copy(
-                        isBlurred = true,
-                        showBiometricPrompt = false
-                    )
-                }
-            }
-        )
-
-    // Reinicia el flujo cuando el QR se desenfoca nuevamente
-    LaunchedEffect(state.isBlurred) {
-        if (state.isBlurred) viewModel.update { copy(showBiometricPrompt = false) }
-    }
 }
 
 @Composable
 private fun blurQr(
     isBlurred: Boolean,
     color: Color,
-    onActive: () -> Unit,
-    onInactive: () -> Unit
+    onClick: () -> Unit
 ) {
     IconButton(
-        onClick = {
-            if (isBlurred) onInactive() else onActive()
-        },
+        onClick = { onClick() },
         modifier = Modifier.size(30.dp),
         colors = IconButtonDefaults.iconButtonColors(
             containerColor = Color.Transparent,
@@ -239,7 +213,6 @@ private fun TicketQRCode(
             .clip(RoundedCornerShape(8.dp))
             .clickable { onClick() }
             .animateContentSize()
-            .blur(if (isBlurred) 40.dp else 0.dp)
             .background(colorBackground),
         contentAlignment = Alignment.Center
     ) {
@@ -249,6 +222,7 @@ private fun TicketQRCode(
                 contentDescription = "Código QR generado",
                 modifier = Modifier
                     .size(qrSize)
+                    .blur(if (isBlurred) 20.dp else 0.dp)
                     .padding(5.dp)
             )
         } ?: run {
