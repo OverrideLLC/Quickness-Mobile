@@ -20,6 +20,7 @@ import org.quickness.utils.ContextProvider
 class MyApp : Application(), KoinComponent {
     override fun onCreate() {
         super.onCreate()
+        ContextProvider.initialize(this@MyApp.applicationContext)
         initKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@MyApp)
