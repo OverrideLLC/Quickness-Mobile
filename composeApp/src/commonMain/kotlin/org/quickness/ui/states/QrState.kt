@@ -18,4 +18,8 @@ data class QrState(
     var lastQrData: String? = null,
     var currentInterval: String? = null,
     val colors: List<Int> = ColorQrOptions.Black.colors,
+    var isVisible: Boolean = true,
+    var isExpanded: Boolean = false,
+    var isBlurred: Boolean = true,
+    var showBiometricPrompt: Boolean = false
 )

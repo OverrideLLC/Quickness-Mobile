@@ -35,9 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -72,14 +70,9 @@ private fun Screen(viewModel: QrViewModel = koinViewModel()) {
 
 @Composable
 private fun TicketScreen(viewModel: QrViewModel) {
-    val state = viewModel.qrState.collectAsState().value
-    var isVisible by remember { mutableStateOf(false) }
-    var isExpanded by remember { mutableStateOf(false) }
-    var isBlurred by remember { mutableStateOf(true) }
-    var showBiometricPrompt by remember { mutableStateOf(false) }
+    val state by remember { viewModel.qrState }.collectAsState()
 
     LaunchedEffect(Unit) {
-        isVisible = true
         viewModel.getColors()
         viewModel.updateQrCodeForCurrentInterval()
     }
@@ -94,7 +87,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
     ) {
         item {
             AnimatedVisibility(
-                visible = isVisible,
+                visible = state.isVisible,
                 enter = enterTransition,
                 exit = exitTransition
             ) {
@@ -102,7 +95,7 @@ private fun TicketScreen(viewModel: QrViewModel) {
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
                         .background(
-                            if (!isExpanded)
+                            if (!state.isExpanded)
                                 Color(
                                     state.colors[1]
                                 ).copy(0.5f)
@@ -117,9 +110,8 @@ private fun TicketScreen(viewModel: QrViewModel) {
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = Modifier.fillMaxWidth().background(Color.Transparent)
                     ) {
-                        // Header Animation
                         AnimatedVisibility(
-                            visible = !isExpanded,
+                            visible = !state.isExpanded,
                             enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
                                     slideInVertically(initialOffsetY = { -it / 2 }),
                             exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
@@ -138,29 +130,28 @@ private fun TicketScreen(viewModel: QrViewModel) {
                             }
                         }
 
-                        // QR Code with smooth animation
                         TicketQRCode(
-                            isExpanded = isExpanded,
-                            isBlurred = isBlurred,
+                            isExpanded = state.isExpanded,
+                            isBlurred = state.isBlurred,
                             qrCode = state.qrCode,
                             colorBackground = Color(state.colors[1])
                         ) {
-                            isExpanded = !isExpanded
+                            viewModel.update { copy(isExpanded = !isExpanded) }
                         }
 
                         blurQr(
-                            isBlurred = isBlurred,
+                            isBlurred = state.isBlurred,
                             color = Color(state.colors[0]),
                             onActive = {
-                                isBlurred = true
+                                viewModel.update { copy(isBlurred = true) }
                             },
                             onInactive = {
-                                showBiometricPrompt = true
+                                viewModel.update { copy(showBiometricPrompt = true) }
                             }
                         )
 
                         AnimatedVisibility(
-                            visible = !isExpanded,
+                            visible = !state.isExpanded,
                             enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
                                     slideInVertically(initialOffsetY = { it / 2 }),
                             exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
@@ -176,25 +167,29 @@ private fun TicketScreen(viewModel: QrViewModel) {
         }
     }
 
-    // Prompt biométrico
-    if (showBiometricPrompt) {
+    if (state.showBiometricPrompt)
         BiometricAuth().Authenticate(
             onSuccess = {
-                isBlurred = false // Desactiva el desenfoque del QR
-                showBiometricPrompt = false // Cierra el prompt biométrico
+                viewModel.update {
+                    copy(
+                        isBlurred = false,
+                        showBiometricPrompt = false
+                    )
+                }
             },
             onError = {
-                isBlurred = true // Mantiene el QR desenfocado si hay error
-                showBiometricPrompt = false // Cierra el prompt incluso en error
+                viewModel.update {
+                    copy(
+                        isBlurred = true,
+                        showBiometricPrompt = false
+                    )
+                }
             }
         )
-    }
 
     // Reinicia el flujo cuando el QR se desenfoca nuevamente
-    LaunchedEffect(isBlurred) {
-        if (isBlurred) {
-            showBiometricPrompt = false
-        }
+    LaunchedEffect(state.isBlurred) {
+        if (state.isBlurred) viewModel.update { copy(showBiometricPrompt = false) }
     }
 }
 
