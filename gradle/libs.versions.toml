@@ -1,13 +1,14 @@
 [versions]
 accompanistSystemuicontroller = "0.31.3-beta"
-agp = "8.9.0-alpha08"
+agp = "8.9.0-alpha09"
 android-compileSdk = "35"
-android-minSdk = "24"
+android-minSdk = "28"
 android-targetSdk = "35"
 androidx-activityCompose = "1.9.3"
 androidx-lifecycle = "2.8.4"
 androidx-room = "2.7.0-alpha07"
 androidx-sqliteBundled = "2.5.0-alpha12"
+biometric = "1.4.0-alpha02"
 compose-multiplatform = "1.7.0"
 core = "3.5.2"
 coreSplashscreen = "1.0.1"
@@ -32,6 +33,7 @@ dataStore = "1.1.1"
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }

@@ -35,7 +35,7 @@ fun Modifier.shimmerEffect(): Modifier = composed {
         brush = Brush.linearGradient(
             colors = listOf(
                 Color(0xFF000000),
-                Color(0xFF0f0f0f),
+                Color(0xFFffffff),
                 Color(0xFF000000),
             ),
             start = Offset(startOffset, 0f),

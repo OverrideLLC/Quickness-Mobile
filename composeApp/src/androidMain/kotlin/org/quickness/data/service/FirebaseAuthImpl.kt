@@ -21,24 +21,16 @@ actual class FirebaseAuthImpl : FirebaseAuth {
 
     actual override suspend fun signIn(email: String, password: String): AuthResponse {
         return try {
-            // Validación de campos vacíos
             if (email.isBlank() || password.isBlank()) {
-                throw IllegalArgumentException("El correo electrónico o la contraseña no pueden estar vacíos.")
+                return AuthResponse(status = "Failure", message = "Por favor, complete todos los campos.")
             }
 
-            Log.v("FirebaseService", "Iniciando sesión con correo: $email")
-
-            // Intentar iniciar sesión con Firebase
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
 
-            // Verificar si el usuario existe en el resultado
             result.user?.let { user ->
-                Log.v("FirebaseService", "Inicio de sesión exitoso. UID: ${user.uid}")
-
-                // Obtener el token de usuario de manera suspensiva
                 val tokenResult = user.getIdToken(true).await()
                 val jwt = tokenResult.token
-
+                Log.v("FirebaseToken", jwt.toString())
                 return if (jwt != null) {
                     AuthResponse(status = "Success", uid = user.uid, jwt = jwt)
                 } else {
