@@ -10,9 +10,9 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.json.buildJsonObject
+import org.quickness.BuildConfig
 import org.quickness.network.response.ApiResponse
 import org.quickness.network.request.RegisterRequest
-import org.quickness.utils.objects.ApiLinks
 
 class RegisterService(private val httpClient: HttpClient) {
 
@@ -45,7 +45,7 @@ class RegisterService(private val httpClient: HttpClient) {
 
             // Realizar la solicitud HTTP
             httpClient.post {
-                url(ApiLinks.REGISTER_API_LINK)
+                url(BuildConfig.REGISTER_API_LINK)
                 contentType(ContentType.Application.Json)
                 setBody(request)
             }.body<ApiResponse>()

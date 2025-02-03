@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -10,6 +11,7 @@ plugins {
     alias(libs.plugins.googleService)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidxRoom)
+    alias(libs.plugins.gradelBuildConfig)
 }
 
 kotlin {
@@ -32,7 +34,7 @@ kotlin {
     }
 
     sourceSets {
-        androidMain{
+        androidMain {
             kotlin.srcDir("androidMain/kotlin")
         }
         androidMain.dependencies {
@@ -102,7 +104,7 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
         }
     }
     compileOptions {
@@ -122,4 +124,21 @@ room {
 
 dependencies {
     add("kspAndroid", libs.androidx.room.compailer)
+}
+
+buildConfig {
+    packageName("org.quickness")
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").reader())
+
+    listOf(
+        properties.getProperty("TOKENS_API_LINK") to "TOKENS_API_LINK",
+        properties.getProperty("AUTH_API_LINK") to "AUTH_API_LINK",
+        properties.getProperty("REGISTER_API_LINK") to "REGISTER_API_LINK"
+    ).forEach { (value, name) ->
+        buildConfigField(
+            name = name,
+            value = value
+        )
+    }
 }

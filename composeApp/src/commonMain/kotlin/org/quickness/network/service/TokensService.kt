@@ -7,9 +7,9 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import org.quickness.BuildConfig
 import org.quickness.network.response.TokensResponse
 import org.quickness.network.request.TokensRequest
-import org.quickness.utils.objects.ApiLinks
 
 class TokensService(private val httpClient: HttpClient) {
 
@@ -28,7 +28,7 @@ class TokensService(private val httpClient: HttpClient) {
             )
 
             httpClient.post {
-                url(urlString = ApiLinks.TOKENS_API_LINK)
+                url(urlString = BuildConfig.TOKENS_API_LINK)
                 contentType(ContentType.Application.Json)
                 setBody(request)
             }.body()

@@ -1,6 +1,6 @@
 @file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 
-package org.quickness.data.service
+package org.quickness.network.service
 
 import org.quickness.network.response.AuthResponse
 import org.quickness.network.response.ForgotPasswordResponse

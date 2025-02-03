@@ -85,7 +85,6 @@ class LoginViewModel(
                 token = loginResult.jwt ?: return onError("Error obteniendo el token JWT")
             )
             if (jwtResult.status == OK_STATUS) {
-                onSuccess()
                 update { copy(isError = false, isWarning = false, isLoading = false) }
                 dataStoreRepository.saveString(
                     mapOf(
@@ -93,6 +92,7 @@ class LoginViewModel(
                         JWT_FIREBASE_KEY to loginResult.jwt
                     )
                 )
+                onSuccess()
             } else {
                 loginError(errorMessage = jwtResult.message, onError = onError)
             }

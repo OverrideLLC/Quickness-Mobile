@@ -3,10 +3,10 @@
 package org.quickness
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.net.toUri
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -16,7 +16,6 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import org.quickness.utils.ContextProvider
-import androidx.core.net.toUri
 
 actual class Uri actual constructor(url: String) : org.quickness.interfaces.plataform.Uri {
     private val intent = Intent(Intent.ACTION_VIEW, url.toUri())
@@ -28,5 +27,27 @@ actual class Uri actual constructor(url: String) : org.quickness.interfaces.plat
 actual class GoogleMaps actual constructor() {
     @Composable
     actual fun Map() {
+        val cameraPositionState = rememberCameraPositionState {
+            position = CameraPosition.fromLatLngZoom(
+                LatLng(19.475426, -102.072805),
+                15f
+            )
+        }
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            properties = MapProperties(
+                mapType = MapType.NORMAL,
+                isMyLocationEnabled = true,
+                isTrafficEnabled = true,
+                isIndoorEnabled = true,
+                isBuildingEnabled = true
+            ),
+            cameraPositionState = cameraPositionState,
+        ) {
+            Marker(
+                state = MarkerState(position = LatLng(19.475426, -102.072805)),
+                title = "TecNm"
+            )
+        }
     }
 }

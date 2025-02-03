@@ -8,15 +8,15 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.json.buildJsonObject
+import org.quickness.BuildConfig
 import org.quickness.network.response.ApiResponse
 import org.quickness.network.request.AuthUserRequest
-import org.quickness.utils.objects.ApiLinks
 
 class AuthUserService(private val client: HttpClient) {
     suspend fun jwt(authRequest: AuthUserRequest): ApiResponse {
         return try {
             client.post {
-                url(ApiLinks.AUTH_API_LINK)
+                url(BuildConfig.AUTH_API_LINK)
                 contentType(ContentType.Application.Json)
                 setBody(authRequest)
             }.body<ApiResponse>()
