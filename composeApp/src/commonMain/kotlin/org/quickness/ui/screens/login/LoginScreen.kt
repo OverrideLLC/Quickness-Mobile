@@ -31,12 +31,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.tooling.Preview
 import org.quickness.ui.components.component.ButtonAccess
 import org.quickness.ui.components.component.LogoAndTitle
 import org.quickness.ui.components.fields.TextFieldCustomEmail

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.data.repository.RegisterRepositoryImpl
+import org.quickness.network.repository.RegisterRepositoryImpl
 import org.quickness.interfaces.viewmodels.RegisterInterface
 import org.quickness.ui.states.RegisterState
 import org.quickness.utils.`object`.ValidatesData.confirmPassword

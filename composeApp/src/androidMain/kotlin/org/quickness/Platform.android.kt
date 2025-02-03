@@ -16,9 +16,10 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import org.quickness.utils.ContextProvider
+import androidx.core.net.toUri
 
 actual class Uri actual constructor(url: String) : org.quickness.interfaces.plataform.Uri {
-    private val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    private val intent = Intent(Intent.ACTION_VIEW, url.toUri())
     actual override fun navigate() {
         ContextProvider.getContext()!!.startActivity(intent)
     }

@@ -9,9 +9,9 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import org.quickness.interfaces.repository.DataStoreRepository
-import org.quickness.interfaces.repository.TokenDatabaseRepository
-import org.quickness.interfaces.repository.TokensRepository
+import org.quickness.interfaces.repository.data.DataStoreRepository
+import org.quickness.interfaces.repository.data.TokenDatabaseRepository
+import org.quickness.interfaces.repository.network.TokensRepository
 import org.quickness.interfaces.viewmodels.HomeInterface
 import org.quickness.utils.`object`.KeysCache.LAST_REQUEST_KEY
 

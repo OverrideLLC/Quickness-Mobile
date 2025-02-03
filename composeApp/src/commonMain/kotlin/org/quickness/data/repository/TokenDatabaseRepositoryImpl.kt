@@ -2,7 +2,7 @@ package org.quickness.data.repository
 
 import org.quickness.data.room.dao.TokenDao
 import org.quickness.data.room.entity.TokenEntity
-import org.quickness.interfaces.repository.TokenDatabaseRepository
+import org.quickness.interfaces.repository.data.TokenDatabaseRepository
 
 class TokenDatabaseRepositoryImpl(
     private val tokenDao: TokenDao

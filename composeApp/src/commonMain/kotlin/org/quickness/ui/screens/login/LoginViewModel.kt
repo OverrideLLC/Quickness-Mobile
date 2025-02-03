@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.jsonPrimitive
-import org.quickness.interfaces.repository.AuthRepository
-import org.quickness.interfaces.repository.DataStoreRepository
+import org.quickness.interfaces.repository.network.AuthRepository
+import org.quickness.interfaces.repository.data.DataStoreRepository
 import org.quickness.interfaces.viewmodels.LoginInterface
 import org.quickness.ui.states.LoginState
 import org.quickness.utils.`object`.KeysCache.JWT_FIREBASE_KEY

@@ -1,6 +1,6 @@
 package org.quickness.ui.states
 
-import org.quickness.options.qr.ColorQrOptions
+import org.quickness.utils.options.qr.ColorQrOptions
 import qrgenerator.qrkitpainter.QrPainter
 
 /**
