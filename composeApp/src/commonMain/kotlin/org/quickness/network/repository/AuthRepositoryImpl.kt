@@ -1,11 +1,12 @@
 package org.quickness.network.repository
 
+import kotlinx.serialization.json.buildJsonObject
+import org.quickness.interfaces.repository.network.AuthRepository
+import org.quickness.network.request.AuthUserRequest
 import org.quickness.network.response.ApiResponse
 import org.quickness.network.response.AuthResponse
-import org.quickness.network.request.AuthUserRequest
 import org.quickness.network.service.AuthUserService
 import org.quickness.network.service.FirebaseAuthImpl
-import org.quickness.interfaces.repository.network.AuthRepository
 
 /**
  * Implementation of the `AuthRepository` interface.
@@ -32,7 +33,16 @@ class AuthRepositoryImpl(
      *         This object may contain the user's UID and other authentication details on success.
      */
     override suspend fun login(email: String, password: String): AuthResponse {
-        return firebaseService.signIn(email, password)
+        return try {
+            firebaseService.signIn(email, password)
+        } catch (e: Exception) {
+            AuthResponse(
+                status = "500",
+                message = e.message ?: "Error"
+            ).also {
+                println("API Response: ${it.message}")
+            }
+        }
     }
 
     /**
@@ -45,8 +55,18 @@ class AuthRepositoryImpl(
      *         It may contain user information if the token is valid, or an error message if it's invalid.
      */
     override suspend fun jwt(token: String): ApiResponse {
-        return authService.jwt(AuthUserRequest(token)).also {
-            println(it.data["jwt"])
+        return try {
+            authService.jwt(AuthUserRequest(token)).also { apiResponse ->
+                println("API Response: ${apiResponse.data.values}")
+            }
+        } catch (e: Exception) {
+            ApiResponse(
+                message = "Error: ${e.message}",
+                status = 500,
+                data = buildJsonObject { }
+            ).also { apiResponse ->
+                println("API Response: ${apiResponse.message}")
+            }
         }
     }
 }
