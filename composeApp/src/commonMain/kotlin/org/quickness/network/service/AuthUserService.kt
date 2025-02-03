@@ -10,7 +10,7 @@ import io.ktor.http.contentType
 import kotlinx.serialization.json.buildJsonObject
 import org.quickness.network.response.ApiResponse
 import org.quickness.network.request.AuthUserRequest
-import org.quickness.utils.`object`.ApiLinks
+import org.quickness.utils.objects.ApiLinks
 
 class AuthUserService(private val client: HttpClient) {
     suspend fun jwt(authRequest: AuthUserRequest): ApiResponse {

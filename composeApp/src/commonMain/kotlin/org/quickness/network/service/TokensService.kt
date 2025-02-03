@@ -2,8 +2,6 @@ package org.quickness.network.service
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.logging.DEFAULT
-import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
@@ -11,7 +9,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import org.quickness.network.response.TokensResponse
 import org.quickness.network.request.TokensRequest
-import org.quickness.utils.`object`.ApiLinks
+import org.quickness.utils.objects.ApiLinks
 
 class TokensService(private val httpClient: HttpClient) {
 
@@ -36,7 +34,7 @@ class TokensService(private val httpClient: HttpClient) {
             }.body()
         } catch (e: Exception) {
             // Manejo de errores
-            Logger.DEFAULT.log("Error al obtener tokens: ${e.message}")
+            println("Error al obtener tokens: ${e.message}")
             TokensResponse(status = e.message ?: "Error connecting to server", tokens = emptyMap())
         }
     }

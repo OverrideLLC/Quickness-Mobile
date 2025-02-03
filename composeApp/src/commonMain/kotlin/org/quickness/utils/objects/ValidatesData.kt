@@ -1,8 +1,8 @@
-package org.quickness.utils.`object`
+package org.quickness.utils.objects
 
 import org.quickness.utils.enums.MexicanState
 import org.quickness.utils.enums.RestrictedWords
-import org.quickness.utils.`object`.Extensions.isVowel
+import org.quickness.utils.objects.Extensions.isVowel
 
 object ValidatesData {
     private fun isNotInappropriate(name: String): Boolean {

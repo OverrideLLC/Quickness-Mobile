@@ -28,27 +28,5 @@ actual class Uri actual constructor(url: String) : org.quickness.interfaces.plat
 actual class GoogleMaps actual constructor() {
     @Composable
     actual fun Map() {
-        val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(
-                LatLng(19.475426, -102.072805),
-                15f
-            )
-        }
-        GoogleMap(
-            modifier = Modifier.fillMaxSize(),
-            properties = MapProperties(
-                mapType = MapType.NORMAL,
-                isMyLocationEnabled = true,
-                isTrafficEnabled = true,
-                isIndoorEnabled = true,
-                isBuildingEnabled = true
-            ),
-            cameraPositionState = cameraPositionState
-        ) {
-            Marker(
-                state = MarkerState(position = LatLng(19.475426, -102.072805)),
-                title = "TecNm"
-            )
-        }
     }
 }

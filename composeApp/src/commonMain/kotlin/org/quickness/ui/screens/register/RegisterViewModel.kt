@@ -9,13 +9,13 @@ import kotlinx.coroutines.launch
 import org.quickness.network.repository.RegisterRepositoryImpl
 import org.quickness.interfaces.viewmodels.RegisterInterface
 import org.quickness.ui.states.RegisterState
-import org.quickness.utils.`object`.ValidatesData.confirmPassword
-import org.quickness.utils.`object`.ValidatesData.formatPhoneNumber
-import org.quickness.utils.`object`.ValidatesData.isCurpValid
-import org.quickness.utils.`object`.ValidatesData.isEmailValid
-import org.quickness.utils.`object`.ValidatesData.isNameValid
-import org.quickness.utils.`object`.ValidatesData.isPasswordValid
-import org.quickness.utils.`object`.ValidatesData.isPhoneNumberValid
+import org.quickness.utils.objects.ValidatesData.confirmPassword
+import org.quickness.utils.objects.ValidatesData.formatPhoneNumber
+import org.quickness.utils.objects.ValidatesData.isCurpValid
+import org.quickness.utils.objects.ValidatesData.isEmailValid
+import org.quickness.utils.objects.ValidatesData.isNameValid
+import org.quickness.utils.objects.ValidatesData.isPasswordValid
+import org.quickness.utils.objects.ValidatesData.isPhoneNumberValid
 
 /**
  * ViewModel responsible for managing the state and logic of the registration process.

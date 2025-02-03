@@ -1,4 +1,4 @@
-package org.quickness.utils.`object`
+package org.quickness.utils.objects
 
 object ApiLinks {
     const val TOKENS_API_LINK = "https://tokens.quickness.cloud"

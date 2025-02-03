@@ -12,7 +12,7 @@ import io.ktor.http.contentType
 import kotlinx.serialization.json.buildJsonObject
 import org.quickness.network.response.ApiResponse
 import org.quickness.network.request.RegisterRequest
-import org.quickness.utils.`object`.ApiLinks
+import org.quickness.utils.objects.ApiLinks
 
 class RegisterService(private val httpClient: HttpClient) {
 

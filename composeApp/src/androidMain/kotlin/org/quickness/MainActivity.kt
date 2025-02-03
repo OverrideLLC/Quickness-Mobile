@@ -13,6 +13,8 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.koin.compose.KoinContext
+import org.koin.core.context.KoinContext
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.S)
@@ -30,7 +32,9 @@ class MainActivity : ComponentActivity() {
                 color = Color.Transparent,
                 darkIcons = false
             )
-            App()
+            KoinContext {
+                App()
+            }
         }
     }
 

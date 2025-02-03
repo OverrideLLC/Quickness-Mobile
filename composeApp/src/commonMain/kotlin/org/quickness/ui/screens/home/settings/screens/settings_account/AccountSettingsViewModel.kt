@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.quickness.network.service.FirebaseAuthImpl
 import org.quickness.ui.states.AccountState
-import org.quickness.utils.`object`.ValidatesData
+import org.quickness.utils.objects.ValidatesData
 
 class AccountSettingsViewModel(
     private val firebaseService: FirebaseAuthImpl

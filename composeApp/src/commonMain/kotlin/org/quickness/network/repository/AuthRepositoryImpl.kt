@@ -45,6 +45,8 @@ class AuthRepositoryImpl(
      *         It may contain user information if the token is valid, or an error message if it's invalid.
      */
     override suspend fun jwt(token: String): ApiResponse {
-        return authService.jwt(AuthUserRequest(token))
+        return authService.jwt(AuthUserRequest(token)).also {
+            println(it.data["jwt"])
+        }
     }
 }
