@@ -78,6 +78,8 @@ kotlin {
             implementation(libs.androidx.sqliteBundled)
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.datastore.preference)
+            api(libs.moko.permissions)
+            api(libs.moko.permissions.compose)
         }
 
         iosMain.dependencies {

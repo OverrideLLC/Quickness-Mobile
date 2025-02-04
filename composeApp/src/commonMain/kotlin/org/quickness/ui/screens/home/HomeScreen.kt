@@ -27,6 +27,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -35,6 +37,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,11 +51,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import org.quickness.ui.components.helpers.PermissionRequestEffect
 import org.quickness.ui.components.styles.TitleStyle
 import org.quickness.ui.navegation.NavigationHome
 import org.quickness.utils.routes.RoutesHome
@@ -69,31 +77,19 @@ import quickness.composeapp.generated.resources.warning_24dp_E8EAED_FILL1_wght40
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun HomeScreen(navController: NavHostController) = Screen(homeViewModel = koinViewModel(), navController = navController)
+fun HomeScreen(navController: NavHostController) =
+    Screen(homeViewModel = koinViewModel(), navController = navController)
 
 @Composable
 private fun Screen(homeViewModel: HomeViewModel, navController: NavHostController) {
-    LaunchedEffect(Unit) {
-        homeViewModel.getTokens()
-    }
-
     var topName by remember { mutableStateOf("Qr") }
-
     val animatedBrush = remember { Animatable(0f) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val factory = rememberPermissionsControllerFactory()
+    val controller = remember(factory) { factory.createPermissionsController() }
+    BindEffect(controller)
 
-    LaunchedEffect(Unit) {
-        while (true) {
-            animatedBrush.animateTo(
-                targetValue = 1f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(durationMillis = 5000, easing = LinearEasing),
-                    repeatMode = RepeatMode.Reverse
-                )
-            )
-        }
-    }
-
-    // Crea un gradiente de colores dorados que cambia de forma animada
     val brush = Brush.linearGradient(
         colors = listOf(
             colorScheme.primary.copy(alpha = 0.8f * animatedBrush.value),
@@ -110,6 +106,29 @@ private fun Screen(homeViewModel: HomeViewModel, navController: NavHostControlle
         start = Offset(0f, 0f),
         end = Offset(1000f, 1000f)
     )
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            animatedBrush.animateTo(
+                targetValue = 1f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(durationMillis = 5000, easing = LinearEasing),
+                    repeatMode = RepeatMode.Reverse
+                )
+            )
+        }
+    }
+
+    scope.launch {
+        homeViewModel.checkPermissions(
+            permissions = Permission.COARSE_LOCATION,
+            controller = controller
+        )
+        homeViewModel.checkPermissions(
+            permissions = Permission.LOCATION,
+            controller = controller
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -131,7 +150,7 @@ private fun Screen(homeViewModel: HomeViewModel, navController: NavHostControlle
             }
         },
         bottomBar = { BottomBar(navController) { topName = it } },
-        snackbarHost = { SnackBar() },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         floatingActionButton = { FloatingAction() },
         floatingActionButtonPosition = FabPosition.End,
         modifier = Modifier.fillMaxSize(),
@@ -204,12 +223,11 @@ private fun BottomBar(
             .padding(horizontal = 20.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
-        // Fondo transparente con una capa alrededor de los íconos
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = colorScheme.onBackground.copy(alpha = 0.8f), // Fondo transparente
+                    color = colorScheme.onBackground.copy(alpha = 0.8f),
                     shape = RoundedCornerShape(40.dp)
                 )
         ) {
@@ -217,10 +235,10 @@ private fun BottomBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = Color.Transparent, // Fondo de la barra es transparente
+                        color = Color.Transparent,
                         shape = RoundedCornerShape(40.dp)
                     ),
-                containerColor = Color.Transparent, // También la propiedad containerColor
+                containerColor = Color.Transparent,
                 contentColor = Color.White,
                 content = {
                     Row(
@@ -228,7 +246,6 @@ private fun BottomBar(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         content = {
-                            // Agrega los íconos con un fondo alrededor para resaltar
                             BottomAppBarIcon(
                                 iconRes = if (selected != Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
                                 isSelected = selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
@@ -271,9 +288,7 @@ private fun BottomBar(
                                         Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
                                     topName("Settings")
                                     navigationController.navigate(RoutesHome.Settings.route) {
-                                        popUpTo(
-                                            0
-                                        )
+                                        popUpTo(0)
                                     }
                                 }
                             )
@@ -336,11 +351,6 @@ private fun Content(
         navController = navigationController,
         paddingValues = padding,
     )
-}
-
-@Composable
-private fun SnackBar() {
-
 }
 
 @Composable

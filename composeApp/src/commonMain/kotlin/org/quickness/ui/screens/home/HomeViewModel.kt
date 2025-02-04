@@ -1,7 +1,15 @@
 package org.quickness.ui.screens.home
 
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.icerock.moko.permissions.DeniedAlwaysException
+import dev.icerock.moko.permissions.DeniedException
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.RequestCanceledException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -20,8 +28,26 @@ import org.quickness.utils.objects.KeysCache.LAST_REQUEST_KEY
 class HomeViewModel(
     private val tokensRepository: TokensRepository,
     private val dataStoreRepository: DataStoreRepository,
-    private val tokensDatabaseRepository: TokenDatabaseRepository
+    private val tokensDatabaseRepository: TokenDatabaseRepository,
 ) : ViewModel(), HomeInterface {
+
+    init {
+        getTokens()
+    }
+
+    suspend fun checkPermissions(
+        permissions: Permission,
+        controller: PermissionsController,
+    ) {
+        val granted = controller.isPermissionGranted(permissions)
+        if (!granted) {
+            try {
+                controller.providePermission(permissions)
+            } catch (_: Exception) {
+                println("Permission denied")
+            }
+        }
+    }
 
     override fun getTokens() {
         viewModelScope.launch(Dispatchers.IO) {
