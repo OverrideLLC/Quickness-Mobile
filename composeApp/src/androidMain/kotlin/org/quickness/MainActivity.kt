@@ -12,15 +12,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.fragment.app.FragmentActivity
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.compose.KoinContext
 import org.koin.core.context.KoinContext
+import org.quickness.utils.ContextProvider
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         setupSplashScreen()
         super.onCreate(savedInstanceState)
+        ContextProvider.initialize(activity = this, context = this.applicationContext)
         setContent {
             val systemUiController = rememberSystemUiController()
             WindowCompat.setDecorFitsSystemWindows(window, false)

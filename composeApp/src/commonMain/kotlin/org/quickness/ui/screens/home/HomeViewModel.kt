@@ -18,6 +18,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.koin.core.logger.EmptyLogger
+import org.quickness.interfaces.helpers.CheckPermissions
 import org.quickness.interfaces.repository.data.DataStoreRepository
 import org.quickness.interfaces.repository.data.TokenDatabaseRepository
 import org.quickness.interfaces.repository.network.TokensRepository
@@ -29,13 +30,13 @@ class HomeViewModel(
     private val tokensRepository: TokensRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val tokensDatabaseRepository: TokenDatabaseRepository,
-) : ViewModel(), HomeInterface {
+) : ViewModel(), HomeInterface, CheckPermissions {
 
     init {
         getTokens()
     }
 
-    suspend fun checkPermissions(
+    override suspend fun checkPermissions(
         permissions: Permission,
         controller: PermissionsController,
     ) {

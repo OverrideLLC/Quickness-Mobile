@@ -1,6 +1,7 @@
 package org.quickness.ui.screens.home.qr
 
 import androidx.compose.animation.AnimatedVisibility
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.tween
@@ -79,8 +80,6 @@ private fun TicketScreen(viewModel: QrViewModel) {
     LaunchedEffect(Unit) {
         isVisible = true
         viewModel.getColors()
-    }
-    LaunchedEffect(Unit) {
         viewModel.updateQrCodeForCurrentInterval()
     }
 
@@ -149,7 +148,9 @@ private fun TicketScreen(viewModel: QrViewModel) {
                         }
 
                         blurQr(isBlurred, Color(state.colors[0])) {
-                            isBlurred = !isBlurred
+                            if (true) {
+                                isBlurred = !isBlurred
+                            }
                         }
 
                         AnimatedVisibility(
