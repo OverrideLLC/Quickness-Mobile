@@ -11,7 +11,7 @@ import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import org.quickness.GoogleMaps
+import org.quickness.plataform.GoogleMaps
 
 @Composable
 fun ServiceScreen() = Screen()
