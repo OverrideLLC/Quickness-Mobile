@@ -1,15 +1,9 @@
 package org.quickness.ui.navegation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,9 +21,7 @@ fun NavigationHome(
     NavHost(
         navController = navController,
         startDestination = RoutesHome.Qr.route,
-        modifier = Modifier
-            .padding(paddingValues)
-            .background(Color.Transparent),
+        modifier = Modifier.padding(paddingValues),
         enterTransition = { ContentSwitchAnimation.enterTransition },
         exitTransition = { ContentSwitchAnimation.exitTransition },
     ) {

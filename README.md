@@ -73,7 +73,6 @@ Reemplaza `https://github.com/tu_usuario/quickness.git` con la URL de tu reposit
 La aplicación debería iniciarse en el emulador o dispositivo físico.
 
 ---
-
 ## **Estructura del Proyecto**
 
 El directorio `mobile/` está organizado de la siguiente manera:

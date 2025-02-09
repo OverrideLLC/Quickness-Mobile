@@ -31,12 +31,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.tooling.Preview
 import org.quickness.ui.components.component.ButtonAccess
 import org.quickness.ui.components.component.LogoAndTitle
 import org.quickness.ui.components.fields.TextFieldCustomEmail
@@ -138,7 +136,7 @@ private fun Screen(
         visibility = state.isError,
         isWarning = state.isWarning,
         actionPostDelayed = {
-            viewModel.updateState { copy(isError = false, isWarning = false, isLoading = false) }
+            viewModel.update { copy(isError = false, isWarning = false, isLoading = false) }
         }
     )
 }
@@ -157,8 +155,8 @@ private fun Body(viewModel: LoginViewModel, state: LoginState, navController: Na
             text = stringResource(Res.string.email),
             onDone = { onDone(navController, viewModel) },
             onValueChange = {
-                if (state.isError) viewModel.updateState { copy(isError = false) }
-                viewModel.updateState { copy(email = it) }
+                if (state.isError) viewModel.update { copy(isError = false) }
+                viewModel.update { copy(email = it) }
             }
         )
         Spacer(modifier = Modifier.padding(10.dp))
@@ -168,10 +166,10 @@ private fun Body(viewModel: LoginViewModel, state: LoginState, navController: Na
             text = stringResource(Res.string.password),
             modifier = Modifier.fillMaxWidth(),
             isPasswordVisible = state.isPasswordVisible,
-            togglePasswordVisibility = { viewModel.updateState { copy(isPasswordVisible = !isPasswordVisible) } },
+            togglePasswordVisibility = { viewModel.update { copy(isPasswordVisible = !isPasswordVisible) } },
             onValueChange = {
-                if (state.isError) viewModel.updateState { copy(isError = false) }
-                viewModel.updateState { copy(password = it) }
+                if (state.isError) viewModel.update { copy(isError = false) }
+                viewModel.update { copy(password = it) }
             },
             onDone = { onDone(navController, viewModel) }
         )
@@ -185,10 +183,10 @@ private fun onDone(
     viewModel.login(
         onSuccess = {
             navController.navigate(RoutesStart.Home.route)
-            viewModel.updateState { copy(isLoading = false) }
+            viewModel.update { copy(isLoading = false) }
         },
         onError = {
-            viewModel.updateState {
+            viewModel.update {
                 copy(
                     isError = true,
                     isWarning = true,
