@@ -53,6 +53,7 @@ kotlin {
             implementation(libs.play.services.maps)
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.androidx.biometric)
+            implementation(libs.androidx.work.runtime.ktx)
         }
 
         commonMain.dependencies {

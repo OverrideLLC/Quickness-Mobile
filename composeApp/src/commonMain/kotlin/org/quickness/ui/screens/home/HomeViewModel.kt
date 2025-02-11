@@ -1,15 +1,9 @@
 package org.quickness.ui.screens.home
 
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.icerock.moko.permissions.DeniedAlwaysException
-import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
-import dev.icerock.moko.permissions.RequestCanceledException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -31,7 +25,6 @@ class HomeViewModel(
     private val dataStoreRepository: DataStoreRepository,
     private val tokensDatabaseRepository: TokenDatabaseRepository,
 ) : ViewModel(), HomeInterface, CheckPermissions {
-
     init {
         getTokens()
     }
@@ -73,7 +66,7 @@ class HomeViewModel(
                     println("Error fetching tokens: ${e.message}")
                 }
             } else {
-                println("Using cached tokens")
+                println("No need to request tokens")
             }
         }
     }
