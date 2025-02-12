@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.network.repository.ClientRepositoryImpl
+import org.quickness.data.repository.ClientRepositoryImpl
 import org.quickness.ui.states.PrivacySettingsState
 
 class PrivacySettingsViewModel(

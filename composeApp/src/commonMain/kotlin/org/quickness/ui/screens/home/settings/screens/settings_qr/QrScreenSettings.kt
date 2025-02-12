@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.utils.options.qr.ColorQrOptions
-import org.quickness.utils.options.qr.FormatQrOptions
-import org.quickness.utils.options.qr.RoundedQrOptions
+import org.quickness.options.qr.ColorQrOptions
+import org.quickness.options.qr.FormatQrOptions
+import org.quickness.options.qr.RoundedQrOptions
 import org.quickness.ui.components.component.DropdownSettings
 import org.quickness.ui.components.component.SettingsItemSwitch
 import quickness.composeapp.generated.resources.Res

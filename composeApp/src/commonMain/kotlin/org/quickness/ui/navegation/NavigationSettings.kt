@@ -1,6 +1,7 @@
 package org.quickness.ui.navegation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -34,7 +35,7 @@ fun NavigationSettings() {
         composable(RoutesSettings.LanguageSettings.route) { LanguageSettingsScreen() }
         composable(RoutesSettings.SecuritySettings.route) { SecuritySettingsScreen() }
         composable(RoutesSettings.AppSettings.route) { AppSettingsScreen() }
-        composable(RoutesSettings.HelpCenter.route) { }
-        composable(RoutesSettings.AboutUs.route) { }
+        composable(RoutesSettings.HelpCenter.route) {  }
+        composable(RoutesSettings.AboutUs.route) {  }
     }
 }

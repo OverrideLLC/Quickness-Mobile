@@ -1,6 +1,6 @@
 package org.quickness.ui.states
 
-import org.quickness.utils.options.qr.ColorQrOptions
+import org.quickness.options.qr.ColorQrOptions
 import qrgenerator.qrkitpainter.QrPainter
 
 /**
@@ -18,8 +18,4 @@ data class QrState(
     var lastQrData: String? = null,
     var currentInterval: String? = null,
     val colors: List<Int> = ColorQrOptions.Black.colors,
-    var isVisible: Boolean = false,
-    var isExpanded: Boolean = false,
-    var isBlurred: Boolean = true,
-    var showBiometric: Boolean = false
 )

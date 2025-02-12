@@ -1,7 +1,7 @@
 package org.quickness.interfaces.viewmodels
 
-import org.quickness.utils.options.qr.ColorQrOptions
-import org.quickness.utils.options.qr.RoundedQrOptions
+import org.quickness.options.qr.ColorQrOptions
+import org.quickness.options.qr.RoundedQrOptions
 
 interface QrSettingsInterface {
     fun toggleFormat()

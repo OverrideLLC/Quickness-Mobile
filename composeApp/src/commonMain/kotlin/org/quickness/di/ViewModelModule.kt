@@ -6,7 +6,6 @@ import org.quickness.ui.navegation.SharedNavigationViewModel
 import org.quickness.ui.screens.forgot_password.ForgotPasswordViewModel
 import org.quickness.ui.screens.home.HomeViewModel
 import org.quickness.ui.screens.home.qr.QrViewModel
-import org.quickness.ui.screens.home.service.ServiceViewModel
 import org.quickness.ui.screens.home.settings.SettingsViewModel
 import org.quickness.ui.screens.home.settings.screens.settings_account.AccountSettingsViewModel
 import org.quickness.ui.screens.home.settings.screens.settings_privacy.PrivacySettingsViewModel
@@ -31,8 +30,6 @@ val viewModelsHome = module {
     viewModelOf(::SettingsViewModel)
 
     viewModelOf(::ShopViewModel)
-
-    viewModelOf(::ServiceViewModel)
 }
 
 // Módulo que incluye los ViewModels utilizados en las pantallas de inicio de sesión y registro.

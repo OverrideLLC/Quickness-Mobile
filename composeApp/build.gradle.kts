@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -11,7 +10,6 @@ plugins {
     alias(libs.plugins.googleService)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidxRoom)
-    alias(libs.plugins.gradelBuildConfig)
 }
 
 kotlin {
@@ -34,7 +32,7 @@ kotlin {
     }
 
     sourceSets {
-        androidMain {
+        androidMain{
             kotlin.srcDir("androidMain/kotlin")
         }
         androidMain.dependencies {
@@ -52,8 +50,6 @@ kotlin {
             implementation(libs.play.services.location)
             implementation(libs.play.services.maps)
             implementation(project.dependencies.platform(libs.firebase.bom))
-            implementation(libs.androidx.biometric)
-            implementation(libs.androidx.work.runtime.ktx)
         }
 
         commonMain.dependencies {
@@ -80,9 +76,6 @@ kotlin {
             implementation(libs.androidx.sqliteBundled)
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.datastore.preference)
-            api(libs.moko.permissions)
-            api(libs.moko.permissions.compose)
-
         }
 
         iosMain.dependencies {
@@ -109,7 +102,7 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
         }
     }
     compileOptions {
@@ -129,21 +122,4 @@ room {
 
 dependencies {
     add("kspAndroid", libs.androidx.room.compailer)
-}
-
-buildConfig {
-    packageName("org.quickness")
-    val properties = Properties()
-    properties.load(project.rootProject.file("local.properties").reader())
-
-    listOf(
-        properties.getProperty("TOKENS_API_LINK") to "TOKENS_API_LINK",
-        properties.getProperty("AUTH_API_LINK") to "AUTH_API_LINK",
-        properties.getProperty("REGISTER_API_LINK") to "REGISTER_API_LINK"
-    ).forEach { (value, name) ->
-        buildConfigField(
-            name = name,
-            value = value
-        )
-    }
 }

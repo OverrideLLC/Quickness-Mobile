@@ -31,7 +31,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.quickness.ui.components.component.BottomSheetContent
 import org.quickness.ui.components.component.SettingsItem
@@ -58,10 +57,6 @@ import quickness.composeapp.generated.resources.update_email
 
 @Composable
 fun AccountScreenSettings() = Screen()
-
-@Preview
-@Composable
-fun AccountScreenSettingsPreview() = Screen()
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
