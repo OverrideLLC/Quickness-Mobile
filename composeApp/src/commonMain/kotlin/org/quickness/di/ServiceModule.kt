@@ -2,9 +2,9 @@ package org.quickness.di
 
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
-import org.quickness.data.service.AuthUserService
-import org.quickness.data.service.RegisterService
-import org.quickness.data.service.TokensService
+import org.quickness.network.service.AuthUserService
+import org.quickness.network.service.RegisterService
+import org.quickness.network.service.TokensService
 
 /**
  * Módulo de Koin que proporciona las dependencias de red necesarias para la aplicación.

@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
-import org.quickness.Uri
 import org.quickness.ui.components.component.ItemWithLink
 import org.quickness.ui.states.RegisterState
 import org.quickness.ui.screens.register.RegisterViewModel

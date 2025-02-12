@@ -5,14 +5,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.interfaces.repository.DataStoreRepository
+import org.quickness.interfaces.repository.data.DataStoreRepository
 import org.quickness.interfaces.viewmodels.QrSettingsInterface
-import org.quickness.options.qr.ColorQrOptions
-import org.quickness.options.qr.FormatQrOptions
-import org.quickness.options.qr.QrOptionsKeys.FORMAT_KEY
-import org.quickness.options.qr.QrOptionsKeys.QR_COLOR_KEY
-import org.quickness.options.qr.QrOptionsKeys.ROUNDED_QR_KEY
-import org.quickness.options.qr.RoundedQrOptions
+import org.quickness.utils.options.qr.ColorQrOptions
+import org.quickness.utils.options.qr.FormatQrOptions
+import org.quickness.utils.options.qr.QrOptionsKeys.FORMAT_KEY
+import org.quickness.utils.options.qr.QrOptionsKeys.QR_COLOR_KEY
+import org.quickness.utils.options.qr.QrOptionsKeys.ROUNDED_QR_KEY
+import org.quickness.utils.options.qr.RoundedQrOptions
 import org.quickness.ui.states.QrSettingsState
 
 class QrSettingsViewModel(
