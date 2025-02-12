@@ -15,7 +15,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import org.quickness.interfaces.repository.data.DataStoreRepository
+import org.quickness.interfaces.repository.DataStoreRepository
 
 class DataStoreRepositoryImpl(
     private val dataStore: DataStore<Preferences>

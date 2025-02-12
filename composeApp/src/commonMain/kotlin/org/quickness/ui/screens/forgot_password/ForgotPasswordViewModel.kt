@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.network.service.FirebaseAuthImpl
+import org.quickness.data.service.FirebaseAuthImpl
 import org.quickness.ui.states.ForgotPasswordState
 
 class ForgotPasswordViewModel(private val firebaseService: FirebaseAuthImpl) : ViewModel() {

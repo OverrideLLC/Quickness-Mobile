@@ -2,15 +2,15 @@ package org.quickness.di
 
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
-import org.quickness.network.repository.AuthRepositoryImpl
+import org.quickness.data.repository.AuthRepositoryImpl
 import org.quickness.data.repository.DataStoreRepositoryImpl
-import org.quickness.network.repository.RegisterRepositoryImpl
+import org.quickness.data.repository.RegisterRepositoryImpl
 import org.quickness.data.repository.TokenDatabaseRepositoryImpl
-import org.quickness.network.repository.TokensRepositoryImpl
-import org.quickness.interfaces.repository.network.AuthRepository
-import org.quickness.interfaces.repository.data.DataStoreRepository
-import org.quickness.interfaces.repository.data.TokenDatabaseRepository
-import org.quickness.interfaces.repository.network.TokensRepository
+import org.quickness.data.repository.TokensRepositoryImpl
+import org.quickness.interfaces.repository.AuthRepository
+import org.quickness.interfaces.repository.DataStoreRepository
+import org.quickness.interfaces.repository.TokenDatabaseRepository
+import org.quickness.interfaces.repository.TokensRepository
 
 /**
  * Módulo de Koin que proporciona las dependencias de repositorios de la aplicación.

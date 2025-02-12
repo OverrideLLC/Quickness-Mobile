@@ -1,7 +1,6 @@
 {
   "project_info": {
     "project_number": "322358291466",
-    "firebase_url": "https://quickness-backend-7f4ac-default-rtdb.firebaseio.com",
     "project_id": "quickness-backend-7f4ac",
     "storage_bucket": "quickness-backend-7f4ac.firebasestorage.app"
   },
@@ -13,12 +12,7 @@
           "package_name": "com.Fleetmanager"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "322358291466-tf34jurmc8e08mbaj2up9ikkk08gh09h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyC5JHtOZ7xIXcDrjOH09TCG8UQcnCl6lok"
@@ -26,19 +20,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "322358291466-tf34jurmc8e08mbaj2up9ikkk08gh09h.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "322358291466-8f72f4aqd3cqcomnqhchpj8br5k3hje1.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "org.quickness"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
@@ -49,12 +31,7 @@
           "package_name": "org.quickness"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "322358291466-tf34jurmc8e08mbaj2up9ikkk08gh09h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyC5JHtOZ7xIXcDrjOH09TCG8UQcnCl6lok"
@@ -62,19 +39,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "322358291466-tf34jurmc8e08mbaj2up9ikkk08gh09h.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "322358291466-8f72f4aqd3cqcomnqhchpj8br5k3hje1.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "org.quickness"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

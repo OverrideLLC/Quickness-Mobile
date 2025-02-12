@@ -1,7 +1,7 @@
 package org.quickness.interfaces.plataform
 
-import org.quickness.network.response.AuthResponse
-import org.quickness.network.response.ForgotPasswordResponse
+import org.quickness.data.response.AuthResponse
+import org.quickness.data.response.ForgotPasswordResponse
 
 /**
  * An interface that defines the contract for Firebase Authentication operations.
