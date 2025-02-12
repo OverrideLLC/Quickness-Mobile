@@ -57,6 +57,11 @@ kotlin {
         }
 
         commonMain.dependencies {
+            implementation(projects.feature)
+            implementation(projects.data)
+            implementation(projects.network)
+            implementation(projects.services)
+            implementation(projects.shared)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.foundation)
@@ -82,7 +87,6 @@ kotlin {
             implementation(libs.datastore.preference)
             api(libs.moko.permissions)
             api(libs.moko.permissions.compose)
-
         }
 
         iosMain.dependencies {

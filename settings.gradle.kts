@@ -29,3 +29,15 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
+include(":feature")
+include("start")
+include(":data")
+include("start")
+include(":feature:start")
+include(":data:datastore")
+include(":data:room")
+include(":services")
+include(":network")
+include(":shared")
+include(":shared:ui")
+include(":shared:utils")
