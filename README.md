@@ -1,5 +1,5 @@
 
-# **Quickness 0.1.0 Alpha**
+# **Quickness 0.1.2 Alpha**
 
 ## **Instalación de la Aplicación Móvil de Quickness**
 
@@ -11,14 +11,15 @@ Este documento detalla los pasos necesarios para configurar, desarrollar y ejecu
 
 Antes de comenzar, asegúrate de tener lo siguiente instalado en tu máquina:
 
-1. **Android Studio** (versión 2022.3 o superior).  
+1. **Android Studio** (versión Canary o superior).  
    Descárgalo desde [Android Studio](https://developer.android.com/studio).
-2. **Java Development Kit (JDK)** 17 o superior.  
+2. **Java Development Kit (JDK)** 17.  
    Descárgalo desde [OpenJDK](https://jdk.java.net/).
 3. **Kotlin Compiler** (preinstalado con Android Studio).
-4. **Git** instalado en tu máquina.  
+4. **Plugin Multiplataforma** 
+5. **Git** instalado en tu máquina.  
    Descárgalo desde [Git](https://git-scm.com/).
-5. Acceso al repositorio de **Quickness** en GitHub.
+6. Acceso al repositorio de **Quickness** en GitHub.
 
 ---
 
@@ -28,10 +29,8 @@ Antes de comenzar, asegúrate de tener lo siguiente instalado en tu máquina:
 Clona el repositorio en tu máquina local usando el siguiente comando:
 
 ```bash
-git clone https://github.com/tu_usuario/quickness.git
+git clone https://github.com/override_llc/quickness_mobile.git
 ```
-
-Reemplaza `https://github.com/tu_usuario/quickness.git` con la URL de tu repositorio.
 
 ---
 
@@ -46,9 +45,9 @@ Reemplaza `https://github.com/tu_usuario/quickness.git` con la URL de tu reposit
 ### **3. Configurar el Entorno**
 1. **Verificar SDK y Plugins**  
    Asegúrate de que el proyecto tiene configurados los siguientes elementos:
-  - **SDK mínimo**: 23 (Android 6.0 Marshmallow).
-  - **SDK objetivo**: 33 (Android 13).
-  - **Gradle Plugin**: 8.2.0 o superior.
+  - **SDK mínimo**: 31 (Android 10.0 Quince Tart).
+  - **SDK objetivo**: 35 (Android 15).
+  - **Gradle Plugin**: 8.8.0 o superior.
 
 2. **Instalar Dependencias**  
    Abre el terminal de Android Studio y ejecuta:
