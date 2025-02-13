@@ -49,14 +49,7 @@ fun NavigationStart(
         startDestination = startDestination
     ) {
         composable(RoutesStart.Start.route) {
-            StartScreen(
-                navController = navController,
-                title = Res.string.app_name,
-                recurseButton1 = Res.string.login to Res.drawable.logout_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                recurseButton2 = Res.string.register to Res.drawable.logout_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
-                icon = Res.drawable.LogoQuicknessQC
-            )
+            StartScreen(navController = navController)
         }
         composable(RoutesStart.Home.route) { HomeScreen(rememberNavController()) }
         composable(RoutesStart.Login.route) { LoginScreen(navController) }

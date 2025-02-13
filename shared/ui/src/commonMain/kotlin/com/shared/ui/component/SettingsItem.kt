@@ -32,7 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.quickness.recurces.Poppins_Light
+import com.quickness.recurces.Poppins_Medium
+import com.quickness.recurces.Res
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -41,7 +45,6 @@ import org.jetbrains.compose.resources.stringResource
 fun SettingsItem(
     name: StringResource,
     icon: DrawableResource,
-    font: FontFamily,
     navigator: () -> Unit
 ) {
     Row(
@@ -65,7 +68,7 @@ fun SettingsItem(
             text = stringResource(name),
             modifier = Modifier.padding(start = 16.dp),
             color = colorScheme.tertiary,
-            fontFamily = font
+            fontFamily = FontFamily(Font(Res.font.Poppins_Medium))
         )
     }
 }
@@ -76,7 +79,6 @@ fun SettingsItemSwitch(
     icon: DrawableResource,
     description: StringResource,
     active: Boolean,
-    font: FontFamily,
     isActive: () -> Unit
 ) {
     Column(
@@ -104,7 +106,7 @@ fun SettingsItemSwitch(
                 text = stringResource(name),
                 modifier = Modifier.padding(start = 16.dp),
                 color = if (!active) colorScheme.tertiary else colorScheme.primary,
-                fontFamily = font
+                fontFamily = FontFamily(Font(Res.font.Poppins_Medium))
             )
             Spacer(Modifier.weight(1f))
             Switch(
@@ -121,7 +123,7 @@ fun SettingsItemSwitch(
         Text(
             text = stringResource(description),
             color = colorScheme.tertiary,
-            fontFamily = font
+            fontFamily = FontFamily(Font(Res.font.Poppins_Light))
         )
     }
 }
@@ -135,8 +137,7 @@ fun DropdownSettings(
     exposedHeight: Dp = 300.dp,
     selectedOption: String,
     onOptionSelected: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    font: FontFamily
+    modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -164,14 +165,14 @@ fun DropdownSettings(
             text = stringResource(name),
             modifier = Modifier.padding(start = 16.dp),
             color = colorScheme.tertiary,
-            fontFamily = font
+            fontFamily = FontFamily(Font(Res.font.Poppins_Medium))
         )
         Spacer(Modifier.weight(1f))
         // Opción seleccionada y flecha de expansión
         Text(
             text = selectedOption,
             color = colorScheme.tertiary,
-            fontFamily = font
+            fontFamily = FontFamily(Font(Res.font.Poppins_Medium))
         )
         Icon(
             imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.ArrowDropDown,

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,9 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.quickness.recurces.LogoQuicknessQC
+import com.quickness.recurces.Res
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun WidgetLyra() {
@@ -38,7 +42,7 @@ fun CircularProgress(
     progress: Float, // Valor entre 0-1
     colors: List<Color>
 ) {
-    Canvas(modifier = Modifier.size(50.dp)) {
+    Canvas(modifier = Modifier.size(100.dp)) {
         // Fondo del círculo
         drawCircle(
             color = Color.LightGray.copy(alpha = 0.3f),
@@ -100,27 +104,38 @@ fun GradientProgressBar(
 
 @Composable
 fun NutritionWidget() {
-    Row(
-        modifier = Modifier
-            .padding(16.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.background),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
+        modifier = Modifier.height(300.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(1f))
-        // Barras de macros
-        Column {
-            MacroRow("Proteínas", 0.8f, listOf(Color(0xFF6E8EF6), Color(0xFFA777E3)))
-            MacroRow("Carbohidratos", 0.6f, listOf(Color(0xFFFACD68), Color(0xFFF76B1C)))
-            MacroRow("Grasas", 0.3f, listOf(Color(0xFF5DD4C3), Color(0xFF2EBAC1)))
-        }
-        // Círculo de progreso principal
-        CircularProgress(
-            progress = 0.75f,
-            colors = listOf(Color(0xFF6C8EE3), Color(0xFF4AC6FF))
+        Icon(
+            painter = painterResource(Res.drawable.LogoQuicknessQC),
+            contentDescription = "Icono",
+            tint = Color.White,
+            modifier = Modifier.padding(16.dp)
         )
-        Spacer(modifier = Modifier.weight(1f))
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.background),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Barras de macros
+            Column {
+                MacroRow("Proteínas", 0.8f, listOf(Color(0xFF6E8EF6), Color(0xFFA777E3)))
+                MacroRow("Carbohidratos", 0.6f, listOf(Color(0xFFFACD68), Color(0xFFF76B1C)))
+                MacroRow("Grasas", 0.3f, listOf(Color(0xFF5DD4C3), Color(0xFF2EBAC1)))
+            }
+            // Círculo de progreso principal
+            CircularProgress(
+                progress = 0.75f,
+                colors = listOf(Color(0xFF6C8EE3), Color(0xFF4AC6FF))
+            )
+        }
     }
 }
 

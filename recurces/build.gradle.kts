@@ -5,11 +5,14 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
 }
-kotlin {
 
-// Target declarations - add or remove as needed below. These define
-// which platforms this KMP module supports.
-// See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.quickness.recurces"
+    generateResClass = auto
+}
+
+kotlin {
     androidLibrary {
         namespace = "com.recurces"
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -30,6 +33,7 @@ kotlin {
     }
 
     sourceSets {
+
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
@@ -44,6 +48,7 @@ kotlin {
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.navigation.compose)
+                api(compose.components.resources)
             }
         }
 

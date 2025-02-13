@@ -31,6 +31,8 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
 
+                implementation(projects.recurces)
+
                 /* COMPOSE */
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)

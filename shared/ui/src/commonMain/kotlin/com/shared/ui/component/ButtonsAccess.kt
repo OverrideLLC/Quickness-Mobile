@@ -25,17 +25,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.jetbrains.compose.resources.DrawableResource
+import com.quickness.recurces.Poppins_Medium
+import com.quickness.recurces.Res
+import com.quickness.recurces.login
+import com.quickness.recurces.register
+import com.quickness.recurces.start_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import org.jetbrains.compose.resources.Font
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ButtonAccess(
-    resourceButton1: Pair<StringResource, DrawableResource>,
-    resourceButton2: Pair<StringResource, DrawableResource>,
-    font: FontFamily,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
@@ -65,14 +65,14 @@ fun ButtonAccess(
                         Spacer(modifier = Modifier.weight(1f))
                         Spacer(modifier = Modifier.padding(10.dp))
                         Text(
-                            text = stringResource(resourceButton1.first),
+                            text = stringResource(Res.string.login),
                             fontSize = 18.sp,
-                            fontFamily = font,
+                            fontFamily = FontFamily(Font(resource = Res.font.Poppins_Medium)),
                             color = colorScheme.background
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
-                            painter = painterResource(resourceButton1.second),
+                            painter = painterResource(Res.drawable.start_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
                             contentDescription = "Login",
                             modifier = Modifier.size(24.dp)
                         )
@@ -88,9 +88,9 @@ fun ButtonAccess(
                     )
                 ) {
                     Text(
-                        text = stringResource(resourceButton2.first),
+                        text = stringResource(Res.string.register),
                         fontSize = 18.sp,
-                        fontFamily = font,
+                        fontFamily = FontFamily(Font(resource = Res.font.Poppins_Medium)),
                     )
                 }
             }

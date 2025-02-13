@@ -49,6 +49,7 @@ kotlin {
                 /* MODULES */
                 implementation(projects.shared.ui)
                 implementation(projects.shared.utils)
+                implementation(projects.recurces)
 
                 /* COMPOSE */
                 implementation(compose.components.resources)

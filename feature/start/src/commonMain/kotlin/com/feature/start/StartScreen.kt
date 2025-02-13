@@ -33,38 +33,24 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.quickness.recurces.Poppins_Medium
+import com.quickness.recurces.Res
+import com.quickness.recurces.app_name
+import com.quickness.recurces.login
+import com.quickness.recurces.logout_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+import com.quickness.recurces.register
 import com.shared.ui.component.LogoAndTitle
 import com.utils.routes.RoutesStart
-import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun StartScreen(
-    navController: NavController,
-    title: StringResource,
-    recurseButton1: Pair<StringResource, DrawableResource>,
-    recurseButton2: Pair<StringResource, DrawableResource>,
-    fontFamily: FontFamily,
-    icon: DrawableResource
-) = Screen(
-    icon = icon,
-    navController = navController,
-    title = title,
-    recurseButton1 = recurseButton1,
-    recurseButton2 = recurseButton2,
-    fontFamily = fontFamily
-)
+fun StartScreen(navController: NavController) = Screen(navController = navController)
 
 @Composable
 private fun Screen(
     navController: NavController,
-    title: StringResource,
-    recurseButton1: Pair<StringResource, DrawableResource>,
-    recurseButton2: Pair<StringResource, DrawableResource>,
-    icon: DrawableResource,
-    fontFamily: FontFamily,
 ) {
     val infiniteTransition = rememberInfiniteTransition()
     val color1 by infiniteTransition.animateColor(
@@ -102,23 +88,17 @@ private fun Screen(
             )
     ) {
         Spacer(modifier = Modifier.weight(1f))
-        LogoAndTitle(title = stringResource(title), icon = icon, font = fontFamily)
+        LogoAndTitle(title = stringResource(Res.string.app_name))
         Spacer(modifier = Modifier.weight(1f))
         ButtonAccessStart(
             onLoginClick = { navController.navigate(RoutesStart.Login.route) },
             onRegisterClick = { navController.navigate(RoutesStart.Register.route) },
-            recurseButton1 = recurseButton1,
-            recurseButton2 = recurseButton2,
-            fontFamily = fontFamily
         )
     }
 }
 
 @Composable
 fun ButtonAccessStart(
-    recurseButton1: Pair<StringResource, DrawableResource>,
-    recurseButton2: Pair<StringResource, DrawableResource>,
-    fontFamily: FontFamily,
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit,
 ) {
@@ -156,14 +136,14 @@ fun ButtonAccessStart(
                         Spacer(modifier = Modifier.weight(1f))
                         Spacer(modifier = Modifier.padding(10.dp))
                         Text(
-                            text = stringResource(recurseButton1.first),
+                            text = stringResource(Res.string.login),
                             fontSize = 18.sp,
-                            fontFamily = fontFamily,
+                            fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
                             color = colorScheme.background
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
-                            painter = painterResource(recurseButton1.second),
+                            painter = painterResource(Res.drawable.logout_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
                             contentDescription = "Login",
                             modifier = Modifier.size(24.dp)
                         )
@@ -182,9 +162,9 @@ fun ButtonAccessStart(
                     )
                 ) {
                     Text(
-                        text = stringResource(recurseButton2.first),
+                        text = stringResource(Res.string.register),
                         fontSize = 18.sp,
-                        fontFamily = fontFamily,
+                        fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
                     )
                 }
             }
