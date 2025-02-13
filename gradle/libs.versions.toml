@@ -32,11 +32,11 @@ buildConfig = "5.3.5"
 moko-permissions = "0.18.1"
 biometric = "1.4.0-alpha02"
 workRuntimeKtx = "2.10.0"
-kotlinStdlib = "2.1.0"
+kotlinStdlib = "2.1.10"
 kotlinTest = "2.1.0"
-runner = "1.5.2"
-coreVersion = "1.5.0"
-junit = "1.1.5"
+runner = "1.6.2"
+coreVersion = "1.6.1"
+junit = "1.2.1"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }

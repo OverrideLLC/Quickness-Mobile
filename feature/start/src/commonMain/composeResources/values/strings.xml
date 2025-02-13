@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General App Strings -->
+    <string name="app_name">Quickness</string>
+    <string name="override">Override</string>
+    <string name="powered">Powered by</string>
+    <string name="credit">Credits</string>
+    <string name="info_token">This ticket is valid for one use only.</string>
+
+    <!-- Authentication -->
+    <string name="login">Sign In</string>
+    <string name="register">Sign Up</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="verification_code">Verification Code</string>
+
+    <!-- Personal Information -->
+    <string name="last_name">Last Name</string>
+    <string name="curp">CURP</string>
+    <string name="number_phone">Number Phone</string>
+
+    <!-- Terms and Policies -->
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="terms_and_conditions_description">By registering, you agree to our terms and conditions.</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy_description">Read our privacy policy to learn more.</string>
+    <string name="data_analytics">Data Analytics</string>
+    <string name="data_analytics_description">Consent to the use of anonymized data.</string>
+    <string name="read_more">Read more</string>
+
+    <!-- Navigation -->
+    <string name="next">Next</string>
+    <string name="settings">Settings</string>
+
+    <!-- QR Settings -->
+    <string name="qr_settings">QR Settings</string>
+    <string name="format_qr_settings">QR Format</string>
+    <string name="color_qr_settings">QR Color</string>
+    <string name="rounded_qr_settings">Rounded QR</string>
+    <string name="improve_qr_readability">Activating this option improves the readability of the QR code by adjusting its design, ensuring better scanning compatibility with most devices.</string>
+    <string name="expire_qr_code">Expire QR Code: </string>
+
+    <!-- General Settings -->
+    <string name="account_settings">Account Settings</string>
+    <string name="privacy_settings">Privacy Settings</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="display_settings">Display Settings</string>
+    <string name="language_settings">Language</string>
+    <string name="security_settings">Security</string>
+    <string name="app_settings">App Settings</string>
+
+    <!-- Account Settings -->
+    <string name="profile">Profile</string>
+    <string name="change_email">Change Email</string>
+    <string name="new_email">New Email</string>
+    <string name="update_email">Update Email</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_password_info">You can request a password change. You will receive an email with instructions.</string>
+    <string name="request_password_change">Request Password Change</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_warning">Deleting your account is an irreversible action. You will lose access to all your data and services associated with this account.</string>
+    <string name="confirm_delete_account">Delete Account</string>
+    <string name="log_out">Log Out</string>
+    <string name="log_out_warning">Logging out means you will need to sign in again to access your account.</string>
+    <string name="confirm_log_out">Log Out</string>
+
+    <!-- Profile -->
+    <string name="name">Name</string>
+    <string name="uid">UID:</string>
+
+    <!-- Privacy Settings -->
+    <string name="manage_data">Manage My Data</string>
+    <string name="data_download">Download My Data</string>
+    <string name="data_deletion_request">Request Data Deletion</string>
+
+    <!-- Notification Settings -->
+    <string name="push_notifications">Push Notifications</string>
+    <string name="email_notifications">Email Notifications</string>
+    <string name="sms_notifications">SMS Notifications</string>
+    <string name="in_app_notifications">In-App Notifications</string>
+    <string name="sound_and_vibration">Sound and Vibration</string>
+
+    <!-- Display Settings -->
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="system_default">System Default</string>
+    <string name="font_size">Font Size</string>
+    <string name="theme">Theme</string>
+
+    <!-- Language Settings -->
+    <string name="select_language">Select Language</string>
+    <string name="language_english">English</string>
+    <string name="language_spanish">Spanish</string>
+    <string name="language_french">French</string>
+    <string name="language_german">German</string>
+
+    <!-- Security Settings -->
+    <string name="enable_2fa">Enable Two-Factor Authentication</string>
+    <string name="change_pin">Change PIN</string>
+    <string name="biometric_authentication">Biometric Authentication</string>
+    <string name="session_management">Manage Sessions</string>
+
+    <!-- App Settings -->
+    <string name="version">Version</string>
+    <string name="about_us">About Us</string>
+    <string name="feedback">Send Feedback</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="help_center">Help Center</string>
+    <string name="contact_support">Contact Support</string>
+    <string name="legal">Legal</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
+
+    <!-- Advanced Settings -->
+    <string name="developer_options">Developer Options</string>
+    <string name="reset_app">Reset App</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="log_out_everywhere">Log Out Everywhere</string>
+    <string name="diagnostics">Diagnostics</string>
+</resources>

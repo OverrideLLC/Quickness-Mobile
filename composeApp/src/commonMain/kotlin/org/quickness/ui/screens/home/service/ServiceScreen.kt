@@ -1,17 +1,19 @@
 package org.quickness.ui.screens.home.service
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.services.lyra.WidgetLyra
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import org.quickness.plataform.GoogleMaps
 
 @Composable
 fun ServiceScreen() = Screen()
@@ -34,9 +36,11 @@ private fun Screen(viewModel: ServiceViewModel = koinViewModel()) {
         )
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
-        GoogleMaps().Map()
+        item { WidgetLyra() }
     }
 }

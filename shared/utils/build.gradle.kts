@@ -10,8 +10,8 @@ kotlin {
 // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
         namespace = "com.utils"
-        compileSdk = 35
-        minSdk = 24
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
 
         withHostTestBuilder {
         }
@@ -65,7 +65,7 @@ kotlin {
 
         commonTest {
             dependencies {
-                implementation(libs.kotlin.test)
+
             }
         }
 
@@ -74,14 +74,6 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
-            }
-        }
-
-        getByName("androidDeviceTest") {
-            dependencies {
-                implementation(libs.androidx.runner)
-                implementation(libs.androidx.core)
-                implementation(libs.androidx.junit)
             }
         }
 

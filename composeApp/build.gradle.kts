@@ -3,15 +3,16 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
+    /* COMPOSE */
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.googleService)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.androidxRoom)
-    alias(libs.plugins.gradelBuildConfig)
+    /* UTILS */ alias(libs.plugins.kotlinxSerialization)
+    /* GOOGLE SERVICE */ alias(libs.plugins.googleService)
+    /* KSP */ alias(libs.plugins.ksp)
+    /* ROOM */ alias(libs.plugins.androidxRoom)
+    /* BUILDCONFIG */ alias(libs.plugins.gradelBuildConfig)
 }
 
 kotlin {
@@ -38,30 +39,43 @@ kotlin {
             kotlin.srcDir("androidMain/kotlin")
         }
         androidMain.dependencies {
+            /* COMPOSE */
             implementation(compose.preview)
             implementation(libs.accompanist.systemuicontroller)
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.splashscreen)
             implementation(libs.core)
+
+            /* FIREBASE */
+            implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.auth)
             implementation(libs.firebase.firestore)
+
+            /* KTOR/KOIN */
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
+
+            /* MAPS */
             implementation(libs.maps.compose)
             implementation(libs.play.services.location)
             implementation(libs.play.services.maps)
-            implementation(project.dependencies.platform(libs.firebase.bom))
+
+            /* UTILS */
             implementation(libs.androidx.biometric)
             implementation(libs.androidx.work.runtime.ktx)
         }
 
         commonMain.dependencies {
+            /* MODULES */
             implementation(projects.feature)
             implementation(projects.data)
             implementation(projects.network)
             implementation(projects.services)
             implementation(projects.shared)
+            implementation(projects.services.lyra)
+
+            /* COMPOSE */
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.foundation)
@@ -70,23 +84,31 @@ kotlin {
             implementation(compose.ui)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.navigation.compose)
+
+            /* KOIN */
+            implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewModel)
             implementation(libs.koin.core)
+
+            /* UTILS */
             implementation(libs.kotlinx.datetime)
             implementation(libs.krypto)
-            implementation(libs.navigation.compose)
             implementation(libs.qr.kit)
+            api(libs.moko.permissions)
+            api(libs.moko.permissions.compose)
+
+            /* KTOR */
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.loggin)
             implementation(libs.ktor.serialization.kotlinx.json)
+
+            /* ROOM/DATASTORE */
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqliteBundled)
-            implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.datastore.preference)
-            api(libs.moko.permissions)
-            api(libs.moko.permissions.compose)
         }
 
         iosMain.dependencies {
@@ -105,6 +127,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     packaging {
         resources {
