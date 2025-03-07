@@ -7,11 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.quickness.shared.utils.routes.RoutesHome
 import org.quickness.ui.animations.ContentSwitchAnimation
 import org.quickness.ui.screens.home.qr.QrScreen
 import org.quickness.ui.screens.home.service.ServiceScreen
 import org.quickness.ui.screens.home.shop.ShopScreen
-import org.quickness.utils.routes.RoutesHome
 
 @Composable
 fun NavigationHome(

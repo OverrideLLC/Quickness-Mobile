@@ -2,6 +2,7 @@ package org.quickness.ui.screens.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.quickness.shared.utils.objects.ValidatesData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,14 +10,6 @@ import kotlinx.coroutines.launch
 import org.quickness.network.repository.RegisterRepositoryImpl
 import org.quickness.interfaces.viewmodels.RegisterInterface
 import org.quickness.ui.states.RegisterState
-import org.quickness.utils.objects.ValidatesData.confirmPassword
-import org.quickness.utils.objects.ValidatesData.formatPhoneNumber
-import org.quickness.utils.objects.ValidatesData.isCurpValid
-import org.quickness.utils.objects.ValidatesData.isEmailValid
-import org.quickness.utils.objects.ValidatesData.isNameValid
-import org.quickness.utils.objects.ValidatesData.isPasswordValid
-import org.quickness.utils.objects.ValidatesData.isPhoneNumberValid
-
 /**
  * ViewModel responsible for managing the state and logic of the registration process.
  * Handles user input validation, state updates, and interaction with the [RegisterRepositoryImpl].
@@ -52,15 +45,15 @@ class RegisterViewModel(
      * @return `true` if the email and password fields are valid; `false` otherwise.
      */
     override fun validateEmailAndPassword(): Boolean =
-        isEmailValid(
+        ValidatesData.isEmailValid(
             email = _state.value.email,
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } }
         )
-                && isPasswordValid(
+                && ValidatesData.isPasswordValid(
             password = _state.value.password,
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } }
         )
-                && confirmPassword(
+                && ValidatesData.confirmPassword(
             password = _state.value.password,
             confirmPassword = _state.value.confirmPassword,
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } }
@@ -72,11 +65,11 @@ class RegisterViewModel(
      * @return `true` if all personal information fields are valid; `false` otherwise.
      */
     override fun validatePersonalInfo(): Boolean =
-        isNameValid(
+        ValidatesData.isNameValid(
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } },
             capitalizeWords = { capitalizeWords() },
             name = "${_state.value.lastName} ${_state.value.name}"
-        ) && isCurpValid(
+        ) && ValidatesData.isCurpValid(
             curp = _state.value.curp,
             day = _state.value.day,
             month = _state.value.month,
@@ -85,7 +78,7 @@ class RegisterViewModel(
             name = "${_state.value.lastName} ${_state.value.name}",
             selectedState = _state.value.selectedState,
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } }
-        ) && isPhoneNumberValid(
+        ) && ValidatesData.isPhoneNumberValid(
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } },
             phone = _state.value.phoneNumber
         )
@@ -132,7 +125,7 @@ class RegisterViewModel(
                     password = _state.value.password,
                     name = "${_state.value.lastName} ${_state.value.name}",
                     curp = _state.value.curp,
-                    phoneNumber = formatPhoneNumber(_state.value.phoneNumber)
+                    phoneNumber = ValidatesData.formatPhoneNumber(_state.value.phoneNumber)
                 )
                 if (result.status == 200) {
                     onSuccess()

@@ -2,6 +2,9 @@ package org.quickness.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.quickness.shared.utils.objects.Constants
+import com.quickness.shared.utils.objects.KeysCache
+import com.quickness.shared.utils.objects.ValidatesData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,12 +15,6 @@ import org.quickness.interfaces.repository.network.AuthRepository
 import org.quickness.interfaces.viewmodels.LoginInterface
 import org.quickness.network.response.AuthResponse
 import org.quickness.ui.states.LoginState
-import org.quickness.utils.objects.Constants.OK_STATUS
-import org.quickness.utils.objects.Constants.SUCCESS_STATUS
-import org.quickness.utils.objects.KeysCache.JWT_FIREBASE_KEY
-import org.quickness.utils.objects.KeysCache.JWT_KEY
-import org.quickness.utils.objects.ValidatesData
-import org.quickness.utils.objects.ValidatesData.isPasswordValid
 
 class LoginViewModel(
     private val authRepository: AuthRepository,
@@ -39,7 +36,7 @@ class LoginViewModel(
                 isValid = false
             }
         )
-        isPasswordValid(
+        ValidatesData.isPasswordValid(
             password = _state.value.password,
             errorMessage = { errorMessage ->
                 loginError(errorMessage, onError)
@@ -58,7 +55,7 @@ class LoginViewModel(
                     email = _state.value.email,
                     password = _state.value.password
                 )
-                if (loginResult.status == SUCCESS_STATUS) {
+                if (loginResult.status == Constants.SUCCESS_STATUS) {
                     loginSuccess(
                         loginResult = loginResult,
                         onSuccess = onSuccess,
@@ -84,12 +81,12 @@ class LoginViewModel(
             val jwtResult = authRepository.jwt(
                 token = loginResult.jwt ?: return onError("Error obteniendo el token JWT")
             )
-            if (jwtResult.status == OK_STATUS) {
+            if (jwtResult.status == Constants.OK_STATUS) {
                 update { copy(isError = false, isWarning = false, isLoading = false) }
                 dataStoreRepository.saveString(
                     mapOf(
-                        JWT_KEY to jwtResult.data.getValue("jwt").jsonPrimitive.content,
-                        JWT_FIREBASE_KEY to loginResult.jwt
+                        KeysCache.JWT_KEY to jwtResult.data.getValue("jwt").jsonPrimitive.content,
+                        KeysCache.JWT_FIREBASE_KEY to loginResult.jwt
                     )
                 )
                 onSuccess()

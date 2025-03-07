@@ -1,4 +1,4 @@
-package org.quickness.utils.objects
+package com.quickness.shared.utils.objects
 
 object Constants {
     const val SUCCESS_STATUS = "Success"

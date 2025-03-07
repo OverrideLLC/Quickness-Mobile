@@ -1,4 +1,4 @@
-package org.quickness.utils.objects
+package com.quickness.shared.utils.objects
 
 object KeysCache {
     const val MY_PREFS = "MyPrefs"

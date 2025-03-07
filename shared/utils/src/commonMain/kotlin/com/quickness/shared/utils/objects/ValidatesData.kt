@@ -1,8 +1,7 @@
-package org.quickness.utils.objects
+package com.quickness.shared.utils.objects
 
-import org.quickness.utils.enums.MexicanState
-import org.quickness.utils.enums.RestrictedWords
-import org.quickness.utils.objects.Extensions.isVowel
+import com.quickness.shared.utils.enums.MexicanState
+import com.quickness.shared.utils.enums.RestrictedWords
 
 object ValidatesData {
     private fun isNotInappropriate(name: String): Boolean {
@@ -48,7 +47,7 @@ object ValidatesData {
         val firstName = names[2].uppercase()
 
         var generatedInitials =
-            "${firstSurname[0]}${firstSurname.drop(1).firstOrNull { it.isVowel() }}"
+            "${firstSurname[0]}${firstSurname.drop(1).firstOrNull { isVowelUsingSet(it) }}"
         generatedInitials += secondSurname[0]
         generatedInitials += firstName[0]
 
@@ -305,5 +304,9 @@ object ValidatesData {
 
             else -> true
         }
+    }
+
+    fun isVowelUsingSet(c: Char): Boolean {
+        return c.lowercase() in setOf("a", "e", "i", "o", "u")
     }
 }

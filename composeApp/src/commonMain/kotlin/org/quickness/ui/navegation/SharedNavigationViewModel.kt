@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.quickness.utils.objects.KeysCache.JWT_KEY
+import com.quickness.shared.utils.objects.KeysCache.JWT_KEY
 
 class SharedNavigationViewModel(
     private val dataStore: DataStore<Preferences>,

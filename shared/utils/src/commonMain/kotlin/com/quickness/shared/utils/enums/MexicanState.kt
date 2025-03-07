@@ -1,4 +1,4 @@
-package org.quickness.utils.enums
+package com.quickness.shared.utils.enums
 
 /**
  * Enum representing the states of Mexico and their associated codes.

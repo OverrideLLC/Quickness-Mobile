@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.quickness.shared.utils.routes.RoutesStart
 import org.koin.compose.viewmodel.koinViewModel
 import org.quickness.ui.animations.NavAnimations
 import org.quickness.ui.screens.forgot_password.ForgotPasswordScreen
@@ -18,7 +19,6 @@ import org.quickness.ui.screens.home.HomeScreen
 import org.quickness.ui.screens.login.LoginScreen
 import org.quickness.ui.screens.register.RegisterScreen
 import org.quickness.ui.screens.start.StartScreen
-import org.quickness.utils.routes.RoutesStart
 
 @Composable
 fun NavigationStart(

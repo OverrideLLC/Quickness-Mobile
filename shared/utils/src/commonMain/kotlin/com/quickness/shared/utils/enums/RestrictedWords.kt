@@ -1,4 +1,4 @@
-package org.quickness.utils.enums
+package com.quickness.shared.utils.enums
 
 /**
  * Enum class representing categories of restricted or sensitive words.

@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.quickness.shared.utils.routes.RoutesHome
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
@@ -64,7 +65,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.ui.components.styles.TextStyleBrush
 import org.quickness.ui.navegation.NavigationHome
-import org.quickness.utils.routes.RoutesHome
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24

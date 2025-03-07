@@ -1,9 +1,7 @@
-package org.quickness.utils.options.qr
+package com.quickness.shared.utils.qr_options
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import org.quickness.utils.options.qr.ColorQrOptions.entries
-
 
 enum class ColorQrOptions(val option: String, val colors: List<Int>) {
     Blue(

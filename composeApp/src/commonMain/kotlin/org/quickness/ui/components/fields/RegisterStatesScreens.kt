@@ -17,12 +17,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.quickness.shared.utils.enums.MexicanState
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.quickness.ui.components.component.ItemWithLink
 import org.quickness.ui.states.RegisterState
 import org.quickness.ui.screens.register.RegisterViewModel
-import org.quickness.utils.enums.MexicanState
 import quickness.composeapp.generated.resources.Poppins_Light
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24

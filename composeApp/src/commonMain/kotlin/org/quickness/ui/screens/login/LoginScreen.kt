@@ -31,10 +31,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.quickness.shared.utils.routes.RoutesStart
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.ui.components.component.ButtonAccess
 import org.quickness.ui.components.component.LogoAndTitle
 import org.quickness.ui.components.fields.TextFieldCustomEmail
@@ -42,7 +42,6 @@ import org.quickness.ui.components.fields.TextFieldCustomPassword
 import org.quickness.ui.components.helpers.Message
 import org.quickness.ui.components.helpers.powered
 import org.quickness.ui.states.LoginState
-import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.email
@@ -50,7 +49,6 @@ import quickness.composeapp.generated.resources.forgot_password
 import quickness.composeapp.generated.resources.login
 import quickness.composeapp.generated.resources.password
 
-@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun LoginScreen(
     navController: NavController,

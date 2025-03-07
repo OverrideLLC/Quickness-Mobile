@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.quickness.shared.utils.routes.RoutesRegister
+import com.quickness.shared.utils.routes.RoutesStart
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -41,8 +43,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.ui.components.helpers.Message
 import org.quickness.ui.navegation.NavigationRegister
-import org.quickness.utils.routes.RoutesRegister
-import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Poppins_Light
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.arrow_back_ios_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24

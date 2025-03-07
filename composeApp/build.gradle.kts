@@ -57,29 +57,43 @@ kotlin {
         }
 
         commonMain.dependencies {
+            //MODULES
+            api(projects.shared)
+
+            //COMPOSE
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.runtime)
             implementation(compose.ui)
-            implementation(libs.androidx.lifecycle.runtime.compose)
-            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.navigation.compose)
+
+            //KOIN
+            implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewModel)
             implementation(libs.koin.core)
+
+            //UTILS
             implementation(libs.kotlinx.datetime)
             implementation(libs.krypto)
-            implementation(libs.navigation.compose)
             implementation(libs.qr.kit)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.viewmodel)
+
+            //KTOR
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.loggin)
             implementation(libs.ktor.serialization.kotlinx.json)
+
+            //DATABASE
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqliteBundled)
-            implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.datastore.preference)
+
+            //MOKO
             api(libs.moko.permissions)
             api(libs.moko.permissions.compose)
 
@@ -145,5 +159,37 @@ buildConfig {
             name = name,
             value = value
         )
+    }
+}
+
+tasks.register("generateResourceEnum") {
+    doLast {
+        val resources = mutableListOf<Pair<String, String>>()
+
+        // Leer drawables y crear pares (clave, recurso)
+        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()?.forEach { file ->
+            val name = file.nameWithoutExtension
+            val normalizedName = name.replace("-", "_")
+            resources.add(
+                normalizedName.uppercase() to normalizedName // Pair(key, res)
+            )
+        }
+
+        // Generar ResourceKey.kt
+        val output = """
+            package org.quickness
+            import quickness.composeapp.generated.resources.Res
+            import quickness.composeapp.generated.resources.*
+            
+            enum class ResourceKey(
+                val drawable: DrawableResource
+            ) {
+                ${resources.joinToString(",\n") { (key, res) -> "$key(Res.drawable.$res)" }}
+            }
+        """.trimIndent()
+
+        val outputFile = file("src/commonMain/kotlin/org/override/quickness/ResourceKey.kt")
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(output)
     }
 }

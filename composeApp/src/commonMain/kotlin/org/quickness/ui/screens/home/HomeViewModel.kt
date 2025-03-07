@@ -2,6 +2,7 @@ package org.quickness.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.quickness.shared.utils.objects.KeysCache
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +18,6 @@ import org.quickness.interfaces.repository.data.DataStoreRepository
 import org.quickness.interfaces.repository.data.TokenDatabaseRepository
 import org.quickness.interfaces.repository.network.TokensRepository
 import org.quickness.interfaces.viewmodels.HomeInterface
-import org.quickness.utils.objects.KeysCache.JWT_KEY
-import org.quickness.utils.objects.KeysCache.LAST_REQUEST_KEY
 
 class HomeViewModel(
     private val tokensRepository: TokensRepository,
@@ -47,8 +46,8 @@ class HomeViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val currentTime = Clock.System.now().toEpochMilliseconds()
             val lastRequestDate =
-                dataStoreRepository.getString(LAST_REQUEST_KEY, "")?.toLongOrNull()
-            val jwt = dataStoreRepository.getString(JWT_KEY, "")
+                dataStoreRepository.getString(KeysCache.LAST_REQUEST_KEY, "")?.toLongOrNull()
+            val jwt = dataStoreRepository.getString(KeysCache.JWT_KEY, "")
                 ?: return@launch EmptyLogger().info("JWT not found")
 
             if (lastRequestDate == null || shouldRequestTokens(currentTime, lastRequestDate)) {
@@ -61,7 +60,7 @@ class HomeViewModel(
                         .also { println("Tokens fetched successfully") }
 
                     tokensDatabaseRepository.saveTokens(sortedTokens, currentTime)
-                    dataStoreRepository.saveString(mapOf(LAST_REQUEST_KEY to currentTime.toString()))
+                    dataStoreRepository.saveString(mapOf(KeysCache.LAST_REQUEST_KEY to currentTime.toString()))
                 } catch (e: Exception) {
                     println("Error fetching tokens: ${e.message}")
                 }

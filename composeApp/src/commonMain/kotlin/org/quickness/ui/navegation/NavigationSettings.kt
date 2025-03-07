@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.quickness.shared.utils.routes.RoutesSettings
 import org.quickness.ui.animations.NavAnimations
 import org.quickness.ui.screens.home.settings.SettingsScreen
 import org.quickness.ui.screens.home.settings.screens.settings_account.AccountScreenSettings
@@ -14,7 +15,6 @@ import org.quickness.ui.screens.home.settings.screens.settings_notification.Noti
 import org.quickness.ui.screens.home.settings.screens.settings_privacy.PrivacySettingsScreen
 import org.quickness.ui.screens.home.settings.screens.settings_qr.QrScreenSettings
 import org.quickness.ui.screens.home.settings.screens.settings_security.SecuritySettingsScreen
-import org.quickness.utils.routes.RoutesSettings
 
 @Composable
 fun NavigationSettings() {

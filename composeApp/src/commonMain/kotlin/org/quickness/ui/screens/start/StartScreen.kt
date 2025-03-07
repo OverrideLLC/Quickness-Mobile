@@ -33,11 +33,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.quickness.shared.utils.routes.RoutesStart
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.quickness.ui.components.component.LogoAndTitle
-import org.quickness.utils.routes.RoutesStart
 import quickness.composeapp.generated.resources.Poppins_Medium
 import quickness.composeapp.generated.resources.Res
 import quickness.composeapp.generated.resources.app_name

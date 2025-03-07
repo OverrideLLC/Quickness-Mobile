@@ -1,8 +1,8 @@
 package org.quickness.ui.states
 
-import org.quickness.utils.options.qr.ColorQrOptions
-import org.quickness.utils.options.qr.FormatQrOptions
-import org.quickness.utils.options.qr.RoundedQrOptions
+import com.quickness.shared.utils.qr_options.ColorQrOptions
+import com.quickness.shared.utils.qr_options.FormatQrOptions
+import com.quickness.shared.utils.qr_options.RoundedQrOptions
 
 data class QrSettingsState(
     val format: String = FormatQrOptions.Low.option,

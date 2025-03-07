@@ -1,4 +1,4 @@
-package org.quickness.utils.options.qr
+package com.quickness.shared.utils.qr_options
 
 object QrOptionsKeys {
     const val FORMAT_KEY = "format_key"

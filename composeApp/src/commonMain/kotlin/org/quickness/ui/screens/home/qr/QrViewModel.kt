@@ -3,6 +3,10 @@ package org.quickness.ui.screens.home.qr
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.quickness.shared.utils.qr_options.ColorQrOptions
+import com.quickness.shared.utils.qr_options.FormatQrOptions
+import com.quickness.shared.utils.qr_options.QrOptionsKeys
+import com.quickness.shared.utils.qr_options.RoundedQrOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,12 +18,6 @@ import kotlinx.datetime.toLocalDateTime
 import org.quickness.interfaces.repository.data.DataStoreRepository
 import org.quickness.interfaces.repository.data.TokenDatabaseRepository
 import org.quickness.interfaces.viewmodels.QrInterface
-import org.quickness.utils.options.qr.ColorQrOptions
-import org.quickness.utils.options.qr.FormatQrOptions
-import org.quickness.utils.options.qr.QrOptionsKeys.FORMAT_KEY
-import org.quickness.utils.options.qr.QrOptionsKeys.QR_COLOR_KEY
-import org.quickness.utils.options.qr.QrOptionsKeys.ROUNDED_QR_KEY
-import org.quickness.utils.options.qr.RoundedQrOptions
 import org.quickness.ui.states.QrState
 import qrgenerator.qrkitpainter.QrKitBallShape
 import qrgenerator.qrkitpainter.QrKitBrush
@@ -43,7 +41,7 @@ class QrViewModel(
 
     suspend fun getColors() {
         val colorOption = dataStoreRepository.getString(
-            key = QR_COLOR_KEY,
+            key = QrOptionsKeys.QR_COLOR_KEY,
             defaultValue = ColorQrOptions.Black.option
         )
         println("Color option: $colorOption")
@@ -74,19 +72,19 @@ class QrViewModel(
         if (token == _qrState.value.lastQrData && interval == _qrState.value.currentInterval) return
         viewModelScope.launch {
             val format = dataStoreRepository.getString(
-                key = FORMAT_KEY,
+                key = QrOptionsKeys.FORMAT_KEY,
                 defaultValue = FormatQrOptions.Low.option
             ) ?: FormatQrOptions.Low.option
 
             val colors = dataStoreRepository.getString(
-                key = QR_COLOR_KEY,
+                key = QrOptionsKeys.QR_COLOR_KEY,
                 defaultValue = ColorQrOptions.Black.option
             ).let { colorOption ->
                 ColorQrOptions.fromOption(colorOption ?: ColorQrOptions.Black.option)?.colors
                     ?: ColorQrOptions.Black.colors
             }
             val qrKitShapes = dataStoreRepository.getString(
-                key = ROUNDED_QR_KEY,
+                key = QrOptionsKeys.ROUNDED_QR_KEY,
                 defaultValue = RoundedQrOptions.Rounded.option
             ) ?: RoundedQrOptions.Rounded.option
             val qr = withContext(Dispatchers.Default) {

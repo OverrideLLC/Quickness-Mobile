@@ -1,4 +1,4 @@
-package org.quickness.utils.routes
+package com.quickness.shared.utils.routes
 
 /**
  * Defines the navigation routes for the registration flow.
