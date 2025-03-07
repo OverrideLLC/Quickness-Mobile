@@ -8,43 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:322358291466:android:c8bdc5c432152ce45983f3",
-        "android_client_info": {
-          "package_name": "com.Fleetmanager"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "322358291466-tf34jurmc8e08mbaj2up9ikkk08gh09h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC5JHtOZ7xIXcDrjOH09TCG8UQcnCl6lok"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "322358291466-tf34jurmc8e08mbaj2up9ikkk08gh09h.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "322358291466-8f72f4aqd3cqcomnqhchpj8br5k3hje1.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "org.quickness"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:322358291466:android:deae4165d9cabb925983f3",
+        "mobilesdk_app_id": "1:322358291466:android:90abe34a07ce92925983f3",
         "android_client_info": {
           "package_name": "org.quickness"
         }
