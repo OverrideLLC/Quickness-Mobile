@@ -27,6 +27,7 @@ class HomeViewModel(
     private val tokensDatabaseRepository: TokenDatabaseRepository,
     private val resources: Resources
 ) : ViewModel(), HomeInterface, CheckPermissions {
+
     init { getTokens() }
 
     override suspend fun checkPermissions(
