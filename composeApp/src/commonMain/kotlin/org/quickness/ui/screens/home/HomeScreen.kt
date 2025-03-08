@@ -11,7 +11,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,7 +43,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -54,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.quickness.shared.utils.routes.RoutesHome
+import com.shared.resources.ResourceNameKey
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
@@ -62,7 +61,6 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 import org.quickness.ui.components.styles.TextStyleBrush
 import org.quickness.ui.navegation.NavigationHome
 import quickness.composeapp.generated.resources.Poppins_Medium
@@ -76,7 +74,6 @@ import quickness.composeapp.generated.resources.shopping_cart_24dp_E8EAED_FILL0_
 import quickness.composeapp.generated.resources.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
 import quickness.composeapp.generated.resources.warning_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
 
-@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun HomeScreen(navController: NavHostController) =
     Screen(homeViewModel = koinViewModel(), navController = navController)
@@ -139,6 +136,7 @@ private fun Screen(homeViewModel: HomeViewModel, navController: NavHostControlle
         topBar = {
             TopBar(
                 title = topName,
+                viewModel = homeViewModel,
                 onEmergencyClick = {}
             )
         },
@@ -171,6 +169,7 @@ private fun Screen(homeViewModel: HomeViewModel, navController: NavHostControlle
 private fun TopBar(
     title: String,
     showBackButton: Boolean = false,
+    viewModel: HomeViewModel,
     onBackClick: () -> Unit = {},
     onEmergencyClick: () -> Unit = {}
 ) {
@@ -200,7 +199,7 @@ private fun TopBar(
                 onClick = onEmergencyClick,
                 content = {
                     Icon(
-                        painter = painterResource(Res.drawable.warning_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24),
+                        painter = painterResource(viewModel.getDrawable(ResourceNameKey.WARNING_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24.name)),
                         contentDescription = "Boton de enmergencia",
                         tint = colorScheme.error,
                         modifier = Modifier.size(40.dp)

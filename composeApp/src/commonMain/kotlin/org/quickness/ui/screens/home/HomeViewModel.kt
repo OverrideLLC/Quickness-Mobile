@@ -3,6 +3,7 @@ package org.quickness.ui.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.quickness.shared.utils.objects.KeysCache
+import com.shared.resources.Resources
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.DrawableResource
 import org.koin.core.logger.EmptyLogger
 import org.quickness.interfaces.helpers.CheckPermissions
 import org.quickness.interfaces.repository.data.DataStoreRepository
@@ -23,22 +25,18 @@ class HomeViewModel(
     private val tokensRepository: TokensRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val tokensDatabaseRepository: TokenDatabaseRepository,
+    private val resources: Resources
 ) : ViewModel(), HomeInterface, CheckPermissions {
-    init {
-        getTokens()
-    }
+    init { getTokens() }
 
     override suspend fun checkPermissions(
         permissions: Permission,
         controller: PermissionsController,
     ) {
-        val granted = controller.isPermissionGranted(permissions)
-        if (!granted) {
-            try {
+        if (!controller.isPermissionGranted(permissions)) {
+            runCatching {
                 controller.providePermission(permissions)
-            } catch (_: Exception) {
-                println("Permission denied")
-            }
+            }.onFailure { e -> println("Permission denied " + e.message) }
         }
     }
 
@@ -77,5 +75,9 @@ class HomeViewModel(
         val lastRequestDate =
             Instant.fromEpochMilliseconds(lastRequestTime).toLocalDateTime(timeZone).date
         return currentDate > lastRequestDate
+    }
+
+    fun getDrawable(drawableRes: String): DrawableResource {
+        return resources.getDrawable(drawableRes)
     }
 }

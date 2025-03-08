@@ -179,6 +179,7 @@ tasks.register("generateResourceEnum") {
         val output = """
             package org.quickness
             import quickness.composeapp.generated.resources.Res
+            import org.jetbrains.compose.resources.DrawableResource
             import quickness.composeapp.generated.resources.*
             
             enum class ResourceKey(
@@ -188,7 +189,40 @@ tasks.register("generateResourceEnum") {
             }
         """.trimIndent()
 
-        val outputFile = file("src/commonMain/kotlin/org/override/quickness/ResourceKey.kt")
+        val outputFile = file("src/commonMain/kotlin/org/quickness/ResourceKey.kt")
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(output)
+    }
+}
+
+tasks.register("generateResourceNameEnum") {
+    doLast {
+        val resources = mutableListOf<Pair<String, String>>()
+
+        // Leer drawables y crear pares (clave, recurso)
+        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()?.forEach { file ->
+            val name = file.nameWithoutExtension
+            val normalizedName = name.replace("-", "_")
+            resources.add(
+                normalizedName.uppercase() to normalizedName // Pair(key, res)
+            )
+        }
+
+        // Generar ResourceKey.kt
+        val output = """
+            package org.quickness
+            import quickness.composeapp.generated.resources.Res
+            import org.jetbrains.compose.resources.DrawableResource
+            import quickness.composeapp.generated.resources.*
+            
+            enum class ResourceKey(
+                val drawable: DrawableResource
+            ) {
+                ${resources.joinToString(",\n") { (key, res) -> key }}
+            }
+        """.trimIndent()
+
+        val outputFile = file("src/commonMain/kotlin/org/quickness/ResourceNameKey.kt")
         outputFile.parentFile.mkdirs()
         outputFile.writeText(output)
     }

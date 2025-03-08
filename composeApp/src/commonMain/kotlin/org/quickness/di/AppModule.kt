@@ -1,5 +1,6 @@
 package org.quickness.di
 
+import com.shared.resources.Resources
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
@@ -14,10 +15,12 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.quickness.data.room.dao.TokenDao
 import org.quickness.data.room.db.TokenDatabase
 import org.quickness.data.room.localdb.CreateDatabase
+import org.quickness.resources.ResourcesImpl
 
 /**
  * Módulo de Koin que define las dependencias de la aplicación.
@@ -26,6 +29,7 @@ val appModule: Module = module {
     singleOf(::createHttpClient)
     single<TokenDatabase> { CreateDatabase(get()).getTokenDatabase() }
     single<TokenDao> { get<TokenDatabase>().tokenDao() }
+    singleOf(::ResourcesImpl).bind(Resources::class)
 }
 
 /**
