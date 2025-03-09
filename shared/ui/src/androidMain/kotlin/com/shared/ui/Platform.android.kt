@@ -1,3 +1,3 @@
-package com.shared.resources
+package com.shared.ui
 
 actual fun platform() = "Android"

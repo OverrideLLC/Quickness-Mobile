@@ -9,9 +9,12 @@ import org.quickness.ui.theme.MaterialThemeApp
 
 @Composable
 fun App() {
-    MaterialThemeApp {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            NavigationStart()
+    MaterialThemeApp(
+        isDarkTheme = false,
+        content = {
+            Surface(modifier = Modifier.fillMaxSize()) {
+                NavigationStart()
+            }
         }
-    }
+    )
 }
