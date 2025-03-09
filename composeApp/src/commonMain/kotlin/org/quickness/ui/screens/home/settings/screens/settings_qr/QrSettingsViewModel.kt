@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.quickness.interfaces.repository.data.DataStoreRepository
-import org.quickness.interfaces.viewmodels.QrSettingsInterface
+import org.quickness.interfaces.viewmodels.QrSettingsViewModelInterface
 import org.quickness.ui.states.QrSettingsState
 
 class QrSettingsViewModel(
     private val dataStoreRepository: DataStoreRepository,
-) : ViewModel(), QrSettingsInterface {
+) : ViewModel(), QrSettingsViewModelInterface {
     private val _state = MutableStateFlow(QrSettingsState())
     val state = _state.asStateFlow()
 

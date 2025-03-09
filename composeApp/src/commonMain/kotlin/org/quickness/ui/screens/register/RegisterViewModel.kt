@@ -2,14 +2,15 @@ package org.quickness.ui.screens.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.network.impl.repository.RegisterRepositoryImpl
 import com.quickness.shared.utils.objects.ValidatesData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.network.repository.RegisterRepositoryImpl
-import org.quickness.interfaces.viewmodels.RegisterInterface
+import org.quickness.interfaces.viewmodels.RegisterViewModelInterface
 import org.quickness.ui.states.RegisterState
+
 /**
  * ViewModel responsible for managing the state and logic of the registration process.
  * Handles user input validation, state updates, and interaction with the [RegisterRepositoryImpl].
@@ -18,7 +19,7 @@ import org.quickness.ui.states.RegisterState
  */
 class RegisterViewModel(
     private val registerRepository: RegisterRepositoryImpl,
-) : ViewModel(), RegisterInterface {
+) : ViewModel(), RegisterViewModelInterface {
 
     /**
      * Holds the current state of the registration process as a [org.quickness.ui.states.RegisterState].

@@ -2,6 +2,8 @@ package org.quickness.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.network.api.repository.AuthRepository
+import com.network.api.response.AuthResponse
 import com.quickness.shared.utils.objects.Constants
 import com.quickness.shared.utils.objects.KeysCache
 import com.quickness.shared.utils.objects.ValidatesData
@@ -11,15 +13,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.jsonPrimitive
 import org.quickness.interfaces.repository.data.DataStoreRepository
-import org.quickness.interfaces.repository.network.AuthRepository
-import org.quickness.interfaces.viewmodels.LoginInterface
-import org.quickness.network.response.AuthResponse
+import org.quickness.interfaces.viewmodels.LoginViewModelInterface
 import org.quickness.ui.states.LoginState
 
 class LoginViewModel(
     private val authRepository: AuthRepository,
     private val dataStoreRepository: DataStoreRepository
-) : ViewModel(), LoginInterface {
+) : ViewModel(), LoginViewModelInterface {
     private val _state = MutableStateFlow(LoginState())
     override val state: StateFlow<LoginState> = _state.asStateFlow()
 
@@ -84,10 +84,10 @@ class LoginViewModel(
             if (jwtResult.status == Constants.OK_STATUS) {
                 update { copy(isError = false, isWarning = false, isLoading = false) }
                 dataStoreRepository.saveString(
-                    mapOf(
-                        KeysCache.JWT_KEY to jwtResult.data.getValue("jwt").jsonPrimitive.content,
-                        KeysCache.JWT_FIREBASE_KEY to loginResult.jwt
-                    )
+                    buildMap {
+                        put(KeysCache.JWT_KEY, jwtResult.data.getValue("jwt").jsonPrimitive.content)
+                        put(KeysCache.JWT_FIREBASE_KEY, loginResult.jwt ?: "")
+                    }
                 )
                 onSuccess()
             } else {

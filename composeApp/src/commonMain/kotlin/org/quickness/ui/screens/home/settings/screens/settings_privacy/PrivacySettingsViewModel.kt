@@ -2,10 +2,10 @@ package org.quickness.ui.screens.home.settings.screens.settings_privacy
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.network.impl.repository.ClientRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.network.repository.ClientRepositoryImpl
 import org.quickness.ui.states.PrivacySettingsState
 
 class PrivacySettingsViewModel(

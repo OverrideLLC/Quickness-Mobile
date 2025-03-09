@@ -2,6 +2,7 @@ package org.quickness.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.network.api.repository.TokensRepository
 import com.quickness.shared.utils.objects.KeysCache
 import com.shared.resources.Resources
 import dev.icerock.moko.permissions.Permission
@@ -18,16 +19,18 @@ import org.koin.core.logger.EmptyLogger
 import org.quickness.interfaces.helpers.CheckPermissions
 import org.quickness.interfaces.repository.data.DataStoreRepository
 import org.quickness.interfaces.repository.data.TokenDatabaseRepository
-import org.quickness.interfaces.repository.network.TokensRepository
-import org.quickness.interfaces.viewmodels.HomeInterface
+import org.quickness.interfaces.viewmodels.HomeViewModelInterface
 
 class HomeViewModel(
     private val tokensRepository: TokensRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val tokensDatabaseRepository: TokenDatabaseRepository,
     private val resources: Resources
-) : ViewModel(), HomeInterface, CheckPermissions {
-    init { getTokens() }
+) : ViewModel(), HomeViewModelInterface, CheckPermissions {
+
+    init {
+        getTokens()
+    }
 
     override suspend fun checkPermissions(
         permissions: Permission,
