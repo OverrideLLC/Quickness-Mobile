@@ -10,12 +10,12 @@ import org.quickness.di.appModule
 import org.quickness.di.dataModule
 import org.quickness.di.firebaseModule
 import org.quickness.di.initKoin
+import org.quickness.di.repositoryDatabaseModule
+import org.quickness.di.repositoryNetworkModule
 import org.quickness.di.serviceModule
-import org.quickness.di.repositoryModule
 import org.quickness.di.viewModelsHome
 import org.quickness.di.viewModelsSetting
 import org.quickness.di.viewModelsStart
-import org.quickness.utils.ContextProvider
 
 class MyApp : Application(), KoinComponent {
     override fun onCreate() {
@@ -27,13 +27,14 @@ class MyApp : Application(), KoinComponent {
             modules(
                 appModule,
                 dataModule,
-                repositoryModule,
+                repositoryDatabaseModule,
                 viewModelsHome,
                 viewModelsStart,
                 viewModelsSetting,
                 serviceModule,
                 NativeModule,
-                firebaseModule
+                firebaseModule,
+                repositoryNetworkModule,
             )
         }
     }

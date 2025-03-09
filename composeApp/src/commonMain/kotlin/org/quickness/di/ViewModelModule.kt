@@ -1,7 +1,12 @@
 package org.quickness.di
 
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.quickness.interfaces.viewmodels.HomeViewModelInterface
+import org.quickness.interfaces.viewmodels.LoginViewModelInterface
+import org.quickness.interfaces.viewmodels.QrSettingsViewModelInterface
+import org.quickness.interfaces.viewmodels.RegisterViewModelInterface
 import org.quickness.ui.navegation.SharedNavigationViewModel
 import org.quickness.ui.screens.forgot_password.ForgotPasswordViewModel
 import org.quickness.ui.screens.home.HomeViewModel

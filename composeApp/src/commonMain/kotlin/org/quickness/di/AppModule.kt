@@ -1,5 +1,8 @@
 package org.quickness.di
 
+import com.network.impl.firebaseModule
+import com.network.impl.repositoryNetworkModule
+import com.network.impl.serviceModule
 import com.shared.resources.Resources
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -81,11 +84,12 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
         modules(
             appModule,
             dataModule,
-            repositoryModule,
+            repositoryDatabaseModule,
             viewModelsHome,
             viewModelsStart,
             serviceModule,
             NativeModule,
-            firebaseModule
+            firebaseModule,
+            repositoryNetworkModule,
         )
     }

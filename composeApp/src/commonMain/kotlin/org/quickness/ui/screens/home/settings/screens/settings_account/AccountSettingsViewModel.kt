@@ -2,11 +2,11 @@ package org.quickness.ui.screens.home.settings.screens.settings_account
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.network.impl.service.FirebaseAuthImpl
 import com.quickness.shared.utils.objects.ValidatesData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.network.service.FirebaseAuthImpl
 import org.quickness.ui.states.AccountState
 
 class AccountSettingsViewModel(

@@ -38,27 +38,38 @@ kotlin {
             kotlin.srcDir("androidMain/kotlin")
         }
         androidMain.dependencies {
+            //COMPOSE
             implementation(compose.preview)
             implementation(libs.accompanist.systemuicontroller)
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.splashscreen)
-            implementation(libs.core)
+
+            //FIREBASE
+            implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.auth)
             implementation(libs.firebase.firestore)
+
+            //KOIN
             implementation(libs.koin.android)
+
+            //KTOR
             implementation(libs.ktor.client.okhttp)
+
+            //GOOGLE MAPS
             implementation(libs.maps.compose)
             implementation(libs.play.services.location)
             implementation(libs.play.services.maps)
-            implementation(project.dependencies.platform(libs.firebase.bom))
+
+            //UTILS ANDROID
             implementation(libs.androidx.biometric)
             implementation(libs.androidx.work.runtime.ktx)
         }
 
         commonMain.dependencies {
             //MODULES
-            api(projects.shared)
+            implementation(projects.shared)
+            implementation(projects.network.impl)
 
             //COMPOSE
             implementation(compose.components.resources)
@@ -96,7 +107,6 @@ kotlin {
             //MOKO
             api(libs.moko.permissions)
             api(libs.moko.permissions.compose)
-
         }
 
         iosMain.dependencies {

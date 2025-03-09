@@ -9,7 +9,6 @@ androidx-lifecycle = "2.8.4"
 androidx-room = "2.7.0-rc01"
 androidx-sqliteBundled = "2.5.0-rc01"
 compose-multiplatform = "1.7.3"
-core = "3.5.2"
 coreSplashscreen = "1.0.1"
 firebase-bom = "33.10.0"
 googleService = "4.4.2"
@@ -48,7 +47,6 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-sqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqliteBundled" }
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
-core = { module = "com.google.zxing:core", version.ref = "core" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
