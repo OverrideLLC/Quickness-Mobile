@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.googleService)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.androidxRoom)
     alias(libs.plugins.gradelBuildConfig)
 }
 
@@ -34,9 +33,6 @@ kotlin {
     }
 
     sourceSets {
-        androidMain {
-            kotlin.srcDir("androidMain/kotlin")
-        }
         androidMain.dependencies {
             //COMPOSE
             implementation(compose.preview)
@@ -71,6 +67,7 @@ kotlin {
             implementation(projects.shared)
             implementation(projects.network.impl)
             implementation(projects.feature)
+            implementation(projects.data.impl)
 
             //COMPOSE
             implementation(compose.components.resources)
@@ -99,11 +96,6 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.loggin)
             implementation(libs.ktor.serialization.kotlinx.json)
-
-            //DATABASE
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.androidx.sqliteBundled)
-            implementation(libs.datastore.preference)
 
             //MOKO
             api(libs.moko.permissions)
@@ -146,14 +138,6 @@ android {
         implementation(libs.kotlinx.coroutines.core)
         debugImplementation(compose.uiTooling)
     }
-}
-
-room {
-    schemaDirectory("$projectDir/schemas")
-}
-
-dependencies {
-    add("kspAndroid", libs.androidx.room.compailer)
 }
 
 buildConfig {

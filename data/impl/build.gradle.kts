@@ -44,6 +44,12 @@ kotlin {
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqliteBundled)
                 implementation(libs.datastore.preference)
+
+                //KOIN
+                implementation(project.dependencies.platform(libs.koin.bom))
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewModel)
+                implementation(libs.koin.core)
             }
         }
 
@@ -54,10 +60,10 @@ kotlin {
         }
 
         androidMain {
-            dependencies {
-                // Add Android-specific dependencies here. Note that this source set depends on
-                // commonMain by default and will correctly pull the Android artifacts of any KMP
-                // dependencies declared in commonMain.
+            kotlin.srcDir("androidMain/kotlin")
+            dependencies{
+                //KOIN
+                implementation(libs.koin.android)
             }
         }
 

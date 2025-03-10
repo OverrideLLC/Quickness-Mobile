@@ -1,5 +1,8 @@
 package org.quickness.di
 
+import com.data.impl.di.dataModule
+import com.data.impl.di.nativeDatabase
+import com.data.impl.di.repositoryDatabaseModule
 import com.feature.viewModelModules
 import com.network.impl.firebaseModule
 import com.network.impl.repositoryNetworkModule
@@ -21,9 +24,6 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import org.quickness.data.room.dao.TokenDao
-import org.quickness.data.room.db.TokenDatabase
-import org.quickness.data.room.localdb.CreateDatabase
 import org.quickness.resources.ResourcesImpl
 
 /**
@@ -31,8 +31,6 @@ import org.quickness.resources.ResourcesImpl
  */
 val appModule: Module = module {
     singleOf(::createHttpClient)
-    single<TokenDatabase> { CreateDatabase(get()).getTokenDatabase() }
-    single<TokenDao> { get<TokenDatabase>().tokenDao() }
     singleOf(::ResourcesImpl).bind(Resources::class)
 }
 
@@ -84,8 +82,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
         appDeclaration?.invoke(this)
         modules(
             appModule,
-            dataModule,
-            repositoryDatabaseModule,
             viewModelsHome,
             viewModelsStart,
             serviceModule,
@@ -93,5 +89,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
             firebaseModule,
             repositoryNetworkModule,
             viewModelModules,
+            dataModule,
+            repositoryDatabaseModule,
+            nativeDatabase
         )
     }
