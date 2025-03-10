@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -27,27 +28,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.feature.login.state.LoginState
 import com.quickness.shared.utils.routes.RoutesStart
-import org.jetbrains.compose.resources.Font
-import org.jetbrains.compose.resources.stringResource
+import com.shared.resources.drawable.ResourceNameKey
+import com.shared.resources.strings.Strings
+import com.shared.ui.components.component.LogoAndTitle
+import com.shared.ui.components.fields.TextFieldCustomEmail
+import com.shared.ui.components.fields.TextFieldCustomPassword
+import com.shared.ui.components.helpers.Message
+import com.shared.ui.components.helpers.powered
 import org.koin.compose.viewmodel.koinViewModel
-import org.quickness.ui.components.component.ButtonAccess
-import org.quickness.ui.components.component.LogoAndTitle
-import org.quickness.ui.components.fields.TextFieldCustomEmail
-import org.quickness.ui.components.fields.TextFieldCustomPassword
-import org.quickness.ui.components.helpers.Message
-import org.quickness.ui.components.helpers.powered
-import org.quickness.ui.states.LoginState
-import quickness.composeapp.generated.resources.Poppins_Medium
-import quickness.composeapp.generated.resources.Res
-import quickness.composeapp.generated.resources.email
-import quickness.composeapp.generated.resources.forgot_password
-import quickness.composeapp.generated.resources.login
-import quickness.composeapp.generated.resources.password
 
 @Composable
 fun LoginScreen(
@@ -102,7 +95,10 @@ private fun Screen(
                 modifier = Modifier.fillMaxSize().padding(16.dp)
             ) {
                 Spacer(modifier = Modifier.weight(1f))
-                LogoAndTitle(stringResource(Res.string.login))
+                LogoAndTitle(
+                    title = Strings.Authentication.LOGIN,
+                    drawableResource = viewModel.getDrawable(ResourceNameKey.LOGOQUICKNESSQC.name)
+                )
                 Spacer(modifier = Modifier.weight(1f))
                 Body(
                     viewModel = viewModel,
@@ -111,10 +107,8 @@ private fun Screen(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 forgotPassword(navController)
-                powered()
-                ButtonAccess(
-                    onLoginClick = { onDone(navController, viewModel) },
-                    onRegisterClick = { navController.navigate(RoutesStart.Register.route) }
+                powered(
+                    logo = viewModel.getDrawable(ResourceNameKey.LOGO_SWIFTID_CENTRADO.name),
                 )
                 Spacer(modifier = Modifier.weight(1f))
             }
@@ -133,6 +127,7 @@ private fun Screen(
         message = state.errorMessage,
         visibility = state.isError,
         isWarning = state.isWarning,
+        errorIcon = viewModel.getDrawable(ResourceNameKey.ERROR_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
         actionPostDelayed = {
             viewModel.update { copy(isError = false, isWarning = false, isLoading = false) }
         }
@@ -150,8 +145,9 @@ private fun Body(viewModel: LoginViewModel, state: LoginState, navController: Na
             value = state.email,
             isError = state.isError,
             modifier = Modifier.fillMaxWidth(),
-            text = stringResource(Res.string.email),
+            text = Strings.Authentication.EMAIL,
             onDone = { onDone(navController, viewModel) },
+            icons = viewModel.getDrawable(ResourceNameKey.PERSON_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
             onValueChange = {
                 if (state.isError) viewModel.update { copy(isError = false) }
                 viewModel.update { copy(email = it) }
@@ -161,7 +157,7 @@ private fun Body(viewModel: LoginViewModel, state: LoginState, navController: Na
         TextFieldCustomPassword(
             value = state.password,
             isError = state.isError,
-            text = stringResource(Res.string.password),
+            text = Strings.Authentication.PASSWORD,
             modifier = Modifier.fillMaxWidth(),
             isPasswordVisible = state.isPasswordVisible,
             togglePasswordVisibility = { viewModel.update { copy(isPasswordVisible = !isPasswordVisible) } },
@@ -169,7 +165,13 @@ private fun Body(viewModel: LoginViewModel, state: LoginState, navController: Na
                 if (state.isError) viewModel.update { copy(isError = false) }
                 viewModel.update { copy(password = it) }
             },
-            onDone = { onDone(navController, viewModel) }
+            onDone = { onDone(navController, viewModel) },
+            icon = viewModel.getDrawable(ResourceNameKey.LOCK_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
+            togglePasswordVisibilityIcon = {
+                viewModel.getDrawable(
+                    if (state.isPasswordVisible) ResourceNameKey.VISIBILITY_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name else ResourceNameKey.VISIBILITY_OFF_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name
+                )
+            }
         )
     }
 }
@@ -200,9 +202,9 @@ private fun onDone(
 private fun forgotPassword(navController: NavController) {
     TextButton(onClick = { navController.navigate(RoutesStart.ForgotPassword.route) }) {
         Text(
-            text = stringResource(Res.string.forgot_password),
+            text = Strings.Authentication.FORGOT_PASSWORD,
             fontSize = 16.sp,
-            fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
+            fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
             color = colorScheme.tertiary
         )
     }

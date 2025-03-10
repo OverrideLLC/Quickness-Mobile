@@ -41,6 +41,7 @@ kotlin {
 
                 //MODULES
                 implementation(projects.feature.start)
+                implementation(projects.feature.login)
                 implementation(projects.shared.resources)
                 implementation(projects.shared.utils)
                 implementation(projects.network.api)

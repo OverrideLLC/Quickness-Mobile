@@ -3,7 +3,7 @@ package org.quickness.di
 import com.data.impl.di.dataModule
 import com.data.impl.di.nativeDatabase
 import com.data.impl.di.repositoryDatabaseModule
-import com.feature.viewModelModules
+import com.feature.di.viewModelModules
 import com.network.impl.di.firebaseModule
 import com.network.impl.di.repositoryNetworkModule
 import com.network.impl.di.serviceModule

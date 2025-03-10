@@ -2,25 +2,27 @@ package com.feature.login.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.api.repository.DataStoreRepository
 import com.feature.login.state.LoginState
 import com.network.api.repository.AuthRepository
 import com.network.api.response.AuthResponse
 import com.quickness.shared.utils.objects.Constants
 import com.quickness.shared.utils.objects.KeysCache
 import com.quickness.shared.utils.objects.ValidatesData
+import com.shared.resources.interfaces.Resources
+import com.shared.resources.interfaces.ResourcesProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.jsonPrimitive
-import org.quickness.interfaces.repository.data.DataStoreRepository
-import org.quickness.interfaces.viewmodels.LoginViewModelInterface
-import org.quickness.ui.states.LoginState
+import org.jetbrains.compose.resources.DrawableResource
 
 class LoginViewModel(
     private val authRepository: AuthRepository,
-    private val dataStoreRepository: DataStoreRepository
-) : ViewModel() {
+    private val dataStoreRepository: DataStoreRepository,
+    private val resources: Resources
+) : ViewModel(), ResourcesProvider {
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state.asStateFlow()
 
@@ -108,5 +110,9 @@ class LoginViewModel(
     ) {
         update { copy(isError = true, isWarning = true, isLoading = false) }
         onError(errorMessage)
+    }
+
+    override fun getDrawable(name: String): DrawableResource {
+        return resources.getDrawable(name)
     }
 }
