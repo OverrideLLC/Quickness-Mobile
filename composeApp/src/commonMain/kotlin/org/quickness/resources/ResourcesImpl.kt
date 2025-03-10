@@ -1,6 +1,6 @@
 package org.quickness.resources
 
-import com.shared.resources.Resources
+import com.shared.resources.interfaces.Resources
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import quickness.composeapp.generated.resources.Res

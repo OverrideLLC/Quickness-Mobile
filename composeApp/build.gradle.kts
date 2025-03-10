@@ -70,6 +70,7 @@ kotlin {
             //MODULES
             implementation(projects.shared)
             implementation(projects.network.impl)
+            implementation(projects.feature)
 
             //COMPOSE
             implementation(compose.components.resources)

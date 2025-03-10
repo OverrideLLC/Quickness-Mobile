@@ -1,15 +1,23 @@
 package org.quickness.ui.theme
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.jetbrains.compose.resources.Font
+import quickness.composeapp.generated.resources.Poppins_Bold
+import quickness.composeapp.generated.resources.Poppins_Medium
+import quickness.composeapp.generated.resources.Poppins_Thin
+import quickness.composeapp.generated.resources.Res
 
 private val DarkColorScheme = darkColorScheme(
     primary = primary,
@@ -98,23 +106,23 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun MaterialThemeApp(content: @Composable () -> Unit) {
-    val themeViewModel = ThemeViewModel()
-    val isDarkTheme by themeViewModel.isDarkTheme.collectAsState()
-
-    // Cambia el colorScheme basado en el valor de isDarkTheme
+fun MaterialThemeApp(content: @Composable () -> Unit, isDarkTheme: Boolean) {
     MaterialTheme(
         colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme,
+        typography = TypographyApp(),
         content = content
     )
 }
 
-class ThemeViewModel : ViewModel() {
-    private val _isDarkTheme = MutableStateFlow(true)
-    val isDarkTheme: StateFlow<Boolean> = _isDarkTheme
-
-    // Función para alternar el tema
-    fun toggleTheme() {
-        _isDarkTheme.value = !_isDarkTheme.value
-    }
-}
+@Composable
+fun TypographyApp(): Typography = Typography(
+    titleLarge = TextStyle(fontFamily = FontFamily(Font(Res.font.Poppins_Bold))),
+    titleMedium = TextStyle(fontFamily = FontFamily(Font(Res.font.Poppins_Medium))),
+    titleSmall = TextStyle(fontFamily = FontFamily(Font(Res.font.Poppins_Thin))),
+    bodyLarge = TextStyle(fontFamily = FontFamily(Font(Res.font.Poppins_Bold))),
+    bodyMedium = TextStyle(fontFamily = FontFamily(Font(Res.font.Poppins_Medium))),
+    bodySmall = TextStyle(fontFamily = FontFamily(Font(Res.font.Poppins_Thin))),
+    labelLarge = TextStyle(fontFamily = FontFamily(Font(Res.font.Poppins_Bold))),
+    labelMedium = TextStyle(fontFamily = FontFamily(Font(Res.font.Poppins_Medium))),
+    labelSmall = TextStyle(fontFamily = FontFamily(Font(Res.font.Poppins_Thin))),
+)

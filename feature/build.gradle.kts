@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
@@ -39,8 +41,28 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                //UTILS
                 implementation(libs.kotlin.stdlib)
 
+                //MODULES
+                implementation(projects.feature.start)
+                implementation(projects.shared.resources)
+                implementation(projects.shared.utils)
+
+                //KOIN
+                implementation(project.dependencies.platform(libs.koin.bom))
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewModel)
+                implementation(libs.koin.core)
+
+                //COMPOSE
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.runtime)
+                implementation(compose.ui)
+                implementation(libs.navigation.compose)
             }
         }
 

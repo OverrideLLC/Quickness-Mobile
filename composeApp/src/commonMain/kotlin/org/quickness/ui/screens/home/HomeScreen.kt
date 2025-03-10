@@ -52,7 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.quickness.shared.utils.routes.RoutesHome
-import com.shared.resources.ResourceNameKey
+import com.shared.resources.drawable.ResourceNameKey
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
