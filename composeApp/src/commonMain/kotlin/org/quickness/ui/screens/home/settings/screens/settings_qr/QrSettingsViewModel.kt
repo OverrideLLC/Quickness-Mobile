@@ -2,6 +2,7 @@ package org.quickness.ui.screens.home.settings.screens.settings_qr
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.api.repository.DataStoreRepository
 import com.quickness.shared.utils.qr_options.ColorQrOptions
 import com.quickness.shared.utils.qr_options.FormatQrOptions
 import com.quickness.shared.utils.qr_options.QrOptionsKeys
@@ -9,7 +10,6 @@ import com.quickness.shared.utils.qr_options.RoundedQrOptions
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.interfaces.repository.data.DataStoreRepository
 import org.quickness.interfaces.viewmodels.QrSettingsViewModelInterface
 import org.quickness.ui.states.QrSettingsState
 
