@@ -6,9 +6,8 @@ plugins {
 }
 
 kotlin {
-
     androidLibrary {
-        namespace = "com.feature.start"
+        namespace = "com.feature.login"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -19,7 +18,7 @@ kotlin {
         }
     }
 
-    val xcfName = "feature:startKit"
+    val xcfName = "feature:loginKit"
 
     listOf(
         iosX64(),

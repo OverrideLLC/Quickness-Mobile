@@ -35,6 +35,7 @@ kotlin {
                 //MODULES
                 api(projects.shared.utils)
                 api(projects.shared.resources)
+                api(projects.shared.ui)
 
                 implementation(libs.kotlin.stdlib)
             }

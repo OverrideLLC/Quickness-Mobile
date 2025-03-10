@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.network.api.repository.TokensRepository
 import com.quickness.shared.utils.objects.KeysCache
-import com.shared.resources.Resources
+import com.shared.resources.interfaces.Resources
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
 import kotlinx.coroutines.Dispatchers

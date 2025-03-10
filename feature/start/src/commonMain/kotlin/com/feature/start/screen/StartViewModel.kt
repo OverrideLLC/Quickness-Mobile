@@ -1,8 +1,8 @@
 package com.feature.start.screen
 
 import androidx.lifecycle.ViewModel
-import com.shared.resources.Resources
-import com.shared.resources.ResourcesProvider
+import com.shared.resources.interfaces.Resources
+import com.shared.resources.interfaces.ResourcesProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.jetbrains.compose.resources.DrawableResource
