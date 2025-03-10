@@ -38,7 +38,7 @@ kotlin {
                 implementation(libs.kotlin.stdlib)
                 //MODULES
                 implementation(projects.shared.utils)
-                implementation(projects.data.api)
+                api(projects.data.api)//se tiene que modificar cuando los modulos feature esten listos
 
                 //DATABASE
                 implementation(libs.androidx.room.runtime)

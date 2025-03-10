@@ -1,8 +1,8 @@
 package com.data.impl.repository
 
-import com.example.api.repository.TokenDatabaseRepository
 import com.example.api.room.dao.TokenDao
 import com.example.api.room.entity.TokenEntity
+import com.example.api.repository.TokenDatabaseRepository
 
 class TokenDatabaseRepositoryImpl(
     private val tokenDao: TokenDao

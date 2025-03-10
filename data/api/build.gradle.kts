@@ -43,6 +43,8 @@ kotlin {
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqliteBundled)
                 implementation(libs.datastore.preference)
+
+                implementation(projects.shared.utils)
             }
         }
 

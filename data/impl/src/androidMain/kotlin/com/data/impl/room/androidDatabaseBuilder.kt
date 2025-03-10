@@ -2,9 +2,9 @@ package com.data.impl.room
 
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.data.impl.room.db.TokenDatabase
 import com.quickness.shared.utils.objects.DatabaseObjects
-import org.quickness.data.room.db.TokenDatabase
-import org.quickness.utils.ContextProvider
+import com.quickness.shared.utils.providers.ContextProvider
 
 fun androidDatabaseBuilder(): RoomDatabase.Builder<TokenDatabase> {
     val context = ContextProvider.getContext()!!

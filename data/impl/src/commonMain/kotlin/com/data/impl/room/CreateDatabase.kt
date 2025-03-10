@@ -2,7 +2,7 @@ package com.data.impl.room
 
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.example.api.room.db.TokenDatabase
+import com.data.impl.room.db.TokenDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 

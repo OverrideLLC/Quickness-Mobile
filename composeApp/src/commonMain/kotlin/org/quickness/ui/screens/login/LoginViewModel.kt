@@ -2,6 +2,7 @@ package org.quickness.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.api.repository.DataStoreRepository
 import com.network.api.repository.AuthRepository
 import com.network.api.response.AuthResponse
 import com.quickness.shared.utils.objects.Constants
@@ -12,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.jsonPrimitive
-import org.quickness.interfaces.repository.data.DataStoreRepository
 import org.quickness.interfaces.viewmodels.LoginViewModelInterface
 import org.quickness.ui.states.LoginState
 

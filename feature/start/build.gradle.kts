@@ -39,6 +39,8 @@ kotlin {
 
                 //MODULES
                 implementation(projects.shared)
+                implementation(projects.network.api)
+                implementation(projects.data.api)
 
                 //KOIN
                 implementation(project.dependencies.platform(libs.koin.bom))

@@ -1,6 +1,6 @@
-@file:Suppress("KotlinNoActualForExpect", "EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+@file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 
-package com.example.api.room.db
+package com.data.impl.room.db
 
 import androidx.room.ConstructedBy
 import androidx.room.Database
@@ -19,6 +19,7 @@ abstract class TokenDatabase : RoomDatabase() {
     abstract fun tokenDao(): TokenDao
 }
 
-expect object TokenDatabaseConstructor : RoomDatabaseConstructor<TokenDatabase> {
+@Suppress("KotlinNoActualForExpect")
+internal expect object TokenDatabaseConstructor : RoomDatabaseConstructor<TokenDatabase> {
     override fun initialize(): TokenDatabase
 }

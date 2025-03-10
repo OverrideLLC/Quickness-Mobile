@@ -2,6 +2,8 @@ package org.quickness.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.api.repository.DataStoreRepository
+import com.example.api.repository.TokenDatabaseRepository
 import com.network.api.repository.TokensRepository
 import com.quickness.shared.utils.objects.KeysCache
 import com.shared.resources.interfaces.Resources
@@ -17,8 +19,6 @@ import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.DrawableResource
 import org.koin.core.logger.EmptyLogger
 import org.quickness.interfaces.helpers.CheckPermissions
-import org.quickness.interfaces.repository.data.DataStoreRepository
-import org.quickness.interfaces.repository.data.TokenDatabaseRepository
 import org.quickness.interfaces.viewmodels.HomeViewModelInterface
 
 class HomeViewModel(

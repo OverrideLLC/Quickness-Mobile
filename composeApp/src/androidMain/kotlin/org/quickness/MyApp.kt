@@ -4,9 +4,9 @@ import android.app.Application
 import com.data.impl.di.dataModule
 import com.data.impl.di.nativeDatabase
 import com.data.impl.di.repositoryDatabaseModule
-import com.network.impl.firebaseModule
-import com.network.impl.repositoryNetworkModule
-import com.network.impl.serviceModule
+import com.network.impl.di.firebaseModule
+import com.network.impl.di.repositoryNetworkModule
+import com.network.impl.di.serviceModule
 import com.quickness.shared.utils.providers.ContextProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

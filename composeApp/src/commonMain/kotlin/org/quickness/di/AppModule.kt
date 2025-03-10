@@ -4,20 +4,10 @@ import com.data.impl.di.dataModule
 import com.data.impl.di.nativeDatabase
 import com.data.impl.di.repositoryDatabaseModule
 import com.feature.viewModelModules
-import com.network.impl.firebaseModule
-import com.network.impl.repositoryNetworkModule
-import com.network.impl.serviceModule
+import com.network.impl.di.firebaseModule
+import com.network.impl.di.repositoryNetworkModule
+import com.network.impl.di.serviceModule
 import com.shared.resources.interfaces.Resources
-import io.ktor.client.HttpClient
-import io.ktor.client.HttpClientConfig
-import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.DEFAULT
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -27,57 +17,40 @@ import org.koin.dsl.module
 import org.quickness.resources.ResourcesImpl
 
 /**
- * Módulo de Koin que define las dependencias de la aplicación.
+ * Módulo principal de la aplicación que define las dependencias globales.
+ *
+ * Incluye la configuración de recursos de la aplicación.
  */
 val appModule: Module = module {
-    singleOf(::createHttpClient)
     singleOf(::ResourcesImpl).bind(Resources::class)
 }
 
 /**
- * Crea un cliente HTTP configurado con los plugins y opciones necesarias.
+ * Initializes the Koin dependency injection container.
  *
- * @param engine Motor de cliente HTTP utilizado para crear la instancia.
- * @return Instancia de [HttpClient] configurada.
- */
-fun createHttpClient(engine: HttpClientEngine): HttpClient {
-    return HttpClient(engine) {
-        installLogging()
-        installContentNegotiation()
-    }
-}
-
-/**
- * Configura el plugin de logging del cliente HTTP.
- */
-private fun HttpClientConfig<*>.installLogging() {
-    install(Logging) {
-        logger = Logger.DEFAULT
-        level = LogLevel.ALL
-    }
-}
-
-/**
- * Configura el plugin de negociación de contenido para el cliente HTTP.
- */
-private fun HttpClientConfig<*>.installContentNegotiation() {
-    install(ContentNegotiation) {
-        json(
-            Json {
-                prettyPrint = true // Formateo legible de la salida JSON
-                isLenient = true // Permite la tolerancia a errores en el parsing de JSON
-                ignoreUnknownKeys = true // Ignora claves desconocidas en la deserialización
-            }
-        )
-    }
-}
-
-/**
- * Inicializa el contenedor de dependencias de Koin con los módulos especificados.
+ * This function starts Koin with the specified modules, providing a central place
+ * to manage application dependencies.
  *
- * @param appDeclaration Declaración de la configuración de la aplicación (opcional).
+ * @param appDeclaration An optional lambda to further configure the Koin application.
+ *                       This allows for additional setup or overrides during the
+ *                       Koin initialization process. It's useful for testing or
+ *                       customizing the dependency graph. If null, default
+ *                       configuration will be used.
+ *
+ * The function configures the following modules:
+ * - `appModule`: Core application dependencies.
+ * - `viewModelsHome`: ViewModels related to the home feature.
+ * - `viewModelsStart`: ViewModels related to the start feature.
+ * - `serviceModule`: Dependencies for network services.
+ * - `NativeModule`: Dependencies for native components.
+ * - `firebaseModule`: Firebase-related dependencies.
+ * - `repositoryNetworkModule`: Dependencies for network-related repositories.
+ * - `viewModelModules`: General view model dependencies.
+ * - `dataModule`: Data layer dependencies.
+ * - `repositoryDatabaseModule`: Dependencies for database-related repositories.
+ * - `nativeDatabase`: Dependencies for the native database.
  */
-fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
+fun initKoin(appDeclaration: KoinAppDeclaration? = null) {
     startKoin {
         appDeclaration?.invoke(this)
         modules(
@@ -94,3 +67,4 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) =
             nativeDatabase
         )
     }
+}

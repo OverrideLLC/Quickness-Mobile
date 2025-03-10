@@ -9,7 +9,7 @@ import com.data.impl.room.CreateDatabase
 import com.example.api.repository.DataStoreRepository
 import com.example.api.repository.TokenDatabaseRepository
 import com.example.api.room.dao.TokenDao
-import com.example.api.room.db.TokenDatabase
+import com.data.impl.room.db.TokenDatabase
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf

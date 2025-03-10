@@ -3,6 +3,8 @@ package org.quickness.ui.screens.home.qr
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.api.repository.DataStoreRepository
+import com.example.api.repository.TokenDatabaseRepository
 import com.quickness.shared.utils.qr_options.ColorQrOptions
 import com.quickness.shared.utils.qr_options.FormatQrOptions
 import com.quickness.shared.utils.qr_options.QrOptionsKeys
@@ -15,8 +17,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import org.quickness.interfaces.repository.data.DataStoreRepository
-import org.quickness.interfaces.repository.data.TokenDatabaseRepository
 import org.quickness.interfaces.viewmodels.QrInterface
 import org.quickness.ui.states.QrState
 import qrgenerator.qrkitpainter.QrKitBallShape
