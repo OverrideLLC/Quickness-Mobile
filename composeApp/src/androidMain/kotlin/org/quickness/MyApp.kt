@@ -4,6 +4,7 @@ import android.app.Application
 import com.network.impl.firebaseModule
 import com.network.impl.repositoryNetworkModule
 import com.network.impl.serviceModule
+import com.quickness.shared.utils.providers.ContextProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.component.KoinComponent
@@ -20,6 +21,7 @@ import org.quickness.di.viewModelsStart
 class MyApp : Application(), KoinComponent {
     override fun onCreate() {
         super.onCreate()
+        ContextProvider.initialize(this@MyApp.applicationContext)
         initKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@MyApp)

@@ -1,15 +1,19 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidxRoom)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
     androidLibrary {
-        namespace = "com.data"
+        namespace = "com.example.api"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
-        withHostTestBuilder {}
+        withHostTestBuilder {
+        }
 
         withDeviceTestBuilder {
             sourceSetTreeName = "test"
@@ -18,7 +22,7 @@ kotlin {
         }
     }
 
-    val xcfName = "dataKit"
+    val xcfName = "data:apiKit"
 
     listOf(
         iosX64(),
@@ -32,23 +36,27 @@ kotlin {
     }
 
     sourceSets {
-        androidMain {
-            kotlin.srcDir("androidMain/kotlin")
-        }
-
-        androidMain.dependencies {
-
-        }
-
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
+                //DATABASE
+                implementation(libs.androidx.room.runtime)
+                implementation(libs.androidx.sqliteBundled)
+                implementation(libs.datastore.preference)
             }
         }
 
         commonTest {
             dependencies {
                 implementation(libs.kotlin.test)
+            }
+        }
+
+        androidMain {
+            dependencies {
+                // Add Android-specific dependencies here. Note that this source set depends on
+                // commonMain by default and will correctly pull the Android artifacts of any KMP
+                // dependencies declared in commonMain.
             }
         }
 
@@ -62,6 +70,11 @@ kotlin {
 
         iosMain {
             dependencies {
+                // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
+                // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
+                // part of KMP’s default source set hierarchy. Note that this source set depends
+                // on common by default and will correctly pull the iOS artifacts of any
+                // KMP dependencies declared in commonMain.
             }
         }
     }
