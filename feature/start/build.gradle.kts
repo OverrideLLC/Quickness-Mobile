@@ -39,6 +39,7 @@ kotlin {
 
                 //MODULES
                 implementation(projects.shared)
+                api(projects.feature.login)
                 implementation(projects.network.api)
                 implementation(projects.data.api)
 

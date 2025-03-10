@@ -115,4 +115,20 @@ class LoginViewModel(
     override fun getDrawable(name: String): DrawableResource {
         return resources.getDrawable(name)
     }
+
+    fun onDone() {
+        login(
+            onSuccess = { update { copy(isLoading = false) } },
+            onError = {
+                update {
+                    copy(
+                        isError = true,
+                        isWarning = true,
+                        errorMessage = it,
+                        isLoading = false
+                    )
+                }
+            }
+        )
+    }
 }

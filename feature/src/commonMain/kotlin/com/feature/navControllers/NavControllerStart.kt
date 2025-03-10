@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.feature.login.screen.LoginScreen
 import com.feature.start.screen.StartScreen
 import com.quickness.shared.utils.routes.RoutesStart
 
@@ -15,7 +14,6 @@ fun NavControllerStart(
     navController: NavHostController,
     startDestination: String,
 ) {
-
     NavHost(
         navController = navController,
         modifier = Modifier.fillMaxSize(),
@@ -23,7 +21,5 @@ fun NavControllerStart(
     ) {
         composable(RoutesStart.Start.route) { StartScreen(navController) }
         composable(RoutesStart.Home.route) {  }
-        composable(RoutesStart.Login.route) { LoginScreen(navController) }
-        composable(RoutesStart.ForgotPassword.route) {  }
     }
 }

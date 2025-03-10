@@ -16,7 +16,7 @@ fun App() {
         isDarkTheme = true,
         content = {
             Surface(modifier = Modifier.fillMaxSize()) {
-//                NavigationStart()
+
                 NavControllerStart(
                     startDestination = RoutesStart.Start.route,
                     navController = rememberNavController()
