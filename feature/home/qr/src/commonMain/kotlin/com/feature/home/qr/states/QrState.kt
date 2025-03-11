@@ -1,4 +1,4 @@
-package com.feature.home.states
+package com.feature.home.qr.states
 
 import com.quickness.shared.utils.qr_options.ColorQrOptions
 import qrgenerator.qrkitpainter.QrPainter

@@ -1,11 +1,11 @@
-package com.feature.home.screens.qr
+package com.feature.home.qr.screens
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.api.repository.DataStoreRepository
 import com.example.api.repository.TokenDatabaseRepository
-import com.feature.home.states.QrState
+import com.feature.home.qr.states.QrState
 import com.quickness.shared.utils.qr_options.ColorQrOptions
 import com.quickness.shared.utils.qr_options.FormatQrOptions
 import com.quickness.shared.utils.qr_options.QrOptionsKeys
