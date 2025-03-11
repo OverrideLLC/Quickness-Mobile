@@ -40,7 +40,15 @@ kotlin {
                 implementation(libs.kotlin.stdlib)
 
                 //MODULES
-                implementation(projects.shared.resources)
+                implementation(projects.shared)
+                implementation(projects.network.api)
+                implementation(projects.data.api)
+
+                //KOIN
+                implementation(project.dependencies.platform(libs.koin.bom))
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewModel)
+                implementation(libs.koin.core)
 
                 //COMPOSE
                 implementation(compose.components.resources)
