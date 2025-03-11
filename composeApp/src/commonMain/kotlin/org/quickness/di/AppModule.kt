@@ -1,12 +1,8 @@
 package org.quickness.di
 
-import com.data.impl.di.dataModule
-import com.data.impl.di.nativeDatabase
-import com.data.impl.di.repositoryDatabaseModule
-import com.feature.viewModelModules
-import com.network.impl.di.firebaseModule
-import com.network.impl.di.repositoryNetworkModule
-import com.network.impl.di.serviceModule
+import com.data.impl.di.*
+import com.feature.api.di.viewModelModules
+import com.network.impl.di.*
 import com.shared.resources.interfaces.Resources
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module

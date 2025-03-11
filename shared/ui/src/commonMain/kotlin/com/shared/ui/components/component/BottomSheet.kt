@@ -2,7 +2,11 @@ package com.shared.ui.components.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,8 +30,12 @@ fun BottomSheetContent(
         ModalBottomSheet(
             onDismissRequest = onDismiss,
             sheetState = sheetState,
+            modifier = Modifier.fillMaxSize(),
+            sheetMaxWidth = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding(),
             containerColor = colorBackground,
-            dragHandle = { BottomSheetDefaults.DragHandle() },
+            dragHandle = {
+                
+            },
             content = {
                 Column(
                     modifier = Modifier

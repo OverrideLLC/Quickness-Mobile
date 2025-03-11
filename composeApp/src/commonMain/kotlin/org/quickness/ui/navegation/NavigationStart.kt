@@ -16,9 +16,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.quickness.ui.animations.NavAnimations
 import org.quickness.ui.screens.forgot_password.ForgotPasswordScreen
 import org.quickness.ui.screens.home.HomeScreen
-import org.quickness.ui.screens.login.LoginScreen
 import org.quickness.ui.screens.register.RegisterScreen
-import org.quickness.ui.screens.start.StartScreen
 
 @Composable
 fun NavigationStart(
@@ -38,9 +36,7 @@ fun NavigationStart(
         exitTransition = { NavAnimations.exitTransition },
         startDestination = startDestination
     ) {
-        composable(RoutesStart.Start.route) { StartScreen(navController) }
         composable(RoutesStart.Home.route) { HomeScreen(rememberNavController()) }
-        composable(RoutesStart.Login.route) { LoginScreen(navController) }
         composable(RoutesStart.Register.route) { RegisterScreen(navController) }
         composable(RoutesStart.ForgotPassword.route) { ForgotPasswordScreen() }
     }

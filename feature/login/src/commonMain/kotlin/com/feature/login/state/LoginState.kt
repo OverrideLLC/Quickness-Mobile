@@ -14,7 +14,7 @@ package com.feature.login.state
  * @property isWarning Indicates whether a warning should be displayed. Defaults to false.
  * @property errorMessage The error message to be displayed if an error occurred. Defaults to an empty string.
  */
-data class  LoginState(
+data class LoginState(
     val email: String = "",
     val password: String = "",
     val isPasswordVisible: Boolean = false,

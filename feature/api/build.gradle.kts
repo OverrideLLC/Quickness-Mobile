@@ -6,42 +6,49 @@ plugins {
 }
 
 kotlin {
-
-    // Target declarations - add or remove as needed below. These define
-    // which platforms this KMP module supports.
-    // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
-        namespace = "com.feature.home"
+        namespace = "com.feature.api"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         withHostTestBuilder {}
 
-        withDeviceTestBuilder { sourceSetTreeName = "test" }.configure {
+        withDeviceTestBuilder {
+            sourceSetTreeName = "test"
+        }.configure {
             instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }
     }
 
-//    val xcfName = "feature:homeKit"
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach { iosTarget ->
-//        iosTarget.binaries.framework {
-//            baseName = xcfName
-//            isStatic = true
-//        }
-//    }
+    val xcfName = "feature:apiKit"
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = xcfName
+            isStatic = true
+        }
+    }
 
     sourceSets {
         commonMain {
             dependencies {
+                //UTILS
                 implementation(libs.kotlin.stdlib)
 
                 //MODULES
-                implementation(projects.shared)
+                //-----Features
+                implementation(projects.feature.start)
+                implementation(projects.feature.login)
+                //-----Shared
+                implementation(projects.shared.resources)
+                implementation(projects.shared.utils)
+                //-----Network
                 implementation(projects.network.api)
+                //-----Data
                 implementation(projects.data.api)
 
                 //KOIN
@@ -61,9 +68,16 @@ kotlin {
             }
         }
 
-        commonTest { dependencies { implementation(libs.kotlin.test) } }
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
 
-        androidMain { dependencies {} }
+        androidMain {
+            dependencies {
+            }
+        }
 
         getByName("androidDeviceTest") {
             dependencies {
@@ -73,6 +87,9 @@ kotlin {
             }
         }
 
-        iosMain { dependencies {} }
+        iosMain {
+            dependencies {
+            }
+        }
     }
 }

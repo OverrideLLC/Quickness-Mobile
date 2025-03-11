@@ -64,7 +64,7 @@ kotlin {
 
         commonMain.dependencies {
             //MODULES
-            implementation(projects.feature)
+            implementation(projects.feature.api)
             implementation(projects.shared)
             implementation(projects.network.impl)
             implementation(projects.data.impl)
