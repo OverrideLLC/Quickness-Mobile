@@ -1,4 +1,4 @@
-package com.feature.di
+package com.feature.api.di
 
 import com.feature.login.screen.LoginViewModel
 import com.feature.start.screen.StartViewModel

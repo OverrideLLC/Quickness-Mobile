@@ -16,7 +16,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.feature.login.screen.LoginScreen
 import com.feature.start.components.ButtonAccessStart
 import com.quickness.shared.utils.routes.RoutesStart
 import com.shared.resources.drawable.ResourceNameKey
@@ -28,12 +27,16 @@ import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun StartScreen(navController: NavController) = Screen(navController)
+fun StartScreen(
+    navController: NavController,
+    contentAuth: @Composable () -> Unit
+) = Screen(navController, contentAuth)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun Screen(
     navController: NavController,
+    contentAuth: @Composable () -> Unit,
     viewModel: StartViewModel = koinViewModel<StartViewModel>()
 ) {
     val state by remember { viewModel.state }.collectAsState()
@@ -78,7 +81,7 @@ internal fun Screen(
             }
         },
         content = {
-            LoginScreen()
+            contentAuth()
         }
     )
     if (state.bottomRegister) {

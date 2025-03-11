@@ -21,6 +21,7 @@ import com.shared.ui.components.animations.BackgroundAnimated
 import com.shared.ui.components.component.Progress
 import com.shared.ui.components.helpers.Message
 import org.koin.compose.viewmodel.koinViewModel
+import org.quickness.ui.components.component.ButtonAccess
 
 @Composable
 fun LoginScreen() = Screen(viewModel = koinViewModel())
@@ -53,6 +54,18 @@ internal fun Screen(
                 Body(
                     viewModel = viewModel,
                     state = state,
+                )
+                ButtonAccess(
+                    viewModel = viewModel,
+                    onLoginClick = {
+                        viewModel.login(
+                            onSuccess = {},
+                            onError = { message ->
+                                viewModel.update { copy(isError = true, errorMessage = message) }
+                            }
+                        )
+                    },
+                    onRegisterClick = {  }
                 )
             }
         }

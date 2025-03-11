@@ -1,3 +1,3 @@
-package com.feature
+package com.feature.api
 
 expect fun platform(): String
