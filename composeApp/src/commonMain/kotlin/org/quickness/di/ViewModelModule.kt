@@ -17,7 +17,6 @@ import org.quickness.ui.screens.home.settings.screens.settings_account.AccountSe
 import org.quickness.ui.screens.home.settings.screens.settings_privacy.PrivacySettingsViewModel
 import org.quickness.ui.screens.home.settings.screens.settings_qr.QrSettingsViewModel
 import org.quickness.ui.screens.home.shop.ShopViewModel
-import org.quickness.ui.screens.login.LoginViewModel
 import org.quickness.ui.screens.register.RegisterViewModel
 
 /**
@@ -42,8 +41,6 @@ val viewModelsHome = module {
 
 // Módulo que incluye los ViewModels utilizados en las pantallas de inicio de sesión y registro.
 val viewModelsStart = module {
-    // Registro de LoginViewModel para gestionar la lógica de la pantalla de inicio de sesión.
-    viewModelOf(::LoginViewModel)
 
     // Registro de RegisterViewModel para gestionar la lógica de la pantalla de registro de usuario.
     viewModelOf(::RegisterViewModel)

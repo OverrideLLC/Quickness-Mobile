@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -40,7 +41,12 @@ internal fun Screen(
     viewModel: StartViewModel = koinViewModel<StartViewModel>()
 ) {
     val state by remember { viewModel.state }.collectAsState()
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { targetValue ->
+            targetValue == SheetValue.Hidden
+        }
+    )
     val scope = rememberCoroutineScope()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,7 +79,7 @@ internal fun Screen(
     }
     BottomSheetContent(
         sheetState = sheetState,
-        colorBackground = colorScheme.background,
+        colorBackground = colorScheme.onBackground.copy(alpha = 0.5f),
         showContent = state.bottomLogin,
         onDismiss = {
             scope.launch { sheetState.hide() }.invokeOnCompletion {
@@ -87,7 +93,7 @@ internal fun Screen(
     if (state.bottomRegister) {
         BottomSheetContent(
             sheetState = sheetState,
-            colorBackground = colorScheme.background,
+            colorBackground = colorScheme.onBackground.copy(alpha = 0.5f),
             showContent = state.bottomRegister,
             onDismiss = {
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
