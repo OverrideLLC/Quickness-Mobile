@@ -47,6 +47,13 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.ui)
                 implementation(libs.navigation.compose)
+
+                //UTILS
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.krypto)
+                implementation(libs.qr.kit)
+                implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation(libs.androidx.lifecycle.viewmodel)
             }
         }
 
@@ -58,6 +65,9 @@ kotlin {
 
         androidMain {
             dependencies {
+                //UTILS ANDROID
+                implementation(libs.androidx.biometric)
+                implementation(libs.androidx.work.runtime.ktx)
             }
         }
 
