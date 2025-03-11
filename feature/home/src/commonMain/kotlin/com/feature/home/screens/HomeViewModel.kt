@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.api.repository.DataStoreRepository
 import com.example.api.repository.TokenDatabaseRepository
+import com.feature.home.interfaces.CheckPermissions
 import com.network.api.repository.TokensRepository
 import com.quickness.shared.utils.objects.KeysCache
 import com.shared.resources.interfaces.Resources
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -17,15 +19,13 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.DrawableResource
 import org.koin.core.logger.EmptyLogger
-import org.quickness.interfaces.helpers.CheckPermissions
-import org.quickness.interfaces.viewmodels.HomeViewModelInterface
 
 class HomeViewModel(
     private val tokensRepository: TokensRepository,
     private val dataStoreRepository: DataStoreRepository,
     private val tokensDatabaseRepository: TokenDatabaseRepository,
     private val resources: Resources
-) : ViewModel(), HomeViewModelInterface, CheckPermissions {
+) : ViewModel(), CheckPermissions {
 
     init {
         getTokens()
@@ -42,7 +42,7 @@ class HomeViewModel(
         }
     }
 
-    override fun getTokens() {
+    fun getTokens() {
         viewModelScope.launch(Dispatchers.IO) {
             val currentTime = Clock.System.now().toEpochMilliseconds()
             val lastRequestDate =
@@ -70,7 +70,7 @@ class HomeViewModel(
         }
     }
 
-    override fun shouldRequestTokens(currentTime: Long, lastRequestTime: Long): Boolean {
+    fun shouldRequestTokens(currentTime: Long, lastRequestTime: Long): Boolean {
         val timeZone = TimeZone.of("UTC-6")
         val currentDate =
             Instant.fromEpochMilliseconds(currentTime).toLocalDateTime(timeZone).date

@@ -65,6 +65,10 @@ kotlin {
                 implementation(libs.qr.kit)
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.androidx.lifecycle.viewmodel)
+
+                //MOKO
+                implementation(libs.moko.permissions)
+                implementation(libs.moko.permissions.compose)
             }
         }
 

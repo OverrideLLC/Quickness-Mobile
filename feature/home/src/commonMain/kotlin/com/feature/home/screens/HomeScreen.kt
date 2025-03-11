@@ -1,12 +1,10 @@
 package com.feature.home.screens
 
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +23,7 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -43,9 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,59 +50,34 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.quickness.shared.utils.routes.RoutesHome
 import com.shared.resources.drawable.ResourceNameKey
+import com.shared.ui.components.animations.BackgroundAnimated
+import com.shared.ui.components.styles.TextStyleBrush
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.quickness.ui.components.styles.TextStyleBrush
-import org.quickness.ui.navegation.NavigationHome
-import quickness.composeapp.generated.resources.Poppins_Medium
-import quickness.composeapp.generated.resources.Res
-import quickness.composeapp.generated.resources.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
 
 @Composable
-fun HomeScreen(navController: NavHostController) =
-    Screen(homeViewModel = koinViewModel(), navController = navController)
+fun HomeScreen(
+    navController: NavHostController,
+    navHome: @Composable () -> Unit
+) =
+    Screen(homeViewModel = koinViewModel(), navController = navController, navHome)
 
 @Composable
-private fun Screen(homeViewModel: HomeViewModel, navController: NavHostController) {
+private fun Screen(
+    homeViewModel: HomeViewModel,
+    navController: NavHostController,
+    navHome: @Composable () -> Unit
+) {
     var topName by remember { mutableStateOf(RoutesHome.Qr.route) }
     val animatedBrush = remember { Animatable(0f) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val factory = rememberPermissionsControllerFactory()
     val controller = remember(factory) { factory.createPermissionsController() }
-    val infiniteTransition = rememberInfiniteTransition()
-    val color1 by infiniteTransition.animateColor(
-        initialValue = colorScheme.background,
-        targetValue = colorScheme.primaryContainer,
-        animationSpec = infiniteRepeatable(
-            animation = tween(4000, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
-    val color2 by infiniteTransition.animateColor(
-        initialValue = colorScheme.primaryContainer,
-        targetValue = colorScheme.background,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 6000,
-                easing = LinearEasing,
-                delayMillis = 1000
-            ),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
     BindEffect(controller)
 
     LaunchedEffect(Unit) {
@@ -144,18 +116,23 @@ private fun Screen(homeViewModel: HomeViewModel, navController: NavHostControlle
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(color1, color2)
-                        ),
-                    )
-            ) {
-                NavigationHome(
-                    navController = navController,
-                    paddingValues = padding,
-                )
-            }
+                        brush = BackgroundAnimated(
+                            colorPrimary = colorScheme.primaryContainer,
+                            colorSecondary = colorScheme.background
+                        )
+                    ),
+                content = {
+                    navHome()
+                }
+            )
         },
-        bottomBar = { BottomBar(navController) { topName = it } },
+        bottomBar = {
+            BottomBar(
+                navigationController = navController,
+                viewModel = homeViewModel,
+                topName = { topName = it }
+            )
+        },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         floatingActionButtonPosition = FabPosition.End,
         modifier = Modifier.fillMaxSize(),
@@ -176,7 +153,7 @@ private fun TopBar(
         title = {
             Text(
                 text = title,
-                fontFamily = FontFamily(Font(Res.font.Poppins_Medium)),
+                fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
                 fontSize = 50.sp,
                 textAlign = TextAlign.Start,
                 style = TextStyleBrush()
@@ -219,9 +196,10 @@ private fun TopBar(
 @Composable
 private fun BottomBar(
     navigationController: NavController,
+    viewModel: HomeViewModel,
     topName: (String) -> Unit
 ) {
-    var selected by remember { mutableStateOf(Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) }
+    var selected by remember { mutableStateOf(ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24) }
 
     BottomAppBar(
         modifier = Modifier
@@ -237,40 +215,48 @@ private fun BottomBar(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 content = {
                     BottomAppBarIcon(
-                        iconRes = if (selected != Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
-                        isSelected = selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.shopping_cart_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                        iconResSelected = ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
+                        iconResNotSelected = ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
+                        iconSelected = selected,
+                        viewModel = viewModel,
                         onClick = {
                             selected =
-                                Res.drawable.shopping_cart_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
                             topName(RoutesHome.Shop.route)
                             navigationController.navigate(RoutesHome.Shop.route) { popUpTo(0) }
                         }
                     )
                     BottomAppBarIcon(
-                        iconRes = Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                        isSelected = selected == Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                        iconResSelected = ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
+                        iconResNotSelected = ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
+                        iconSelected = selected,
+                        viewModel = viewModel,
                         onClick = {
                             selected =
-                                Res.drawable.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                                ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
                             topName(RoutesHome.Qr.route)
                             navigationController.navigate(RoutesHome.Qr.route) { popUpTo(0) }
                         }
                     )
                     BottomAppBarIcon(
-                        iconRes = if (selected != Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
-                        isSelected = selected == Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || selected == Res.drawable.map_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
+                        iconResNotSelected = ResourceNameKey.MAP_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
+                        iconResSelected = ResourceNameKey.MAP_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
+                        iconSelected = selected,
+                        viewModel = viewModel,
                         onClick = {
-                            selected =
-                                Res.drawable.map_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                            selected = ResourceNameKey.MAP_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
                             topName(RoutesHome.Service.route)
                             navigationController.navigate(RoutesHome.Service.route) { popUpTo(0) }
                         }
                     )
                     BottomAppBarIcon(
-                        iconRes = if (selected != Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24) Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 else Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24,
-                        isSelected = selected == Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 || Res.drawable.settings_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24 == selected,
+                        iconResNotSelected = ResourceNameKey.SETTINGS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
+                        iconResSelected = ResourceNameKey.SETTINGS_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
+                        iconSelected = selected,
+                        viewModel = viewModel,
                         onClick = {
-                            selected = Res.drawable.settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+                            selected =
+                                ResourceNameKey.SETTINGS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
                             topName(RoutesHome.Settings.route)
                             navigationController.navigate(RoutesHome.Settings.route) { popUpTo(0) }
                         }
@@ -283,11 +269,17 @@ private fun BottomBar(
 
 @Composable
 private fun BottomAppBarIcon(
-    iconRes: DrawableResource,
-    isSelected: Boolean,
+    iconResSelected: ResourceNameKey,
+    iconResNotSelected: ResourceNameKey,
+    iconSelected: ResourceNameKey,
+    viewModel: HomeViewModel,
     onClick: () -> Unit,
 ) {
     val scale = remember { Animatable(1f) }
+    val isSelected = iconResSelected == iconSelected || iconResNotSelected == iconSelected
+    val iconResSelected =
+        if (iconSelected != iconResNotSelected) iconResSelected else iconResNotSelected
+
     LaunchedEffect(isSelected) {
         scale.animateTo(
             targetValue = if (isSelected) 1.4f else 1.2f,
@@ -311,7 +303,7 @@ private fun BottomAppBarIcon(
                 ),
                 content = {
                     Icon(
-                        painter = painterResource(iconRes),
+                        painter = painterResource(viewModel.getDrawable(iconResSelected.name)),
                         contentDescription = null,
                         modifier = Modifier.size(90.dp),
                         tint = if (isSelected) colorScheme.primary else colorScheme.tertiary
