@@ -1,11 +1,10 @@
-package com.feature.home.plataform
+package com.feature.biometric
 
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.Composable
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import com.feature.home.interfaces.BiometricAuth
 import com.quickness.shared.utils.providers.ContextProvider
 
 actual class BiometricAuthImpl actual constructor() : BiometricAuth {

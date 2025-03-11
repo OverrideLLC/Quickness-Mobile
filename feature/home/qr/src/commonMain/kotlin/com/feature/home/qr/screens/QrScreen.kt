@@ -42,9 +42,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.feature.home.plataform.BiometricAuthImpl
+import com.feature.biometric.BiometricAuthImpl
 import com.feature.home.qr.states.QrState
-import com.feature.home.states.QrState
 import com.shared.resources.drawable.ResourceNameKey
 import com.shared.resources.strings.Strings
 import com.shared.ui.components.animations.ContentSwitchAnimation.enterTransition
@@ -58,7 +57,6 @@ import qrgenerator.qrkitpainter.QrPainter
 @Composable
 fun QrScreen() = Screen()
 
-@OptIn(KoinExperimentalAPI::class)
 @Composable
 private fun Screen(viewModel: QrViewModel = koinViewModel()) {
     TicketScreen(

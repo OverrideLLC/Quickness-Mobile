@@ -1,4 +1,4 @@
-package com.feature.home.interfaces
+package com.feature.biometric
 
 import androidx.compose.runtime.Composable
 

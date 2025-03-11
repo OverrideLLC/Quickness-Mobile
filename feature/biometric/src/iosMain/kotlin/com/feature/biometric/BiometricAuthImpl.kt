@@ -1,7 +1,6 @@
-package com.feature.home.plataform
+package com.feature.biometric
 
 import androidx.compose.runtime.Composable
-import com.feature.home.interfaces.BiometricAuth
 
 actual class BiometricAuthImpl actual constructor() : BiometricAuth {
     @Composable

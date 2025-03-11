@@ -4,13 +4,15 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
 }
+
 kotlin {
     androidLibrary {
-        namespace = "com.feature.home.qr"
+        namespace = "com.feature.biometric"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
-        withHostTestBuilder {}
+        withHostTestBuilder {
+        }
 
         withDeviceTestBuilder {
             sourceSetTreeName = "test"
@@ -19,7 +21,7 @@ kotlin {
         }
     }
 
-    val xcfName = "feature:home:qrKit"
+    val xcfName = "feature:biometricKit"
 
     listOf(
         iosX64(),
@@ -39,15 +41,6 @@ kotlin {
 
                 //MODULES
                 implementation(projects.shared)
-                implementation(projects.network.api)
-                implementation(projects.data.api)
-                implementation(projects.feature.biometric)
-
-                //KOIN
-                implementation(project.dependencies.platform(libs.koin.bom))
-                implementation(libs.koin.compose)
-                implementation(libs.koin.compose.viewModel)
-                implementation(libs.koin.core)
 
                 //COMPOSE
                 implementation(compose.components.resources)
@@ -57,17 +50,6 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.ui)
                 implementation(libs.navigation.compose)
-
-                //UTILS
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.krypto)
-                implementation(libs.qr.kit)
-                implementation(libs.androidx.lifecycle.runtime.compose)
-                implementation(libs.androidx.lifecycle.viewmodel)
-
-                //MOKO
-                implementation(libs.moko.permissions)
-                implementation(libs.moko.permissions.compose)
             }
         }
 
@@ -77,7 +59,6 @@ kotlin {
             dependencies {
                 //UTILS ANDROID
                 implementation(libs.androidx.biometric)
-                implementation(libs.androidx.work.runtime.ktx)
             }
         }
 
