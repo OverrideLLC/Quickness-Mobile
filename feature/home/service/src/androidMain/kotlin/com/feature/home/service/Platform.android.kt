@@ -1,3 +1,3 @@
-package com.feature.home.shop
+package com.feature.home.service
 
 actual fun platform() = "Android"

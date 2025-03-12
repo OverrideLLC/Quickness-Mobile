@@ -1,4 +1,4 @@
-package com.feature.home.screens.service
+package com.feature.home.service.screen
 
 import androidx.lifecycle.ViewModel
 import dev.icerock.moko.permissions.Permission

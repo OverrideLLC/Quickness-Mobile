@@ -1,4 +1,4 @@
-package com.feature.home.screens.service
+package com.feature.home.service.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

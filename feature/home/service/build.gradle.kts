@@ -7,12 +7,11 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.feature.home.shop"
+        namespace = "com.feature.home.service"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
-        withHostTestBuilder {
-        }
+        withHostTestBuilder {}
 
         withDeviceTestBuilder {
             sourceSetTreeName = "test"
@@ -21,7 +20,7 @@ kotlin {
         }
     }
 
-    val xcfName = "feature:home:shopKit"
+    val xcfName = "feature:home:serviceKit"
 
     listOf(
         iosX64(),
