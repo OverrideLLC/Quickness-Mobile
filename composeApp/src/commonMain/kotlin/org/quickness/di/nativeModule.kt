@@ -14,4 +14,4 @@ import org.koin.core.module.Module
  *     // Configuración de dependencias específicas de Android
  * }
  */
-expect val NativeModule: Module
+expect val nativeModule: Module

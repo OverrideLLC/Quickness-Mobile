@@ -43,6 +43,11 @@ kotlin {
                 //-----Features
                 implementation(projects.feature.start)
                 implementation(projects.feature.login)
+                implementation(projects.feature.home)
+                implementation(projects.feature.home.settings)
+                implementation(projects.feature.home.qr)
+                implementation(projects.feature.home.service)
+                implementation(projects.feature.home.shop)
                 //-----Shared
                 implementation(projects.shared.resources)
                 implementation(projects.shared.utils)

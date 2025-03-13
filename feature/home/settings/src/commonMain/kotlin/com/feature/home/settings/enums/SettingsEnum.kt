@@ -7,7 +7,7 @@ import com.shared.resources.strings.Strings
 /**
  * Enum que representa las diferentes secciones de la configuración de la aplicación.
  */
-enum class Settings(
+enum class SettingsEnum(
     val title: String,
     val icon: ResourceNameKey,
     val route: String
@@ -67,6 +67,6 @@ enum class Settings(
      * Devuelve la lista de todas las secciones de configuración.
      */
     companion object {
-        fun getAllSettings(): List<Settings> = entries
+        fun getAllSettings(): List<SettingsEnum> = entries
     }
 }

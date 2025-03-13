@@ -51,21 +51,6 @@ private fun Screen(viewModel: ForgotPasswordViewModel = koinViewModel()) {
             .imePadding(),
     ) {
         item {
-            Image(
-                painter = painterResource(Res.drawable.forgot_password_removebg_preview),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(250.dp)
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(
-                                colorScheme.primary,
-                                colorScheme.onBackground,
-                            )
-                        ),
-                        shape = androidx.compose.foundation.shape.CircleShape
-                    )
-            )
             Spacer(modifier = Modifier.padding(10.dp))
             TextFieldCustomEmail(
                 value = state.email,

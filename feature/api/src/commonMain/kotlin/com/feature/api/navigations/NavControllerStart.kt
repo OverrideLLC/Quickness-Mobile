@@ -6,8 +6,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.feature.home.screen.HomeScreen
 import com.feature.login.screen.LoginScreen
 import com.feature.start.screen.StartScreen
+import com.quickness.shared.utils.routes.RoutesHome
 import com.quickness.shared.utils.routes.RoutesStart
 
 @Composable
@@ -26,6 +29,11 @@ fun NavControllerStart(
                 contentAuth = { LoginScreen() }
             )
         }
-        composable(RoutesStart.Home.route) { }
+        composable(RoutesStart.Home.route) {
+            val navController = rememberNavController()
+            HomeScreen(navController = navController) {
+                NavControllerHome(navController, RoutesHome.Qr.route)
+            }
+        }
     }
 }
