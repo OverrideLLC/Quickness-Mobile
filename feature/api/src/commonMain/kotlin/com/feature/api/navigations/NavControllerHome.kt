@@ -11,6 +11,7 @@ import com.feature.home.service.screen.ServiceScreen
 import com.feature.home.settings.screen.SettingsScreen
 import com.feature.home.shop.screen.ShopScreen
 import com.quickness.shared.utils.routes.RoutesHome
+import com.shared.ui.components.animations.ContentSwitchAnimation
 
 @Composable
 fun NavControllerHome(
@@ -21,6 +22,8 @@ fun NavControllerHome(
         navController = navController,
         modifier = Modifier.fillMaxSize(),
         startDestination = startDestination,
+        enterTransition = { ContentSwitchAnimation.enterTransition },
+        exitTransition = { ContentSwitchAnimation.exitTransition },
     ) {
         composable(RoutesHome.Shop.route) {
             ShopScreen()

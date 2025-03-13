@@ -49,8 +49,7 @@ kotlin {
                 implementation(projects.feature.home.service)
                 implementation(projects.feature.home.shop)
                 //-----Shared
-                implementation(projects.shared.resources)
-                implementation(projects.shared.utils)
+                implementation(projects.shared)
                 //-----Network
                 implementation(projects.network.api)
                 //-----Data
