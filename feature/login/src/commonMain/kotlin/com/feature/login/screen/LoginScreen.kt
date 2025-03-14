@@ -1,5 +1,6 @@
 package com.feature.login.screen
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.feature.login.components.Body
 import com.feature.login.components.Header
+import com.feature.login.state.LoginState
+import com.quickness.shared.utils.routes.RoutesStart
 import com.shared.resources.drawable.ResourceNameKey
 import com.shared.ui.components.animations.BackgroundAnimated
 import com.shared.ui.components.component.Progress
@@ -24,14 +28,49 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.quickness.ui.components.component.ButtonAccess
 
 @Composable
-fun LoginScreen() = Screen(viewModel = koinViewModel())
+fun LoginScreen(
+    navController: NavController
+) = Screen(viewModel = koinViewModel(), navController = navController)
 
 @Composable
 internal fun Screen(
     viewModel: LoginViewModel,
+    navController: NavController
 ) {
     val state by viewModel.state.collectAsState()
 
+    Crossfade(
+        targetState = state.isLoading,
+        label = "LoginScreen"
+    ) { target ->
+        if (!target){
+            Content(
+                viewModel = viewModel,
+                navController = navController,
+                state = state
+            )
+        }else{
+            Progress(isVisible = state.isLoading)
+        }
+    }
+
+    Message(
+        message = state.errorMessage,
+        visibility = state.isError,
+        isWarning = state.isWarning,
+        errorIcon = viewModel.getDrawable(ResourceNameKey.ERROR_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
+        actionPostDelayed = {
+            viewModel.update { copy(isError = false, isWarning = false, isLoading = false) }
+        }
+    )
+}
+
+@Composable
+internal fun Content(
+    viewModel: LoginViewModel,
+    navController: NavController,
+    state: LoginState
+) {
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -59,26 +98,17 @@ internal fun Screen(
                     viewModel = viewModel,
                     onLoginClick = {
                         viewModel.login(
-                            onSuccess = {},
+                            onSuccess = {
+                                navController.navigate(RoutesStart.Home.route)
+                            },
                             onError = { message ->
                                 viewModel.update { copy(isError = true, errorMessage = message) }
                             }
                         )
                     },
-                    onRegisterClick = {  }
+                    onRegisterClick = { }
                 )
             }
         }
     }
-    Progress(state.isLoading)
-    Message(
-        message = state.errorMessage,
-        visibility = state.isError,
-        isWarning = state.isWarning,
-        errorIcon = viewModel.getDrawable(ResourceNameKey.ERROR_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
-        actionPostDelayed = {
-            viewModel.update { copy(isError = false, isWarning = false, isLoading = false) }
-        }
-    )
-
 }

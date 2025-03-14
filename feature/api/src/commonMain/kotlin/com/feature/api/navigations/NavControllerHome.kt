@@ -1,5 +1,6 @@
 package com.feature.api.navigations
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,6 +18,7 @@ import com.shared.ui.components.animations.ContentSwitchAnimation
 fun NavControllerHome(
     navController: NavHostController,
     startDestination: String,
+    paddingValues: PaddingValues
 ) {
     NavHost(
         navController = navController,
@@ -26,17 +28,18 @@ fun NavControllerHome(
         exitTransition = { ContentSwitchAnimation.exitTransition },
     ) {
         composable(RoutesHome.Shop.route) {
-            ShopScreen()
+            ShopScreen(paddingValues)
         }
         composable(RoutesHome.Service.route) {
-            ServiceScreen()
+            ServiceScreen(paddingValues)
         }
         composable(RoutesHome.Qr.route) {
-            QrScreen()
+            QrScreen(paddingValues)
         }
         composable(RoutesHome.Settings.route) {
             SettingsScreen(
-                navController = navController
+                navController = navController,
+                paddingValues = paddingValues
             )
         }
     }

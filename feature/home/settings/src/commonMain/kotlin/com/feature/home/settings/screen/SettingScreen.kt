@@ -1,6 +1,7 @@
 package com.feature.home.settings.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,11 +17,17 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @Composable
-fun SettingsScreen(navController: NavController) = Screen(navController)
+fun SettingsScreen(
+    navController: NavController,
+    paddingValues: PaddingValues
+) = Screen(
+    navController = navController,
+    paddingValues = paddingValues,
+)
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-private fun Screen(navController: NavController, viewModel: SettingsViewModel = koinViewModel()) {
+private fun Screen(navController: NavController, viewModel: SettingsViewModel = koinViewModel(), paddingValues: PaddingValues) {
     val states = viewModel.settingsEnum.asStateFlow().value
     LazyColumn(
         content = {
@@ -37,7 +44,8 @@ private fun Screen(navController: NavController, viewModel: SettingsViewModel = 
         },
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 24.dp)
+            .padding(paddingValues),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     )

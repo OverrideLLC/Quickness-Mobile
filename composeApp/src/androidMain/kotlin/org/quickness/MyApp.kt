@@ -4,25 +4,23 @@ import android.app.Application
 import com.data.impl.di.dataModule
 import com.data.impl.di.nativeDatabase
 import com.data.impl.di.repositoryDatabaseModule
+import com.feature.api.di.viewModelModulesHome
+import com.feature.api.di.viewModelModulesSettings
+import com.feature.api.di.viewModelModulesStart
 import com.network.impl.di.firebaseModule
 import com.network.impl.di.repositoryNetworkModule
 import com.network.impl.di.serviceModule
-import com.quickness.shared.utils.providers.ContextProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.component.KoinComponent
 import org.koin.core.logger.Level
-import org.quickness.di.nativeModule
 import org.quickness.di.appModule
 import org.quickness.di.initKoin
-import org.quickness.di.viewModelsHome
-import org.quickness.di.viewModelsSetting
-import org.quickness.di.viewModelsStart
+import org.quickness.di.nativeModule
 
 class MyApp : Application(), KoinComponent {
     override fun onCreate() {
         super.onCreate()
-        ContextProvider.initialize(this@MyApp.applicationContext)
         initKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@MyApp)
@@ -31,9 +29,9 @@ class MyApp : Application(), KoinComponent {
                 appModule,
                 dataModule,
                 repositoryDatabaseModule,
-                viewModelsHome,
-                viewModelsStart,
-                viewModelsSetting,
+                viewModelModulesHome,
+                viewModelModulesSettings,
+                viewModelModulesStart,
                 serviceModule,
                 nativeModule,
                 firebaseModule,

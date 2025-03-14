@@ -2,6 +2,7 @@ package com.feature.home.shop.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,15 +32,18 @@ import com.shared.resources.drawable.ResourceNameKey
 import com.shared.ui.components.component.BottomSheetContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.datetime.format.Padding
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @Composable
-fun ShopScreen() = Screen()
+fun ShopScreen(
+    paddingValues: PaddingValues
+) = Screen(paddingValues = paddingValues)
 
 @OptIn(ExperimentalMaterial3Api::class, KoinExperimentalAPI::class)
 @Composable
-private fun Screen(viewModel: ShopViewModel = koinViewModel()) {
+private fun Screen(viewModel: ShopViewModel = koinViewModel(), paddingValues: PaddingValues) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val state = viewModel.state.collectAsState().value
@@ -47,7 +51,7 @@ private fun Screen(viewModel: ShopViewModel = koinViewModel()) {
     val productList = ProductList(viewModel, scope, sheetState)
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(10.dp),
+        modifier = Modifier.fillMaxSize().padding(10.dp).padding(paddingValues),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

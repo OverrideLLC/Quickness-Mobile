@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.Color
@@ -15,7 +14,6 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.compose.KoinContext
-import org.koin.core.context.KoinContext
 import org.quickness.utils.ContextProvider
 
 class MainActivity : FragmentActivity() {
@@ -24,6 +22,10 @@ class MainActivity : FragmentActivity() {
         setupSplashScreen()
         super.onCreate(savedInstanceState)
         ContextProvider.initialize(activity = this, context = this.applicationContext)
+        com.quickness.shared.utils.providers.ContextProvider.initialize(
+            FragmentActivity = this,
+            context = this.applicationContext
+        )
         setContent {
             val systemUiController = rememberSystemUiController()
             WindowCompat.setDecorFitsSystemWindows(window, false)

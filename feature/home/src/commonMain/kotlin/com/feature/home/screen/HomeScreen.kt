@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -62,15 +63,15 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    navHome: @Composable () -> Unit
+    navHome: @Composable (paddingValues: PaddingValues) -> Unit
 ) =
-    Screen(homeViewModel = koinViewModel(), navController = navController, navHome)
+    Screen(homeViewModel = koinViewModel(), navController = navController, navHome = navHome)
 
 @Composable
 private fun Screen(
     homeViewModel: HomeViewModel,
     navController: NavHostController,
-    navHome: @Composable () -> Unit
+    navHome: @Composable (paddingValues: PaddingValues) -> Unit
 ) {
     var topName by remember { mutableStateOf(RoutesHome.Qr.route) }
     val animatedBrush = remember { Animatable(0f) }
@@ -122,7 +123,7 @@ private fun Screen(
                         )
                     ),
                 content = {
-                    navHome()
+                    navHome(padding)
                 }
             )
         },
@@ -278,7 +279,7 @@ private fun BottomAppBarIcon(
     val scale = remember { Animatable(1f) }
     val isSelected = iconResSelected == iconSelected || iconResNotSelected == iconSelected
     val iconResSelected =
-        if (iconSelected != iconResNotSelected) iconResSelected else iconResNotSelected
+        if (iconSelected == iconResNotSelected) iconResSelected else iconResNotSelected
 
     LaunchedEffect(isSelected) {
         scale.animateTo(

@@ -5,8 +5,7 @@ import androidx.datastore.preferences.core.Preferences
 import com.quickness.shared.utils.providers.ContextProvider
 
 actual fun createDataStore(): DataStore<Preferences> {
-    val context = ContextProvider.getContext()
-        ?: throw IllegalStateException("ContextProvider not initialized")
+    val context = ContextProvider.getContext()!!
     return AppSettings.createDataStore(
         producePath = {
             context

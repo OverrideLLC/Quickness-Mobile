@@ -15,6 +15,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,18 +56,23 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import qrgenerator.qrkitpainter.QrPainter
 
 @Composable
-fun QrScreen() = Screen()
+fun QrScreen(
+    paddingValues: PaddingValues
+) = Screen(
+    paddingValues = paddingValues
+)
 
 @Composable
-private fun Screen(viewModel: QrViewModel = koinViewModel()) {
+private fun Screen(viewModel: QrViewModel = koinViewModel(), paddingValues: PaddingValues) {
     TicketScreen(
         viewModel = viewModel,
-        state = viewModel.qrState.collectAsState().value
+        state = viewModel.qrState.collectAsState().value,
+        paddingValues = paddingValues
     )
 }
 
 @Composable
-private fun TicketScreen(viewModel: QrViewModel, state: QrState) {
+private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: PaddingValues) {
     LaunchedEffect(Unit) {
         viewModel.update { copy(isVisible = true) }
         viewModel.getColors()
@@ -77,7 +83,8 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Transparent)
-            .padding(16.dp),
+            .padding(16.dp)
+            .padding(paddingValues),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {

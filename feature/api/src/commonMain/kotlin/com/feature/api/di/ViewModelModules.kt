@@ -1,5 +1,6 @@
 package com.feature.api.di
 
+import com.feature.api.NavigationViewModel
 import com.feature.home.qr.screens.QrViewModel
 import com.feature.home.screen.HomeViewModel
 import com.feature.home.service.screen.ServiceViewModel
@@ -19,6 +20,7 @@ val viewModelModulesStart: Module
         viewModelOf(::StartViewModel)
         viewModelOf(::LoginViewModel)
         viewModelOf(::HomeViewModel)
+        viewModelOf(::NavigationViewModel)
     }
 
 val viewModelModulesHome: Module

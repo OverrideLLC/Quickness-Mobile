@@ -1,7 +1,9 @@
 package com.feature.home.service.screen
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -13,10 +15,10 @@ import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ServiceScreen() = Screen()
+fun ServiceScreen(paddingValues: PaddingValues) = Screen(paddingValues = paddingValues)
 
 @Composable
-private fun Screen(viewModel: ServiceViewModel = koinViewModel()) {
+private fun Screen(viewModel: ServiceViewModel = koinViewModel(), paddingValues: PaddingValues) {
     val scope = rememberCoroutineScope()
     val factory = rememberPermissionsControllerFactory()
     val controller = remember(factory) { factory.createPermissionsController() }
@@ -34,8 +36,9 @@ private fun Screen(viewModel: ServiceViewModel = koinViewModel()) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
     ) {
-
     }
 }
