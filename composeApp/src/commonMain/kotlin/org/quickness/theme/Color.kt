@@ -1,4 +1,4 @@
-package org.quickness.ui.theme
+package org.quickness.theme
 
 import androidx.compose.ui.graphics.Color
 

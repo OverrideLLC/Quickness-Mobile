@@ -1,4 +1,4 @@
-package org.quickness.ui.components.fields
+package com.feature.register.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,39 +8,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.feature.register.screen.RegisterViewModel
+import com.feature.register.states.RegisterState
 import com.quickness.shared.utils.enums.MexicanState
-import org.jetbrains.compose.resources.Font
-import org.jetbrains.compose.resources.stringResource
-import org.quickness.ui.components.component.ItemWithLink
-import org.quickness.ui.states.RegisterState
-import org.quickness.ui.screens.register.RegisterViewModel
-import quickness.composeapp.generated.resources.Poppins_Light
-import quickness.composeapp.generated.resources.Res
-import quickness.composeapp.generated.resources.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.confirm_password
-import quickness.composeapp.generated.resources.curp
-import quickness.composeapp.generated.resources.data_analytics
-import quickness.composeapp.generated.resources.data_analytics_description
-import quickness.composeapp.generated.resources.email
-import quickness.composeapp.generated.resources.last_name
-import quickness.composeapp.generated.resources.name
-import quickness.composeapp.generated.resources.number_phone
-import quickness.composeapp.generated.resources.password
-import quickness.composeapp.generated.resources.person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.phone_iphone_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.privacy_policy
-import quickness.composeapp.generated.resources.privacy_policy_description
-import quickness.composeapp.generated.resources.terms_and_conditions
-import quickness.composeapp.generated.resources.terms_and_conditions_description
+import com.shared.resources.drawable.ResourceNameKey
+import com.shared.resources.strings.Strings
+import com.shared.ui.components.component.ItemWithLink
+import com.shared.ui.components.fields.AgeInputFields
+import com.shared.ui.components.fields.DropdownField
+import com.shared.ui.components.fields.TextFIelCustom
+import com.shared.ui.components.fields.TextFieldCustomEmail
+import com.shared.ui.components.fields.TextFieldCustomPassword
 
 /**
  * Displays email and password input fields for user registration.
@@ -61,28 +48,43 @@ fun EmailAndPassword(
             value = state.email,
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { email -> viewModel.updateState { copy(email = email) } },
-            text = stringResource(Res.string.email),
-            isError = state.isError
+            text = Strings.Authentication.EMAIL,
+            isError = state.isError,
+            icons = viewModel.getDrawable(ResourceNameKey.ALTERNATE_EMAIL_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)
         )
         Spacer(modifier = Modifier.height(20.dp))
         TextFieldCustomPassword(
             value = state.password,
-            text = stringResource(Res.string.password),
+            text = Strings.Authentication.PASSWORD,
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { password -> viewModel.updateState { copy(password = password) } },
             isPasswordVisible = state.isVisiblePassword,
             isError = state.isError,
-            togglePasswordVisibility = { viewModel.updateState { copy(isVisiblePassword = isVisiblePassword.not()) } }
+            togglePasswordVisibility = { viewModel.updateState { copy(isVisiblePassword = isVisiblePassword.not()) } },
+            icon = viewModel.getDrawable(ResourceNameKey.LOCK_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
+            togglePasswordVisibilityIcon = {
+                if (state.isVisiblePassword)
+                    viewModel.getDrawable(ResourceNameKey.VISIBILITY_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)
+                else
+                    viewModel.getDrawable(ResourceNameKey.VISIBILITY_OFF_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)
+            }
         )
         Spacer(modifier = Modifier.height(20.dp))
         TextFieldCustomPassword(
             value = state.confirmPassword,
-            text = stringResource(Res.string.confirm_password),
+            text = Strings.Authentication.CONFIRM_PASSWORD,
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { confirmPassword -> viewModel.updateState { copy(confirmPassword = confirmPassword) } },
             isPasswordVisible = state.isVisibleConfirmPassword,
             isError = state.isError,
-            togglePasswordVisibility = { viewModel.updateState { copy(isVisibleConfirmPassword = isVisibleConfirmPassword.not()) } }
+            togglePasswordVisibility = { viewModel.updateState { copy(isVisibleConfirmPassword = isVisibleConfirmPassword.not()) } },
+            icon = viewModel.getDrawable(ResourceNameKey.LOCK_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
+            togglePasswordVisibilityIcon = {
+                if (state.isVisibleConfirmPassword)
+                    viewModel.getDrawable(ResourceNameKey.VISIBILITY_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)
+                else
+                    viewModel.getDrawable(ResourceNameKey.VISIBILITY_OFF_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)
+            }
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
@@ -95,7 +97,7 @@ fun EmailAndPassword(
             """.trimIndent(),
             color = colorScheme.primary,
             textAlign = TextAlign.Center,
-            fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light)),
+            fontFamily = MaterialTheme.typography.bodyMedium.fontFamily
         )
         Spacer(modifier = Modifier.height(10.dp))
     }
@@ -122,10 +124,10 @@ fun InformationPersonal(
                 value = state.name,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = { name -> viewModel.updateState { copy(name = name) } },
-                text = stringResource(Res.string.name),
+                text = Strings.Profile.NAME,
                 placeholder = "Names",
                 keyboardType = KeyboardType.Text,
-                icon = Res.drawable.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                icon = viewModel.getDrawable(ResourceNameKey.PERSON_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
                 isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -135,10 +137,10 @@ fun InformationPersonal(
                 value = state.lastName,
                 modifier = Modifier.fillMaxWidth(),
                 onValueChange = { last -> viewModel.updateState { copy(lastName = last) } },
-                text = stringResource(Res.string.last_name),
+                text = Strings.PersonalInformation.LAST_NAME,
                 placeholder = "Last names",
                 keyboardType = KeyboardType.Text,
-                icon = Res.drawable.badge_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                icon = viewModel.getDrawable(ResourceNameKey.BADGE_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
                 isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -150,8 +152,8 @@ fun InformationPersonal(
                 keyboardType = KeyboardType.Text,
                 placeholder = "##################",
                 onValueChange = { curp -> viewModel.updateState { copy(curp = curp) } },
-                icon = Res.drawable.person_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
-                text = stringResource(Res.string.curp),
+                icon = viewModel.getDrawable(ResourceNameKey.PERSON_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
+                text = Strings.PersonalInformation.CURP,
                 isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -163,8 +165,8 @@ fun InformationPersonal(
                 keyboardType = KeyboardType.Phone,
                 placeholder = "### ### ####",
                 onValueChange = { phoneNumber -> viewModel.updateState { copy(phoneNumber = phoneNumber) } },
-                text = stringResource(Res.string.number_phone),
-                icon = Res.drawable.phone_iphone_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24,
+                text = Strings.PersonalInformation.NUMBER_PHONE,
+                icon = viewModel.getDrawable(ResourceNameKey.PHONE_IPHONE_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
                 isError = state.isError
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -173,7 +175,7 @@ fun InformationPersonal(
             Text(
                 text = "Age",
                 color = colorScheme.primary,
-                fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light)),
+                fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
             )
             AgeInputFields(
                 day = state.day,
@@ -229,26 +231,35 @@ fun Approbation(
     ) {
         item {
             ItemWithLink(
-                title = stringResource(Res.string.terms_and_conditions),
-                description = stringResource(Res.string.terms_and_conditions_description),
+                title = Strings.TermsAndPolicies.TERMS_AND_CONDITIONS,
+                description = Strings.TermsAndPolicies.TERMS_AND_CONDITIONS_DESCRIPTION,
                 checked = state.termsAndConditions,
-                onCheckedChange = { viewModel.updateState { copy(termsAndConditions = termsAndConditions.not()) } }
+                onCheckedChange = { viewModel.updateState { copy(termsAndConditions = termsAndConditions.not()) } },
+                uri = {
+
+                }
             )
             Spacer(modifier = Modifier.height(20.dp))
 
             ItemWithLink(
-                title = stringResource(Res.string.privacy_policy),
-                description = stringResource(Res.string.privacy_policy_description),
+                title = Strings.TermsAndPolicies.PRIVACY_POLICY,
+                description = Strings.TermsAndPolicies.PRIVACY_POLICY_DESCRIPTION,
                 checked = state.privacyPolicy,
-                onCheckedChange = { viewModel.updateState { copy(privacyPolicy = privacyPolicy.not()) } }
+                onCheckedChange = { viewModel.updateState { copy(privacyPolicy = privacyPolicy.not()) } },
+                uri = {
+
+                }
             )
             Spacer(modifier = Modifier.height(20.dp))
 
             ItemWithLink(
-                title = stringResource(Res.string.data_analytics),
-                description = stringResource(Res.string.data_analytics_description),
+                title = Strings.TermsAndPolicies.DATA_ANALYTICS,
+                description = Strings.TermsAndPolicies.DATA_ANALYTICS_DESCRIPTION,
                 checked = state.dataAnalytics,
-                onCheckedChange = { viewModel.updateState { copy(dataAnalytics = dataAnalytics.not()) } }
+                onCheckedChange = { viewModel.updateState { copy(dataAnalytics = dataAnalytics.not()) } },
+                uri = {
+
+                }
             )
         }
     }

@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.feature.api.navigations.NavControllerStart
 import com.quickness.shared.utils.routes.RoutesStart
-import org.quickness.ui.theme.MaterialThemeApp
+import org.quickness.theme.MaterialThemeApp
 
 @Composable
 fun App() {

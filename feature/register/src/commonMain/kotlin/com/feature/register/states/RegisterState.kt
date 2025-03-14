@@ -1,4 +1,4 @@
-package org.quickness.ui.states
+package com.feature.register.states
 
 /**
  * Data class representing the state of the registration process.

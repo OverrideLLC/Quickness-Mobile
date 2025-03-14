@@ -1,15 +1,17 @@
-package org.quickness.ui.screens.register
+package com.feature.register.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.network.impl.repository.RegisterRepositoryImpl
+import com.feature.register.states.RegisterState
+import com.network.api.repository.RegisterRepository
 import com.quickness.shared.utils.objects.ValidatesData
+import com.shared.resources.interfaces.Resources
+import com.shared.resources.interfaces.ResourcesProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.quickness.interfaces.viewmodels.RegisterViewModelInterface
-import org.quickness.ui.states.RegisterState
+import org.jetbrains.compose.resources.DrawableResource
 
 /**
  * ViewModel responsible for managing the state and logic of the registration process.
@@ -18,8 +20,9 @@ import org.quickness.ui.states.RegisterState
  * @property registerRepository The repository used for handling registration-related operations, such as submitting user data.
  */
 class RegisterViewModel(
-    private val registerRepository: RegisterRepositoryImpl,
-) : ViewModel(), RegisterViewModelInterface {
+    private val registerRepository: RegisterRepository,
+    private val resources: Resources
+) : ViewModel(), ResourcesProvider {
 
     /**
      * Holds the current state of the registration process as a [org.quickness.ui.states.RegisterState].
@@ -45,7 +48,7 @@ class RegisterViewModel(
      *
      * @return `true` if the email and password fields are valid; `false` otherwise.
      */
-    override fun validateEmailAndPassword(): Boolean =
+    fun validateEmailAndPassword(): Boolean =
         ValidatesData.isEmailValid(
             email = _state.value.email,
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } }
@@ -65,7 +68,7 @@ class RegisterViewModel(
      *
      * @return `true` if all personal information fields are valid; `false` otherwise.
      */
-    override fun validatePersonalInfo(): Boolean =
+    fun validatePersonalInfo(): Boolean =
         ValidatesData.isNameValid(
             errorMessage = { errorMessage -> updateState { copy(errorMessage = errorMessage) } },
             capitalizeWords = { capitalizeWords() },
@@ -90,7 +93,7 @@ class RegisterViewModel(
      *
      * @return `true` if all required terms are checked; `false` otherwise.
      */
-    override fun isTermsAndConditionsChecked(): Boolean =
+    fun isTermsAndConditionsChecked(): Boolean =
         if (_state.value.termsAndConditions && _state.value.privacyPolicy && _state.value.dataAnalytics)
             true
         else {
@@ -103,7 +106,7 @@ class RegisterViewModel(
      *
      * @return The capitalized name as a [String].
      */
-    override fun capitalizeWords(): String =
+    fun capitalizeWords(): String =
         "${_state.value.lastName} ${_state.value.name}".split(" ")
             .joinToString(" ") { word -> word.replaceFirstChar { it.uppercaseChar() } }
 
@@ -114,7 +117,7 @@ class RegisterViewModel(
      * @param onSuccess A callback executed when the registration is successful.
      * @param onError A callback executed when the registration fails.
      */
-    override fun register(
+    fun register(
         onSuccess: () -> Unit,
         onError: () -> Unit
     ) {
@@ -149,5 +152,9 @@ class RegisterViewModel(
                 _state.value = _state.value.copy(isLoading = false)
             }
         }
+    }
+
+    override fun getDrawable(name: String): DrawableResource {
+        return resources.getDrawable(name)
     }
 }

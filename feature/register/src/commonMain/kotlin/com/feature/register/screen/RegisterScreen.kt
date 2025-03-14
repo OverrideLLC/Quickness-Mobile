@@ -1,4 +1,4 @@
-package org.quickness.ui.screens.register
+package com.feature.register.screen
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
