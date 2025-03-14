@@ -1,6 +1,7 @@
 package com.feature.home.settings.screens_settings.settings_qr
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,16 +22,17 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @Composable
-fun QrScreenSettings() = Screen()
+fun QrScreenSettings(paddingValues: PaddingValues) = Screen(paddingValues = paddingValues)
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 private fun Screen(
     viewModel: QrSettingsViewModel = koinViewModel(),
+    paddingValues: PaddingValues
 ) {
     val state = viewModel.state.collectAsState().value
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp).padding(paddingValues),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {

@@ -39,6 +39,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -129,7 +130,7 @@ fun Products(
                 Spacer(modifier = Modifier.padding(10.dp))
                 Text(
                     text = text,
-                    fontFamily = MaterialTheme.typography.bodySmall.fontFamily,
+                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
                     fontSize = 25.sp,
                     color = colorText,
                     textAlign = TextAlign.Center

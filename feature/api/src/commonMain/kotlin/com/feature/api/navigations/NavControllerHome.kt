@@ -7,11 +7,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.feature.home.qr.screens.QrScreen
 import com.feature.home.service.screen.ServiceScreen
-import com.feature.home.settings.screen.SettingsScreen
 import com.feature.home.shop.screen.ShopScreen
 import com.quickness.shared.utils.routes.RoutesHome
+import com.quickness.shared.utils.routes.RoutesSettings
 import com.shared.ui.components.animations.ContentSwitchAnimation
 
 @Composable
@@ -37,8 +38,9 @@ fun NavControllerHome(
             QrScreen(paddingValues)
         }
         composable(RoutesHome.Settings.route) {
-            SettingsScreen(
-                navController = navController,
+            NavControllerSettings(
+                navController = rememberNavController(),
+                startDestination = RoutesSettings.Settings.route,
                 paddingValues = paddingValues
             )
         }

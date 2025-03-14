@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
@@ -110,7 +111,7 @@ fun SettingsItemSwitch(
                 onCheckedChange = { isActive() },
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = colorScheme.primary,
-                    checkedTrackColor = colorScheme.background,
+                    checkedTrackColor = colorScheme.onBackground,
                     uncheckedThumbColor = colorScheme.tertiary,
                     uncheckedTrackColor = colorScheme.background
                 )
@@ -119,7 +120,7 @@ fun SettingsItemSwitch(
         Text(
             text = description,
             color = colorScheme.tertiary,
-            fontFamily = MaterialTheme.typography.bodySmall.fontFamily
+            fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
         )
     }
 }
