@@ -6,10 +6,6 @@ plugins {
 }
 
 kotlin {
-
-    // Target declarations - add or remove as needed below. These define
-    // which platforms this KMP module supports.
-    // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
         namespace = "com.feature.home"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -22,17 +18,17 @@ kotlin {
         }
     }
 
-//    val xcfName = "feature:homeKit"
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach { iosTarget ->
-//        iosTarget.binaries.framework {
-//            baseName = xcfName
-//            isStatic = true
-//        }
-//    }
+    val xcfName = "feature:homeKit"
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = xcfName
+            isStatic = true
+        }
+    }
 
     sourceSets {
         commonMain {
@@ -58,12 +54,29 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.ui)
                 implementation(libs.navigation.compose)
+
+                //UTILS
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.krypto)
+                implementation(libs.qr.kit)
+                implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation(libs.androidx.lifecycle.viewmodel)
+
+                //MOKO
+                implementation(libs.moko.permissions)
+                implementation(libs.moko.permissions.compose)
             }
         }
 
         commonTest { dependencies { implementation(libs.kotlin.test) } }
 
-        androidMain { dependencies {} }
+        androidMain {
+            dependencies {
+                //UTILS ANDROID
+                implementation(libs.androidx.biometric)
+                implementation(libs.androidx.work.runtime.ktx)
+            }
+        }
 
         getByName("androidDeviceTest") {
             dependencies {

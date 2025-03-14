@@ -1,7 +1,9 @@
 package org.quickness.di
 
 import com.data.impl.di.*
-import com.feature.api.di.viewModelModules
+import com.feature.api.di.viewModelModulesHome
+import com.feature.api.di.viewModelModulesSettings
+import com.feature.api.di.viewModelModulesStart
 import com.network.impl.di.*
 import com.shared.resources.interfaces.Resources
 import org.koin.core.context.startKoin
@@ -35,32 +37,31 @@ val appModule: Module = module {
  *
  * The function configures the following modules:
  * - `appModule`: Core application dependencies.
- * - `viewModelsHome`: ViewModels related to the home feature.
- * - `viewModelsStart`: ViewModels related to the start feature.
  * - `serviceModule`: Dependencies for network services.
- * - `NativeModule`: Dependencies for native components.
- * - `firebaseModule`: Firebase-related dependencies.
- * - `repositoryNetworkModule`: Dependencies for network-related repositories.
- * - `viewModelModules`: General view model dependencies.
- * - `dataModule`: Data layer dependencies.
- * - `repositoryDatabaseModule`: Dependencies for database-related repositories.
+ * - `nativeModule`: Dependencies for native components.
  * - `nativeDatabase`: Dependencies for the native database.
+ * - `firebaseModule`: Firebase-related dependencies.
+ * - `dataModule`: Data layer dependencies.
+ * - `repositoryNetworkModule`: Dependencies for network-related repositories.
+ * - `repositoryDatabaseModule`: Dependencies for database-related repositories.
+ * - `viewModelModulesStart`: ViewModels related to the start feature.
+ * - `viewModelModulesHome`: ViewModels related to the home feature.
  */
 fun initKoin(appDeclaration: KoinAppDeclaration? = null) {
     startKoin {
         appDeclaration?.invoke(this)
         modules(
             appModule,
-            viewModelsHome,
-            viewModelsStart,
             serviceModule,
-            NativeModule,
+            nativeModule,
+            nativeDatabase,
             firebaseModule,
-            repositoryNetworkModule,
-            viewModelModules,
             dataModule,
+            repositoryNetworkModule,
             repositoryDatabaseModule,
-            nativeDatabase
+            viewModelModulesStart,
+            viewModelModulesHome,
+            viewModelModulesSettings,
         )
     }
 }
