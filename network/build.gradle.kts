@@ -32,24 +32,9 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                //UTILS
-                implementation(libs.kotlin.stdlib)
+        commonMain.dependencies { implementation(libs.kotlin.stdlib) }
 
-            }
-        }
-
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
-        }
-
-        androidMain {
-            dependencies {
-            }
-        }
+        commonTest.dependencies { implementation(libs.kotlin.test) }
 
         getByName("androidDeviceTest") {
             dependencies {
@@ -58,7 +43,5 @@ kotlin {
                 implementation(libs.androidx.junit)
             }
         }
-
-        iosMain { dependencies {  } }
     }
 }

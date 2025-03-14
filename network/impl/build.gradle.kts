@@ -6,10 +6,6 @@ plugins {
 }
 
 kotlin {
-
-    // Target declarations - add or remove as needed below. These define
-    // which platforms this KMP module supports.
-    // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
         namespace = "com.network.impl"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -39,49 +35,43 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                //MODULES
-                implementation(projects.shared.utils)
-                api(projects.network.api) //Necesario el cambio por implement cuando se implementen las feature
+        commonMain.dependencies {
+            //MODULES
+            implementation(projects.shared.utils)
+            implementation(projects.network.api)
 
-                //UTILS
-                implementation(libs.kotlin.stdlib)
+            //UTILS
+            implementation(libs.kotlin.stdlib)
 
-                //KTOR
-                implementation(libs.ktor.client.content.negotiation)
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.loggin)
-                implementation(libs.ktor.serialization.kotlinx.json)
+            //KTOR
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.loggin)
+            implementation(libs.ktor.serialization.kotlinx.json)
 
-                //KOIN
-                implementation(project.dependencies.platform(libs.koin.bom))
-                implementation(libs.koin.compose)
-                implementation(libs.koin.compose.viewModel)
-                implementation(libs.koin.core)
-            }
+            //KOIN
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewModel)
+            implementation(libs.koin.core)
         }
 
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
 
-        androidMain {
-            dependencies {
-                //FIREBASE
-                implementation(project.dependencies.platform(libs.firebase.bom))
-                implementation(libs.firebase.analytics)
-                implementation(libs.firebase.auth)
-                implementation(libs.firebase.firestore)
+        androidMain.dependencies {
+            //FIREBASE
+            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.firebase.analytics)
+            implementation(libs.firebase.auth)
+            implementation(libs.firebase.firestore)
 
-                //KTOR
-                implementation(libs.ktor.client.okhttp)
+            //KTOR
+            implementation(libs.ktor.client.okhttp)
 
-                //KOIN
-                implementation(libs.koin.android)
-            }
+            //KOIN
+            implementation(libs.koin.android)
         }
 
         getByName("androidDeviceTest") {
@@ -92,10 +82,8 @@ kotlin {
             }
         }
 
-        iosMain {
-            dependencies {
-                implementation(libs.ktor.client.darwin)
-            }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }

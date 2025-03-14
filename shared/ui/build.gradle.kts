@@ -32,34 +32,30 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
 
-                //MODULES
-                implementation(projects.shared.utils)
-                implementation(projects.shared.resources)
+            //MODULES
+            implementation(projects.shared.utils)
+            implementation(projects.shared.resources)
 
-                //KOIN
-                implementation(project.dependencies.platform(libs.koin.bom))
-                implementation(libs.koin.compose)
-                implementation(libs.koin.compose.viewModel)
-                implementation(libs.koin.core)
+            //KOIN
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewModel)
+            implementation(libs.koin.core)
 
-                //COMPOSE
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
-                implementation(libs.navigation.compose)
-            }
+            //COMPOSE
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            implementation(compose.ui)
+            implementation(libs.navigation.compose)
         }
 
-        commonTest { dependencies { implementation(libs.kotlin.test) } }
-
-        androidMain { dependencies {} }
+        commonTest.dependencies { implementation(libs.kotlin.test) }
 
         getByName("androidDeviceTest") {
             dependencies {
@@ -68,7 +64,5 @@ kotlin {
                 implementation(libs.androidx.junit)
             }
         }
-
-        iosMain { dependencies {} }
     }
 }

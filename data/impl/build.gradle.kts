@@ -33,35 +33,31 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
-                //MODULES
-                implementation(projects.shared.utils)
-                api(projects.data.api)//se tiene que modificar cuando los modulos feature esten listos
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
+            //MODULES
+            implementation(projects.shared.utils)
+            implementation(projects.data.api)
 
-                //DATABASE
-                implementation(libs.androidx.room.runtime)
-                implementation(libs.androidx.sqliteBundled)
-                implementation(libs.datastore.preference)
+            //DATABASE
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqliteBundled)
+            implementation(libs.datastore.preference)
 
-                //KOIN
-                implementation(project.dependencies.platform(libs.koin.bom))
-                implementation(libs.koin.compose)
-                implementation(libs.koin.compose.viewModel)
-                implementation(libs.koin.core)
-            }
+            //KOIN
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewModel)
+            implementation(libs.koin.core)
         }
 
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
 
         androidMain {
             kotlin.srcDir("androidMain/kotlin")
-            dependencies{
+            dependencies {
                 //KOIN
                 implementation(libs.koin.android)
             }
@@ -74,23 +70,9 @@ kotlin {
                 implementation(libs.androidx.junit)
             }
         }
-
-        iosMain {
-            dependencies {
-                // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
-                // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
-                // part of KMP’s default source set hierarchy. Note that this source set depends
-                // on common by default and will correctly pull the iOS artifacts of any
-                // KMP dependencies declared in commonMain.
-            }
-        }
     }
 }
 
-room {
-    schemaDirectory("$projectDir/schemas")
-}
+room { schemaDirectory("$projectDir/schemas") }
 
-dependencies {
-    add("kspAndroid", libs.androidx.room.compailer)
-}
+dependencies { add("kspAndroid", libs.androidx.room.compailer) }

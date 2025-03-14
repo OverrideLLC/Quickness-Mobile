@@ -40,7 +40,7 @@ internal fun Screen(
     contentAuth: @Composable () -> Unit,
     viewModel: StartViewModel = koinViewModel<StartViewModel>()
 ) {
-    val state by remember { viewModel.state }.collectAsState()
+    val state by viewModel.state.collectAsState()
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
         confirmValueChange = { targetValue ->
