@@ -14,7 +14,7 @@ import org.quickness.theme.MaterialThemeApp
 @Composable
 fun App() {
     MaterialThemeApp(
-        isDarkTheme = true,
+        isDarkTheme = false,
         content = {
             Surface(
                 modifier = Modifier

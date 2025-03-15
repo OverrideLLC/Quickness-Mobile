@@ -46,5 +46,3 @@ val surfaceContainerHighest: Color = Color(0xFF383838) // La variante más clara
 val surfaceContainerLow: Color = Color(0xFF141414) // Contenedor más oscuro que SurfaceContainer
 val surfaceContainerLowest: Color = Color(0xFF101010) // Contenedor más oscuro
 val surfaceDim: Color = Color(0xFF181818) // Superficie tenue, más cerca del negro
-
-val Success = Color(0xFF00FF00)

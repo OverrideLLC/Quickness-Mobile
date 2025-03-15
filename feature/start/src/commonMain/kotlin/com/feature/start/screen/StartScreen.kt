@@ -30,14 +30,16 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun StartScreen(
     navController: NavController,
-    contentAuth: @Composable () -> Unit
-) = Screen(navController, contentAuth)
+    contentAuth: @Composable () -> Unit,
+    contentRegister: @Composable () -> Unit
+) = Screen(navController, contentAuth, contentRegister)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun Screen(
     navController: NavController,
     contentAuth: @Composable () -> Unit,
+    contentRegister: @Composable () -> Unit,
     viewModel: StartViewModel = koinViewModel<StartViewModel>()
 ) {
     val state by viewModel.state.collectAsState()
@@ -101,7 +103,7 @@ internal fun Screen(
                 }
             },
             content = {
-
+                contentRegister()
             },
         )
     }

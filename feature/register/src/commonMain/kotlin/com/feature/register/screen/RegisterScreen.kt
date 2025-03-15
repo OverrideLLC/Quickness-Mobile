@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,26 +29,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.feature.register.navigation.NavigationRegister
 import com.quickness.shared.utils.routes.RoutesRegister
 import com.quickness.shared.utils.routes.RoutesStart
-import org.jetbrains.compose.resources.Font
+import com.shared.resources.drawable.ResourceNameKey
+import com.shared.resources.strings.Strings
+import com.shared.ui.components.helpers.Message
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.quickness.ui.components.helpers.Message
-import org.quickness.ui.navegation.NavigationRegister
-import quickness.composeapp.generated.resources.Poppins_Light
-import quickness.composeapp.generated.resources.Res
-import quickness.composeapp.generated.resources.arrow_back_ios_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
-import quickness.composeapp.generated.resources.next
-import quickness.composeapp.generated.resources.register
 
 /**
  * Main composable for the registration screen.
@@ -80,7 +75,8 @@ fun RegisterContent(
             RegisterHeader(
                 currentRoute = currentRoute ?: RoutesRegister.EmailAndPassword.route,
                 navControllerRegister = navControllerRegister,
-                navController = navController
+                navController = navController,
+                viewModel = viewModel
             )
         },
         content = { padding ->
@@ -120,7 +116,8 @@ fun RegisterContent(
     Message(
         message = state.errorMessage,
         visibility = state.isError,
-        actionPostDelayed = { viewModel.updateState { copy(isError = isError.not()) } }
+        actionPostDelayed = { viewModel.updateState { copy(isError = isError.not()) } },
+        errorIcon = viewModel.getDrawable(ResourceNameKey.ERROR_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)
     )
 }
 
@@ -135,7 +132,8 @@ fun RegisterContent(
 private fun RegisterHeader(
     currentRoute: String,
     navControllerRegister: NavController,
-    navController: NavController
+    navController: NavController,
+    viewModel: RegisterViewModel
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = calculateProgress(currentRoute),
@@ -160,16 +158,16 @@ private fun RegisterHeader(
                 colors = IconButtonDefaults.iconButtonColors(Color.Transparent)
             ) {
                 Icon(
-                    painter = painterResource(Res.drawable.arrow_back_ios_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
+                    painter = painterResource(viewModel.getDrawable(ResourceNameKey.ARROW_BACK_IOS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
                     contentDescription = "Back Screen",
                     modifier = Modifier.size(50.dp),
                     tint = colorScheme.primary
                 )
             }
             Text(
-                text = stringResource(Res.string.register),
+                text = Strings.Authentication.REGISTER,
                 fontSize = 50.sp,
-                fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light)),
+                fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
                 color = colorScheme.primary
             )
         }
@@ -244,10 +242,10 @@ private fun RegisterBottomBar(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = stringResource(Res.string.next),
+                    text = Strings.Navigation.NEXT,
                     fontSize = 30.sp,
                     color = colorScheme.primary,
-                    fontFamily = FontFamily(Font(resource = Res.font.Poppins_Light))
+                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily
                 )
             }
         }
