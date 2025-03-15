@@ -25,7 +25,7 @@ private val DarkColorScheme = darkColorScheme(
     secondaryContainer = secondaryContainer,
     onSecondaryContainer = onSecondaryContainer,
     tertiary = tertiary,
-    onTertiary = onTertiary,
+    onTertiary = primary,
     tertiaryContainer = tertiaryContainer,
     onTertiaryContainer = onTertiaryContainer,
     background = background,
@@ -55,39 +55,20 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = primary,
-    onPrimary = Color.Black,
-    primaryContainer = Color(0xFFb3eaf5), // Fondo claro para el contenedor primario
-    onPrimaryContainer = Color(0xFF003f43), // Contraste oscuro sobre el contenedor primario
-    inversePrimary = Color(0xFF004f53), // Tono inverso de Primary
-
-    secondary = secondary,
-    onSecondary = Color.Black,
-    secondaryContainer = Color(0xFFc6e5e7), // Fondo claro para el contenedor secundario
-    onSecondaryContainer = Color(0xFF004d51), // Contraste oscuro sobre el contenedor secundario
-
-    tertiary = tertiary,
-    onTertiary = Color.Black,
-    tertiaryContainer = Color(0xFFd9d9d9), // Fondo claro para el contenedor terciario
-    onTertiaryContainer = Color(0xFF2a2a2a), // Contraste oscuro sobre el contenedor terciario
-
-    background = Color.White, // Fondo blanco para el modo claro
-    onBackground = Color.Black, // Texto oscuro sobre fondo claro
-
-    surface = Color(0xFFf5f5f5), // Superficie clara
-    onSurface = Color.Black, // Texto oscuro sobre la superficie clara
-
-    surfaceVariant = Color(0xFFe0e0e0), // Variante más clara de la superficie
-    onSurfaceVariant = Color.Black, // Texto oscuro para la variante de superficie
-
-    surfaceTint = primary, // Tint relacionado con Primary
-    inverseSurface = Color(0xFF000000), // Fondo oscuro para inversión
-    inverseOnSurface = Color(0xFFffffff), // Texto claro sobre fondo inverso
-
+    primaryContainer = onPrimaryContainer,
+    onPrimary = primary,
+    secondary = onSecondary,
+    onSecondary = secondary,
+    tertiary = onPrimary,
+    onTertiary = Color(0xff15a9b2),
+    background = Color.White,
+    onBackground = Color.White,
+    surface = onSurface,
+    onSurface = surface,
     error = error,
     onError = Color.Black,
     errorContainer = Color(0xFFffd6d6), // Fondo claro para contenedor de error
     onErrorContainer = Color(0xFF93000a), // Contraste oscuro sobre contenedor de error
-
     outline = Color(0xFFbdbdbd), // Tono intermedio para bordes
     outlineVariant = Color(0xFF757575), // Variante más oscura del borde
     scrim = Color(0x40000000), // Fondo translúcido

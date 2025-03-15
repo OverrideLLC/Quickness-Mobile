@@ -6,6 +6,7 @@ import com.feature.home.screen.HomeViewModel
 import com.feature.home.service.screen.ServiceViewModel
 import com.feature.home.settings.screen.SettingsViewModel
 import com.feature.home.settings.screens_settings.settings_account.AccountSettingsViewModel
+import com.feature.home.settings.screens_settings.settings_display.DisplaySettingsViewModel
 import com.feature.home.settings.screens_settings.settings_privacy.PrivacySettingsViewModel
 import com.feature.home.settings.screens_settings.settings_qr.QrSettingsViewModel
 import com.feature.home.shop.screen.ShopViewModel
@@ -36,4 +37,5 @@ val viewModelModulesSettings: Module
         viewModelOf(::AccountSettingsViewModel)
         viewModelOf(::PrivacySettingsViewModel)
         viewModelOf(::QrSettingsViewModel)
+        viewModelOf(::DisplaySettingsViewModel)
     }

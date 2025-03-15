@@ -32,7 +32,6 @@ import com.shared.resources.drawable.ResourceNameKey
 import com.shared.ui.components.component.BottomSheetContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.datetime.format.Padding
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
@@ -41,7 +40,7 @@ fun ShopScreen(
     paddingValues: PaddingValues
 ) = Screen(paddingValues = paddingValues)
 
-@OptIn(ExperimentalMaterial3Api::class, KoinExperimentalAPI::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Screen(viewModel: ShopViewModel = koinViewModel(), paddingValues: PaddingValues) {
     val sheetState = rememberModalBottomSheetState()
@@ -95,7 +94,7 @@ private fun ProductList(
         text = "Quickness Plus",
         icon = ResourceNameKey.LOGOQUICKNESSQC,
         containerColor = colorScheme.primary,
-        iconTint = colorScheme.tertiary,
+        iconTint = Color.White,
         colorText = colorScheme.tertiary,
         brushStartColor = Color(0xFFb88f14),
         onClickAction = {
@@ -109,7 +108,7 @@ private fun ProductList(
         text = "Quickness Student",
         icon = ResourceNameKey.BOOK_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
         containerColor = colorScheme.primary,
-        iconTint = colorScheme.tertiary,
+        iconTint = Color.White,
         colorText = colorScheme.tertiary,
         brushStartColor = Color(0xFF1E88E5),
         onClickAction = {
@@ -123,7 +122,7 @@ private fun ProductList(
         text = "Quickness Family",
         icon = ResourceNameKey.FAMILY_RESTROOM_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
         containerColor = colorScheme.primary,
-        iconTint = colorScheme.tertiary,
+        iconTint = Color.White,
         colorText = colorScheme.tertiary,
         brushStartColor = Color(0xFF66BB6A),
         onClickAction = {
@@ -137,7 +136,7 @@ private fun ProductList(
         text = "Quickness Shop",
         icon = ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
         containerColor = colorScheme.primary,
-        iconTint = colorScheme.tertiary,
+        iconTint = Color.White,
         colorText = colorScheme.tertiary,
         brushStartColor = Color(0xFF00FF00),
         onClickAction = {

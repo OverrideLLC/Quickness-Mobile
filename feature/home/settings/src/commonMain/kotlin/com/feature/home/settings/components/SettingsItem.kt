@@ -189,7 +189,7 @@ fun DropdownSettings(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(max = exposedHeight)
-                    .background(colorScheme.onBackground, RoundedCornerShape(10.dp))
+                    .background(colorScheme.onBackground.copy(alpha = 0.5f), RoundedCornerShape(10.dp))
             ) {
                 options.forEach { option ->
                     DropdownMenuItem(
@@ -198,7 +198,7 @@ fun DropdownSettings(
                             expanded = false
                         },
                         text = {
-                            Text(option, color = colorScheme.primary)
+                            Text(option, color = colorScheme.tertiary)
                         }
                     )
                 }

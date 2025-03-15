@@ -59,6 +59,7 @@ kotlin {
             implementation(projects.shared)
             implementation(projects.network.impl)
             implementation(projects.data.impl)
+            implementation(projects.data.api)
 
             //COMPOSE
             implementation(compose.components.resources)

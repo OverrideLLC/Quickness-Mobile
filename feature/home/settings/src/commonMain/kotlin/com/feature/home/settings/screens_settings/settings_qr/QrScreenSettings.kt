@@ -24,7 +24,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 @Composable
 fun QrScreenSettings(paddingValues: PaddingValues) = Screen(paddingValues = paddingValues)
 
-@OptIn(KoinExperimentalAPI::class)
 @Composable
 private fun Screen(
     viewModel: QrSettingsViewModel = koinViewModel(),
