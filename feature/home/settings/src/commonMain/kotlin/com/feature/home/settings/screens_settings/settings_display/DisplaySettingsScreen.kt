@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.feature.home.settings.components.SettingsItemSwitch
 import com.shared.resources.drawable.ResourceNameKey
 import com.shared.resources.strings.Strings
+import com.shared.ui.components.styles.ShimmerListVertical
 import org.koin.compose.viewmodel.koinViewModel
 
 // Display Settings
@@ -28,6 +29,21 @@ fun Screen(
     viewModel: DisplaySettingsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val loading by viewModel.loading.collectAsState()
+    ShimmerListVertical(
+        count = 1,
+        modifier = Modifier.padding(paddingValues),
+        isLoading = loading,
+        content = { Content(paddingValues = paddingValues, state = state, viewModel = viewModel) }
+    )
+}
+
+@Composable
+fun Content(
+    paddingValues: PaddingValues,
+    state: DisplaySettingsViewModel.DisplaySettingsState,
+    viewModel: DisplaySettingsViewModel
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp).padding(paddingValues),
         horizontalAlignment = Alignment.CenterHorizontally,

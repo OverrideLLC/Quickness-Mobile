@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.shared.ui.components.styles.shimmerEffect
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
@@ -76,10 +77,11 @@ fun SettingsItemSwitch(
     icon: DrawableResource,
     description: String,
     active: Boolean,
+    modifier: Modifier = Modifier,
     isActive: () -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(
                 color = colorScheme.onBackground.copy(alpha = 0.5f),

@@ -7,7 +7,11 @@ import com.quickness.shared.utils.objects.KeysCache.IS_DARK_THEME_KEY
 import com.shared.resources.interfaces.Resources
 import com.shared.resources.interfaces.ResourcesProvider
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -19,10 +23,22 @@ class DisplaySettingsViewModel(
         var isDarkTheme: Boolean = false,
     )
 
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
+        .onStart {
+            loadState()
+            _loading.value = true
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(stopTimeoutMillis = 5_000),
+            initialValue = false
+        )
+
     private val _state = MutableStateFlow(DisplaySettingsState())
     val state = _state.asStateFlow()
 
-    init {
+    private fun loadState() {
         viewModelScope.launch {
             dataStoreRepository.getBoolean(
                 key = IS_DARK_THEME_KEY,

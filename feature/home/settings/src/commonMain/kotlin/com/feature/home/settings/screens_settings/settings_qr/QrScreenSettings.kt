@@ -1,5 +1,6 @@
 package com.feature.home.settings.screens_settings.settings_qr
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -13,13 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.feature.home.settings.components.DropdownSettings
 import com.feature.home.settings.components.SettingsItemSwitch
+import com.feature.home.settings.state.QrSettingsState
 import com.quickness.shared.utils.qr_options.ColorQrOptions
 import com.quickness.shared.utils.qr_options.FormatQrOptions
 import com.quickness.shared.utils.qr_options.RoundedQrOptions
 import com.shared.resources.drawable.ResourceNameKey
 import com.shared.resources.strings.Strings
+import com.shared.ui.components.styles.ShimmerListVertical
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 
 @Composable
 fun QrScreenSettings(paddingValues: PaddingValues) = Screen(paddingValues = paddingValues)
@@ -30,6 +32,21 @@ private fun Screen(
     paddingValues: PaddingValues
 ) {
     val state = viewModel.state.collectAsState().value
+    val loading = viewModel.loading.collectAsState().value
+    ShimmerListVertical(
+        count = 3,
+        modifier = Modifier.padding(paddingValues),
+        isLoading = loading,
+        content = { Content(paddingValues = paddingValues, state = state) }
+    )
+}
+
+@Composable
+private fun Content(
+    viewModel: QrSettingsViewModel = koinViewModel(),
+    paddingValues: PaddingValues,
+    state: QrSettingsState
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp).padding(paddingValues),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -41,7 +58,7 @@ private fun Screen(
                 icon = viewModel.getDrawable(ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
                 description = Strings.QrSettings.IMPROVE_QR_READABILITY,
                 active = state.format == FormatQrOptions.Low.option,
-                isActive = { viewModel.toggleFormat() }
+                isActive = { viewModel.toggleFormat() },
             )
             Spacer(Modifier.padding(10.dp))
         }
