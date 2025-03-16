@@ -11,6 +11,7 @@ import com.feature.home.settings.screens_settings.settings_privacy.PrivacySettin
 import com.feature.home.settings.screens_settings.settings_qr.QrSettingsViewModel
 import com.feature.home.shop.screen.ShopViewModel
 import com.feature.login.screen.LoginViewModel
+import com.feature.register.screen.RegisterViewModel
 import com.feature.start.screen.StartViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
@@ -22,6 +23,7 @@ val viewModelModulesStart: Module
         viewModelOf(::LoginViewModel)
         viewModelOf(::HomeViewModel)
         viewModelOf(::NavigationViewModel)
+        viewModelOf(::RegisterViewModel)
     }
 
 val viewModelModulesHome: Module

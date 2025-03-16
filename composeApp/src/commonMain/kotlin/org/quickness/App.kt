@@ -25,7 +25,7 @@ fun App(
 ) {
     val isDarkTheme = viewModel.isDarkTheme.collectAsState().value
     MaterialThemeApp(
-        isDarkTheme = isDarkTheme,
+        isDarkTheme = !isDarkTheme,
         content = {
             Surface(
                 modifier = Modifier

@@ -12,13 +12,11 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.feature.start.components.ButtonAccessStart
-import com.quickness.shared.utils.routes.RoutesStart
 import com.shared.resources.drawable.ResourceNameKey
 import com.shared.resources.strings.Strings
 import com.shared.ui.components.animations.BackgroundAnimated
@@ -44,6 +42,12 @@ internal fun Screen(
 ) {
     val state by viewModel.state.collectAsState()
     val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { targetValue ->
+            targetValue == SheetValue.Hidden
+        }
+    )
+    val sheetStateRegister = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
         confirmValueChange = { targetValue ->
             targetValue == SheetValue.Hidden
@@ -76,7 +80,12 @@ internal fun Screen(
                     viewModel.update { copy(bottomLogin = true) }
                 }
             },
-            onRegisterClick = { navController.navigate(RoutesStart.Register.route) }
+            onRegisterClick = {
+                scope.launch {
+                    sheetState.show()
+                    viewModel.update { copy(bottomRegister = true) }
+                }
+            }
         )
     }
     BottomSheetContent(
@@ -92,19 +101,17 @@ internal fun Screen(
             contentAuth()
         }
     )
-    if (state.bottomRegister) {
-        BottomSheetContent(
-            sheetState = sheetState,
-            colorBackground = colorScheme.onBackground.copy(alpha = 0.5f),
-            showContent = state.bottomRegister,
-            onDismiss = {
-                scope.launch { sheetState.hide() }.invokeOnCompletion {
-                    if (!sheetState.isVisible) viewModel.update { copy(bottomRegister = false) }
-                }
-            },
-            content = {
-                contentRegister()
-            },
-        )
-    }
+    BottomSheetContent(
+        sheetState = sheetStateRegister,
+        colorBackground = colorScheme.onBackground.copy(alpha = 0.5f),
+        showContent = state.bottomRegister,
+        onDismiss = {
+            scope.launch { sheetStateRegister.hide() }.invokeOnCompletion {
+                if (!sheetStateRegister.isVisible) viewModel.update { copy(bottomRegister = false) }
+            }
+        },
+        content = {
+            contentRegister()
+        },
+    )
 }
