@@ -48,6 +48,10 @@ kotlin {
             implementation(libs.koin.compose.viewModel)
             implementation(libs.koin.core)
 
+            //COIL
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
+
             //COMPOSE
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -75,6 +79,10 @@ kotlin {
             //UTILS ANDROID
             implementation(libs.androidx.biometric)
             implementation(libs.androidx.work.runtime.ktx)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
 
         getByName("androidDeviceTest") {

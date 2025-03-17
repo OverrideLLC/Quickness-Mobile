@@ -2,6 +2,7 @@ package org.quickness.di
 
 import com.data.impl.di.*
 import com.feature.api.di.viewModelModulesHome
+import com.feature.api.di.viewModelModulesService
 import com.feature.api.di.viewModelModulesSettings
 import com.feature.api.di.viewModelModulesStart
 import com.network.impl.di.*
@@ -65,6 +66,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) {
             viewModelModulesStart,
             viewModelModulesHome,
             viewModelModulesSettings,
+            viewModelModulesService
         )
     }
 }

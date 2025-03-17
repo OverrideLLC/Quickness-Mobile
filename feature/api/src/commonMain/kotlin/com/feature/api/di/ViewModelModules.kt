@@ -4,6 +4,7 @@ import com.feature.api.NavigationViewModel
 import com.feature.home.qr.screens.QrViewModel
 import com.feature.home.screen.HomeViewModel
 import com.feature.home.service.screen.ServiceViewModel
+import com.feature.home.service.services.lyra.LyraViewModel
 import com.feature.home.settings.screen.SettingsViewModel
 import com.feature.home.settings.screens_settings.settings_account.AccountSettingsViewModel
 import com.feature.home.settings.screens_settings.settings_display.DisplaySettingsViewModel
@@ -40,4 +41,9 @@ val viewModelModulesSettings: Module
         viewModelOf(::PrivacySettingsViewModel)
         viewModelOf(::QrSettingsViewModel)
         viewModelOf(::DisplaySettingsViewModel)
+    }
+
+val viewModelModulesService: Module
+    get() = module {
+        viewModelOf(::LyraViewModel)
     }
