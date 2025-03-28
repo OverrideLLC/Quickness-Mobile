@@ -37,6 +37,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlin.stdlib)
+            implementation(libs.kotlinx.datetime)
             //DATABASE
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqliteBundled)
