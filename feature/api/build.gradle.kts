@@ -20,19 +20,6 @@ kotlin {
         }
     }
 
-    val xcfName = "feature:apiKit"
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = xcfName
-            isStatic = true
-        }
-    }
-
     sourceSets {
         commonMain.dependencies {
             //UTILS

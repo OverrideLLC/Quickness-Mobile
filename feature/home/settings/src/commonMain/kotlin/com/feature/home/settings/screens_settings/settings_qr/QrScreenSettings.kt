@@ -1,6 +1,5 @@
 package com.feature.home.settings.screens_settings.settings_qr
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
