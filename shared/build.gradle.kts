@@ -16,36 +16,53 @@ kotlin {
         }
     }
 
-    val xcfName = "sharedKit"
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = xcfName
-            isStatic = true
-        }
-    }
+//    val xcfName = "sharedKit"
+//
+//    listOf(
+//        iosX64(),
+//        iosArm64(),
+//        iosSimulatorArm64()
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = xcfName
+//            isStatic = true
+//        }
+//    }
 
     sourceSets {
-        commonMain.dependencies {
-            //MODULES
-            api(projects.shared.utils)
-            api(projects.shared.resources)
-            api(projects.shared.ui)
+        commonMain {
+            dependencies {
+                //MODULES
+                api(projects.shared.utils)
+                api(projects.shared.resources)
+                api(projects.shared.ui)
 
-            implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlin.stdlib)
+            }
         }
 
-        commonTest.dependencies { implementation(libs.kotlin.test) }
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
+
+        androidMain {
+            dependencies {
+            }
+        }
 
         getByName("androidDeviceTest") {
             dependencies {
                 implementation(libs.androidx.runner)
                 implementation(libs.androidx.core)
                 implementation(libs.androidx.junit)
+            }
+        }
+
+        iosMain {
+            dependencies {
+
             }
         }
     }

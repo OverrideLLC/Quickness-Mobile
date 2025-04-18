@@ -5,7 +5,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
@@ -14,8 +13,6 @@ import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.example.api.repository.DataStoreRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -100,17 +97,14 @@ class DataStoreRepositoryImpl(
     override suspend fun getBoolean(
         key: String,
         defaultValue: Boolean
-    ): Flow<Boolean>? {
-        return dataStore.data
-            .catch {
-                if (it is Exception) {
-                    emit(emptyPreferences())
-                } else {
-                    throw it
-                }
-            }.map { preference ->
-                preference[booleanPreferencesKey(key)] ?: defaultValue
+    ): Boolean? {
+        return withContext(dispatcher) {
+            dataStore.data.map {
+                it[booleanPreferencesKey(key)]
+            }.first() ?: defaultValue.also { value ->
+                saveBoolean(mapOf(key to value))
             }
+        }
     }
 
     override suspend fun saveFloat(data: Map<String, Float>) {

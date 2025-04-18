@@ -1,28 +1,16 @@
 package com.feature.home.service.screen
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.feature.home.service.components.Permission
-import com.feature.home.service.components.WidgetService
-import com.feature.home.service.states.ServiceState
-import com.shared.ui.components.component.BottomSheetContent
-import com.shared.ui.components.component.Progress
-import kotlinx.coroutines.CoroutineScope
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -30,77 +18,27 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ServiceScreen(paddingValues: PaddingValues) = Screen(paddingValues = paddingValues)
 
 @Composable
-internal fun Screen(viewModel: ServiceViewModel = koinViewModel(), paddingValues: PaddingValues) {
-    val state by viewModel.state.collectAsState()
-    Permission(viewModel)
-    Content(
-        viewModel = viewModel,
-        paddingValues = paddingValues,
-        state = state,
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun BottomScreen(
-    state: ServiceState,
-    scope: CoroutineScope,
-    viewModel: ServiceViewModel,
-    sheetState: SheetState,
-    content: @Composable () -> Unit,
-) {
-    BottomSheetContent(
-        sheetState = sheetState,
-        showContent = state.showBottomSheet,
-        colorBackground = colorScheme.background.copy(alpha = 0.5f),
-        onDismiss = {
-            scope.launch { sheetState.hide() }.invokeOnCompletion {
-                if (!sheetState.isVisible) viewModel.update { copy(showBottomSheet = false) }
-            }
-        },
-        content = content
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun Content(
-    viewModel: ServiceViewModel,
-    paddingValues: PaddingValues,
-    state: ServiceState,
-) {
+private fun Screen(viewModel: ServiceViewModel = koinViewModel(), paddingValues: PaddingValues) {
     val scope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState()
-    LazyColumn(
-        contentPadding = paddingValues,
+    val factory = rememberPermissionsControllerFactory()
+    val controller = remember(factory) { factory.createPermissionsController() }
+    BindEffect(controller)
+
+    scope.launch {
+        viewModel.checkPermissions(
+            permissions = Permission.COARSE_LOCATION,
+            controller = controller
+        )
+        viewModel.checkPermissions(
+            permissions = Permission.LOCATION,
+            controller = controller
+        )
+    }
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 10.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .padding(paddingValues)
     ) {
-        items(state.serviceList) {
-            WidgetService(
-                image = it.image,
-                titleService = it.titleService,
-                color = it.color,
-                viewModel = viewModel,
-                onEvent = {
-                    viewModel.update { copy(showBottomSheet = true, serviceSelected = it) }
-                    scope.launch { sheetState.show() }
-                }
-            )
-        }
     }
-    BottomScreen(
-        state = state,
-        scope = scope,
-        viewModel = viewModel,
-        sheetState = sheetState,
-        content = {
-            state.serviceSelected?.content?.let { it() } ?: run {
-                Progress(true)
-            }
-        }
-    )
 }

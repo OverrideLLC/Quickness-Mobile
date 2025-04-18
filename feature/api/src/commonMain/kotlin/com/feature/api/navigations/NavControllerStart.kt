@@ -16,7 +16,6 @@ import androidx.navigation.compose.rememberNavController
 import com.feature.api.NavigationViewModel
 import com.feature.home.screen.HomeScreen
 import com.feature.login.screen.LoginScreen
-import com.feature.register.screen.RegisterScreen
 import com.feature.start.screen.StartScreen
 import com.quickness.shared.utils.routes.RoutesHome
 import com.quickness.shared.utils.routes.RoutesStart
@@ -46,8 +45,7 @@ fun NavControllerStart(
                 composable(RoutesStart.Start.route) {
                     StartScreen(
                         navController = navController,
-                        contentAuth = { LoginScreen(navController) },
-                        contentRegister = { RegisterScreen(navController) }
+                        contentAuth = { LoginScreen(navController) }
                     )
                 }
                 composable(RoutesStart.Home.route) {

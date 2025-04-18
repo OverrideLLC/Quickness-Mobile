@@ -300,7 +300,8 @@ private fun BottomAppBarIcon(
         content = {
             IconButton(
                 onClick = onClick,
-                colors = IconButtonDefaults.iconButtonColors(),
+                colors = IconButtonDefaults.iconButtonColors(
+                ),
                 content = {
                     Icon(
                         painter = painterResource(viewModel.getDrawable(iconResSelected.name)),

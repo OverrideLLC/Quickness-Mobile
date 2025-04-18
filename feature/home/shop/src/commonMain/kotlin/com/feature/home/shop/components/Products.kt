@@ -39,6 +39,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,6 +48,7 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Products(
     containerColor: Color,
@@ -93,7 +95,7 @@ fun Products(
                     onClick()
                     rotation.animateTo(
                         targetValue = 360f,
-                        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+                        animationSpec = tween(durationMillis = 600, easing = FastOutSlowInEasing)
                     )
                     rotation.snapTo(0f) // Resetea la rotación
                 }
@@ -110,7 +112,7 @@ fun Products(
                             brushEndColor
                         ),
                         start = Offset(animatedOffset.value, 0f),
-                        end = Offset(animatedOffset.value + 700f, 700f)
+                        end = Offset(animatedOffset.value + 500f, 500f)
                     )
                 ),
             contentAlignment = Alignment.Center
@@ -130,7 +132,7 @@ fun Products(
                     text = text,
                     fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
                     fontSize = 25.sp,
-                    color = Color.White,
+                    color = colorText,
                     textAlign = TextAlign.Center
                 )
             }
