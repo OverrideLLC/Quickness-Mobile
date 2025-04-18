@@ -33,9 +33,6 @@ fun BottomSheetContent(
             modifier = Modifier.fillMaxSize(),
             sheetMaxWidth = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding(),
             containerColor = colorBackground,
-            dragHandle = {
-                
-            },
             content = {
                 Column(
                     modifier = Modifier

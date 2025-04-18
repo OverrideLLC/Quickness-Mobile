@@ -34,17 +34,13 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.ktor.serialization.kotlinx.json)
-            }
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
 
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
 
         getByName("androidDeviceTest") {
@@ -54,10 +50,5 @@ kotlin {
                 implementation(libs.androidx.junit)
             }
         }
-
-        iosMain { dependencies {} }
-
-        androidMain { dependencies {} }
     }
-
 }

@@ -24,46 +24,20 @@ kotlin {
         }
     }
 
-//    val xcfName = "shared:resourcesKit"
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach { iosTarget ->
-//        iosTarget.binaries.framework {
-//            baseName = xcfName
-//            isStatic = true
-//        }
-//    }
-
     sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
 
-                //COMPOSE
-                api(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
-                implementation(libs.navigation.compose)
-            }
+            //COMPOSE
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            implementation(compose.ui)
+            implementation(libs.navigation.compose)
         }
 
-        commonTest { dependencies { implementation(libs.kotlin.test) } }
-
-        androidMain { dependencies {} }
-
-        getByName("androidDeviceTest") {
-            dependencies {
-                implementation(libs.androidx.runner)
-                implementation(libs.androidx.core)
-                implementation(libs.androidx.junit)
-            }
-        }
-
-        iosMain { dependencies {} }
+        commonTest.dependencies { implementation(libs.kotlin.test) }
     }
 }

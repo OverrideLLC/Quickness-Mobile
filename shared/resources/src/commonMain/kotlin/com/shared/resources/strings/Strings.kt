@@ -99,7 +99,8 @@ sealed class Strings {
         const val LIGHT_MODE = "Light Mode"
         const val SYSTEM_DEFAULT = "System Default"
         const val FONT_SIZE = "Font Size"
-        const val THEME = "Theme"
+        const val THEME = "Theme (BETA)"
+        const val THEME_DESCRIPTION = "Select the theme you prefer"
     }
 
     object LanguageSettings {

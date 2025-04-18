@@ -4,12 +4,15 @@ import com.feature.api.NavigationViewModel
 import com.feature.home.qr.screens.QrViewModel
 import com.feature.home.screen.HomeViewModel
 import com.feature.home.service.screen.ServiceViewModel
+import com.feature.home.service.services.lyra.LyraViewModel
 import com.feature.home.settings.screen.SettingsViewModel
 import com.feature.home.settings.screens_settings.settings_account.AccountSettingsViewModel
+import com.feature.home.settings.screens_settings.settings_display.DisplaySettingsViewModel
 import com.feature.home.settings.screens_settings.settings_privacy.PrivacySettingsViewModel
 import com.feature.home.settings.screens_settings.settings_qr.QrSettingsViewModel
 import com.feature.home.shop.screen.ShopViewModel
 import com.feature.login.screen.LoginViewModel
+import com.feature.register.screen.RegisterViewModel
 import com.feature.start.screen.StartViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
@@ -21,6 +24,7 @@ val viewModelModulesStart: Module
         viewModelOf(::LoginViewModel)
         viewModelOf(::HomeViewModel)
         viewModelOf(::NavigationViewModel)
+        viewModelOf(::RegisterViewModel)
     }
 
 val viewModelModulesHome: Module
@@ -36,4 +40,10 @@ val viewModelModulesSettings: Module
         viewModelOf(::AccountSettingsViewModel)
         viewModelOf(::PrivacySettingsViewModel)
         viewModelOf(::QrSettingsViewModel)
+        viewModelOf(::DisplaySettingsViewModel)
+    }
+
+val viewModelModulesService: Module
+    get() = module {
+        viewModelOf(::LyraViewModel)
     }

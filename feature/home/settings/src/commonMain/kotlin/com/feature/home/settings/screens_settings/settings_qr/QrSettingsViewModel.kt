@@ -11,7 +11,11 @@ import com.quickness.shared.utils.qr_options.RoundedQrOptions
 import com.shared.resources.interfaces.Resources
 import com.shared.resources.interfaces.ResourcesProvider
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -19,10 +23,20 @@ class QrSettingsViewModel(
     private val dataStoreRepository: DataStoreRepository,
     private val resources: Resources
 ) : ViewModel(), ResourcesProvider {
+
     private val _state = MutableStateFlow(QrSettingsState())
     val state = _state.asStateFlow()
 
-    init {
+    private val _loading = MutableStateFlow(false)
+    val loading: StateFlow<Boolean> = _loading.asStateFlow()
+        .onStart { loadData() }
+        .stateIn(
+            scope = viewModelScope,
+            started = WhileSubscribed(stopTimeoutMillis = 5_000),
+            initialValue = false
+        )
+
+    private fun loadData() {
         viewModelScope.launch {
             val format = dataStoreRepository.getString(
                 key = QrOptionsKeys.FORMAT_KEY,
@@ -43,6 +57,7 @@ class QrSettingsViewModel(
                     rounded = rounded,
                 )
             }
+            _loading.value = true
         }
     }
 
