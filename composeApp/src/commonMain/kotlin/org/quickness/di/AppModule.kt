@@ -2,7 +2,6 @@ package org.quickness.di
 
 import com.data.impl.di.*
 import com.feature.api.di.viewModelModulesHome
-import com.feature.api.di.viewModelModulesService
 import com.feature.api.di.viewModelModulesSettings
 import com.feature.api.di.viewModelModulesStart
 import com.network.impl.di.*
@@ -10,11 +9,9 @@ import com.shared.resources.interfaces.Resources
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
-import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import org.quickness.AppViewModel
 import org.quickness.resources.ResourcesImpl
 
 /**
@@ -24,7 +21,6 @@ import org.quickness.resources.ResourcesImpl
  */
 val appModule: Module = module {
     singleOf(::ResourcesImpl).bind(Resources::class)
-    viewModelOf(::AppViewModel)
 }
 
 /**
@@ -66,7 +62,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration? = null) {
             viewModelModulesStart,
             viewModelModulesHome,
             viewModelModulesSettings,
-            viewModelModulesService
         )
     }
 }

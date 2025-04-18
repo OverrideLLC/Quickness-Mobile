@@ -1,7 +1,5 @@
 package com.example.api.repository
 
-import kotlinx.coroutines.flow.Flow
-
 interface DataStoreRepository {
     suspend fun saveString(data: Map<String, String>)
     suspend fun getString(key: String, defaultValue: String): String?
@@ -10,7 +8,7 @@ interface DataStoreRepository {
     suspend fun saveLong(data: Map<String, Long>)
     suspend fun getLong(key: String, defaultValue: Long): Long?
     suspend fun saveBoolean(data: Map<String, Boolean>)
-    suspend fun getBoolean(key: String, defaultValue: Boolean): Flow<Boolean>?
+    suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean?
     suspend fun saveFloat(data: Map<String, Float>)
     suspend fun getFloat(key: String, defaultValue: Float): Float?
     suspend fun saveDouble(data: Map<String, Double>)

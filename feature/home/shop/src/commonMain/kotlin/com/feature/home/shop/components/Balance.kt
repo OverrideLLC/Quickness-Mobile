@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
@@ -28,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
@@ -36,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import com.feature.home.shop.screen.ShopViewModel
 import com.shared.resources.drawable.ResourceNameKey
 import com.shared.resources.strings.Strings
-import com.shared.ui.components.animations.BackgroundAnimated
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -75,6 +72,7 @@ fun Balance(credits: String, viewModel: ShopViewModel) {
             .graphicsLayer(
                 rotationX = rotationX.value,
                 rotationY = rotationY.value,
+                shadowElevation = 8.dp.value,
                 cameraDistance = 12f * density,
             )
     ) {
@@ -82,9 +80,11 @@ fun Balance(credits: String, viewModel: ShopViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    brush = BackgroundAnimated(
-                        colorPrimary = colorScheme.onPrimary,
-                        colorSecondary = colorScheme.background
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            colorScheme.primary,
+                            colorScheme.background,
+                        )
                     )
                 )
         ) {
@@ -105,10 +105,9 @@ fun Balance(credits: String, viewModel: ShopViewModel) {
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.CenterEnd
                 ) {
-                    Icon(
+                    Image(
                         painter = painterResource(viewModel.getDrawable(ResourceNameKey.LOGO_SWIFTID_CENTRADO.name)),
                         modifier = Modifier.size(150.dp),
-                        tint = colorScheme.tertiary,
                         contentDescription = "Logo Override"
                     )
                 }

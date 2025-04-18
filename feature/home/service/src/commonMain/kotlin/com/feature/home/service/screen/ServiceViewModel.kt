@@ -1,31 +1,21 @@
 package com.feature.home.service.screen
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import coil3.ImageLoader
-import coil3.PlatformContext
-import coil3.request.CachePolicy
-import coil3.request.ImageRequest
-import com.feature.home.service.states.ServiceState
-import com.shared.resources.interfaces.Resources
-import com.shared.resources.interfaces.ResourcesProvider
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.DrawableResource
 
-class ServiceViewModel(
-    private val resources: Resources
-) : ViewModel(), ResourcesProvider {
+class ServiceViewModel : ViewModel() {
+    data class ServiceState(
+        val service: String = ""
+    )
+
     private val _state = MutableStateFlow(ServiceState())
     val state = _state.asStateFlow()
 
-    fun update(update: ServiceState.() -> ServiceState) {
-        _state.value = update(_state.value)
+    fun update(service: String) {
+        _state.value = _state.value.copy(service = service)
     }
 
     suspend fun checkPermissions(
@@ -40,9 +30,5 @@ class ServiceViewModel(
                 println("Permission denied")
             }
         }
-    }
-
-    override fun getDrawable(name: String): DrawableResource {
-        return resources.getDrawable(name)
     }
 }

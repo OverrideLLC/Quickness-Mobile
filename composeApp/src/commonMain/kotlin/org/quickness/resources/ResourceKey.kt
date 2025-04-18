@@ -52,6 +52,5 @@ enum class ResourceKey(
     VISIBILITY_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24(Res.drawable.visibility_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
     VISIBILITY_OFF_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24(Res.drawable.visibility_off_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24),
     WARNING_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24(Res.drawable.warning_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24),
-    LOGO_SWIFTID_CENTRADO(Res.drawable.logo_swiftid_centrado),
-    LOGO_GAIA_SB(Res.drawable.Logo_Gaia_SB)
+    LOGO_SWIFTID_CENTRADO(Res.drawable.logo_swiftid_centrado)
 }
