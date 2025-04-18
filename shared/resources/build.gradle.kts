@@ -24,18 +24,6 @@ kotlin {
         }
     }
 
-    val xcfName = "shared:resourcesKit"
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = xcfName
-            isStatic = true
-        }
-    }
-
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlin.stdlib)
@@ -51,13 +39,5 @@ kotlin {
         }
 
         commonTest.dependencies { implementation(libs.kotlin.test) }
-
-        getByName("androidDeviceTest") {
-            dependencies {
-                implementation(libs.androidx.runner)
-                implementation(libs.androidx.core)
-                implementation(libs.androidx.junit)
-            }
-        }
     }
 }
