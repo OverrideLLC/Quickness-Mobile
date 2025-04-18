@@ -1,17 +1,30 @@
 package com.shared.ui.components.styles
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
@@ -34,9 +47,9 @@ fun Modifier.shimmerEffect(): Modifier = composed {
     background(
         brush = Brush.linearGradient(
             colors = listOf(
-                Color(0xFF000000),
-                Color(0xFF0f0f0f),
-                Color(0xFF000000),
+                MaterialTheme.colorScheme.background,
+                MaterialTheme.colorScheme.primary,
+                MaterialTheme.colorScheme.background,
             ),
             start = Offset(startOffset, 0f),
             end = Offset(startOffset + size.width.toFloat() * 2, size.height.toFloat())
@@ -52,4 +65,42 @@ fun ShimmerItem(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier.shimmerEffect().size(250.dp))
+}
+
+@Composable
+fun ShimmerListVertical(
+    modifier: Modifier,
+    count: Int = 3,
+    isLoading: Boolean,
+    content: @Composable () -> Unit
+) {
+    Crossfade(
+        targetState = isLoading,
+        modifier = Modifier.fillMaxSize(),
+        label = "ShimmerListVertical"
+    ){
+        if (!it) {
+            LazyColumn(
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier.fillMaxSize().padding(10.dp).padding()
+            ) {
+                items(count) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .shimmerEffect()
+                            .height(60.dp)
+                            .border(
+                                shape = RoundedCornerShape(10.dp),
+                                border = BorderStroke(1.dp, Color.Transparent)
+                            )
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+            }
+        } else {
+            content()
+        }
+    }
 }

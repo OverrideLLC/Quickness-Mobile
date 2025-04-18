@@ -145,7 +145,7 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
                         blurQr(
                             isBlurred = state.isBlurred,
                             viewModel = viewModel,
-                            color = if (state.isExpanded) Color.White else Color(state.colors[0]),
+                            color = if (state.isExpanded) colorScheme.tertiary else Color(state.colors[0]),
                             onActive = {
                                 viewModel.update { copy(isBlurred = true) }
                             },

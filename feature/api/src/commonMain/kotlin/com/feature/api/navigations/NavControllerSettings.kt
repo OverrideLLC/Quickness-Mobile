@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.feature.home.settings.screen.SettingsScreen
+import com.feature.home.settings.screens_settings.settings_display.DisplaySettingsScreen
 import com.feature.home.settings.screens_settings.settings_qr.QrScreenSettings
 import com.quickness.shared.utils.routes.RoutesSettings
 import com.shared.ui.components.animations.ContentSwitchAnimation
@@ -34,7 +35,9 @@ fun NavControllerSettings(
         composable(RoutesSettings.AccountSettings.route) {}
         composable(RoutesSettings.PrivacySettings.route) {}
         composable(RoutesSettings.NotificationSettings.route) {}
-        composable(RoutesSettings.DisplaySettings.route) {}
+        composable(RoutesSettings.DisplaySettings.route) {
+            DisplaySettingsScreen(paddingValues = paddingValues)
+        }
         composable(RoutesSettings.LanguageSettings.route) {}
         composable(RoutesSettings.SecuritySettings.route) {}
         composable(RoutesSettings.AppSettings.route) {}

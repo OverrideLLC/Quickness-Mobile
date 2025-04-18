@@ -51,15 +51,6 @@ kotlin {
 
             //KTOR
             implementation(libs.ktor.client.okhttp)
-
-            //GOOGLE MAPS
-            implementation(libs.maps.compose)
-            implementation(libs.play.services.location)
-            implementation(libs.play.services.maps)
-
-            //UTILS ANDROID
-            implementation(libs.androidx.biometric)
-            implementation(libs.androidx.work.runtime.ktx)
         }
 
         commonMain.dependencies {
@@ -68,6 +59,7 @@ kotlin {
             implementation(projects.shared)
             implementation(projects.network.impl)
             implementation(projects.data.impl)
+            implementation(projects.data.api)
 
             //COMPOSE
             implementation(compose.components.resources)
@@ -77,6 +69,8 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.ui)
             implementation(libs.navigation.compose)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.viewmodel)
 
             //KOIN
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -84,22 +78,11 @@ kotlin {
             implementation(libs.koin.compose.viewModel)
             implementation(libs.koin.core)
 
-            //UTILS
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.krypto)
-            implementation(libs.qr.kit)
-            implementation(libs.androidx.lifecycle.runtime.compose)
-            implementation(libs.androidx.lifecycle.viewmodel)
-
             //KTOR
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.loggin)
             implementation(libs.ktor.serialization.kotlinx.json)
-
-            //MOKO
-            api(libs.moko.permissions)
-            api(libs.moko.permissions.compose)
         }
 
         iosMain.dependencies {

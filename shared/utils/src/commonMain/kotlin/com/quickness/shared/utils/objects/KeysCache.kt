@@ -9,4 +9,5 @@ object KeysCache {
     const val MIN_REQUEST_HOUR = 0
     const val JWT_KEY = "jwt_key"
     const val JWT_FIREBASE_KEY = "firebase_jwt_key"
+    const val IS_DARK_THEME_KEY = "is_dark_theme_key"
 }
