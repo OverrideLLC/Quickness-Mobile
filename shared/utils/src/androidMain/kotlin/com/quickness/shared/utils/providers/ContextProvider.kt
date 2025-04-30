@@ -7,7 +7,7 @@ object ContextProvider {
     private var applicationContext: Context? = null
     private var fragmentActivity: FragmentActivity? = null
 
-    fun initialize(context: Context, FragmentActivity: FragmentActivity) {
+    fun initialize(context: Context, FragmentActivity: FragmentActivity?) {
         applicationContext = context
         fragmentActivity = FragmentActivity
     }

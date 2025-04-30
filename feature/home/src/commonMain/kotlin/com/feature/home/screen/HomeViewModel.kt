@@ -12,6 +12,9 @@ import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.PermissionsController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -27,7 +30,12 @@ class HomeViewModel(
     private val resources: Resources
 ) : ViewModel(), CheckPermissions {
 
-    init { getTokens() }
+    private val _homeData = MutableStateFlow(HomeData())
+    val homeData: StateFlow<HomeData> = _homeData.asStateFlow()
+
+    init {
+        getTokens()
+    }
 
     override suspend fun checkPermissions(
         permissions: Permission,
@@ -79,5 +87,9 @@ class HomeViewModel(
 
     fun getDrawable(drawableRes: String): DrawableResource {
         return resources.getDrawable(drawableRes)
+    }
+
+    fun openCamera() {
+        _homeData.value = _homeData.value.copy(openCamera = true)
     }
 }

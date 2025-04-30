@@ -4,10 +4,9 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
 }
-
 kotlin {
     androidLibrary {
-        namespace = "com.feature.api"
+        namespace = "com.override.home.cam"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -20,28 +19,29 @@ kotlin {
         }
     }
 
+
+    val xcfName = "feature:home:camKit"
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = xcfName
+            isStatic = true
+        }
+    }
+
     sourceSets {
         commonMain.dependencies {
-            //UTILS
             implementation(libs.kotlin.stdlib)
 
             //MODULES
-            //-----Features
-            implementation(projects.feature.start)
-            implementation(projects.feature.login)
-            implementation(projects.feature.register)
-            implementation(projects.feature.home)
-            implementation(projects.feature.home.settings)
-            implementation(projects.feature.home.qr)
-            implementation(projects.feature.home.service)
-            implementation(projects.feature.home.shop)
-            implementation(projects.feature.home.cam)
-            //-----Shared
             implementation(projects.shared)
-            //-----Network
             implementation(projects.network.api)
-            //-----Data
             implementation(projects.data.api)
+            implementation(projects.feature.biometric)
 
             //KOIN
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -57,10 +57,25 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.ui)
             implementation(libs.navigation.compose)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.viewmodel)
+
+            //UTILS
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.krypto)
+            implementation(libs.qr.kit)
+
+            //MOKO
+            implementation(libs.moko.permissions)
+            implementation(libs.moko.permissions.compose)
         }
 
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        commonTest.dependencies { implementation(libs.kotlin.test) }
+
+        androidMain.dependencies {
+            //UTILS ANDROID
+            implementation(libs.androidx.biometric)
+            implementation(libs.androidx.work.runtime.ktx)
         }
 
         getByName("androidDeviceTest") {

@@ -4,10 +4,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -18,6 +14,7 @@ import com.feature.home.screen.HomeScreen
 import com.feature.login.screen.LoginScreen
 import com.feature.register.screen.RegisterScreen
 import com.feature.start.screen.StartScreen
+import com.override.home.cam.CameraRoot
 import com.quickness.shared.utils.routes.RoutesHome
 import com.quickness.shared.utils.routes.RoutesStart
 import com.shared.ui.components.component.Progress
@@ -25,7 +22,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NavControllerStart(
-    navController: NavHostController,
+    navControllerStart: NavHostController,
     startDestination: String,
     viewModel: NavigationViewModel = koinViewModel()
 ) {
@@ -39,26 +36,29 @@ fun NavControllerStart(
             Progress(true)
         } else {
             NavHost(
-                navController = navController,
+                navController = navControllerStart,
                 modifier = Modifier.fillMaxSize(),
                 startDestination = if (session!!) RoutesStart.Home.route else startDestination,
             ) {
                 composable(RoutesStart.Start.route) {
                     StartScreen(
-                        navController = navController,
-                        contentAuth = { LoginScreen(navController) },
-                        contentRegister = { RegisterScreen(navController) }
+                        navController = navControllerStart,
+                        contentAuth = { LoginScreen(navControllerStart) },
+                        contentRegister = { RegisterScreen(navControllerStart) }
                     )
                 }
                 composable(RoutesStart.Home.route) {
                     val navController = rememberNavController()
-                    HomeScreen(navController = navController) {
+                    HomeScreen(navController = navController, navControllerStart = navControllerStart) {
                         NavControllerHome(
                             navController = navController,
                             startDestination = RoutesHome.Qr.route,
-                            paddingValues = it
+                            paddingValues = it,
                         )
                     }
+                }
+                composable(RoutesStart.Camera.route) {
+                    CameraRoot(navController = navControllerStart)
                 }
             }
         }
