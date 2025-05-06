@@ -20,7 +20,7 @@ kotlin {
         }
     }
 
-    val xcfName = "network:apiKit"
+    val xcfName = "NetworkApiKit"
 
     listOf(
         iosX64(),

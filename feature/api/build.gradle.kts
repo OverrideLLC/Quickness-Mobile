@@ -6,6 +6,16 @@ plugins {
 }
 
 kotlin {
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "FeatureApiKit"
+            isStatic = true
+        }
+    }
     androidLibrary {
         namespace = "com.feature.api"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -37,7 +47,9 @@ kotlin {
             implementation(projects.feature.home.shop)
             implementation(projects.feature.home.cam)
             //-----Shared
-            implementation(projects.shared)
+            implementation(projects.shared.ui)
+            implementation(projects.shared.utils)
+            implementation(projects.shared.resources)
             //-----Network
             implementation(projects.network.api)
             //-----Data

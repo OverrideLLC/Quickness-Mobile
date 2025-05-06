@@ -53,12 +53,12 @@ class HomeViewModel(
             val currentTime = Clock.System.now().toEpochMilliseconds()
             val lastRequestDate =
                 dataStoreRepository.getString(KeysCache.LAST_REQUEST_KEY, "")?.toLongOrNull()
-            val uuid = dataStoreRepository.getString(KeysCache.UUID, "")
+            val uid = dataStoreRepository.getString(KeysCache.UID, "")
                 ?: return@launch EmptyLogger().info("uuid not found")
 
             if (lastRequestDate == null || shouldRequestTokens(currentTime, lastRequestDate)) {
                 try {
-                    val tokensResponse = tokensRepository.getTokens(uuid)
+                    val tokensResponse = tokensRepository.getTokens(uid)
                     val sortedTokens = tokensResponse.tokens
                         .toList()
                         .sortedBy { it.first.toIntOrNull() ?: Int.MAX_VALUE }
