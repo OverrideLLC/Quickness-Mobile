@@ -9,6 +9,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class TokensRequest(
-    val JWT: String,
+    val uid: String,
     val root: String
 )
