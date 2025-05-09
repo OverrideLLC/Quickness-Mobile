@@ -1,5 +1,6 @@
 package com.network.impl.di
 
+import com.network.api.repository.ApolloRepository
 import com.network.api.repository.AuthRepository
 import com.network.api.repository.RegisterRepository
 import com.network.api.repository.TokensRepository
@@ -7,9 +8,11 @@ import com.network.api.service.AuthUserService
 import com.network.api.service.FirebaseAuth
 import com.network.api.service.RegisterService
 import com.network.api.service.TokensService
+import com.network.impl.repository.ApolloRepositoryImpl
 import com.network.impl.repository.AuthRepositoryImpl
 import com.network.impl.repository.RegisterRepositoryImpl
 import com.network.impl.repository.TokensRepositoryImpl
+import com.network.impl.service.ApolloServiceImpl
 import com.network.impl.service.AuthUserServiceImpl
 import com.network.impl.service.FirebaseAuthImpl
 import com.network.impl.service.RegisterServiceImpl
@@ -45,6 +48,7 @@ val repositoryNetworkModule = module {
     factoryOf(::AuthRepositoryImpl).bind(AuthRepository::class)
     factoryOf(::RegisterRepositoryImpl).bind(RegisterRepository::class)
     factoryOf(::TokensRepositoryImpl).bind(TokensRepository::class)
+    factoryOf(::ApolloRepositoryImpl).bind(ApolloRepository::class)
 }
 
 /**
@@ -58,6 +62,7 @@ val serviceModule = module {
     factoryOf(::RegisterServiceImpl).bind(RegisterService::class)
     factoryOf(::TokensServiceImpl).bind(TokensService::class)
     factoryOf(::AuthUserServiceImpl).bind(AuthUserService::class)
+    factoryOf(::ApolloServiceImpl).bind(ApolloRepository::class)
     singleOf(::createHttpClient)
 }
 
