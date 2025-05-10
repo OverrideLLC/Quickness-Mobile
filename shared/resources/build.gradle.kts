@@ -7,13 +7,13 @@ plugins {
 
 compose.resources {
     publicResClass = true
-    packageOfResClass = "com.shared.resources"
+    packageOfResClass = "org.override.quickness.shared.resources"
     generateResClass = auto
 }
 
 kotlin {
     androidLibrary {
-        namespace = "com.shared.resources"
+        namespace = "org.override.quickness.shared.resources"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 

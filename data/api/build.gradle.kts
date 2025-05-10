@@ -18,7 +18,7 @@ kotlin {
         }
     }
     androidLibrary {
-        namespace = "com.example.api"
+        namespace = "org.override.quickness.data.api"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 

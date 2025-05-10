@@ -14,6 +14,12 @@ plugins {
     alias(libs.plugins.gradelBuildConfig)
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "org.override.quickness.generated.resources"
+    generateResClass = auto
+}
+
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -101,11 +107,11 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "org.quickness"
+    namespace = "org.override.quickness"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "org.quickness"
+        applicationId = "org.override.quickness"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -147,7 +153,7 @@ android {
 }
 
 buildConfig {
-    packageName("org.quickness")
+    packageName("org.override.quickness")
     val properties = Properties()
     properties.load(project.rootProject.file("local.properties").reader())
 
@@ -179,7 +185,7 @@ tasks.register("generateResourceEnum") {
 
         // Generar ResourceKey.kt
         val output = """
-            package org.quickness
+            package org.override.quickness
             import quickness.composeapp.generated.resources.Res
             import org.jetbrains.compose.resources.DrawableResource
             import quickness.composeapp.generated.resources.*
@@ -191,7 +197,7 @@ tasks.register("generateResourceEnum") {
             }
         """.trimIndent()
 
-        val outputFile = file("src/commonMain/kotlin/org/quickness/ResourceKey.kt")
+        val outputFile = file("src/commonMain/kotlin/org/override/quickness/ResourceKey.kt")
         outputFile.parentFile.mkdirs()
         outputFile.writeText(output)
     }
@@ -213,7 +219,7 @@ tasks.register("generateResourceNameEnum") {
 
         // Generar ResourceKey.kt
         val output = """
-            package org.quickness
+            package org.override.quickness
             import quickness.composeapp.generated.resources.Res
             import org.jetbrains.compose.resources.DrawableResource
             import quickness.composeapp.generated.resources.*
@@ -225,7 +231,7 @@ tasks.register("generateResourceNameEnum") {
             }
         """.trimIndent()
 
-        val outputFile = file("src/commonMain/kotlin/org/quickness/ResourceNameKey.kt")
+        val outputFile = file("src/commonMain/kotlin/org/override/quickness/ResourceNameKey.kt")
         outputFile.parentFile.mkdirs()
         outputFile.writeText(output)
     }

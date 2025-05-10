@@ -8,7 +8,7 @@ plugins {
 kotlin {
 
     androidLibrary {
-        namespace = "com.feature.start"
+        namespace = "org.override.quickness.feature.start"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 

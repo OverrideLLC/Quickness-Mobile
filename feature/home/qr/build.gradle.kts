@@ -6,7 +6,7 @@ plugins {
 }
 kotlin {
     androidLibrary {
-        namespace = "com.feature.home.qr"
+        namespace = "org.override.quickness.feature.home.qr"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
