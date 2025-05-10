@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.quickness.shared.utils.providers.ContextProvider
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class BiometricAuthImpl actual constructor() : BiometricAuth {
     @Composable
     actual override fun Authenticate(

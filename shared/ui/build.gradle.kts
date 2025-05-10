@@ -18,7 +18,7 @@ kotlin {
         }
     }
 
-    val xcfName = "shared:uiKit"
+    val xcfName = "SharedUiKit"
 
     listOf(
         iosX64(),

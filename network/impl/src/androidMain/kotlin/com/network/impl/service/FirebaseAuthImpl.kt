@@ -36,6 +36,7 @@ actual class FirebaseAuthImpl : FirebaseAuth {
                 val jwt = tokenResult.token
 
                 return if (jwt != null) {
+                    Log.v("FirebaseService", "Token de usuario generado: $jwt")
                     AuthResponse(status = "Success", uid = user.uid, jwt = jwt)
                 } else {
                     AuthResponse(status = "Failure", message = "No se pudo generar el token.")

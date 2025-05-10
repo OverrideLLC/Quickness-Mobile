@@ -20,7 +20,7 @@ kotlin {
         }
     }
 
-    val xcfName = "feature:home:serviceKit"
+    val xcfName = "FeatureHomeServiceKit"
 
     listOf(
         iosX64(),
@@ -38,7 +38,9 @@ kotlin {
             implementation(libs.kotlin.stdlib)
 
             //MODULES
-            implementation(projects.shared)
+            implementation(projects.shared.ui)
+            implementation(projects.shared.utils)
+            implementation(projects.shared.resources)
             implementation(projects.network.api)
             implementation(projects.data.api)
 

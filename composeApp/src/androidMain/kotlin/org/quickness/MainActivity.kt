@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.Color
@@ -21,14 +22,13 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setupSplashScreen()
         super.onCreate(savedInstanceState)
-        ContextProvider.initialize(activity = this, context = this.applicationContext)
         com.quickness.shared.utils.providers.ContextProvider.initialize(
             FragmentActivity = this,
             context = this.applicationContext
         )
         setContent {
             val systemUiController = rememberSystemUiController()
-            WindowCompat.setDecorFitsSystemWindows(window, false)
+            WindowCompat.setDecorFitsSystemWindows(window, true)
             systemUiController.setStatusBarColor(
                 color = Color.Transparent,
                 darkIcons = false

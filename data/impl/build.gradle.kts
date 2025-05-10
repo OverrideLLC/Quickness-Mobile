@@ -19,7 +19,7 @@ kotlin {
         }
     }
 
-    val xcfName = "data:implKit"
+    val xcfName = "DataImplKit"
 
     listOf(
         iosX64(),
@@ -36,6 +36,7 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.kotlin.stdlib)
             implementation(libs.kotlinx.datetime)
+
             //MODULES
             implementation(projects.shared.utils)
             implementation(projects.data.api)

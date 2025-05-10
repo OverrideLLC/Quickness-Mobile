@@ -90,6 +90,7 @@ class LoginViewModel(
                     buildMap {
                         put(KeysCache.JWT_KEY, jwtResult.data.getValue("jwt").jsonPrimitive.content)
                         put(KeysCache.JWT_FIREBASE_KEY, loginResult.jwt ?: "")
+                        put(KeysCache.UID, loginResult.uid ?: "")
                     }
                 )
                 onSuccess()

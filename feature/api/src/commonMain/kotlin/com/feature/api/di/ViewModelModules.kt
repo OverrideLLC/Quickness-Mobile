@@ -14,6 +14,7 @@ import com.feature.home.shop.screen.ShopViewModel
 import com.feature.login.screen.LoginViewModel
 import com.feature.register.screen.RegisterViewModel
 import com.feature.start.screen.StartViewModel
+import com.override.home.cam.CameraViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -25,6 +26,7 @@ val viewModelModulesStart: Module
         viewModelOf(::HomeViewModel)
         viewModelOf(::NavigationViewModel)
         viewModelOf(::RegisterViewModel)
+        viewModelOf(::CameraViewModel)
     }
 
 val viewModelModulesHome: Module

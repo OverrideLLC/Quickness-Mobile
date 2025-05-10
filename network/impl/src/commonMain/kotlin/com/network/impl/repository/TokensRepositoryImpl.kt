@@ -16,13 +16,13 @@ class TokensRepositoryImpl(
     /**
      * Obtiene los tokens de un usuario específico utilizando el servicio de tokens.
      *
-     * @param JWT Identificador único del usuario.
+     * @param uid Identificador único del usuario.
      * @return [com.network.api.response.TokensResponse] que contiene el estado y los tokens obtenidos.
      */
-    override suspend fun getTokens(JWT: String): TokensResponse {
+    override suspend fun getTokens(uid: String): TokensResponse {
         // Llamada al servicio de tokens para obtener los tokens del usuario
         return try {
-            tokensService.getTokens(JWT).also {
+            tokensService.getTokens(uid).also {
                 println(it.tokens)
             }
         } catch (e: Exception) {
