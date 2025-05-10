@@ -37,7 +37,9 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
 
             //MODULES
-            implementation(projects.shared)
+            implementation(projects.shared.ui)
+            implementation(projects.shared.utils)
+            implementation(projects.shared.resources)
             implementation(projects.network.api)
             implementation(projects.data.api)
 

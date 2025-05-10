@@ -64,10 +64,11 @@ class CameraViewModel(
         update { copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
+                println("token: $token")
                 apolloRepository.login(
                     ApolloRequestQr(
                         uid = state.value.uid ?: "",
-                        token = token ?: ""
+                        token = _state.value.valueScanned ?: ""
                     )
                 )
             }.onSuccess { apiResponse ->
@@ -75,8 +76,10 @@ class CameraViewModel(
                     200 -> _state.update { it.copy(loginApollo = true) }
                     400 -> _state.update { it.copy(loginApollo = false) }
                 }
+                println("apiResponse: $apiResponse")
             }.onFailure {
                 _state.update { it.copy(loginApollo = false) }
+                println("Error: ${it.message}")
             }
         }.invokeOnCompletion {
             update { copy(isLoading = false) }

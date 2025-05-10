@@ -8,9 +8,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.feature.home.qr.screens.QrScreen
 import com.feature.home.service.screen.ServiceScreen
 import com.feature.home.shop.screen.ShopScreen
+import com.quickness.shared.utils.deeplinks.DeepLinksHome
+import com.quickness.shared.utils.deeplinks.DeepLinksStart
 import com.quickness.shared.utils.routes.RoutesHome
 import com.quickness.shared.utils.routes.RoutesSettings
 import com.shared.ui.components.animations.ContentSwitchAnimation
@@ -28,16 +31,28 @@ fun NavControllerHome(
         enterTransition = { ContentSwitchAnimation.enterTransition },
         exitTransition = { ContentSwitchAnimation.exitTransition },
     ) {
-        composable(RoutesHome.Shop.route) {
+        composable(
+            route = RoutesHome.Shop.route,
+            deepLinks = listOf(navDeepLink { uriPattern = DeepLinksHome.Shop.deepLink })
+        ) {
             ShopScreen(paddingValues)
         }
-        composable(RoutesHome.Service.route) {
+        composable(
+            route = RoutesHome.Service.route,
+            deepLinks = listOf(navDeepLink { uriPattern = DeepLinksHome.Service.deepLink })
+        ) {
             ServiceScreen(paddingValues)
         }
-        composable(RoutesHome.Qr.route) {
+        composable(
+            route = RoutesHome.Qr.route,
+            deepLinks = listOf(navDeepLink { uriPattern = DeepLinksHome.Qr.deepLink })
+        ) {
             QrScreen(paddingValues)
         }
-        composable(RoutesHome.Settings.route) {
+        composable(
+            route = RoutesHome.Settings.route,
+            deepLinks = listOf(navDeepLink { uriPattern = DeepLinksHome.Settings.deepLink })
+        ) {
             NavControllerSettings(
                 navController = rememberNavController(),
                 startDestination = RoutesSettings.Settings.route,

@@ -4,6 +4,7 @@ import com.network.api.repository.ApolloRepository
 import com.network.api.repository.AuthRepository
 import com.network.api.repository.RegisterRepository
 import com.network.api.repository.TokensRepository
+import com.network.api.service.ApolloService
 import com.network.api.service.AuthUserService
 import com.network.api.service.FirebaseAuth
 import com.network.api.service.RegisterService
@@ -62,7 +63,7 @@ val serviceModule = module {
     factoryOf(::RegisterServiceImpl).bind(RegisterService::class)
     factoryOf(::TokensServiceImpl).bind(TokensService::class)
     factoryOf(::AuthUserServiceImpl).bind(AuthUserService::class)
-    factoryOf(::ApolloServiceImpl).bind(ApolloRepository::class)
+    factoryOf(::ApolloServiceImpl).bind(ApolloService::class)
     singleOf(::createHttpClient)
 }
 
