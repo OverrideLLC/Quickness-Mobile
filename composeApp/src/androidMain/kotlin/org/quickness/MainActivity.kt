@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnticipateInterpolator
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.graphics.Color
@@ -14,30 +13,30 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.quickness.shared.utils.providers.ContextProvider.initialize
 import org.koin.compose.KoinContext
-import org.quickness.utils.ContextProvider
 
 class MainActivity : FragmentActivity() {
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         setupSplashScreen()
         super.onCreate(savedInstanceState)
-        com.quickness.shared.utils.providers.ContextProvider.initialize(
+        initialize(
             FragmentActivity = this,
             context = this.applicationContext
         )
         setContent {
-            val systemUiController = rememberSystemUiController()
-            WindowCompat.setDecorFitsSystemWindows(window, true)
-            systemUiController.setStatusBarColor(
-                color = Color.Transparent,
-                darkIcons = false
-            )
-            systemUiController.setNavigationBarColor(
-                color = Color.Transparent,
-                darkIcons = false
-            )
             KoinContext {
+                val systemUiController = rememberSystemUiController()
+                WindowCompat.setDecorFitsSystemWindows(window, true)
+                systemUiController.setStatusBarColor(
+                    color = Color.Transparent,
+                    darkIcons = false
+                )
+                systemUiController.setNavigationBarColor(
+                    color = Color.Transparent,
+                    darkIcons = false
+                )
                 App()
             }
         }

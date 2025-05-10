@@ -3,6 +3,7 @@ package com.network.impl.service
 import com.network.api.repository.ApolloRepository
 import com.network.api.request.ApolloRequestQr
 import com.network.api.response.ApiResponse
+import com.network.api.service.ApolloService
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
@@ -14,7 +15,7 @@ import kotlinx.serialization.json.buildJsonObject
 
 class ApolloServiceImpl(
     private val httpClient: HttpClient
-) : ApolloRepository {
+) : ApolloService {
     override suspend fun login(apolloRequestQr: ApolloRequestQr): ApiResponse {
         return try {
             httpClient.post {

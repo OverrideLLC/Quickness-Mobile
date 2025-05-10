@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.konan.properties.Properties
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -93,6 +94,12 @@ kotlin {
     }
 }
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "org.quickness"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -109,9 +116,23 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    signingConfigs {
+        create("release") {
+            if (keystorePropertiesFile.exists() && keystoreProperties.containsKey("storeFile")) {
+                storeFile = rootProject.file(keystoreProperties["storeFile"].toString())
+                storePassword = keystoreProperties["storePassword"].toString()
+                keyAlias = keystoreProperties["keyAlias"].toString()
+                keyPassword = keystoreProperties["keyPassword"].toString()
+            } else {
+                println("ADVERTENCIA: keystore.properties o sus entradas requeridas no encontradas. La firma de release podría fallar o usar configuración por defecto.")
+            }
+        }
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -147,13 +168,14 @@ tasks.register("generateResourceEnum") {
         val resources = mutableListOf<Pair<String, String>>()
 
         // Leer drawables y crear pares (clave, recurso)
-        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()?.forEach { file ->
-            val name = file.nameWithoutExtension
-            val normalizedName = name.replace("-", "_")
-            resources.add(
-                normalizedName.uppercase() to normalizedName // Pair(key, res)
-            )
-        }
+        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()
+            ?.forEach { file ->
+                val name = file.nameWithoutExtension
+                val normalizedName = name.replace("-", "_")
+                resources.add(
+                    normalizedName.uppercase() to normalizedName // Pair(key, res)
+                )
+            }
 
         // Generar ResourceKey.kt
         val output = """
@@ -180,13 +202,14 @@ tasks.register("generateResourceNameEnum") {
         val resources = mutableListOf<Pair<String, String>>()
 
         // Leer drawables y crear pares (clave, recurso)
-        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()?.forEach { file ->
-            val name = file.nameWithoutExtension
-            val normalizedName = name.replace("-", "_")
-            resources.add(
-                normalizedName.uppercase() to normalizedName // Pair(key, res)
-            )
-        }
+        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()
+            ?.forEach { file ->
+                val name = file.nameWithoutExtension
+                val normalizedName = name.replace("-", "_")
+                resources.add(
+                    normalizedName.uppercase() to normalizedName // Pair(key, res)
+                )
+            }
 
         // Generar ResourceKey.kt
         val output = """

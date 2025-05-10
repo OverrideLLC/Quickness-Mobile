@@ -33,9 +33,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
 
-            //MODULES
-            implementation(projects.feature.home.qr)
-
             //COMPOSE
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -45,6 +42,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation("io.github.alexzhirkevich:qrose:1.0.1")
         }
     }
 }

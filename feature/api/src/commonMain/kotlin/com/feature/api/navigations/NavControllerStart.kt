@@ -9,12 +9,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.feature.api.NavigationViewModel
 import com.feature.home.screen.HomeScreen
 import com.feature.login.screen.LoginScreen
 import com.feature.register.screen.RegisterScreen
 import com.feature.start.screen.StartScreen
 import com.override.home.cam.CameraRoot
+import com.quickness.shared.utils.deeplinks.DeepLinksStart
 import com.quickness.shared.utils.routes.RoutesHome
 import com.quickness.shared.utils.routes.RoutesStart
 import com.shared.ui.components.component.Progress
@@ -40,16 +42,25 @@ fun NavControllerStart(
                 modifier = Modifier.fillMaxSize(),
                 startDestination = if (session!!) RoutesStart.Home.route else startDestination,
             ) {
-                composable(RoutesStart.Start.route) {
+                composable(
+                    route = RoutesStart.Start.route,
+                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Start.deepLink })
+                ) {
                     StartScreen(
                         navController = navControllerStart,
                         contentAuth = { LoginScreen(navControllerStart) },
                         contentRegister = { RegisterScreen(navControllerStart) }
                     )
                 }
-                composable(RoutesStart.Home.route) {
+                composable(
+                    route = RoutesStart.Home.route,
+                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Home.deepLink })
+                ) {
                     val navController = rememberNavController()
-                    HomeScreen(navController = navController, navControllerStart = navControllerStart) {
+                    HomeScreen(
+                        navController = navController,
+                        navControllerStart = navControllerStart
+                    ) {
                         NavControllerHome(
                             navController = navController,
                             startDestination = RoutesHome.Qr.route,
@@ -57,7 +68,10 @@ fun NavControllerStart(
                         )
                     }
                 }
-                composable(RoutesStart.Camera.route) {
+                composable(
+                    route = RoutesStart.Camera.route,
+                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Camera.deepLink })
+                ) {
                     CameraRoot(navController = navControllerStart)
                 }
             }
