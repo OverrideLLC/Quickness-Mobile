@@ -21,5 +21,5 @@ data class QrState(
     var isVisible: Boolean = false,
     var isExpanded: Boolean = false,
     var isBlurred: Boolean = true,
-    var showBiometric: Boolean = false
+    var showBiometric: Boolean = false,
 )

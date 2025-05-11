@@ -1,10 +1,9 @@
 package org.override.quickness.feature.home.qr.screens
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -24,6 +23,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -35,7 +36,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -43,15 +43,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 import org.override.quickness.feature.biometric.BiometricAuthImpl
 import org.override.quickness.feature.home.qr.states.QrState
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.override.quickness.shared.resources.strings.Strings
-import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.viewmodel.koinViewModel
 import org.override.quickness.shared.ui.animations.ContentSwitchAnimation.enterTransition
 import org.override.quickness.shared.ui.animations.ContentSwitchAnimation.exitTransition
 import org.override.quickness.shared.ui.styles.ShimmerItem
+import qrgenerator.qrkitpainter.QrKitLogo
+import qrgenerator.qrkitpainter.QrKitLogoPadding
 import qrgenerator.qrkitpainter.QrPainter
 
 @Composable
@@ -78,7 +80,7 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
         viewModel.updateQrCodeForCurrentInterval()
     }
 
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Transparent)
@@ -87,60 +89,61 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        item {
-            AnimatedVisibility(
-                visible = state.isVisible,
-                enter = enterTransition,
-                exit = exitTransition
+        AnimatedVisibility(
+            visible = state.isVisible,
+            enter = enterTransition,
+            exit = exitTransition
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(
+                        if (!state.isExpanded)
+                            Color(state.colors[1]).copy(0.5f)
+                        else
+                            Color.Transparent
+                    )
+                    .padding(16.dp)
+                    .wrapContentSize(),
+                contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(
-                            if (!state.isExpanded)
-                                Color(state.colors[1]).copy(0.5f)
-                            else
-                                Color.Transparent
-                        )
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.wrapContentSize().background(Color.Transparent)
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        modifier = Modifier.fillMaxWidth().background(Color.Transparent)
+                    Box(
+                        modifier = Modifier.widthIn(
+                            min = 400.dp,
+                            max = 500.dp
+                        ),
+                        contentAlignment = Alignment.Center
                     ) {
-                        // Header Animation
-                        AnimatedVisibility(
-                            visible = !state.isExpanded,
-                            enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
-                                    slideInVertically(initialOffsetY = { -it / 2 }),
-                            exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
-                                    slideOutVertically(targetOffsetY = { -it / 2 })
-                        ) {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    painter = painterResource(viewModel.getDrawable(ResourceNameKey.LOGO_SWIFTID_CENTRADO.name)),
-                                    contentDescription = "Logo",
-                                    tint = Color(state.colors[0]),
-                                    modifier = Modifier.size(100.dp)
-                                )
-                            }
-                        }
+                        Icon(
+                            painter = painterResource(viewModel.getDrawable(ResourceNameKey.LOGO_SWIFTID_CENTRADO.name)),
+                            contentDescription = "Logo",
+                            tint = if (!state.isExpanded) Color(state.colors[0]) else Color.Transparent,
+                            modifier = Modifier.size(100.dp)
+                        )
+                    }
 
-                        // QR Code with smooth animation
-                        TicketQRCode(
-                            isExpanded = state.isExpanded,
-                            isBlurred = state.isBlurred,
-                            qrCode = state.qrCode,
-                            colorBackground = Color(state.colors[1])
-                        ) {
-                            viewModel.update { copy(isExpanded = !isExpanded) }
-                        }
+                    // QR Code with smooth animation
+                    TicketQRCode(
+                        isExpanded = state.isExpanded,
+                        isBlurred = state.isBlurred,
+                        qrCode = state.qrCode,
+                        colorBackground = Color(state.colors[1])
+                    ) {
+                        viewModel.update { copy(isExpanded = !isExpanded) }
+                    }
 
+                    AnimatedVisibility(
+                        visible = !state.isExpanded,
+                        enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
+                                slideInVertically(initialOffsetY = { -it / 2 }),
+                        exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
+                                slideOutVertically(targetOffsetY = { -it / 2 })
+                    ) {
                         blurQr(
                             isBlurred = state.isBlurred,
                             viewModel = viewModel,
@@ -152,24 +155,21 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
                                 viewModel.update { copy(showBiometric = true) }
                             }
                         )
-
-                        AnimatedVisibility(
-                            visible = !state.isExpanded,
-                            enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
-                                    slideInVertically(initialOffsetY = { it / 2 }),
-                            exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
-                                    slideOutVertically(targetOffsetY = { it / 2 })
-                        ) {
-                            Spacer(modifier = Modifier.height(16.dp))
-                            ImportantInfoItem(color = Color(state.colors[0]), viewModel = viewModel)
-                        }
-                        Spacer(Modifier.padding(10.dp))
                     }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    ImportantInfoItem(
+                        color = if (!state.isExpanded) Color(state.colors[0]) else Color.Transparent,
+                        viewModel = viewModel
+                    )
+                    Spacer(Modifier.padding(10.dp))
                 }
             }
         }
     }
-    if (state.showBiometric)
+    if (state.showBiometric) {
+        print("showBiometric")
         BiometricAuthImpl().Authenticate(
             onSuccess = {
                 viewModel.update {
@@ -188,6 +188,7 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
                 }
             }
         )
+    }
 }
 
 
@@ -233,33 +234,35 @@ private fun TicketQRCode(
     colorBackground: Color,
     onClick: () -> Unit,
 ) {
-    val transition = updateTransition(targetState = isExpanded, label = "QR Code Transition")
-    val qrSize by transition.animateDp(
-        transitionSpec = { tween(durationMillis = 500) },
-        label = "QR Size Animation"
-    ) { expanded ->
-        if (expanded) 400.dp else 250.dp
-    }
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .clickable { onClick() }
-            .animateContentSize()
-            .background(colorBackground),
-        contentAlignment = Alignment.Center
-    ) {
-        qrCode?.also {
-            Image(
-                painter = qrCode,
-                contentDescription = "Código QR generado",
+    qrCode?.also {
+        AnimatedContent(
+            targetState = isExpanded,
+        ) {
+            Box(
                 modifier = Modifier
-                    .size(qrSize)
-                    .blur(if (isBlurred) 20.dp else 0.dp)
-                    .padding(5.dp)
-            )
-        } ?: run {
-            ShimmerItem()
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { onClick() }
+                    .animateContentSize()
+                    .background(colorBackground),
+                contentAlignment = Alignment.Center
+            ) {
+                if (isExpanded) {
+                    Image(
+                        painter = qrCode,
+                        contentDescription = "Código QR generado",
+                        modifier = Modifier.size(400.dp).blur(if (isBlurred) 20.dp else 0.dp)
+                    )
+                } else {
+                    Image(
+                        painter = qrCode,
+                        contentDescription = "Código QR generado",
+                        modifier = Modifier.size(250.dp).blur(if (isBlurred) 20.dp else 0.dp)
+                    )
+                }
+            }
         }
+    } ?: run {
+        ShimmerItem()
     }
 }
 
