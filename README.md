@@ -127,7 +127,7 @@ Pull Request.
 
 ## Licencia
 
-(Especifica tu licencia aquí, por ejemplo: MIT, Apache 2.0, etc.)
+[Licencia de Software Quickness - Solo para Desarrollo y Evaluación Interna](LICENCE.md)
 
 ---
 
