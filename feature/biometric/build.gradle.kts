@@ -7,12 +7,11 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.feature.biometric"
+        namespace = "org.override.quickness.feature.biometric"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
-        withHostTestBuilder {
-        }
+        withHostTestBuilder {}
 
         withDeviceTestBuilder {
             sourceSetTreeName = "test"
@@ -21,7 +20,7 @@ kotlin {
         }
     }
 
-    val xcfName = "feature:biometricKit"
+    val xcfName = "FeatureBiometricKit"
 
     listOf(
         iosX64(),
@@ -35,31 +34,29 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
 
-                //MODULES
-                implementation(projects.shared)
+            //MODULES
+            implementation(projects.shared.ui)
+            implementation(projects.shared.utils)
+            implementation(projects.shared.resources)
 
-                //COMPOSE
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
-                implementation(libs.navigation.compose)
-            }
+            //COMPOSE
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            implementation(compose.ui)
+            implementation(libs.navigation.compose)
         }
 
-        commonTest { dependencies { implementation(libs.kotlin.test) } }
+        commonTest.dependencies { implementation(libs.kotlin.test) }
 
-        androidMain {
-            dependencies {
-                //UTILS ANDROID
-                implementation(libs.androidx.biometric)
-            }
+        androidMain.dependencies {
+            //UTILS ANDROID
+            implementation(libs.androidx.biometric)
         }
 
         getByName("androidDeviceTest") {
@@ -69,7 +66,5 @@ kotlin {
                 implementation(libs.androidx.junit)
             }
         }
-
-        iosMain { dependencies {} }
     }
 }

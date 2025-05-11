@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.quickness.shared"
+        namespace = "org.override.quickness.shared"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -16,53 +16,36 @@ kotlin {
         }
     }
 
-//    val xcfName = "sharedKit"
-//
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach { iosTarget ->
-//        iosTarget.binaries.framework {
-//            baseName = xcfName
-//            isStatic = true
-//        }
-//    }
+    val xcfName = "sharedKit"
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = xcfName
+            isStatic = true
+        }
+    }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                //MODULES
-                api(projects.shared.utils)
-                api(projects.shared.resources)
-                api(projects.shared.ui)
+        commonMain.dependencies {
+            //MODULES
+            api(projects.shared.utils)
+            api(projects.shared.resources)
+            api(projects.shared.ui)
 
-                implementation(libs.kotlin.stdlib)
-            }
+            implementation(libs.kotlin.stdlib)
         }
 
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
-        }
-
-        androidMain {
-            dependencies {
-            }
-        }
+        commonTest.dependencies { implementation(libs.kotlin.test) }
 
         getByName("androidDeviceTest") {
             dependencies {
                 implementation(libs.androidx.runner)
                 implementation(libs.androidx.core)
                 implementation(libs.androidx.junit)
-            }
-        }
-
-        iosMain {
-            dependencies {
-
             }
         }
     }

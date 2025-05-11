@@ -6,7 +6,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.network.api"
+        namespace = "org.override.quickness.network.api"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -20,7 +20,7 @@ kotlin {
         }
     }
 
-    val xcfName = "network:apiKit"
+    val xcfName = "NetworkApiKit"
 
     listOf(
         iosX64(),
@@ -34,17 +34,13 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.ktor.serialization.kotlinx.json)
-            }
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
 
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
 
         getByName("androidDeviceTest") {
@@ -54,10 +50,5 @@ kotlin {
                 implementation(libs.androidx.junit)
             }
         }
-
-        iosMain { dependencies {} }
-
-        androidMain { dependencies {} }
     }
-
 }

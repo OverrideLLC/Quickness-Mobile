@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.data"
+        namespace = "org.override.quickness.data"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -36,32 +36,20 @@ kotlin {
             kotlin.srcDir("androidMain/kotlin")
         }
 
-        androidMain.dependencies {
-
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
         }
 
-        commonMain {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
 
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
-        }
 
         getByName("androidDeviceTest") {
             dependencies {
                 implementation(libs.androidx.runner)
                 implementation(libs.androidx.core)
                 implementation(libs.androidx.junit)
-            }
-        }
-
-        iosMain {
-            dependencies {
             }
         }
     }

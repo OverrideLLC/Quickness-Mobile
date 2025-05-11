@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.feature"
+        namespace = "org.override.quickness.feature"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -32,20 +32,8 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-            }
-        }
-
-        commonTest {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
-        }
-
-        androidMain {
-            dependencies {
-            }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
         }
 
         getByName("androidDeviceTest") {
@@ -53,11 +41,6 @@ kotlin {
                 implementation(libs.androidx.runner)
                 implementation(libs.androidx.core)
                 implementation(libs.androidx.junit)
-            }
-        }
-
-        iosMain {
-            dependencies {
             }
         }
     }

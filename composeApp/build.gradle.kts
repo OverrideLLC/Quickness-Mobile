@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.konan.properties.Properties
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -11,6 +12,12 @@ plugins {
     alias(libs.plugins.googleService)
     alias(libs.plugins.ksp)
     alias(libs.plugins.gradelBuildConfig)
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "org.override.quickness.generated.resources"
+    generateResClass = auto
 }
 
 kotlin {
@@ -51,23 +58,17 @@ kotlin {
 
             //KTOR
             implementation(libs.ktor.client.okhttp)
-
-            //GOOGLE MAPS
-            implementation(libs.maps.compose)
-            implementation(libs.play.services.location)
-            implementation(libs.play.services.maps)
-
-            //UTILS ANDROID
-            implementation(libs.androidx.biometric)
-            implementation(libs.androidx.work.runtime.ktx)
         }
 
         commonMain.dependencies {
             //MODULES
             implementation(projects.feature.api)
-            implementation(projects.shared)
+            implementation(projects.shared.ui)
+            implementation(projects.shared.utils)
+            implementation(projects.shared.resources)
             implementation(projects.network.impl)
             implementation(projects.data.impl)
+            implementation(projects.data.api)
 
             //COMPOSE
             implementation(compose.components.resources)
@@ -77,6 +78,8 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.ui)
             implementation(libs.navigation.compose)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.viewmodel)
 
             //KOIN
             implementation(project.dependencies.platform(libs.koin.bom))
@@ -84,22 +87,11 @@ kotlin {
             implementation(libs.koin.compose.viewModel)
             implementation(libs.koin.core)
 
-            //UTILS
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.krypto)
-            implementation(libs.qr.kit)
-            implementation(libs.androidx.lifecycle.runtime.compose)
-            implementation(libs.androidx.lifecycle.viewmodel)
-
             //KTOR
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.loggin)
             implementation(libs.ktor.serialization.kotlinx.json)
-
-            //MOKO
-            api(libs.moko.permissions)
-            api(libs.moko.permissions.compose)
         }
 
         iosMain.dependencies {
@@ -108,12 +100,18 @@ kotlin {
     }
 }
 
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
 android {
-    namespace = "org.quickness"
+    namespace = "org.override.quickness"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "org.quickness"
+        applicationId = "org.override.quickness"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -124,9 +122,23 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    signingConfigs {
+        create("release") {
+            if (keystorePropertiesFile.exists() && keystoreProperties.containsKey("storeFile")) {
+                storeFile = rootProject.file(keystoreProperties["storeFile"].toString())
+                storePassword = keystoreProperties["storePassword"].toString()
+                keyAlias = keystoreProperties["keyAlias"].toString()
+                keyPassword = keystoreProperties["keyPassword"].toString()
+            } else {
+                println("ADVERTENCIA: keystore.properties o sus entradas requeridas no encontradas. La firma de release podría fallar o usar configuración por defecto.")
+            }
+        }
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -141,7 +153,7 @@ android {
 }
 
 buildConfig {
-    packageName("org.quickness")
+    packageName("org.override.quickness")
     val properties = Properties()
     properties.load(project.rootProject.file("local.properties").reader())
 
@@ -162,17 +174,18 @@ tasks.register("generateResourceEnum") {
         val resources = mutableListOf<Pair<String, String>>()
 
         // Leer drawables y crear pares (clave, recurso)
-        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()?.forEach { file ->
-            val name = file.nameWithoutExtension
-            val normalizedName = name.replace("-", "_")
-            resources.add(
-                normalizedName.uppercase() to normalizedName // Pair(key, res)
-            )
-        }
+        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()
+            ?.forEach { file ->
+                val name = file.nameWithoutExtension
+                val normalizedName = name.replace("-", "_")
+                resources.add(
+                    normalizedName.uppercase() to normalizedName // Pair(key, res)
+                )
+            }
 
         // Generar ResourceKey.kt
         val output = """
-            package org.quickness
+            package org.override.quickness
             import quickness.composeapp.generated.resources.Res
             import org.jetbrains.compose.resources.DrawableResource
             import quickness.composeapp.generated.resources.*
@@ -184,7 +197,7 @@ tasks.register("generateResourceEnum") {
             }
         """.trimIndent()
 
-        val outputFile = file("src/commonMain/kotlin/org/quickness/ResourceKey.kt")
+        val outputFile = file("src/commonMain/kotlin/org/override/quickness/ResourceKey.kt")
         outputFile.parentFile.mkdirs()
         outputFile.writeText(output)
     }
@@ -195,17 +208,18 @@ tasks.register("generateResourceNameEnum") {
         val resources = mutableListOf<Pair<String, String>>()
 
         // Leer drawables y crear pares (clave, recurso)
-        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()?.forEach { file ->
-            val name = file.nameWithoutExtension
-            val normalizedName = name.replace("-", "_")
-            resources.add(
-                normalizedName.uppercase() to normalizedName // Pair(key, res)
-            )
-        }
+        file("src/commonMain/composeResources/drawable").takeIf { it.exists() }?.listFiles()
+            ?.forEach { file ->
+                val name = file.nameWithoutExtension
+                val normalizedName = name.replace("-", "_")
+                resources.add(
+                    normalizedName.uppercase() to normalizedName // Pair(key, res)
+                )
+            }
 
         // Generar ResourceKey.kt
         val output = """
-            package org.quickness
+            package org.override.quickness
             import quickness.composeapp.generated.resources.Res
             import org.jetbrains.compose.resources.DrawableResource
             import quickness.composeapp.generated.resources.*
@@ -217,7 +231,7 @@ tasks.register("generateResourceNameEnum") {
             }
         """.trimIndent()
 
-        val outputFile = file("src/commonMain/kotlin/org/quickness/ResourceNameKey.kt")
+        val outputFile = file("src/commonMain/kotlin/org/override/quickness/ResourceNameKey.kt")
         outputFile.parentFile.mkdirs()
         outputFile.writeText(output)
     }

@@ -7,7 +7,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.feature.login"
+        namespace = "org.override.quickness.feature.login"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -32,36 +32,36 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.ktor.serialization.kotlinx.json)
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
+            implementation(libs.ktor.serialization.kotlinx.json)
 
-                //MODULES
-                implementation(projects.shared)
-                implementation(projects.network.api)
-                implementation(projects.data.api)
+            //MODULES
+            implementation(projects.shared.ui)
+            implementation(projects.shared.utils)
+            implementation(projects.shared.resources)
+            implementation(projects.network.api)
+            implementation(projects.data.api)
 
-                //KOIN
-                implementation(project.dependencies.platform(libs.koin.bom))
-                implementation(libs.koin.compose)
-                implementation(libs.koin.compose.viewModel)
-                implementation(libs.koin.core)
+            //KOIN
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewModel)
+            implementation(libs.koin.core)
 
-                //COMPOSE
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
-                implementation(libs.navigation.compose)
-            }
+            //COMPOSE
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            implementation(compose.ui)
+            implementation(libs.navigation.compose)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.viewmodel)
         }
 
-        commonTest { dependencies { implementation(libs.kotlin.test) } }
-
-        androidMain { dependencies {} }
+        commonTest.dependencies { implementation(libs.kotlin.test) }
 
         getByName("androidDeviceTest") {
             dependencies {
@@ -70,7 +70,5 @@ kotlin {
                 implementation(libs.androidx.junit)
             }
         }
-
-        iosMain { dependencies {} }
     }
 }

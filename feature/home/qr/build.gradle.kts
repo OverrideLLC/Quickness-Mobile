@@ -6,7 +6,7 @@ plugins {
 }
 kotlin {
     androidLibrary {
-        namespace = "com.feature.home.qr"
+        namespace = "org.override.quickness.feature.home.qr"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -19,7 +19,7 @@ kotlin {
         }
     }
 
-    val xcfName = "feature:home:qrKit"
+    val xcfName = "FeatureHomeQrKit"
 
     listOf(
         iosX64(),
@@ -33,52 +33,50 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kotlin.stdlib)
+        commonMain.dependencies {
+            implementation(libs.kotlin.stdlib)
 
-                //MODULES
-                implementation(projects.shared)
-                implementation(projects.network.api)
-                implementation(projects.data.api)
-                implementation(projects.feature.biometric)
+            //MODULES
+            implementation(projects.shared.ui)
+            implementation(projects.shared.utils)
+            implementation(projects.shared.resources)
+            implementation(projects.network.api)
+            implementation(projects.data.api)
+            implementation(projects.feature.biometric)
 
-                //KOIN
-                implementation(project.dependencies.platform(libs.koin.bom))
-                implementation(libs.koin.compose)
-                implementation(libs.koin.compose.viewModel)
-                implementation(libs.koin.core)
+            //KOIN
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewModel)
+            implementation(libs.koin.core)
 
-                //COMPOSE
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
-                implementation(libs.navigation.compose)
+            //COMPOSE
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.runtime)
+            implementation(compose.ui)
+            implementation(libs.navigation.compose)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.viewmodel)
 
-                //UTILS
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.krypto)
-                implementation(libs.qr.kit)
-                implementation(libs.androidx.lifecycle.runtime.compose)
-                implementation(libs.androidx.lifecycle.viewmodel)
+            //UTILS
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.krypto)
+            implementation(libs.qr.kit)
 
-                //MOKO
-                implementation(libs.moko.permissions)
-                implementation(libs.moko.permissions.compose)
-            }
+            //MOKO
+            implementation(libs.moko.permissions)
+            implementation(libs.moko.permissions.compose)
         }
 
-        commonTest { dependencies { implementation(libs.kotlin.test) } }
+        commonTest.dependencies { implementation(libs.kotlin.test) }
 
-        androidMain {
-            dependencies {
-                //UTILS ANDROID
-                implementation(libs.androidx.biometric)
-                implementation(libs.androidx.work.runtime.ktx)
-            }
+        androidMain.dependencies {
+            //UTILS ANDROID
+            implementation(libs.androidx.biometric)
+            implementation(libs.androidx.work.runtime.ktx)
         }
 
         getByName("androidDeviceTest") {
@@ -88,7 +86,5 @@ kotlin {
                 implementation(libs.androidx.junit)
             }
         }
-
-        iosMain { dependencies {} }
     }
 }
