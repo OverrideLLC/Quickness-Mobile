@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/utils/qr_options/RoundedQrOptions.kt
 package org.override.quickness.shared.utils.qr_options
-========
-package org.quickness.options.qr
->>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/options/qr/RoundedQrOptions.kt
 
 import qrgenerator.qrkitpainter.QrKitPixelShape
 import qrgenerator.qrkitpainter.createCircle

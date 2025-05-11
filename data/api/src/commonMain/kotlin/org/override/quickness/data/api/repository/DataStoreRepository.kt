@@ -1,10 +1,6 @@
-<<<<<<<< HEAD:data/api/src/commonMain/kotlin/org/override/quickness/data/api/repository/DataStoreRepository.kt
 package org.override.quickness.data.api.repository
 
 import kotlinx.coroutines.flow.Flow
-========
-package org.quickness.interfaces.repository
->>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/interfaces/repository/DataStoreRepository.kt
 
 interface DataStoreRepository {
     suspend fun saveString(data: Map<String, String>)

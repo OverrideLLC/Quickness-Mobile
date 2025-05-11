@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:network/api/src/commonMain/kotlin/org/override/quickness/network/api/repository/ClientRepository.kt
 package org.override.quickness.network.api.repository
-========
-package org.quickness.interfaces.repository
->>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/interfaces/repository/ClientRepository.kt
 
 /**
  * Repository interface for managing client-related operations.

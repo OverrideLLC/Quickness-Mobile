@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:network/api/src/commonMain/kotlin/org/override/quickness/network/api/response/AuthResponse.kt
 package org.override.quickness.network.api.response
-========
-package org.quickness.data.response
->>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/data/response/AuthResponse.kt
 
 /**
  * Representa el resultado de un proceso de autenticación.

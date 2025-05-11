@@ -1,14 +1,7 @@
-<<<<<<<< HEAD:network/impl/src/commonMain/kotlin/org/override/quickness/network/impl/repository/ClientRepositoryImpl.kt
 package org.override.quickness.network.impl.repository
 
 import org.override.quickness.network.api.repository.ClientRepository
 import org.override.quickness.network.api.service.ClientServices
-========
-package org.quickness.data.repository
-
-import org.quickness.data.service.ClientServices
-import org.quickness.interfaces.repository.ClientRepository
->>>>>>>> origin/master:data/impl/src/commonMain/kotlin/org/override/quickness/data/impl/repository/ClientRepositoryImpl.kt
 
 /**
  * An implementation of the `ClientRepository` interface.

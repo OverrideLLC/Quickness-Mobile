@@ -1,12 +1,6 @@
-<<<<<<<< HEAD:network/api/src/commonMain/kotlin/org/override/quickness/network/api/repository/TokensRepository.kt
 package org.override.quickness.network.api.repository
 
 import org.override.quickness.network.api.response.TokensResponse
-========
-package org.quickness.interfaces.repository
-
-import org.quickness.data.response.TokensResponse
->>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/interfaces/repository/TokensRepository.kt
 
 /**
  * Repository interface responsible for managing and accessing user authentication tokens.

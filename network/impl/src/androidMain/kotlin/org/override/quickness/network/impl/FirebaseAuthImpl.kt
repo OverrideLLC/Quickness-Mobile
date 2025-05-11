@@ -1,28 +1,13 @@
 package org.override.quickness.network.impl
 
-<<<<<<<< HEAD:network/impl/src/androidMain/kotlin/org/override/quickness/network/impl/FirebaseAuthImpl.kt
-========
-package org.quickness.data.service
-
-import android.app.Activity
-import android.content.Intent
->>>>>>>> origin/master:composeApp/src/androidMain/kotlin/org/quickness/data/service/FirebaseAuthImpl.kt
 import android.util.Log
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.tasks.await
-<<<<<<<< HEAD:network/impl/src/androidMain/kotlin/org/override/quickness/network/impl/FirebaseAuthImpl.kt
 import org.override.quickness.network.api.response.AuthResponse
 import org.override.quickness.network.api.response.ForgotPasswordResponse
 import org.override.quickness.network.api.service.FirebaseAuth
-========
-import org.quickness.MainActivity
-import org.quickness.data.response.AuthResponse
-import org.quickness.data.response.ForgotPasswordResponse
-import org.quickness.interfaces.plataform.FirebaseAuth
-import org.quickness.utils.ContextProvider
->>>>>>>> origin/master:composeApp/src/androidMain/kotlin/org/quickness/data/service/FirebaseAuthImpl.kt
 
 actual class FirebaseAuthImpl : FirebaseAuth {
     private val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()

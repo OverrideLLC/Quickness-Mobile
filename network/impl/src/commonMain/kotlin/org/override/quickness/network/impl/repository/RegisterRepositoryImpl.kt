@@ -1,16 +1,8 @@
-<<<<<<<< HEAD:network/impl/src/commonMain/kotlin/org/override/quickness/network/impl/repository/RegisterRepositoryImpl.kt
 package org.override.quickness.network.impl.repository
 
 import org.override.quickness.network.api.repository.RegisterRepository
 import org.override.quickness.network.api.response.ApiResponse
 import org.override.quickness.network.api.service.RegisterService
-========
-package org.quickness.data.repository
-
-import org.quickness.data.response.ApiResponse
-import org.quickness.data.service.RegisterService
-import org.quickness.interfaces.repository.RegisterRepository
->>>>>>>> origin/master:data/impl/src/commonMain/kotlin/org/override/quickness/data/impl/repository/RegisterRepositoryImpl.kt
 
 /**
  * Implementation of the `RegisterRepository` interface.
