@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:network/impl/src/commonMain/kotlin/org/override/quickness/network/impl/service/ClientServicesImpl.kt
 package org.override.quickness.network.impl.service
+========
+package org.quickness.data.service
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/data/service/ClientServices.kt
 
 import org.override.quickness.network.api.service.ClientServices
 import io.ktor.client.HttpClient

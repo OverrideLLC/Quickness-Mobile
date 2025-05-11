@@ -1,7 +1,15 @@
+<<<<<<<< HEAD:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/utils/objects/ValidatesData.kt
 package org.override.quickness.shared.utils.objects
 
 import org.override.quickness.shared.utils.enums.MexicanState
 import org.override.quickness.shared.utils.enums.RestrictedWords
+========
+package org.quickness.utils.`object`
+
+import org.quickness.utils.enums.MexicanState
+import org.quickness.utils.enums.RestrictedWords
+import org.quickness.utils.`object`.Extensions.isVowel
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/utils/object/ValidatesData.kt
 
 object ValidatesData {
     private fun isNotInappropriate(name: String): Boolean {

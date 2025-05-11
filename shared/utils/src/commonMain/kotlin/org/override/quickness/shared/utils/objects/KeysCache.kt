@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/utils/objects/KeysCache.kt
 package org.override.quickness.shared.utils.objects
+========
+package org.quickness.utils.`object`
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/utils/object/KeysCache.kt
 
 object KeysCache {
     const val MY_PREFS = "MyPrefs"

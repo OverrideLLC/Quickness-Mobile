@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:network/impl/src/commonMain/kotlin/org/override/quickness/network/impl/service/RegisterServiceImpl.kt
 package org.override.quickness.network.impl.service
+========
+package org.quickness.data.service
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/data/service/RegisterService.kt
 
 import org.override.quickness.network.api.request.RegisterRequest
 import org.override.quickness.network.api.response.ApiResponse
@@ -13,6 +17,12 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.serialization.json.buildJsonObject
+<<<<<<<< HEAD:network/impl/src/commonMain/kotlin/org/override/quickness/network/impl/service/RegisterServiceImpl.kt
+========
+import org.quickness.data.response.ApiResponse
+import org.quickness.data.request.RegisterRequest
+import org.quickness.utils.`object`.ApiLinks
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/data/service/RegisterService.kt
 
 class RegisterServiceImpl(private val httpClient: HttpClient) : RegisterService {
 
@@ -45,7 +55,11 @@ class RegisterServiceImpl(private val httpClient: HttpClient) : RegisterService 
 
             // Realizar la solicitud HTTP
             httpClient.post {
+<<<<<<<< HEAD:network/impl/src/commonMain/kotlin/org/override/quickness/network/impl/service/RegisterServiceImpl.kt
                 url("https://user-mobile.quickness.cloud/register")
+========
+                url(ApiLinks.REGISTER_API_LINK)
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/data/service/RegisterService.kt
                 contentType(ContentType.Application.Json)
                 setBody(request)
             }.body<ApiResponse>()

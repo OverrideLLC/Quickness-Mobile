@@ -1,7 +1,16 @@
+<<<<<<<< HEAD:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/utils/qr_options/ColorQrOptions.kt
 package org.override.quickness.shared.utils.qr_options
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+========
+package org.quickness.options.qr
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import org.quickness.options.qr.ColorQrOptions.entries
+
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/options/qr/ColorQrOptions.kt
 
 enum class ColorQrOptions(val option: String, val colors: List<Int>) {
     Blue(

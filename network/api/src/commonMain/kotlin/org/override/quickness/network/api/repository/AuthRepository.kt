@@ -1,7 +1,14 @@
+<<<<<<<< HEAD:network/api/src/commonMain/kotlin/org/override/quickness/network/api/repository/AuthRepository.kt
 package org.override.quickness.network.api.repository
 
 import org.override.quickness.network.api.response.ApiResponse
 import org.override.quickness.network.api.response.AuthResponse
+========
+package org.quickness.interfaces.repository
+
+import org.quickness.data.response.ApiResponse
+import org.quickness.data.response.AuthResponse
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/interfaces/repository/AuthRepository.kt
 
 /**
  * Repository interface for authentication-related operations.

@@ -1,6 +1,12 @@
+<<<<<<<< HEAD:network/api/src/commonMain/kotlin/org/override/quickness/network/api/repository/RegisterRepository.kt
 package org.override.quickness.network.api.repository
 
 import org.override.quickness.network.api.response.ApiResponse
+========
+package org.quickness.interfaces.repository
+
+import org.quickness.data.response.ApiResponse
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/interfaces/repository/RegisterRepository.kt
 
 /**
  * Repository interface for user registration operations.

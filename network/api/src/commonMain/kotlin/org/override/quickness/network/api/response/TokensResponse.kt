@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:network/api/src/commonMain/kotlin/org/override/quickness/network/api/response/TokensResponse.kt
 package org.override.quickness.network.api.response
+========
+package org.quickness.data.response
+>>>>>>>> origin/master:shared/utils/src/commonMain/kotlin/org/override/quickness/shared/data/response/TokensResponse.kt
 
 import kotlinx.serialization.Serializable
 
