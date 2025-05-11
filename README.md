@@ -1,147 +1,136 @@
+# Quickness - Sistema de Acceso Centralizado
 
-# **Quickness 0.1.2 Alpha**
+**Un proyecto de Override**
 
-## **Instalación de la Aplicación Móvil de Quickness**
+## Resumen
 
-Este documento detalla los pasos necesarios para configurar, desarrollar y ejecutar la aplicación móvil de **Quickness** en tu entorno de desarrollo local. La aplicación está construida utilizando **Kotlin Multiplataforma** y **Jetpack Compose Multiplataforma** para una experiencia moderna y eficiente.
+Quickness es un sistema innovador diseñado para modernizar y centralizar la gestión de todo tipo de
+accesos. Ofrece una solución segura, eficiente y fácil de usar para una amplia gama de aplicaciones,
+incluyendo edificios corporativos, eventos masivos, gimnasios, zonas residenciales,
+estacionamientos, servicios exclusivos y transporte público. Quickness unifica el control de acceso
+bajo una misma plataforma, transformando la gestión de accesos en una experiencia más confiable,
+segura, inteligente y ágil.
 
----
+El sistema se centra en la **sencillez, rapidez, seguridad, eficiencia, capacidad offline,
+inteligencia artificial y versatilidad**.
 
-## **Requisitos Previos**
+## Características Principales
 
-Antes de comenzar, asegúrate de tener lo siguiente instalado en tu máquina:
+* **Gestión Centralizada de Accesos:** Unifica el control para múltiples tipos de recintos y
+  servicios.
+* **Códigos QR Dinámicos y Seguros:** Utiliza códigos QR dinámicos impulsados por la tecnología
+  avanzada de Ares con encriptación $STA^3K$ para una autenticación y acceso sin contacto seguros.
+* **Operación Mayoritariamente Offline:** Tanto los dispositivos físicos como el software están
+  diseñados para operar sin conexión constante a internet, con una opción de sincronización y
+  actualizaciones diarias para reforzar la seguridad y funcionalidad.
+* **Aplicación Móvil Intuitiva (Impulsada por IA "EVA"):**
+    * Gestión de credenciales de acceso.
+    * Generación de códigos QR seguros.
+    * Vinculación opcional de métodos de pago.
+    * Integración con diversos servicios para potenciar funcionalidades.
+* **Validación Robusta en Puntos de Acceso:** Un sistema embebido permite la validación rápida y
+  fiable de los códigos QR en los accesos físicos.
+* **Análisis Avanzado de Datos (con IA "EVA"):**
+    * **Quickness Analytics:** Para empresas con gran flujo de datos que necesitan control detallado
+      y personalizado.
+    * **Quickness Dynamics:** Para pequeñas y medianas empresas, ofreciendo análisis general y
+      adaptable.
+* **Integraciones con Otros Servicios:**
+    * Capacidad de integrarse con servicios externos para funcionalidades específicas.
+    * Ejemplo: Integración con **Lyra** (aplicación de nutrición por IA) para combinar control de
+      acceso y seguimiento nutricional.
+* **Autenticación Biométrica:** Soporte para una capa adicional de seguridad mediante autenticación
+  biométrica en la app móvil.
+* **Configuraciones Detalladas:** Amplias opciones de personalización para el usuario dentro de la
+  aplicación (cuenta, pantalla, notificaciones, idioma, privacidad, seguridad QR).
+* **Funcionalidad de Tienda/Saldo:** Características que sugieren la posibilidad de gestionar
+  productos o un saldo dentro de la app (módulo `shop`).
+* **Módulo de Servicio/Salud:** Potencial para seguimiento de actividades o servicios relacionados
+  con el bienestar (módulo `service` con componentes como `CircleProgressCalories` y la integración
+  `Lyra`).
 
-1. **Android Studio** (versión Canary o superior).  
-   Descárgalo desde [Android Studio](https://developer.android.com/studio).
-2. **Java Development Kit (JDK)** 17.  
-   Descárgalo desde [OpenJDK](https://jdk.java.net/).
-3. **Kotlin Compiler** (preinstalado con Android Studio).
-4. **Plugin Multiplataforma** 
-5. **Git** instalado en tu máquina.  
-   Descárgalo desde [Git](https://git-scm.com/).
-6. Acceso al repositorio de **Quickness** en GitHub.
+## Plataformas Soportadas
 
----
+* **Android**
+* **iOS**
+* **WebAssembly (Wasm)**
 
-## **Pasos de Instalación**
+## Stack Tecnológico
 
-### **1. Clonar el Repositorio**
-Clona el repositorio en tu máquina local usando el siguiente comando:
+* **Core:** Kotlin Multiplatform (KMP) para compartir lógica de negocio y más entre plataformas.
+* **Interfaz de Usuario (UI):** Jetpack Compose Multiplatform para una UI declarativa y compartida.
+* **Networking:**
+    * **Ktor:** Para llamadas a APIs REST.
+    * **Apollo Kotlin:** Para interacción con APIs GraphQL.
+    * **Firebase Authentication:** Para la gestión de usuarios (login, registro).
+* **Almacenamiento Local:**
+    * **Room:** Para la base de datos relacional local (ej. tokens, datos de Lyra).
+    * **Jetpack DataStore:** Para persistencia de configuraciones y preferencias de usuario.
+* **Inyección de Dependencias:** Koin.
+* **Navegación:** Solución de navegación para Compose Multiplatform (probablemente Voyager o una
+  implementación custom basada en NavController).
+* **Inteligencia Artificial:** Referenciada como "EVA AI" en la descripción del proyecto.
+* **Tecnología QR:** "Ares" con encriptación "$STA^3K$".
 
-```bash
-git clone https://github.com/override_llc/quickness_mobile.git
-```
+## Estructura del Proyecto
 
----
+El proyecto sigue una arquitectura modular bien definida para promover la escalabilidad y
+mantenibilidad:
 
-### **2. Abrir el Proyecto en Android Studio**
-1. Abre **Android Studio**.
-2. En la pantalla de inicio, selecciona **"Open"**.
-3. Navega hasta la carpeta del proyecto que clonaste y selecciona el directorio `mobile/`.
-4. Android Studio comenzará a sincronizar el proyecto automáticamente. Si no lo hace, ve al menú **File > Sync Project with Gradle Files**.
+* `composeApp/`: Módulo principal que contiene la UI compartida y los puntos de entrada para cada
+  plataforma (Android, iOS, Wasm).
+* `feature/`: Contiene módulos individuales para cada funcionalidad de la aplicación.
+    * `api/`: Define las interfaces de navegación y ViewModels compartidos.
+    * `start/`: Flujo inicial de la aplicación (bienvenida, selección de login/registro).
+    * `login/`: Funcionalidad de inicio de sesión.
+    * `register/`: Funcionalidad de registro de usuarios.
+    * `biometric/`: Gestión de autenticación biométrica.
+    * `home/`: Pantalla principal y contenedor de sub-funcionalidades.
+        * `ai/`: Interfaz para funcionalidades de IA "EVA".
+        * `cam/`: Funcionalidad de cámara.
+        * `qr/`: Generación y visualización de códigos QR.
+        * `service/`: Servicios (posiblemente salud/bienestar, incluye integración Lyra).
+        * `settings/`: Configuración detallada de la aplicación.
+        * `shop/`: Funcionalidad de tienda o gestión de saldo.
+* `data/`: Lógica de acceso a datos.
+    * `api/`: Define las interfaces de repositorios y entidades de base de datos (Room) y DataStore.
+    * `impl/`: Implementaciones concretas de los repositorios y gestión de la base de datos.
+* `network/`: Lógica de comunicación en red.
+    * `api/`: Define las interfaces para los servicios de red (Ktor, Apollo, Firebase Auth) y los
+      DTOs.
+    * `impl/`: Implementaciones concretas de los servicios de red.
+* `shared/`: Módulos de utilidad compartidos.
+    * `resources/`: Gestión de recursos compartidos (strings, drawables mediante
+      `composeResources`).
+    * `ui/`: Componentes de UI comunes y reutilizables.
+    * `utils/`: Clases de utilidad, constantes, extensiones.
+* `iosApp/`: Módulo específico para la aplicación iOS (wrapper y código nativo si es necesario).
+* `wasm/`: Módulo para la compilación a WebAssembly.
 
----
+## Cómo Empezar (Placeholder)
 
-### **3. Configurar el Entorno**
-1. **Verificar SDK y Plugins**  
-   Asegúrate de que el proyecto tiene configurados los siguientes elementos:
-  - **SDK mínimo**: 31 (Android 10.0 Quince Tart).
-  - **SDK objetivo**: 35 (Android 15).
-  - **Gradle Plugin**: 8.8.0 o superior.
+1. Clona el repositorio: `git clone https://github.com/OverrideLLC/Quickness-Mobile.git`
+2. Abre el proyecto en Android Studio (Meerkat).
+3. Asegúrate de tener el JDK adecuado configurado (consultar `gradle.properties` o la documentación
+   de KMP).
+4. Para ejecutar en iOS, necesitarás un Mac con Xcode instalado.
+5. Sincroniza el proyecto con Gradle.
+6. Selecciona el target deseado (androidApp, iosApp) y ejecuta.
 
-2. **Instalar Dependencias**  
-   Abre el terminal de Android Studio y ejecuta:
+*(Instrucciones más detalladas sobre la configuración del entorno y build podrían añadirse aquí).*
 
-   ```bash
-   ./gradlew clean build
-   ```
+## Contribuciones
 
-   Esto instalará todas las dependencias necesarias y verificará que el proyecto esté configurado correctamente.
+Las contribuciones son bienvenidas. Por favor, abre un issue para discutir cambios importantes o
+reportar bugs. Si deseas contribuir con código, considera hacer un fork del repositorio y enviar un
+Pull Request.
 
----
+## Licencia
 
-### **4. Ejecutar la Aplicación**
-1. **Configurar un Emulador o Dispositivo Físico**
-  - Emulador: Crea un dispositivo virtual desde el **AVD Manager** en Android Studio. Selecciona una imagen de Android 13 o superior.
-  - Dispositivo físico: Habilita la **depuración USB** en tu teléfono y conéctalo a tu computadora.
-
-2. **Iniciar la Aplicación**
-  - Desde Android Studio, selecciona el dispositivo en el que deseas ejecutar la aplicación.
-  - Haz clic en el botón **Run** o presiona `Shift + F10`.
-
-La aplicación debería iniciarse en el emulador o dispositivo físico.
-
----
-
-## **Estructura del Proyecto**
-
-El directorio `mobile/` está organizado de la siguiente manera:
-
-- **`app/`**: Contiene el código fuente principal de la aplicación móvil.
-  - **`ui/`**: Componentes de interfaz de usuario creados con Compose.
-  - **`viewmodel/`**: Lógica de negocio implementada en ViewModels.
-  - **`data/`**: Repositorios y fuentes de datos (API, almacenamiento local, etc.).
-- **`shared/`**: Código compartido con otros módulos (Kotlin Multiplataforma).
-- **`build.gradle`**: Configuración específica del módulo móvil.
-
----
-
-## **Flujo de Desarrollo**
-
-### **1. Crear una Rama Nueva**
-Antes de comenzar a trabajar, crea una rama basada en el feature que implementarás:
-
-```bash
-git checkout -b feature/nombre-del-feature
-```
-
-### **2. Añadir Cambios y Realizar un Commit**
-Después de realizar cambios, ejecuta:
-
-```bash
-git add .
-git commit -m "Descripción de los cambios realizados"
-```
-
-### **3. Subir Cambios al Repositorio**
-Sube tu rama al repositorio remoto:
-
-```bash
-git push origin feature/nombre-del-feature
-```
-
-### **4. Crear un Pull Request**
-Abre un **Pull Request** en GitHub y espera la revisión antes de fusionar tu rama en `develop`.
-
----
-
-## **Control de Versiones**
-
-El esquema de versiones de la aplicación sigue el siguiente formato:
-
-```
-<major>.<minor>.<patch>-<estado>
-```
-
-- **`<major>`**: Cambios importantes o incompatibles hacia atrás.
-- **`<minor>`**: Nuevas funcionalidades compatibles con versiones anteriores.
-- **`<patch>`**: Corrección de errores o mejoras menores.
-- **`<estado>`**: Opcional, indica si es una versión `beta`, `alpha`, o estable.
-
-Ejemplo: `Quickness 1.0.0-beta`.
-
----
-
-## **Contribuir**
-
-Consulta la [guía de contribución](../docs/guia_de_contribucion.md) para seguir las mejores prácticas al colaborar en este proyecto.
+[Licencia de Software Quickness - Solo para Desarrollo y Evaluación Interna](LICENCE.md)
 
 ---
 
-## **Soporte**
-
-Si encuentras problemas durante la instalación o ejecución de la aplicación, no dudes en abrir un **Issue** en el repositorio o contactar al equipo técnico.
-
----
-
-Con esta guía, deberías estar listo para configurar y desarrollar la aplicación móvil de **Quickness**. ¡Gracias por contribuir!
+Este README intenta ser lo más completo posible. Puedes ajustarlo añadiendo o quitando secciones
+según lo veas necesario, como por ejemplo, una sección de "Screenshots", "Build Instructions" más
+detalladas, o "Contacto".
