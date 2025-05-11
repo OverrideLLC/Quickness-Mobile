@@ -1,0 +1,17 @@
+package org.override.quickness.resources
+
+import org.override.quickness.shared.resources.interfaces.Resources
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.StringResource
+import org.override.quickness.generated.resources.Res
+import org.override.quickness.generated.resources.override
+
+class ResourcesImpl : Resources {
+    override fun getDrawable(resource: String): DrawableResource {
+        return ResourceKey.valueOf(resource).drawable
+    }
+
+    override fun getString(resource: String): StringResource {
+        return Res.string.override
+    }
+}

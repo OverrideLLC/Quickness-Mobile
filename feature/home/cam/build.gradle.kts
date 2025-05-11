@@ -6,7 +6,7 @@ plugins {
 }
 kotlin {
     androidLibrary {
-        namespace = "com.override.home.cam"
+        namespace = "org.override.quickness.feature.home.cam"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 

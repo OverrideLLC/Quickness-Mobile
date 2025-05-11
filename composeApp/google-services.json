@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:322358291466:android:90abe34a07ce92925983f3",
         "android_client_info": {
-          "package_name": "org.quickness"
+          "package_name": "org.override.quickness"
         }
       },
       "oauth_client": [
@@ -35,7 +35,7 @@
               "client_id": "322358291466-8f72f4aqd3cqcomnqhchpj8br5k3hje1.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.quickness"
+                "bundle_id": "org.override.quickness"
               }
             }
           ]

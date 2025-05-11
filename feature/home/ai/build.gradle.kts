@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.feature.home.ai"
+        namespace = "org.override.quickness.feature.home.ai"
         compileSdk = 35
         minSdk = 24
 
