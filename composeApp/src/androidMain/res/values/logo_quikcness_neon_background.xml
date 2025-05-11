@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="logo_quikcness_neon_background">#FFFFFF</color>
+    <color name="app_white">#FFFFFF</color>
 </resources>

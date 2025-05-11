@@ -5,4 +5,5 @@ sealed class RoutesHome(val route: String) {
     data object Shop : RoutesHome("Shop")
     data object Settings : RoutesHome("Settings")
     data object Service : RoutesHome("Service")
+    data object Camera : RoutesHome("Camera")
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -45,6 +46,9 @@ internal fun BottomBar(
     BottomAppBar(
         modifier = Modifier
             .fillMaxWidth()
+            .height(
+                height = 60.dp
+            )
             .background(
                 color = colorScheme.background,
                 shape = RoundedCornerShape(40.dp)
@@ -65,6 +69,17 @@ internal fun BottomBar(
                                 ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
                             topName(RoutesHome.Shop.route)
                             navigationController.navigate(RoutesHome.Shop.route) { popUpTo(0) }
+                        }
+                    )
+                    BottomAppBarIcon(
+                        iconResSelected = ResourceNameKey.PHOTO_CAMERA_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48,
+                        iconResNotSelected = ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24,
+                        iconSelected = selected,
+                        viewModel = viewModel,
+                        onClick = {
+                            selected = ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24
+                            topName(RoutesHome.Camera.route)
+                            navigationController.navigate(RoutesHome.Camera.route) { popUpTo(0) }
                         }
                     )
                     BottomAppBarIcon(
@@ -123,7 +138,7 @@ private fun BottomAppBarIcon(
 
     LaunchedEffect(isSelected) {
         scale.animateTo(
-            targetValue = if (isSelected) 1.4f else 1.2f,
+            targetValue = if (isSelected) 1.4f else 1f,
             animationSpec = tween(
                 durationMillis = 300,
                 easing = FastOutSlowInEasing
@@ -145,7 +160,7 @@ private fun BottomAppBarIcon(
                     Icon(
                         painter = painterResource(viewModel.getDrawable(iconResSelected.name)),
                         contentDescription = null,
-                        modifier = Modifier.size(90.dp),
+                        modifier = Modifier.size(60.dp),
                         tint = if (isSelected) colorScheme.primary else colorScheme.tertiary
                     )
                 }

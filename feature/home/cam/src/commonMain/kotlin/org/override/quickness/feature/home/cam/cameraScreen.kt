@@ -56,38 +56,37 @@ fun CameraScreen(
     onAction: (CameraActions) -> Unit,
     navController: NavController,
 ) {
-    Scaffold(
-        containerColor = colorScheme.background,
-        topBar = {
-            TopBarCamera(
-                navController = navController
-            )
-        },
-        content = { padding ->
-            if (!state.isLoading){
-                QrScanner(
-                    modifier = Modifier.fillMaxSize(),
-                    flashlightOn = false,
-                    cameraLens = CameraLens.Back,
-                    openImagePicker = false,
-                    onCompletion = { value ->
-                        viewModel.update { copy(valueScanned = value) }
-                        onAction(CameraActions.OnCompleteScan)
-                    },
-                    imagePickerHandler = { },
-                    onFailure = { },
-                    overlayShape = OverlayShape.Square,
-                    overlayColor = colorScheme.primaryContainer.copy(0.5f),
-                    overlayBorderColor = colorScheme.primary,
-                    permissionDeniedView = {
-                        CameraNoPermissions()
-                    }
-                )
-            } else {
-                QrScannerLoadingScreen()
+    if (!state.isLoading){
+        QrScanner(
+            modifier = Modifier.fillMaxSize(),
+            flashlightOn = false,
+            cameraLens = CameraLens.Back,
+            openImagePicker = false,
+            onCompletion = { value ->
+                viewModel.update { copy(valueScanned = value) }
+                onAction(CameraActions.OnCompleteScan)
+            },
+            imagePickerHandler = { },
+            onFailure = { },
+            overlayShape = OverlayShape.Square,
+            overlayColor = Color.Transparent,
+            overlayBorderColor = colorScheme.primary,
+            permissionDeniedView = {
+                CameraNoPermissions()
             }
-        }
-    )
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center,
+            content = {
+
+            }
+        )
+    } else {
+        QrScannerLoadingScreen()
+    }
 }
 
 @Composable
@@ -100,31 +99,6 @@ fun CameraNoPermissions() {
                 text = "Camera permissions not granted",
                 color = Color.White,
                 fontSize = 30.sp,
-            )
-        }
-    )
-}
-
-@Composable
-internal fun TopBarCamera(
-    navController: NavController,
-    viewmodel: CameraViewModel = koinViewModel()
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth().background(colorScheme.onBackground),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        content = {
-            IconButton(
-                onClick = { navController.popBackStack() },
-                content = {
-                    Icon(
-                        painter = painterResource(viewmodel.getDrawable(ResourceNameKey.ARROW_BACK_IOS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
-                        contentDescription = "Back",
-                        tint = colorScheme.primary,
-                        modifier = Modifier
-                    )
-                }
             )
         }
     )

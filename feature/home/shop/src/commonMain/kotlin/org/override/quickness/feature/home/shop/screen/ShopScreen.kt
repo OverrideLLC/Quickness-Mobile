@@ -137,7 +137,7 @@ private fun ProductList(
         containerColor = colorScheme.primary,
         iconTint = Color.White,
         colorText = colorScheme.tertiary,
-        brushStartColor = Color(0xFF00FF00),
+        brushStartColor = Color(0xff83ff83),
         onClickAction = {
             scope.launch {
                 viewModel.update { copy(showBottomSheetShop = true) }

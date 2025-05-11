@@ -30,14 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import org.override.quickness.feature.home.componets.BottomBar
-import org.override.quickness.feature.home.componets.TopBar
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.override.quickness.feature.home.componets.BottomBar
+import org.override.quickness.feature.home.componets.TopBar
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.override.quickness.shared.ui.animations.BackgroundAnimated
 import org.override.quickness.shared.utils.routes.RoutesHome
@@ -48,9 +48,8 @@ fun HomeScreen(
     navController: NavHostController,
     navControllerStart: NavController,
     navHome: @Composable (paddingValues: PaddingValues) -> Unit
-) =
-    Screen(
-        homeViewModel = koinViewModel(),
+) = Screen(
+        viewModel = koinViewModel(),
         navController = navController,
         navHome = navHome,
         navControllerStart = navControllerStart
@@ -58,7 +57,7 @@ fun HomeScreen(
 
 @Composable
 private fun Screen(
-    homeViewModel: HomeViewModel,
+    viewModel: HomeViewModel,
     navController: NavHostController,
     navControllerStart: NavController,
     navHome: @Composable (paddingValues: PaddingValues) -> Unit
@@ -83,7 +82,7 @@ private fun Screen(
     }
 
     scope.launch {
-        homeViewModel.checkPermissions(
+        viewModel.checkPermissions(
             permissions = Permission.CAMERA,
             controller = controller
         )
@@ -93,8 +92,8 @@ private fun Screen(
         topBar = {
             TopBar(
                 title = topName,
-                viewModel = homeViewModel,
-                onEmergencyClick = {}
+                viewModel = viewModel,
+                onCameraClick = {}
             )
         },
         content = { padding ->
@@ -115,29 +114,11 @@ private fun Screen(
         bottomBar = {
             BottomBar(
                 navigationController = navController,
-                viewModel = homeViewModel,
+                viewModel = viewModel,
                 topName = { topName = it }
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                containerColor = colorScheme.primaryContainer,
-                contentColor = colorScheme.tertiary,
-                shape = shapes.small,
-                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
-                modifier = Modifier.size(70.dp),
-                onClick = { navControllerStart.navigate(RoutesStart.Camera.route) },
-                content = {
-                    Icon(
-                        painter = painterResource(homeViewModel.getDrawable(ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
-                        contentDescription = null,
-                        modifier = Modifier.size(30.dp)
-                    )
-                }
-            )
-        },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        floatingActionButtonPosition = FabPosition.End,
         modifier = Modifier.fillMaxSize(),
     )
 }

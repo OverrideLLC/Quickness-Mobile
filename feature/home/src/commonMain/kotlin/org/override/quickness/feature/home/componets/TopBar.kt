@@ -28,14 +28,14 @@ internal fun TopBar(
     showBackButton: Boolean = false,
     viewModel: HomeViewModel,
     onBackClick: () -> Unit = {},
-    onEmergencyClick: () -> Unit = {}
+    onCameraClick: () -> Unit = {}
 ) {
     TopAppBar(
         title = {
             Text(
                 text = title,
                 fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                fontSize = 50.sp,
+                fontSize = 40.sp,
                 textAlign = TextAlign.Start,
                 style = TextStyleBrush()
             )
@@ -51,19 +51,7 @@ internal fun TopBar(
                 }
             )
         },
-        actions = {
-            IconButton(
-                onClick = onEmergencyClick,
-                content = {
-                    Icon(
-                        painter = painterResource(viewModel.getDrawable(ResourceNameKey.WARNING_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24.name)),
-                        contentDescription = "Boton de enmergencia",
-                        tint = colorScheme.error,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            )
-        },
+        actions = {  },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
             titleContentColor = colorScheme.tertiary,

@@ -68,12 +68,6 @@ fun NavControllerStart(
                         )
                     }
                 }
-                composable(
-                    route = RoutesStart.Camera.route,
-                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Camera.deepLink })
-                ) {
-                    CameraRoot(navController = navControllerStart)
-                }
             }
         }
     }

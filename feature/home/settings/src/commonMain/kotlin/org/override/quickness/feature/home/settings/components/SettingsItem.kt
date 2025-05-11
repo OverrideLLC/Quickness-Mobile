@@ -46,7 +46,11 @@ fun SettingsItem(
                 shape = RoundedCornerShape(10.dp)
             )
             .clickable { navigator() }
-            .padding(15.dp),
+            .padding(15.dp)
+            .heightIn(
+                min = 40.dp,
+                max = 50.dp
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -81,7 +85,11 @@ fun SettingsItemSwitch(
                 shape = RoundedCornerShape(10.dp)
             )
             .clickable { isActive() }
-            .padding(15.dp),
+            .padding(15.dp)
+            .heightIn(
+                min = 40.dp,
+                max = 50.dp
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -143,7 +151,11 @@ fun DropdownSettings(
                 shape = RoundedCornerShape(10.dp)
             )
             .clickable { expanded = !expanded }
-            .padding(15.dp),
+            .padding(15.dp)
+            .heightIn(
+                min = 40.dp,
+                max = 50.dp
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -179,7 +191,7 @@ fun DropdownSettings(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 15.dp)
+                .padding(horizontal = 10.dp)
         ) {
             Column(
                 modifier = Modifier
