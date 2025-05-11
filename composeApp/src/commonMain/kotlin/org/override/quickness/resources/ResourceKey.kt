@@ -1,8 +1,7 @@
 package org.override.quickness.resources
 
 import org.jetbrains.compose.resources.DrawableResource
-import org.override.quickness.composeapp.generated.resources.*
-import org.override.quickness.Res
+import org.override.quickness.generated.resources.*
 
 enum class ResourceKey(
     val drawable: DrawableResource

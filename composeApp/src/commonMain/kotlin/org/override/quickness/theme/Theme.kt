@@ -9,10 +9,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import org.jetbrains.compose.resources.Font
-import quickness.composeapp.generated.resources.Poppins_Bold
-import quickness.composeapp.generated.resources.Poppins_Medium
-import quickness.composeapp.generated.resources.Poppins_Thin
-import quickness.composeapp.generated.resources.Res
+import org.override.quickness.generated.resources.Poppins_Bold
+import org.override.quickness.generated.resources.Poppins_Medium
+import org.override.quickness.generated.resources.Poppins_Thin
+import org.override.quickness.generated.resources.Res
 
 private val DarkColorScheme = darkColorScheme(
     primary = primary,

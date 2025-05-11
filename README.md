@@ -1,181 +1,136 @@
-# Quickness-Mobile
+# Quickness - Sistema de Acceso Centralizado
 
-Bienvenido al repositorio de Quickness-Mobile, una aplicación móvil multiplataforma (Android & iOS)
-desarrollada con Kotlin Multiplatform Mobile (KMM) y Compose Multiplatform.
+**Un proyecto de Override**
 
-## Descripción General
+## Resumen
 
-Quickness-Mobile tiene como objetivo ofrecer [**AÑADE AQUÍ UNA BREVE DESCRIPCIÓN DEL PROPÓSITO
-PRINCIPAL DE TU APP. Ejemplo: "una solución rápida y eficiente para gestionar tareas diarias" o "una
-plataforma para conectar usuarios con servicios locales"**]. La aplicación está diseñada con una
-arquitectura modular y moderna para facilitar la escalabilidad, el mantenimiento y la colaboración
-en el desarrollo.
+Quickness es un sistema innovador diseñado para modernizar y centralizar la gestión de todo tipo de
+accesos. Ofrece una solución segura, eficiente y fácil de usar para una amplia gama de aplicaciones,
+incluyendo edificios corporativos, eventos masivos, gimnasios, zonas residenciales,
+estacionamientos, servicios exclusivos y transporte público. Quickness unifica el control de acceso
+bajo una misma plataforma, transformando la gestión de accesos en una experiencia más confiable,
+segura, inteligente y ágil.
 
-## ✨ Características Principales (Inferidas)
+El sistema se centra en la **sencillez, rapidez, seguridad, eficiencia, capacidad offline,
+inteligencia artificial y versatilidad**.
 
-* **Autenticación de Usuarios:**
-    * Registro de nuevas cuentas.
-    * Inicio de sesión con credenciales.
-    * Opción de "Olvidé mi contraseña".
-    * Inicio de sesión mediante autenticación biométrica.
-* **Funcionalidad de Códigos QR:**
-    * Generación y visualización de códigos QR.
-    * Escaneo de códigos QR (probable).
-    * Configuración personalizada de códigos QR.
-* **Tienda / Productos (Shop):**
-    * Visualización de productos o servicios.
-    * Gestión de saldo o monedero virtual.
-* **Servicios:**
-    * Acceso a diferentes servicios ofrecidos por la aplicación.
-* **Configuración Detallada:**
-    * **Cuenta:** Gestión de la información del usuario.
-    * **Privacidad:** Control sobre las opciones de privacidad.
-    * **Seguridad:** Ajustes de seguridad de la cuenta.
-    * **Aplicación:** Configuraciones generales de la app.
-    * **Notificaciones:** Preferencias de notificación.
-    * **Visualización:** Opciones de tema y apariencia.
-    * **Idioma:** Selección de idioma de la aplicación.
-    * **QR:** Configuraciones específicas para la funcionalidad QR.
-* **Integración con Mapas:**
-    * Funcionalidades que utilizan mapas (probable integración con Google Maps).
-* **Interfaz de Usuario Moderna:**
-    * Desarrollada con Compose Multiplatform para una experiencia de usuario consistente y fluida en
-      Android e iOS.
+## Características Principales
 
-## 🛠️ Tecnologías y Arquitectura
+* **Gestión Centralizada de Accesos:** Unifica el control para múltiples tipos de recintos y
+  servicios.
+* **Códigos QR Dinámicos y Seguros:** Utiliza códigos QR dinámicos impulsados por la tecnología
+  avanzada de Ares con encriptación $STA^3K$ para una autenticación y acceso sin contacto seguros.
+* **Operación Mayoritariamente Offline:** Tanto los dispositivos físicos como el software están
+  diseñados para operar sin conexión constante a internet, con una opción de sincronización y
+  actualizaciones diarias para reforzar la seguridad y funcionalidad.
+* **Aplicación Móvil Intuitiva (Impulsada por IA "EVA"):**
+    * Gestión de credenciales de acceso.
+    * Generación de códigos QR seguros.
+    * Vinculación opcional de métodos de pago.
+    * Integración con diversos servicios para potenciar funcionalidades.
+* **Validación Robusta en Puntos de Acceso:** Un sistema embebido permite la validación rápida y
+  fiable de los códigos QR en los accesos físicos.
+* **Análisis Avanzado de Datos (con IA "EVA"):**
+    * **Quickness Analytics:** Para empresas con gran flujo de datos que necesitan control detallado
+      y personalizado.
+    * **Quickness Dynamics:** Para pequeñas y medianas empresas, ofreciendo análisis general y
+      adaptable.
+* **Integraciones con Otros Servicios:**
+    * Capacidad de integrarse con servicios externos para funcionalidades específicas.
+    * Ejemplo: Integración con **Lyra** (aplicación de nutrición por IA) para combinar control de
+      acceso y seguimiento nutricional.
+* **Autenticación Biométrica:** Soporte para una capa adicional de seguridad mediante autenticación
+  biométrica en la app móvil.
+* **Configuraciones Detalladas:** Amplias opciones de personalización para el usuario dentro de la
+  aplicación (cuenta, pantalla, notificaciones, idioma, privacidad, seguridad QR).
+* **Funcionalidad de Tienda/Saldo:** Características que sugieren la posibilidad de gestionar
+  productos o un saldo dentro de la app (módulo `shop`).
+* **Módulo de Servicio/Salud:** Potencial para seguimiento de actividades o servicios relacionados
+  con el bienestar (módulo `service` con componentes como `CircleProgressCalories` y la integración
+  `Lyra`).
 
-* **Kotlin Multiplatform Mobile (KMM):** Para compartir la lógica de negocio, acceso a datos, red y
-  más entre Android e iOS.
-* **Compose Multiplatform:** Para construir la interfaz de usuario desde una base de código
-  compartida en Kotlin.
-* **Kotlin:** Lenguaje principal para la lógica compartida y la aplicación Android.
-* **Swift y SwiftUI (o UIKit con hosting de Compose):** Para la capa de presentación específica de
-  iOS y la integración con el código KMM.
-* **Arquitectura Modular:**
-    * **Por Capas:** Separación clara de responsabilidades (UI, Dominio/Lógica de Negocio, Datos,
-      Red).
-        * `composeApp`: Contiene la UI principal y la lógica de presentación compartida.
-        * `shared`: Módulos de utilidades, recursos y componentes de UI base compartidos.
-        * `network`: Encapsula toda la comunicación de red (definiciones en `network/api` e
-          implementaciones en `network/impl`).
-        * `data`: Maneja la persistencia de datos locales y la gestión de datos (definiciones en
-          `data/api` e implementaciones en `data/impl`).
-    * **Por Funcionalidad (`feature`):** Cada característica principal de la aplicación (login,
-      home, settings, etc.) está aislada en su propio módulo, promoviendo un bajo acoplamiento y
-      alta cohesión.
-* **Patrón de Diseño MVVM (Modelo-Vista-VistaModelo):** Utilizado para estructurar la lógica de
-  presentación y el estado de la UI.
-* **Inyección de Dependencias:** (Inferido por carpetas `di`) Probablemente utilizando Koin o una
-  librería similar para gestionar las dependencias a lo largo de la aplicación.
-* **Firebase:** Integración con servicios de Firebase (autenticación, etc., inferido por
-  `google-services.json` y referencias a `FirebaseAuth`).
-* **Persistencia Local:**
-    * **Room:** Para la base de datos relacional local (inferido por `TokenDao`, `TokenEntity`).
-    * **DataStore:** Para el almacenamiento de preferencias y datos simples (inferido por
-      `DataStoreRepository`).
-* **Gradle:** Como sistema de construcción para gestionar dependencias y el proceso de compilación.
+## Plataformas Soportadas
 
-## 🏗️ Estructura del Proyecto
+* **Android**
+* **iOS**
+* **WebAssembly (Wasm)**
 
-El proyecto está organizado en los siguientes módulos principales:
+## Stack Tecnológico
 
-* **`Quickness-Mobile/`** (Raíz del proyecto)
-    * **`composeApp/`**: Módulo principal de KMM que contiene la UI de Compose Multiplatform y la
-      lógica de aplicación compartida. Se compila para Android e iOS.
-        * `commonMain/`: Código Kotlin común para Android e iOS.
-        * `androidMain/`: Implementaciones específicas de Android (ej. `MainActivity`).
-        * `iosMain/`: Implementaciones específicas de iOS (ej. `MainViewController` para integrar
-          Compose en iOS).
-    * **`iosApp/`**: Proyecto Xcode para la aplicación iOS. Contiene el `AppDelegate`,
-      `ContentView.swift` y otros archivos específicos de la plataforma iOS.
-    * **`shared/`**: Módulo KMM que provee componentes y utilidades fundamentales compartidos.
-        * `ui/`: (Recomendación: debería ser la única fuente de componentes de UI genéricos y
-          compartidos).
-        * `resources/`: Recursos compartidos (cadenas de texto, drawables, etc.).
-        * `utils/`: Clases de utilidad, constantes, extensiones, etc.
-    * **`feature/`**: Contenedor de módulos de funcionalidad. Cada submódulo representa una
-      característica específica de la aplicación.
-        * `api/`: Define interfaces y contratos de navegación para los módulos `feature`.
-        * `login/`: Funcionalidad de inicio de sesión y registro.
-        * `biometric/`: Funcionalidad de autenticación biométrica.
-        * `start/`: Pantallas o lógica inicial de la aplicación.
-        * `home/`: Funcionalidad principal o "Home" de la app, que a su vez contiene:
-            * `shop/`: Característica de tienda o compra.
-            * `qr/`: Característica relacionada con códigos QR.
-            * `service/`: Característica de servicios.
-            * `settings/`: Módulo de configuración, altamente granularizado por sección (cuenta,
-              privacidad, etc.).
-    * **`network/`**: Módulo KMM para la capa de red.
-        * `api/`: Interfaces para los servicios de red (ej. Retrofit/Ktor), modelos de datos (DTOs).
-        * `impl/`: Implementaciones concretas de los servicios de red.
-    * **`data/`**: Módulo KMM para la capa de datos.
-        * `api/`: Interfaces para repositorios, DAOs (Data Access Objects), entidades de base de
-          datos.
-        * `impl/`: Implementaciones de repositorios, configuración de la base de datos (Room),
-          DataStore.
+* **Core:** Kotlin Multiplatform (KMP) para compartir lógica de negocio y más entre plataformas.
+* **Interfaz de Usuario (UI):** Jetpack Compose Multiplatform para una UI declarativa y compartida.
+* **Networking:**
+    * **Ktor:** Para llamadas a APIs REST.
+    * **Apollo Kotlin:** Para interacción con APIs GraphQL.
+    * **Firebase Authentication:** Para la gestión de usuarios (login, registro).
+* **Almacenamiento Local:**
+    * **Room:** Para la base de datos relacional local (ej. tokens, datos de Lyra).
+    * **Jetpack DataStore:** Para persistencia de configuraciones y preferencias de usuario.
+* **Inyección de Dependencias:** Koin.
+* **Navegación:** Solución de navegación para Compose Multiplatform (probablemente Voyager o una
+  implementación custom basada en NavController).
+* **Inteligencia Artificial:** Referenciada como "EVA AI" en la descripción del proyecto.
+* **Tecnología QR:** "Ares" con encriptación "$STA^3K$".
 
-## 🚀 Configuración y Compilación
+## Estructura del Proyecto
 
-### Prerrequisitos
+El proyecto sigue una arquitectura modular bien definida para promover la escalabilidad y
+mantenibilidad:
 
-* Android Studio [Versión Recomendada, ej. Iguana o superior]
-* Xcode [Versión Recomendada, ej. 15.x o superior]
-* Kotlin Plugin para Android Studio
-* Kotlin Multiplatform Mobile Plugin
-* Java Development Kit (JDK) [Versión, ej. 17]
-* CocoaPods (para dependencias de iOS)
+* `composeApp/`: Módulo principal que contiene la UI compartida y los puntos de entrada para cada
+  plataforma (Android, iOS, Wasm).
+* `feature/`: Contiene módulos individuales para cada funcionalidad de la aplicación.
+    * `api/`: Define las interfaces de navegación y ViewModels compartidos.
+    * `start/`: Flujo inicial de la aplicación (bienvenida, selección de login/registro).
+    * `login/`: Funcionalidad de inicio de sesión.
+    * `register/`: Funcionalidad de registro de usuarios.
+    * `biometric/`: Gestión de autenticación biométrica.
+    * `home/`: Pantalla principal y contenedor de sub-funcionalidades.
+        * `ai/`: Interfaz para funcionalidades de IA "EVA".
+        * `cam/`: Funcionalidad de cámara.
+        * `qr/`: Generación y visualización de códigos QR.
+        * `service/`: Servicios (posiblemente salud/bienestar, incluye integración Lyra).
+        * `settings/`: Configuración detallada de la aplicación.
+        * `shop/`: Funcionalidad de tienda o gestión de saldo.
+* `data/`: Lógica de acceso a datos.
+    * `api/`: Define las interfaces de repositorios y entidades de base de datos (Room) y DataStore.
+    * `impl/`: Implementaciones concretas de los repositorios y gestión de la base de datos.
+* `network/`: Lógica de comunicación en red.
+    * `api/`: Define las interfaces para los servicios de red (Ktor, Apollo, Firebase Auth) y los
+      DTOs.
+    * `impl/`: Implementaciones concretas de los servicios de red.
+* `shared/`: Módulos de utilidad compartidos.
+    * `resources/`: Gestión de recursos compartidos (strings, drawables mediante
+      `composeResources`).
+    * `ui/`: Componentes de UI comunes y reutilizables.
+    * `utils/`: Clases de utilidad, constantes, extensiones.
+* `iosApp/`: Módulo específico para la aplicación iOS (wrapper y código nativo si es necesario).
+* `wasm/`: Módulo para la compilación a WebAssembly.
 
-### Pasos para Android
+## Cómo Empezar (Placeholder)
 
-1. Clonar el repositorio: `git clone https://[URL_DEL_REPOSITORIO]/Quickness-Mobile.git`
-2. Abrir el proyecto con Android Studio.
-3. Android Studio debería sincronizar el proyecto Gradle automáticamente.
-4. Seleccionar la configuración de ejecución `composeApp` o `androidApp` (según esté nombrado tu
-   módulo principal de Android).
-5. Ejecutar en un emulador o dispositivo Android.
+1. Clona el repositorio: `git clone https://github.com/OverrideLLC/Quickness-Mobile.git`
+2. Abre el proyecto en Android Studio (Meerkat).
+3. Asegúrate de tener el JDK adecuado configurado (consultar `gradle.properties` o la documentación
+   de KMP).
+4. Para ejecutar en iOS, necesitarás un Mac con Xcode instalado.
+5. Sincroniza el proyecto con Gradle.
+6. Selecciona el target deseado (androidApp, iosApp) y ejecuta.
 
-### Pasos para iOS
+*(Instrucciones más detalladas sobre la configuración del entorno y build podrían añadirse aquí).*
 
-1. Asegúrate de tener CocoaPods instalado: `sudo gem install cocoapods`
-2. Navega a la raíz del proyecto y ejecuta `pod install` dentro del directorio `iosApp` (o el script
-   de Gradle que maneje la instalación de Pods, ej. `./gradlew iosApp:podInstall`).
-    * *Nota: La configuración de KMM a menudo integra la instalación de Pods en el proceso de build
-      de Gradle.*
-3. Abre el archivo `.xcworkspace` (NO el `.xcodeproj`) ubicado en `Quickness-Mobile/iosApp/` con
-   Xcode.
-4. Selecciona un simulador o dispositivo iOS.
-5. Construye y ejecuta el proyecto desde Xcode.
+## Contribuciones
 
-### Variables de Entorno / Archivos de Configuración
+Las contribuciones son bienvenidas. Por favor, abre un issue para discutir cambios importantes o
+reportar bugs. Si deseas contribuir con código, considera hacer un fork del repositorio y enviar un
+Pull Request.
 
-* **Firebase:** Asegúrate de tener el archivo `google-services.json` correcto en la ruta
-  `Quickness-Mobile/composeApp/` para Android. Para iOS, el archivo `GoogleService-Info.plist` debe
-  estar configurado en el proyecto de Xcode y añadido a los targets correspondientes.
-* **Claves de API:** Si la aplicación utiliza APIs externas que requieren claves, considera usar un
-  archivo `local.properties` (y no subirlo al control de versiones) o variables de entorno para
-  gestionarlas.
+## Licencia
 
-## 🤝 Contribuciones
-
-¡Las contribuciones son bienvenidas! Si deseas contribuir al proyecto, por favor sigue estos pasos:
-
-1. Haz un Fork del repositorio.
-2. Crea una nueva rama para tu funcionalidad o corrección:
-   `git checkout -b feature/nueva-funcionalidad` o `fix/descripcion-del-bug`.
-3. Realiza tus cambios y haz commit: `git commit -m "Agrega nueva funcionalidad X"`.
-4. Empuja tus cambios a tu rama: `git push origin feature/nueva-funcionalidad`.
-5. Abre un Pull Request hacia la rama principal del repositorio original.
-
-Por favor, asegúrate de que tu código siga las guías de estilo del proyecto y que todas las pruebas
-pasen.
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia [NOMBRE DE LA LICENCIA, ej. MIT, Apache 2.0]. Consulta el
-archivo `LICENSE` para más detalles (si no existe, considera añadir uno).
+(Especifica tu licencia aquí, por ejemplo: MIT, Apache 2.0, etc.)
 
 ---
 
-*Este README fue generado basándose en la estructura del proyecto. Por favor, actualízalo con
-información más específica sobre el propósito de la aplicación, instrucciones de configuración
-detalladas y cualquier otra información relevante.*
+Este README intenta ser lo más completo posible. Puedes ajustarlo añadiendo o quitando secciones
+según lo veas necesario, como por ejemplo, una sección de "Screenshots", "Build Instructions" más
+detalladas, o "Contacto".

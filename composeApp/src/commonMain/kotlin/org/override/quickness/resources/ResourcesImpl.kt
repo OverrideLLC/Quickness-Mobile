@@ -3,8 +3,8 @@ package org.override.quickness.resources
 import org.override.quickness.shared.resources.interfaces.Resources
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
-import quickness.composeapp.generated.resources.Res
-import quickness.composeapp.generated.resources.override
+import org.override.quickness.generated.resources.Res
+import org.override.quickness.generated.resources.override
 
 class ResourcesImpl : Resources {
     override fun getDrawable(resource: String): DrawableResource {
