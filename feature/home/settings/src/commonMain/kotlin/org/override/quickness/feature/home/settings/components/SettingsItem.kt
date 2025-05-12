@@ -179,11 +179,6 @@ fun DropdownSettings(
             color = colorScheme.tertiary,
             fontFamily = MaterialTheme.typography.bodyMedium.fontFamily
         )
-        Icon(
-            painter = painterResource(iconKey),
-            tint = colorScheme.tertiary,
-            contentDescription = null
-        )
     }
 
     // Menú desplegable sin FocusRequester

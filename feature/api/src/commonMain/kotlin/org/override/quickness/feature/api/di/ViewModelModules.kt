@@ -13,6 +13,7 @@ import org.override.quickness.feature.home.cam.CameraViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
+import org.override.quickness.feature.home.service.eva.EvaViewModel
 import org.override.quickness.feature.home.settings.screen.SettingsViewModel
 import org.override.quickness.feature.home.settings.screens_settings.settings_account.AccountSettingsViewModel
 import org.override.quickness.feature.home.settings.screens_settings.settings_display.DisplaySettingsViewModel
@@ -48,4 +49,5 @@ val viewModelModulesSettings: Module
 val viewModelModulesService: Module
     get() = module {
         viewModelOf(::LyraViewModel)
+        viewModelOf(::EvaViewModel)
     }

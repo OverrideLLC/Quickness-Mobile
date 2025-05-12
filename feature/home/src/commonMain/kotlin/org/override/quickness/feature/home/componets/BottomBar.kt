@@ -95,17 +95,6 @@ internal fun BottomBar(
                         }
                     )
                     BottomAppBarIcon(
-                        iconResNotSelected = ResourceNameKey.MAP_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
-                        iconResSelected = ResourceNameKey.MAP_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
-                        iconSelected = selected,
-                        viewModel = viewModel,
-                        onClick = {
-                            selected = ResourceNameKey.MAP_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
-                            topName(RoutesHome.Service.route)
-                            navigationController.navigate(RoutesHome.Service.route) { popUpTo(0) }
-                        }
-                    )
-                    BottomAppBarIcon(
                         iconResNotSelected = ResourceNameKey.SETTINGS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
                         iconResSelected = ResourceNameKey.SETTINGS_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
                         iconSelected = selected,

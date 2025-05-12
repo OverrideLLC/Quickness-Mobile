@@ -6,6 +6,7 @@ import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -68,6 +70,7 @@ private fun Screen(
     val scope = rememberCoroutineScope()
     val factory = rememberPermissionsControllerFactory()
     val controller = remember(factory) { factory.createPermissionsController() }
+    var isNavigationBarVisible by remember { mutableStateOf(false) }
     BindEffect(controller)
     LaunchedEffect(Unit) {
         while (true) {
@@ -119,6 +122,28 @@ private fun Screen(
             )
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures(
+                    onDragStart = { offset ->
+                        println("Inicio de arrastre en: $offset")
+                    },
+                    onHorizontalDrag = { change, dragAmount ->
+                        if (dragAmount > 3) {
+                        } else if (dragAmount < 3 && !isNavigationBarVisible) {
+                            isNavigationBarVisible = !isNavigationBarVisible
+                            navControllerStart.navigate(RoutesStart.Eva.route)
+                        }
+                        change.consume()
+                    },
+                    onDragEnd = {
+                        println("Arrastre finalizado")
+                    },
+                    onDragCancel = {
+                        println("Arrastre cancelado")
+                    }
+                )
+            }
     )
 }

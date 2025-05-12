@@ -32,6 +32,8 @@ runner = "1.6.2"
 coreVersion = "1.6.1"
 junit = "1.2.1"
 coil = "3.1.0"
+generativeai = "0.9.0"
+generativeaiGoogleWasmJs = "0.9.0-1.0.1-wasm"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
@@ -75,6 +77,8 @@ androidx-core = { group = "androidx.test", name = "core", version.ref = "coreVer
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
+generativeai = { module = "com.google.ai.client.generativeai:generativeai", version.ref = "generativeai" }
+generativeai-google-wasm-js = { module = "dev.shreyaspatil.generativeai:generativeai-google", version.ref = "generativeaiGoogleWasmJs" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

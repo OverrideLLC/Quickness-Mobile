@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import org.override.quickness.feature.home.cam.CameraRoot
 import org.override.quickness.feature.home.qr.screens.QrScreen
+import org.override.quickness.feature.home.service.eva.EvaRoot
 import org.override.quickness.feature.home.service.screen.ServiceScreen
 import org.override.quickness.feature.home.shop.screen.ShopScreen
 import org.override.quickness.shared.ui.animations.ContentSwitchAnimation
@@ -36,12 +37,6 @@ fun NavControllerHome(
             deepLinks = listOf(navDeepLink { uriPattern = DeepLinksHome.Shop.deepLink })
         ) {
             ShopScreen(paddingValues)
-        }
-        composable(
-            route = RoutesHome.Service.route,
-            deepLinks = listOf(navDeepLink { uriPattern = DeepLinksHome.Service.deepLink })
-        ) {
-            ServiceScreen(paddingValues)
         }
         composable(
             route = RoutesHome.Qr.route,
