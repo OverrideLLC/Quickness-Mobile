@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -31,6 +32,7 @@ import androidx.navigation.NavController
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.override.quickness.shared.ui.styles.TextStyleBrush
 import qrscanner.CameraLens
 import qrscanner.OverlayShape
 import qrscanner.QrScanner
@@ -79,9 +81,37 @@ fun CameraScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            contentAlignment = Alignment.Center,
             content = {
-
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color.Transparent)
+                        .align(
+                            alignment = Alignment.TopStart
+                        ),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    IconButton(
+                        modifier = Modifier.size(50.dp),
+                        onClick = { navController.popBackStack() },
+                        content = {
+                            Icon(
+                                painter = painterResource(viewModel.getDrawable(ResourceNameKey.ARROW_BACK_IOS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
+                                contentDescription = null,
+                                modifier = Modifier.size(34.dp),
+                                tint = colorScheme.primary
+                            )
+                        }
+                    )
+                    Text(
+                        text = "Camera",
+                        fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                        fontSize = 40.sp,
+                        textAlign = TextAlign.Start,
+                        style = TextStyleBrush()
+                    )
+                }
             }
         )
     } else {

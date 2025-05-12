@@ -72,17 +72,6 @@ internal fun BottomBar(
                         }
                     )
                     BottomAppBarIcon(
-                        iconResSelected = ResourceNameKey.PHOTO_CAMERA_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48,
-                        iconResNotSelected = ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24,
-                        iconSelected = selected,
-                        viewModel = viewModel,
-                        onClick = {
-                            selected = ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24
-                            topName(RoutesHome.Camera.route)
-                            navigationController.navigate(RoutesHome.Camera.route) { popUpTo(0) }
-                        }
-                    )
-                    BottomAppBarIcon(
                         iconResSelected = ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
                         iconResNotSelected = ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
                         iconSelected = selected,

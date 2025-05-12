@@ -2,6 +2,7 @@ package org.override.quickness.feature.home.service.eva
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
@@ -25,14 +26,20 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
@@ -59,7 +66,57 @@ internal fun EvaScreen(
     viewModel: EvaViewModel = koinViewModel(),
     onAction: (EvaAction) -> Unit,
     onBackNavigate: () -> Unit,
+    initiallyVisible: Boolean = false,
+    blockFadeInDurationMillis: Int = 500, // Duración para el difuminado del bloque
+    typingSpeedPerCharMillis: Long = 75L,  // Velocidad de "tipeo"
+    startDelayMillis: Long = 0L,
+    text: String = "Hello, how can I help you?"
 ) {
+    var displayedText by remember(text, initiallyVisible) {
+        mutableStateOf(if (initiallyVisible) text else "")
+    }
+    // Controla el alfa (opacidad) general del bloque de texto.
+    val alpha = remember(text, initiallyVisible) {
+        Animatable(if (initiallyVisible) 1f else 0f)
+    }
+
+    // LaunchedEffect se usa para iniciar la animación cuando el Composable entra en la composición
+    // o cuando cambian las claves 'text' o 'initiallyVisible'.
+    LaunchedEffect(key1 = text, key2 = initiallyVisible) {
+        if (!initiallyVisible) {
+            // Asegura que el estado se reinicie correctamente para la animación
+            alpha.snapTo(0f) // Comienza completamente transparente
+            displayedText = ""   // Comienza sin texto visible
+
+            // Aplica el retraso inicial
+            delay(startDelayMillis)
+
+            // 1. Anima el alfa general del bloque de texto para el efecto de difuminado
+            alpha.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(
+                    durationMillis = blockFadeInDurationMillis,
+                    easing = LinearEasing
+                )
+            )
+
+            // 2. Anima la aparición de cada letra
+            // Asegura que el alfa sea 1 si la duración del difuminado del bloque es 0
+            if (blockFadeInDurationMillis == 0 && alpha.value < 1f) {
+                alpha.snapTo(1f)
+            }
+
+            text.forEachIndexed { index, _ ->
+                displayedText = text.substring(0, index + 1)
+                delay(typingSpeedPerCharMillis)
+            }
+        } else {
+            // Si debe ser visible inicialmente, establece el texto completo y el alfa a 1.
+            alpha.snapTo(1f)
+            displayedText = text
+        }
+    }
+
     val infiniteTransition = rememberInfiniteTransition()
     val color1 by infiniteTransition.animateColor(
         initialValue = colorScheme.primaryContainer,
@@ -140,12 +197,14 @@ internal fun EvaScreen(
                                     .padding(bottom = 10.dp),
                                 content = {
                                     Text(
-                                        text = "Hello, how can I help you?",
+                                        text = displayedText,
                                         fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
                                         fontSize = 40.sp,
                                         textAlign = TextAlign.Center,
                                         style = TextStyleBrush(),
-                                        modifier = Modifier.align(Alignment.Center)
+                                        modifier = Modifier
+                                            .align(Alignment.Center)
+                                            .alpha(alpha.value)
                                     )
                                 }
                             )

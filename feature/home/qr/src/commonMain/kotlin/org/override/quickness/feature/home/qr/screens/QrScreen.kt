@@ -17,15 +17,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,8 +52,6 @@ import org.override.quickness.shared.resources.strings.Strings
 import org.override.quickness.shared.ui.animations.ContentSwitchAnimation.enterTransition
 import org.override.quickness.shared.ui.animations.ContentSwitchAnimation.exitTransition
 import org.override.quickness.shared.ui.styles.ShimmerItem
-import qrgenerator.qrkitpainter.QrKitLogo
-import qrgenerator.qrkitpainter.QrKitLogoPadding
 import qrgenerator.qrkitpainter.QrPainter
 
 @Composable
@@ -104,19 +102,22 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
                             Color.Transparent
                     )
                     .padding(16.dp)
-                    .wrapContentSize(),
+                    .wrapContentHeight(),
                 contentAlignment = Alignment.Center
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.wrapContentSize().background(Color.Transparent)
-                ) {
-                    Box(
-                        modifier = Modifier.widthIn(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .widthIn(
                             min = 400.dp,
                             max = 500.dp
-                        ),
+                        )
+                        .background(Color.Transparent)
+                ) {
+                    Box(
+                        modifier = Modifier,
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -156,8 +157,6 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
                             }
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(16.dp))
 
                     ImportantInfoItem(
                         color = if (!state.isExpanded) Color(state.colors[0]) else Color.Transparent,
@@ -241,7 +240,6 @@ private fun TicketQRCode(
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
-                    .clickable { onClick() }
                     .animateContentSize()
                     .background(colorBackground),
                 contentAlignment = Alignment.Center

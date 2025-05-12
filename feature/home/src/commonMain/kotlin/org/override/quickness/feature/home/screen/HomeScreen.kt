@@ -121,6 +121,24 @@ private fun Screen(
                 topName = { topName = it }
             )
         },
+        floatingActionButton = {
+            FloatingActionButton(
+                containerColor = colorScheme.primaryContainer,
+                contentColor = colorScheme.tertiary,
+                shape = shapes.small,
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+                modifier = Modifier.size(50.dp),
+                onClick = { navControllerStart.navigate(RoutesStart.Camera.route) },
+                content = {
+                    Icon(
+                        painter = painterResource(viewModel.getDrawable(ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name)),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            )
+        },
+        floatingActionButtonPosition = FabPosition.End,
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         modifier = Modifier
             .fillMaxSize()

@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import org.koin.compose.viewmodel.koinViewModel
 import org.override.quickness.feature.api.NavigationViewModel
+import org.override.quickness.feature.home.cam.CameraRoot
 import org.override.quickness.feature.home.screen.HomeScreen
 import org.override.quickness.feature.home.service.eva.EvaRoot
 import org.override.quickness.feature.login.screen.LoginScreen
@@ -75,6 +76,12 @@ fun NavControllerStart(
                     EvaRoot(
                         onBackNavigate = { navControllerStart.popBackStack() }
                     )
+                }
+                composable(
+                    route = RoutesStart.Camera.route,
+                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Camera.deepLink })
+                ) {
+                    CameraRoot(navController = navControllerStart)
                 }
                 composable(
                     route = RoutesStart.Start.route,
