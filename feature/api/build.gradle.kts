@@ -38,8 +38,6 @@ kotlin {
             //MODULES
             //-----Features
             implementation(projects.feature.start)
-            implementation(projects.feature.login)
-            implementation(projects.feature.register)
             implementation(projects.feature.home)
             implementation(projects.feature.home.settings)
             implementation(projects.feature.home.qr)

@@ -21,6 +21,7 @@ import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.override.quickness.shared.resources.strings.Strings
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
+import org.override.quickness.feature.start.webview.WebView
 import org.override.quickness.shared.ui.animations.BackgroundAnimated
 import org.override.quickness.shared.ui.component.BottomSheetContent
 import org.override.quickness.shared.ui.component.LogoAndTitle
@@ -28,16 +29,12 @@ import org.override.quickness.shared.ui.component.LogoAndTitle
 @Composable
 fun StartScreen(
     navController: NavController,
-    contentAuth: @Composable () -> Unit,
-    contentRegister: @Composable () -> Unit
-) = Screen(navController, contentAuth, contentRegister)
+) = Screen(navController)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun Screen(
     navController: NavController,
-    contentAuth: @Composable () -> Unit,
-    contentRegister: @Composable () -> Unit,
     viewModel: StartViewModel = koinViewModel<StartViewModel>()
 ) {
     val state by viewModel.state.collectAsState()
@@ -98,7 +95,7 @@ internal fun Screen(
             }
         },
         content = {
-            contentAuth()
+            WebView().View("https://auth.override.com.mx/#/auth/quickness-client/login")
         }
     )
     BottomSheetContent(
@@ -111,7 +108,7 @@ internal fun Screen(
             }
         },
         content = {
-            contentRegister()
+            WebView().View("https://auth.override.com.mx/#/auth/quickness-client/register")
         },
     )
 }

@@ -19,8 +19,6 @@ import org.override.quickness.feature.api.NavigationViewModel
 import org.override.quickness.feature.home.cam.CameraRoot
 import org.override.quickness.feature.home.screen.HomeScreen
 import org.override.quickness.feature.home.service.eva.EvaRoot
-import org.override.quickness.feature.login.screen.LoginScreen
-import org.override.quickness.feature.register.screen.RegisterScreen
 import org.override.quickness.feature.start.screen.StartScreen
 import org.override.quickness.shared.ui.component.Progress
 import org.override.quickness.shared.utils.deeplinks.DeepLinksStart
@@ -87,11 +85,7 @@ fun NavControllerStart(
                     route = RoutesStart.Start.route,
                     deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Start.deepLink })
                 ) {
-                    StartScreen(
-                        navController = navControllerStart,
-                        contentAuth = { LoginScreen(navControllerStart) },
-                        contentRegister = { RegisterScreen(navControllerStart) }
-                    )
+                    StartScreen(navController = navControllerStart)
                 }
                 composable(
                     route = RoutesStart.Home.route,

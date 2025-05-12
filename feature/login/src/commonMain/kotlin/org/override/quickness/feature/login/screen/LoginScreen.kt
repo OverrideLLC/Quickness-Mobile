@@ -27,6 +27,7 @@ import org.override.quickness.shared.ui.component.Progress
 import org.override.quickness.shared.ui.helpers.Message
 import org.override.quickness.shared.utils.routes.RoutesStart
 
+@Deprecated("It was replaced by WebView")
 @Composable
 fun LoginScreen(
     navController: NavController

@@ -6,8 +6,6 @@ import org.override.quickness.feature.home.screen.HomeViewModel
 import org.override.quickness.feature.home.service.screen.ServiceViewModel
 import org.override.quickness.feature.home.service.lyra.LyraViewModel
 import org.override.quickness.feature.home.shop.screen.ShopViewModel
-import org.override.quickness.feature.login.screen.LoginViewModel
-import org.override.quickness.feature.register.screen.RegisterViewModel
 import org.override.quickness.feature.start.screen.StartViewModel
 import org.override.quickness.feature.home.cam.CameraViewModel
 import org.koin.core.module.Module
@@ -23,10 +21,10 @@ import org.override.quickness.feature.home.settings.screens_settings.settings_qr
 val viewModelModulesStart: Module
     get() = module {
         viewModelOf(::StartViewModel)
-        viewModelOf(::LoginViewModel)
+        //viewModelOf(::LoginViewModel) DEPRECATED
         viewModelOf(::HomeViewModel)
         viewModelOf(::NavigationViewModel)
-        viewModelOf(::RegisterViewModel)
+        //viewModelOf(::RegisterViewModel) DEPRECATED
         viewModelOf(::CameraViewModel)
     }
 

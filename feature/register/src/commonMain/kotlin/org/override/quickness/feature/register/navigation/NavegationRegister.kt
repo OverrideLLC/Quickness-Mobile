@@ -22,6 +22,7 @@ import org.override.quickness.shared.utils.routes.RoutesRegister
  * @param viewModel The [RegisterViewModel] containing the business logic and state for the registration process.
  * @param state The [RegisterState] representing the current state of the registration process.
  */
+@Deprecated("It was replaced by WebView")
 @Composable
 fun NavigationRegister(
     navController: NavHostController,
