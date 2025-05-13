@@ -83,18 +83,25 @@ fun NavControllerStart(
                 }
                 composable(
                     route = RoutesStart.Start.route,
-                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Start.deepLink })
+                    deepLinks = listOf(
+                        navDeepLink { uriPattern = DeepLinksStart.Start.deepLink }
+                    )
                 ) {
                     StartScreen(navController = navControllerStart)
                 }
                 composable(
                     route = RoutesStart.Home.route,
-                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Home.deepLink })
-                ) {
+                    deepLinks = listOf(
+                        navDeepLink {
+                            uriPattern = DeepLinksStart.Home.deepLink
+                        }
+                    ),
+                ) { args ->
+                    args.arguments?.getString("uid")?.let { uid -> viewModel.saveUid(uid) }
                     val navController = rememberNavController()
                     HomeScreen(
                         navController = navController,
-                        navControllerStart = navControllerStart
+                        navControllerStart = navControllerStart,
                     ) {
                         NavControllerHome(
                             navController = navController,

@@ -51,11 +51,11 @@ fun HomeScreen(
     navControllerStart: NavController,
     navHome: @Composable (paddingValues: PaddingValues) -> Unit
 ) = Screen(
-        viewModel = koinViewModel(),
-        navController = navController,
-        navHome = navHome,
-        navControllerStart = navControllerStart
-    )
+    viewModel = koinViewModel(),
+    navController = navController,
+    navHome = navHome,
+    navControllerStart = navControllerStart,
+)
 
 @Composable
 private fun Screen(

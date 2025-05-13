@@ -48,15 +48,15 @@ class HomeViewModel(
         }
     }
 
+
     fun getTokens() {
         viewModelScope.launch(Dispatchers.IO) {
             val currentTime = Clock.System.now().toEpochMilliseconds()
-            val lastRequestDate =
-                dataStoreRepository.getString(KeysCache.LAST_REQUEST_KEY, "")?.toLongOrNull()
-            val uid = dataStoreRepository.getString(KeysCache.UID, "")
-                ?: return@launch EmptyLogger().info("uuid not found")
+            val lastRequestDate = dataStoreRepository.getString(KeysCache.LAST_REQUEST_KEY, "")?.toLongOrNull()
+            val uid = dataStoreRepository.getString(KeysCache.UID, "") ?: return@launch EmptyLogger().info("uuid not found")
+            val tokens = tokensDatabaseRepository.getAllTokens()
 
-            if (lastRequestDate == null || shouldRequestTokens(currentTime, lastRequestDate)) {
+            if (lastRequestDate == null || shouldRequestTokens(currentTime, lastRequestDate) || tokens.isEmpty()) {
                 try {
                     val tokensResponse = tokensRepository.getTokens(uid)
                     val sortedTokens = tokensResponse.tokens
@@ -71,7 +71,7 @@ class HomeViewModel(
                     println("Error fetching tokens: ${e.message}")
                 }
             } else {
-                println("No need to request tokens")
+                println("No need to request tokens: $lastRequestDate $currentTime")
             }
         }
     }
