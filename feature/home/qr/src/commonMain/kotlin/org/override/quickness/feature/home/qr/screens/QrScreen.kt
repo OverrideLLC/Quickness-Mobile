@@ -10,7 +10,6 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,12 +19,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -82,8 +79,7 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Transparent)
-            .padding(16.dp)
-            .padding(paddingValues),
+            .padding(horizontal = 10.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -101,33 +97,27 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
                         else
                             Color.Transparent
                     )
-                    .padding(16.dp)
-                    .wrapContentHeight(),
+                    .height(400.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .wrapContentHeight()
+                        .fillMaxHeight()
                         .widthIn(
                             min = 400.dp,
                             max = 500.dp
                         )
                         .background(Color.Transparent)
                 ) {
-                    Box(
-                        modifier = Modifier,
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            painter = painterResource(viewModel.getDrawable(ResourceNameKey.LOGO_SWIFTID_CENTRADO.name)),
-                            contentDescription = "Logo",
-                            tint = if (!state.isExpanded) Color(state.colors[0]) else Color.Transparent,
-                            modifier = Modifier.size(100.dp)
-                        )
-                    }
-
+                    Icon(
+                        painter = painterResource(viewModel.getDrawable(ResourceNameKey.LOGOQUICKNESSQC.name)),
+                        contentDescription = "Logo",
+                        tint = if (!state.isExpanded) Color(state.colors[0]) else Color.Transparent,
+                        modifier = Modifier.size(30.dp)
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
                     // QR Code with smooth animation
                     TicketQRCode(
                         isExpanded = state.isExpanded,
@@ -137,7 +127,7 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
                     ) {
                         viewModel.update { copy(isExpanded = !isExpanded) }
                     }
-
+                    Spacer(modifier = Modifier.height(12.dp))
                     AnimatedVisibility(
                         visible = !state.isExpanded,
                         enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
@@ -157,12 +147,6 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
                             }
                         )
                     }
-
-                    ImportantInfoItem(
-                        color = if (!state.isExpanded) Color(state.colors[0]) else Color.Transparent,
-                        viewModel = viewModel
-                    )
-                    Spacer(Modifier.padding(10.dp))
                 }
             }
         }
@@ -244,19 +228,13 @@ private fun TicketQRCode(
                     .background(colorBackground),
                 contentAlignment = Alignment.Center
             ) {
-                if (isExpanded) {
-                    Image(
-                        painter = qrCode,
-                        contentDescription = "Código QR generado",
-                        modifier = Modifier.size(400.dp).blur(if (isBlurred) 20.dp else 0.dp)
-                    )
-                } else {
-                    Image(
-                        painter = qrCode,
-                        contentDescription = "Código QR generado",
-                        modifier = Modifier.size(250.dp).blur(if (isBlurred) 20.dp else 0.dp)
-                    )
-                }
+
+                Image(
+                    painter = qrCode,
+                    contentDescription = "Código QR generado",
+                    modifier = Modifier.size(250.dp).blur(if (isBlurred) 20.dp else 0.dp)
+                )
+
             }
         }
     } ?: run {

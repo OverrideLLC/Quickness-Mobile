@@ -48,8 +48,8 @@ fun SettingsItem(
             .clickable { navigator() }
             .padding(15.dp)
             .heightIn(
-                min = 40.dp,
-                max = 50.dp
+                min = 20.dp,
+                max = 30.dp
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
@@ -87,8 +87,8 @@ fun SettingsItemSwitch(
             .clickable { isActive() }
             .padding(15.dp)
             .heightIn(
-                min = 40.dp,
-                max = 50.dp
+                min = 20.dp,
+                max = 30.dp
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -153,8 +153,8 @@ fun DropdownSettings(
             .clickable { expanded = !expanded }
             .padding(15.dp)
             .heightIn(
-                min = 40.dp,
-                max = 50.dp
+                min = 20.dp,
+                max = 30.dp
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start

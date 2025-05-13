@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,10 +31,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.painterResource
 import org.override.quickness.feature.home.shop.screen.ShopViewModel
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.override.quickness.shared.resources.strings.Strings
-import org.jetbrains.compose.resources.painterResource
 import org.override.quickness.shared.ui.animations.BackgroundAnimated
 
 @Composable
@@ -68,7 +69,7 @@ fun Balance(credits: String, viewModel: ShopViewModel) {
         shape = RoundedCornerShape(20.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(100.dp)
             .graphicsLayer(
                 rotationX = rotationX.value,
                 rotationY = rotationY.value,
@@ -85,12 +86,12 @@ fun Balance(credits: String, viewModel: ShopViewModel) {
                     )
                 )
         ) {
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.Start
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = "${Strings.GeneralAppStrings.CREDIT} $credits",
@@ -98,17 +99,12 @@ fun Balance(credits: String, viewModel: ShopViewModel) {
                     fontSize = 25.sp,
                     color = colorScheme.tertiary,
                 )
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.CenterEnd
-                ) {
-                    Icon(
-                        painter = painterResource(viewModel.getDrawable(ResourceNameKey.LOGO_SWIFTID_CENTRADO.name)),
-                        modifier = Modifier.size(150.dp),
-                        tint = colorScheme.tertiary,
-                        contentDescription = "Logo Override"
-                    )
-                }
+                Icon(
+                    painter = painterResource(viewModel.getDrawable(ResourceNameKey.LOGO_SWIFTID_CENTRADO.name)),
+                    modifier = Modifier.size(150.dp),
+                    tint = colorScheme.tertiary,
+                    contentDescription = "Logo Override"
+                )
             }
         }
     }

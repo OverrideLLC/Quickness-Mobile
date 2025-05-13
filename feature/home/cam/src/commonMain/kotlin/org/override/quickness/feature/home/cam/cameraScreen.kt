@@ -16,7 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,9 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.override.quickness.shared.ui.styles.TextStyleBrush
 import qrscanner.CameraLens
 import qrscanner.OverlayShape
@@ -58,7 +57,7 @@ fun CameraScreen(
     onAction: (CameraActions) -> Unit,
     navController: NavController,
 ) {
-    if (!state.isLoading){
+    if (!state.isLoading) {
         QrScanner(
             modifier = Modifier.fillMaxSize(),
             flashlightOn = false,
@@ -91,15 +90,15 @@ fun CameraScreen(
                         ),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     IconButton(
-                        modifier = Modifier.size(50.dp),
+                        modifier = Modifier.size(24.dp),
                         onClick = { navController.popBackStack() },
                         content = {
                             Icon(
                                 painter = painterResource(viewModel.getDrawable(ResourceNameKey.ARROW_BACK_IOS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
                                 contentDescription = null,
-                                modifier = Modifier.size(34.dp),
+                                modifier = Modifier.size(24.dp),
                                 tint = colorScheme.primary
                             )
                         }
@@ -107,7 +106,7 @@ fun CameraScreen(
                     Text(
                         text = "Camera",
                         fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                        fontSize = 40.sp,
+                        fontSize = 30.sp,
                         textAlign = TextAlign.Start,
                         style = TextStyleBrush()
                     )

@@ -1,11 +1,13 @@
 package org.override.quickness.feature.home.componets
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -46,6 +48,31 @@ internal fun BottomBar(
     topName: (String) -> Unit
 ) {
     var selected by remember { mutableStateOf(ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24) }
+    val selectedShopping =
+        selected == ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
+    var selectedQr = selected == ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
+    var selectedConfig = selected == ResourceNameKey.SETTINGS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
+
+    val scaleSpec = tween<Float>(
+        durationMillis = 800,
+        delayMillis = 0,
+    )
+
+    var scaleAnimationShopping = animateFloatAsState(
+        targetValue = if (selectedShopping) 0.5f else .25f,
+        label = "",
+        animationSpec = scaleSpec,
+    )
+    var scaleAnimationQr = animateFloatAsState(
+        targetValue = if (selectedQr) 0.5f else .25f,
+        label = "",
+        animationSpec = scaleSpec,
+    )
+    var scaleAnimationConfig = animateFloatAsState(
+        targetValue = if (selectedConfig) 0.5f else .25f,
+        label = "",
+        animationSpec = scaleSpec,
+    )
 
     Box(
         modifier = modifier
@@ -70,7 +97,7 @@ internal fun BottomBar(
                         iconResNotSelected = ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
                         iconSelected = selected,
                         viewModel = viewModel,
-                        modifier = Modifier.weight(0.3f),
+                        modifier = Modifier.weight(scaleAnimationShopping.value),
                         name = "Shop",
                         onClick = {
                             selected =
@@ -84,7 +111,7 @@ internal fun BottomBar(
                         iconResNotSelected = ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
                         iconSelected = selected,
                         viewModel = viewModel,
-                        modifier = Modifier.weight(0.3f),
+                        modifier = Modifier.weight(scaleAnimationQr.value),
                         name = "Qr",
                         onClick = {
                             selected =
@@ -98,7 +125,7 @@ internal fun BottomBar(
                         iconResSelected = ResourceNameKey.SETTINGS_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
                         iconSelected = selected,
                         viewModel = viewModel,
-                        modifier = Modifier.weight(0.3f),
+                        modifier = Modifier.weight(scaleAnimationConfig.value),
                         name = "Config",
                         onClick = {
                             selected =
@@ -137,41 +164,69 @@ private fun BottomAppBarIcon(
             ),
         contentAlignment = Alignment.Center,
         content = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = if (isSelected) colorScheme.primaryContainer else colorScheme.surfaceContainer,
-                        shape = shapes.small
-                    )
-                    .clickable {
-                        onClick()
-                    },
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                IconButton(
-                    onClick = onClick,
-                    colors = IconButtonDefaults.iconButtonColors(),
-                    content = {
-                        Icon(
-                            painter = painterResource(viewModel.getDrawable(iconResSelected.name)),
-                            contentDescription = null,
-                            modifier = Modifier.size(30.dp),
-                            tint = if (isSelected) colorScheme.tertiary else colorScheme.onSurface
-                        )
+            AnimatedContent(
+                targetState = isSelected,
+                content = { isSelected ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = if (isSelected) colorScheme.primaryContainer else colorScheme.surfaceContainer,
+                                shape = shapes.small
+                            )
+                            .clickable {
+                                if (!isSelected) onClick()
+                            },
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        if (isSelected) {
+                            IconButton(
+                                onClick = { },
+                                colors = IconButtonDefaults.iconButtonColors(),
+                                content = {
+                                    Icon(
+                                        painter = painterResource(
+                                            viewModel.getDrawable(
+                                                iconResSelected.name
+                                            )
+                                        ),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(30.dp),
+                                        tint = if (isSelected) colorScheme.tertiary else colorScheme.onSurface
+                                    )
+                                }
+                            )
+                            Text(
+                                text = name,
+                                color = if (isSelected) colorScheme.tertiary else colorScheme.onSurface,
+                                style = TextStyle(
+                                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            )
+                        } else {
+                            IconButton(
+                                onClick = onClick,
+                                colors = IconButtonDefaults.iconButtonColors(),
+                                content = {
+                                    Icon(
+                                        painter = painterResource(
+                                            viewModel.getDrawable(
+                                                iconResSelected.name
+                                            )
+                                        ),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(30.dp),
+                                        tint = if (isSelected) colorScheme.tertiary else colorScheme.onSurface
+                                    )
+                                }
+                            )
+                        }
                     }
-                )
-                Text(
-                    text = name,
-                    color = if (isSelected) colorScheme.tertiary else colorScheme.onSurface,
-                    style = TextStyle(
-                        fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                )
-            }
+                }
+            )
         }
     )
 }

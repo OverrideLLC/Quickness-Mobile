@@ -36,7 +36,7 @@ internal fun TopBar(
                 text = title,
                 fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
                 fontSize = 40.sp,
-                textAlign = TextAlign.Start,
+                textAlign = TextAlign.Center,
                 style = TextStyleBrush()
             )
         },

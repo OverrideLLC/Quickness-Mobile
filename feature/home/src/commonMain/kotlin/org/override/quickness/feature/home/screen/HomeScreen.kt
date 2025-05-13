@@ -101,7 +101,8 @@ private fun Screen(
             TopBar(
                 title = topName,
                 viewModel = viewModel,
-                onCameraClick = {}
+                onCameraClick = {},
+                onBackClick = {}
             )
         },
         content = { padding ->
@@ -152,8 +153,9 @@ private fun Screen(
                     onHorizontalDrag = { change, dragAmount ->
                         totalDragAmount += dragAmount
 
-                        if (totalDragAmount > dragThreshold) {
-                            // Acción para arrastre a la derecha
+                        if (totalDragAmount > dragThreshold && !isNavigationBarVisible) {
+                            isNavigationBarVisible = !isNavigationBarVisible
+                            navControllerStart.navigate(RoutesStart.Camera.route)
                             totalDragAmount = 0f  // Reinicia después de activar
                         } else if (totalDragAmount < -dragThreshold && !isNavigationBarVisible) {
                             isNavigationBarVisible = !isNavigationBarVisible
@@ -166,21 +168,3 @@ private fun Screen(
             }
     )
 }
-
-//FloatingActionButton(
-//                            containerColor = colorScheme.primaryContainer,
-//                            contentColor = colorScheme.tertiary,
-//                            shape = shapes.small,
-//                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
-//                            modifier = Modifier
-//                                .size(50.dp)
-//                                .weight(0.1f),
-//                            onClick = { navControllerStart.navigate(RoutesStart.Camera.route) },
-//                            content = {
-//                                Icon(
-//                                    painter = painterResource(viewModel.getDrawable(ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name)),
-//                                    contentDescription = null,
-//                                    modifier = Modifier.size(24.dp)
-//                                )
-//                            }
-//                        )
