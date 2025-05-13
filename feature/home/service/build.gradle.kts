@@ -69,10 +69,15 @@ kotlin {
             implementation(libs.qr.kit)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.markdown)
 
             //MOKO
             implementation(libs.moko.permissions)
             implementation(libs.moko.permissions.compose)
+
+            //GEMINI
+            implementation(libs.generativeai.google.wasm.js)
+            implementation(libs.generativeai)
         }
 
         commonTest.dependencies { implementation(libs.kotlin.test) }

@@ -143,24 +143,27 @@ private fun Screen(
         modifier = Modifier
             .fillMaxSize()
             .pointerInput(Unit) {
+                var totalDragAmount = 0f
+                val dragThreshold = 50f
+
                 detectHorizontalDragGestures(
-                    onDragStart = { offset ->
-                        println("Inicio de arrastre en: $offset")
+                    onDragStart = {
+                        totalDragAmount = 0f
                     },
                     onHorizontalDrag = { change, dragAmount ->
-                        if (dragAmount > 3) {
-                        } else if (dragAmount < 3 && !isNavigationBarVisible) {
+                        totalDragAmount += dragAmount
+
+                        if (totalDragAmount > dragThreshold) {
+                            // Acción para arrastre a la derecha
+                            totalDragAmount = 0f  // Reinicia después de activar
+                        } else if (totalDragAmount < -dragThreshold && !isNavigationBarVisible) {
                             isNavigationBarVisible = !isNavigationBarVisible
                             navControllerStart.navigate(RoutesStart.Eva.route)
+                            totalDragAmount = 0f  // Reinicia después de activar
                         }
                         change.consume()
                     },
-                    onDragEnd = {
-                        println("Arrastre finalizado")
-                    },
-                    onDragCancel = {
-                        println("Arrastre cancelado")
-                    }
+                    // ...
                 )
             }
     )

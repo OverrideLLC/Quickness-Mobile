@@ -3,22 +3,31 @@ package org.override.quickness.feature.home.service.eva
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.StartOffset
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,7 +43,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -79,6 +91,7 @@ internal fun EvaScreen(
     val alpha = remember(text, initiallyVisible) {
         Animatable(if (initiallyVisible) 1f else 0f)
     }
+    var isNavigationBarVisible by remember { mutableStateOf(false) }
 
     // LaunchedEffect se usa para iniciar la animación cuando el Composable entra en la composición
     // o cuando cambian las claves 'text' o 'initiallyVisible'.
@@ -139,32 +152,30 @@ internal fun EvaScreen(
         )
     )
     Scaffold(
-        topBar = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                IconButton(
-                    onClick = { onBackNavigate() },
-                    content = {
-                        Icon(
-                            painter = painterResource(viewModel.getDrawable(ResourceNameKey.ARROW_BACK_IOS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
-                            contentDescription = null,
-                            tint = colorScheme.primary,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
+        modifier = Modifier
+            .pointerInput(Unit) {
+                var totalDragAmount = 0f
+                val dragThreshold = 50f
+
+                detectHorizontalDragGestures(
+                    onDragStart = {
+                        totalDragAmount = 0f
+                    },
+                    onHorizontalDrag = { change, dragAmount ->
+                        totalDragAmount += dragAmount
+
+                        if (totalDragAmount > dragThreshold && !isNavigationBarVisible) {
+                            isNavigationBarVisible = !isNavigationBarVisible
+                            onBackNavigate()
+                            totalDragAmount = 0f
+                        } else if (totalDragAmount < -dragThreshold) {
+                            totalDragAmount = 0f
+                        }
+                        change.consume()
+                    },
+                    // ...
                 )
-                Text(
-                    text = "Eva",
-                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                    fontSize = 40.sp,
-                    textAlign = TextAlign.Start,
-                    style = TextStyleBrush(),
-                )
-            }
-        },
+            },
         content = { padding ->
             Column(
                 modifier = Modifier
@@ -187,7 +198,7 @@ internal fun EvaScreen(
                     targetState = state.chatActive,
                     content = { chatActive ->
                         if (chatActive) {
-                            Chat()
+                            Chat(state)
                         } else {
                             Box(
                                 modifier = Modifier
@@ -214,27 +225,194 @@ internal fun EvaScreen(
                 TextFieldAi(
                     state = state.textFieldState,
                     isError = state.isError,
-                    modifier = Modifier.padding(horizontal = 10.dp).padding(bottom = 10.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .padding(bottom = 10.dp),
                     onValueChange = {
                         viewModel.onValueChange(it)
                     },
                     onClickServices = {},
-                    onSubmitClick = {},
+                    onSubmitClick = {
+                        onAction(EvaAction.SendMessage)
+                    },
+                    buttonEnabled = state.textFieldState.text.isNotEmpty(),
                     leadingIconResource = viewModel.getDrawable(ResourceNameKey.APPS_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48.name),
                     trailingIconResource = viewModel.getDrawable(ResourceNameKey.SEND_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48.name),
                     leadingIconContentDescription = "Icono de servicios",
                     trailingIconContentDescription = "Icono de enviar"
                 )
             }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Transparent)
+                    .padding(padding),
+                contentAlignment = Alignment.TopStart,
+                content = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier.fillMaxWidth().background(Color.Transparent)
+                    ) {
+                        IconButton(
+                            onClick = { onBackNavigate() },
+                            content = {
+                                Icon(
+                                    painter = painterResource(viewModel.getDrawable(ResourceNameKey.ARROW_BACK_IOS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
+                                    contentDescription = null,
+                                    tint = colorScheme.primary,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        )
+                        Text(
+                            text = "Eva",
+                            fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                            fontSize = 40.sp,
+                            textAlign = TextAlign.Start,
+                            style = TextStyleBrush(),
+                        )
+                    }
+                }
+            )
         }
     )
 }
 
 @Composable
-internal fun Chat() {
+internal fun Chat(state: EvaState) {
     LazyColumn(
         modifier = Modifier
+            .fillMaxHeight(0.8f)
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.Bottom,
     ) {
+        items(state.messages.size) { index ->
+            val message = state.messages[index]
+            MessageBubble(
+                message = message,
+                isLastMessage = index == state.messages.size - 1
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
+        // Show loading animation for AI message if needed
+        if (state.isLoadingMessages) {
+            item {
+                LoadingBubble()
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun MessageBubble(
+    message: EvaViewModel.Message,
+    isLastMessage: Boolean
+) {
+    // Animation parameters
+    val animatedAlpha = remember { Animatable(0f) }
+    val animatedScale = remember { Animatable(0.8f) }
+
+    // Animate the message appearance
+    LaunchedEffect(message.id) {
+        // Sequential animations
+        animatedScale.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(300, easing = FastOutSlowInEasing)
+        )
+        animatedAlpha.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(200)
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(animatedAlpha.value)
+            .scale(animatedScale.value)
+            .padding(vertical = 4.dp),
+        contentAlignment = if (message.isUser) Alignment.CenterEnd else Alignment.CenterStart
+    ) {
+        Column(
+            modifier = Modifier
+                .widthIn(max = 280.dp)
+                .background(
+                    color = if (message.isUser)
+                        colorScheme.primaryContainer
+                    else
+                        colorScheme.secondaryContainer,
+                    shape = RoundedCornerShape(
+                        topStart = 16.dp,
+                        topEnd = 16.dp,
+                        bottomStart = if (message.isUser) 16.dp else 4.dp,
+                        bottomEnd = if (message.isUser) 4.dp else 16.dp
+                    )
+                )
+                .padding(12.dp)
+        ) {
+            Text(
+                text = message.text,
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (message.isUser)
+                    colorScheme.onPrimaryContainer
+                else
+                    colorScheme.onSecondaryContainer
+            )
+        }
+    }
+}
+
+@Composable
+private fun LoadingBubble() {
+    val infiniteTransition = rememberInfiniteTransition()
+    val dotsAlpha = List(3) { index ->
+        infiniteTransition.animateFloat(
+            initialValue = 0.2f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(500),
+                repeatMode = RepeatMode.Reverse,
+                initialStartOffset = StartOffset(index * 150)
+            )
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Row(
+            modifier = Modifier
+                .widthIn(max = 100.dp)
+                .background(
+                    color = colorScheme.secondaryContainer,
+                    shape = RoundedCornerShape(
+                        topStart = 16.dp,
+                        topEnd = 16.dp,
+                        bottomStart = 4.dp,
+                        bottomEnd = 16.dp
+                    )
+                )
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            dotsAlpha.forEach { animatedAlpha ->
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .alpha(animatedAlpha.value)
+                        .background(
+                            color = colorScheme.onSecondaryContainer,
+                            shape = CircleShape
+                        )
+                )
+            }
+        }
     }
 }

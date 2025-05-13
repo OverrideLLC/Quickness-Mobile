@@ -54,6 +54,10 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewModel)
             implementation(libs.koin.core)
+
+            //GEMINI
+            implementation(libs.generativeai)
+            implementation(libs.generativeai.google.wasm.js)
         }
 
         commonTest.dependencies {

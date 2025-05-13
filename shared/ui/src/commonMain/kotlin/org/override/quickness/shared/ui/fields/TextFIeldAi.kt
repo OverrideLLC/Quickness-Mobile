@@ -58,6 +58,7 @@ fun TextFieldAi(
     trailingIconResource: DrawableResource,
     trailingIconContentDescription: String,
     placeholder: String = "Ask something to EVA",
+    buttonEnabled: Boolean = true,
     onSubmitClick: () -> Unit = {},
     onClickServices: () -> Unit = {},
     onValueChange: (String) -> Unit // This will be called when state.text changes
@@ -216,7 +217,10 @@ fun TextFieldAi(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                IconButton(onClick = onSubmitClick) {
+                IconButton(
+                    onClick = onSubmitClick,
+                    enabled = buttonEnabled
+                ) {
                     Icon(
                         painter = painterResource(trailingIconResource),
                         contentDescription = trailingIconContentDescription,
