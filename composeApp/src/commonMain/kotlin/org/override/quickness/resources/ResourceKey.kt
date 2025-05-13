@@ -43,6 +43,7 @@ import org.override.quickness.generated.resources.phone_iphone_24dp_E8EAED_FILL0
 import org.override.quickness.generated.resources.photo_camera_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48
 import org.override.quickness.generated.resources.photo_camera_48dp_E3E3E3_FILL1_wght400_GRAD0_opsz48
 import org.override.quickness.generated.resources.qr_code_2_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
+import org.override.quickness.generated.resources.refresh_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24
 import org.override.quickness.generated.resources.rounded_corner_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import org.override.quickness.generated.resources.scan_delete_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import org.override.quickness.generated.resources.security_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -113,5 +114,6 @@ enum class ResourceKey(
     PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24(Res.drawable.photo_camera_48dp_E3E3E3_FILL0_wght400_GRAD0_opsz48),
     PHOTO_CAMERA_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48(Res.drawable.photo_camera_48dp_E3E3E3_FILL1_wght400_GRAD0_opsz48),
     APPS_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48(Res.drawable.apps_48dp_E3E3E3_FILL1_wght400_GRAD0_opsz48),
-    SEND_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48(Res.drawable.send_48dp_E3E3E3_FILL1_wght400_GRAD0_opsz48)
+    SEND_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48(Res.drawable.send_48dp_E3E3E3_FILL1_wght400_GRAD0_opsz48),
+    REFRESH_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24(Res.drawable.refresh_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24)
 }

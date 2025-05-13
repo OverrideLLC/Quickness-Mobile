@@ -18,12 +18,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -67,6 +69,7 @@ private fun Screen(viewModel: QrViewModel = koinViewModel(), paddingValues: Padd
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: PaddingValues) {
     LaunchedEffect(Unit) {
@@ -128,22 +131,43 @@ private fun TicketScreen(viewModel: QrViewModel, state: QrState, paddingValues: 
                         viewModel.update { copy(isExpanded = !isExpanded) }
                     }
                     Spacer(modifier = Modifier.height(12.dp))
-                    AnimatedVisibility(
-                        visible = !state.isExpanded,
-                        enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
-                                slideInVertically(initialOffsetY = { -it / 2 }),
-                        exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
-                                slideOutVertically(targetOffsetY = { -it / 2 })
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        blurQr(
-                            isBlurred = state.isBlurred,
-                            viewModel = viewModel,
-                            color = if (state.isExpanded) colorScheme.tertiary else Color(state.colors[0]),
-                            onActive = {
-                                viewModel.update { copy(isBlurred = true) }
+                        AnimatedVisibility(
+                            visible = !state.isExpanded,
+                            enter = fadeIn(animationSpec = tween(durationMillis = 500)) +
+                                    slideInVertically(initialOffsetY = { -it / 2 }),
+                            exit = fadeOut(animationSpec = tween(durationMillis = 500)) +
+                                    slideOutVertically(targetOffsetY = { -it / 2 })
+                        ) {
+                            blurQr(
+                                isBlurred = state.isBlurred,
+                                viewModel = viewModel,
+                                color = if (state.isExpanded) colorScheme.tertiary else Color(state.colors[0]),
+                                onActive = {
+                                    viewModel.update { copy(isBlurred = true) }
+                                },
+                                onInactive = {
+                                    viewModel.update { copy(showBiometric = true) }
+                                }
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(12.dp))
+                        IconButton(
+                            onClick = {
+                                viewModel.updateQrCodeForCurrentInterval()
                             },
-                            onInactive = {
-                                viewModel.update { copy(showBiometric = true) }
+                            modifier = Modifier.size(24.dp),
+                            content = {
+                                Icon(
+                                    painter = painterResource(viewModel.getDrawable(ResourceNameKey.REFRESH_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name)),
+                                    tint = if (state.isExpanded) colorScheme.tertiary else Color(state.colors[0]),
+                                    contentDescription = "Boton de refrescar",
+                                    modifier = Modifier.fillMaxSize()
+                                )
                             }
                         )
                     }
@@ -187,7 +211,7 @@ private fun blurQr(
         onClick = {
             if (isBlurred) onInactive() else onActive()
         },
-        modifier = Modifier.size(30.dp),
+        modifier = Modifier.size(24.dp),
         colors = IconButtonDefaults.iconButtonColors(
             containerColor = Color.Transparent,
             contentColor = colorScheme.tertiary
