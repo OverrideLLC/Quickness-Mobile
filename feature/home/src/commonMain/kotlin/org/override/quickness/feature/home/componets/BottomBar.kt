@@ -1,24 +1,26 @@
 package org.override.quickness.feature.home.componets
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomAppBar
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.shapes
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,44 +28,50 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import org.jetbrains.compose.resources.painterResource
 import org.override.quickness.feature.home.screen.HomeViewModel
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
-import org.jetbrains.compose.resources.painterResource
 import org.override.quickness.shared.utils.routes.RoutesHome
 
 @Composable
 internal fun BottomBar(
     navigationController: NavController,
     viewModel: HomeViewModel,
+    modifier: Modifier = Modifier,
     topName: (String) -> Unit
 ) {
     var selected by remember { mutableStateOf(ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24) }
 
-    BottomAppBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(
-                height = 60.dp
+    Box(
+        modifier = modifier
+            .widthIn(
+                min = 360.dp,
+                max = 400.dp
             )
+            .height(height = 40.dp)
             .background(
-                color = colorScheme.background,
-                shape = RoundedCornerShape(40.dp)
+                color = colorScheme.surfaceContainer,
+                shape = CircleShape
             ),
+        contentAlignment = Alignment.Center,
         content = {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.wrapContentWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                horizontalArrangement = Arrangement.SpaceAround,
                 content = {
                     BottomAppBarIcon(
                         iconResSelected = ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
                         iconResNotSelected = ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
                         iconSelected = selected,
                         viewModel = viewModel,
+                        modifier = Modifier.weight(0.3f),
+                        name = "Shop",
                         onClick = {
                             selected =
                                 ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
@@ -76,6 +84,8 @@ internal fun BottomBar(
                         iconResNotSelected = ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
                         iconSelected = selected,
                         viewModel = viewModel,
+                        modifier = Modifier.weight(0.3f),
+                        name = "Qr",
                         onClick = {
                             selected =
                                 ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
@@ -88,6 +98,8 @@ internal fun BottomBar(
                         iconResSelected = ResourceNameKey.SETTINGS_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
                         iconSelected = selected,
                         viewModel = viewModel,
+                        modifier = Modifier.weight(0.3f),
+                        name = "Config",
                         onClick = {
                             selected =
                                 ResourceNameKey.SETTINGS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
@@ -107,42 +119,59 @@ private fun BottomAppBarIcon(
     iconResNotSelected: ResourceNameKey,
     iconSelected: ResourceNameKey,
     viewModel: HomeViewModel,
+    name: String,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
-    val scale = remember { Animatable(1f) }
     val isSelected = iconResSelected == iconSelected || iconResNotSelected == iconSelected
     val iconResSelected =
         if (iconSelected == iconResNotSelected) iconResSelected else iconResNotSelected
 
-    LaunchedEffect(isSelected) {
-        scale.animateTo(
-            targetValue = if (isSelected) 1.4f else 1f,
-            animationSpec = tween(
-                durationMillis = 300,
-                easing = FastOutSlowInEasing
-            )
-        )
-    }
-
     Box(
-        modifier = Modifier
-            .wrapContentSize()
-            .clip(RoundedCornerShape(10.dp))
-            .background(Color.Transparent)
-            .scale(scale.value),
+        modifier = modifier
+            .height(40.dp)
+            .width(120.dp)
+            .clip(CircleShape)
+            .background(
+                if (isSelected) colorScheme.primaryContainer else colorScheme.surfaceContainer
+            ),
+        contentAlignment = Alignment.Center,
         content = {
-            IconButton(
-                onClick = onClick,
-                colors = IconButtonDefaults.iconButtonColors(),
-                content = {
-                    Icon(
-                        painter = painterResource(viewModel.getDrawable(iconResSelected.name)),
-                        contentDescription = null,
-                        modifier = Modifier.size(60.dp),
-                        tint = if (isSelected) colorScheme.primary else colorScheme.tertiary
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = if (isSelected) colorScheme.primaryContainer else colorScheme.surfaceContainer,
+                        shape = shapes.small
                     )
-                }
-            )
+                    .clickable {
+                        onClick()
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                IconButton(
+                    onClick = onClick,
+                    colors = IconButtonDefaults.iconButtonColors(),
+                    content = {
+                        Icon(
+                            painter = painterResource(viewModel.getDrawable(iconResSelected.name)),
+                            contentDescription = null,
+                            modifier = Modifier.size(30.dp),
+                            tint = if (isSelected) colorScheme.tertiary else colorScheme.onSurface
+                        )
+                    }
+                )
+                Text(
+                    text = name,
+                    color = if (isSelected) colorScheme.tertiary else colorScheme.onSurface,
+                    style = TextStyle(
+                        fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+            }
         }
     )
 }

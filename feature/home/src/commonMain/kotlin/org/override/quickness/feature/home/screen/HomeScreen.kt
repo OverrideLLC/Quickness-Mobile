@@ -7,9 +7,13 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -27,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
@@ -101,44 +106,38 @@ private fun Screen(
         },
         content = { padding ->
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = BackgroundAnimated(
-                            colorPrimary = colorScheme.primaryContainer,
-                            colorSecondary = colorScheme.background
-                        )
-                    ),
+                modifier = Modifier.fillMaxSize(),
                 content = {
-                    navHome(padding)
-                }
-            )
-        },
-        bottomBar = {
-            BottomBar(
-                navigationController = navController,
-                viewModel = viewModel,
-                topName = { topName = it }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                containerColor = colorScheme.primaryContainer,
-                contentColor = colorScheme.tertiary,
-                shape = shapes.small,
-                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
-                modifier = Modifier.size(50.dp),
-                onClick = { navControllerStart.navigate(RoutesStart.Camera.route) },
-                content = {
-                    Icon(
-                        painter = painterResource(viewModel.getDrawable(ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name)),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = BackgroundAnimated(
+                                    colorPrimary = colorScheme.primaryContainer,
+                                    colorSecondary = colorScheme.background
+                                )
+                            ),
+                        content = {
+                            navHome(padding)
+                        }
                     )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.BottomCenter)
+                            .padding(horizontal = 5.dp)
+                            .padding(bottom = 10.dp),
+                        contentAlignment = Alignment.BottomCenter,
+                    ){
+                        BottomBar(
+                            navigationController = navController,
+                            viewModel = viewModel,
+                            topName = { topName = it }
+                        )
+                    }
                 }
             )
         },
-        floatingActionButtonPosition = FabPosition.End,
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         modifier = Modifier
             .fillMaxSize()
@@ -163,8 +162,25 @@ private fun Screen(
                         }
                         change.consume()
                     },
-                    // ...
                 )
             }
     )
 }
+
+//FloatingActionButton(
+//                            containerColor = colorScheme.primaryContainer,
+//                            contentColor = colorScheme.tertiary,
+//                            shape = shapes.small,
+//                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+//                            modifier = Modifier
+//                                .size(50.dp)
+//                                .weight(0.1f),
+//                            onClick = { navControllerStart.navigate(RoutesStart.Camera.route) },
+//                            content = {
+//                                Icon(
+//                                    painter = painterResource(viewModel.getDrawable(ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name)),
+//                                    contentDescription = null,
+//                                    modifier = Modifier.size(24.dp)
+//                                )
+//                            }
+//                        )
