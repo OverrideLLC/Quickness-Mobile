@@ -180,7 +180,6 @@ internal fun EvaScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(padding)
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
@@ -207,16 +206,26 @@ internal fun EvaScreen(
                                     .padding(horizontal = 10.dp)
                                     .padding(bottom = 10.dp),
                                 content = {
-                                    Text(
-                                        text = displayedText,
-                                        fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                                        fontSize = 40.sp,
-                                        textAlign = TextAlign.Center,
-                                        style = TextStyleBrush(),
-                                        modifier = Modifier
-                                            .align(Alignment.Center)
-                                            .alpha(alpha.value)
-                                    )
+                                    Column(
+                                        verticalArrangement = Arrangement.Center,
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        modifier = Modifier.fillMaxSize()
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(viewModel.getDrawable(ResourceNameKey.EVA_LOGO.name)),
+                                            contentDescription = "Logo EVA",
+                                            tint = colorScheme.primary,
+                                            modifier = Modifier.size(100.dp)
+                                        )
+                                        Text(
+                                            text = displayedText,
+                                            fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                                            fontSize = 40.sp,
+                                            textAlign = TextAlign.Center,
+                                            style = TextStyleBrush(),
+                                            modifier = Modifier.alpha(alpha.value)
+                                        )
+                                    }
                                 }
                             )
                         }
@@ -225,9 +234,7 @@ internal fun EvaScreen(
                 TextFieldAi(
                     state = state.textFieldState,
                     isError = state.isError,
-                    modifier = Modifier
-                        .padding(horizontal = 10.dp)
-                        .padding(bottom = 10.dp),
+                    modifier = Modifier,
                     onValueChange = {
                         viewModel.onValueChange(it)
                     },
@@ -236,7 +243,7 @@ internal fun EvaScreen(
                         onAction(EvaAction.SendMessage)
                     },
                     buttonEnabled = state.textFieldState.text.isNotEmpty(),
-                    leadingIconResource = viewModel.getDrawable(ResourceNameKey.APPS_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48.name),
+                    leadingIconResource = viewModel.getDrawable(ResourceNameKey.ADD_BOX_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
                     trailingIconResource = viewModel.getDrawable(ResourceNameKey.SEND_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48.name),
                     leadingIconContentDescription = "Icono de servicios",
                     trailingIconContentDescription = "Icono de enviar"
@@ -245,8 +252,7 @@ internal fun EvaScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Transparent)
-                    .padding(padding),
+                    .background(Color.Transparent),
                 contentAlignment = Alignment.TopStart,
                 content = {
                     Row(
@@ -268,7 +274,7 @@ internal fun EvaScreen(
                         Text(
                             text = "Eva",
                             fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                            fontSize = 40.sp,
+                            fontSize = 30.sp,
                             textAlign = TextAlign.Start,
                             style = TextStyleBrush(),
                         )
@@ -297,7 +303,6 @@ internal fun Chat(state: EvaState) {
             Spacer(modifier = Modifier.height(8.dp))
         }
 
-        // Show loading animation for AI message if needed
         if (state.isLoadingMessages) {
             item {
                 LoadingBubble()

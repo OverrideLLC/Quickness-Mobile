@@ -101,8 +101,13 @@ private fun Screen(
             TopBar(
                 title = topName,
                 viewModel = viewModel,
-                onCameraClick = {},
-                onBackClick = {}
+                onCameraClick = {
+                    navControllerStart.navigate(RoutesStart.Camera.route)
+                },
+                onEvaClick = {
+                    navControllerStart.navigate(RoutesStart.Eva.route)
+                }
+
             )
         },
         content = { padding ->

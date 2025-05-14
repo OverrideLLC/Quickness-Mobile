@@ -1,8 +1,12 @@
 package org.override.quickness.feature.home.componets
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -52,6 +56,8 @@ internal fun BottomBar(
         selected == ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
     var selectedQr = selected == ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
     var selectedConfig = selected == ResourceNameKey.SETTINGS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
+    val scaleSelected = 0.6f
+    val scaleNotSelected = .2f
 
     val scaleSpec = tween<Float>(
         durationMillis = 800,
@@ -59,17 +65,17 @@ internal fun BottomBar(
     )
 
     var scaleAnimationShopping = animateFloatAsState(
-        targetValue = if (selectedShopping) 0.5f else .25f,
+        targetValue = if (selectedShopping) scaleSelected else scaleNotSelected,
         label = "",
         animationSpec = scaleSpec,
     )
     var scaleAnimationQr = animateFloatAsState(
-        targetValue = if (selectedQr) 0.5f else .25f,
+        targetValue = if (selectedQr) scaleSelected else scaleNotSelected,
         label = "",
         animationSpec = scaleSpec,
     )
     var scaleAnimationConfig = animateFloatAsState(
-        targetValue = if (selectedConfig) 0.5f else .25f,
+        targetValue = if (selectedConfig) scaleSelected else scaleNotSelected,
         label = "",
         animationSpec = scaleSpec,
     )
@@ -140,6 +146,7 @@ internal fun BottomBar(
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun BottomAppBarIcon(
     iconResSelected: ResourceNameKey,
@@ -165,6 +172,9 @@ private fun BottomAppBarIcon(
         contentAlignment = Alignment.Center,
         content = {
             AnimatedContent(
+                transitionSpec = {
+                    scaleIn(tween(500)) togetherWith (scaleOut(tween(500)))
+                },
                 targetState = isSelected,
                 content = { isSelected ->
                     Row(
@@ -174,7 +184,9 @@ private fun BottomAppBarIcon(
                                 color = if (isSelected) colorScheme.primaryContainer else colorScheme.surfaceContainer,
                                 shape = shapes.small
                             )
-                            .clickable {
+                            .clickable(
+                                enabled = !isSelected
+                            ) {
                                 if (!isSelected) onClick()
                             },
                         verticalAlignment = Alignment.CenterVertically,
@@ -182,6 +194,7 @@ private fun BottomAppBarIcon(
                     ) {
                         if (isSelected) {
                             IconButton(
+                                enabled = !isSelected,
                                 onClick = { },
                                 colors = IconButtonDefaults.iconButtonColors(),
                                 content = {
@@ -208,6 +221,7 @@ private fun BottomAppBarIcon(
                             )
                         } else {
                             IconButton(
+                                enabled = !isSelected,
                                 onClick = onClick,
                                 colors = IconButtonDefaults.iconButtonColors(),
                                 content = {

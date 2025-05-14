@@ -52,7 +52,7 @@ fun NavControllerStart(
                         slideIn(
                             initialOffset = {
                                 it.toIntRect().centerRight.copy(
-                                    x = 400,
+                                    x = 1000,
                                     y = 0
                                 )
                             },
@@ -63,7 +63,7 @@ fun NavControllerStart(
                         slideOut(
                             targetOffset = {
                                 it.toIntRect().centerRight.copy(
-                                    x = 400,
+                                    x = 1000,
                                     y = 0
                                 )
                             },
@@ -77,7 +77,29 @@ fun NavControllerStart(
                 }
                 composable(
                     route = RoutesStart.Camera.route,
-                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Camera.deepLink })
+                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Camera.deepLink }),
+                    enterTransition = {
+                        slideIn(
+                            initialOffset = {
+                                it.toIntRect().centerRight.copy(
+                                    x = 1000,
+                                    y = 0
+                                )
+                            },
+                            animationSpec = tween(500)
+                        )
+                    },
+                    exitTransition = {
+                        slideOut(
+                            targetOffset = {
+                                it.toIntRect().centerRight.copy(
+                                    x = 1000,
+                                    y = 0
+                                )
+                            },
+                            animationSpec = tween(500)
+                        )
+                    }
                 ) {
                     CameraRoot(navController = navControllerStart)
                 }

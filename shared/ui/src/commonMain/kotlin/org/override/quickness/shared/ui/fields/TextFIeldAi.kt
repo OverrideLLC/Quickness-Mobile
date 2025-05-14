@@ -1,21 +1,18 @@
 package org.override.quickness.shared.ui.fields
 
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -61,19 +58,14 @@ fun TextFieldAi(
     buttonEnabled: Boolean = true,
     onSubmitClick: () -> Unit = {},
     onClickServices: () -> Unit = {},
-    onValueChange: (String) -> Unit // This will be called when state.text changes
+    onValueChange: (String) -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
 
-    // Define effective colors based on the original OutlinedTextField styling
-    val unfocusedContainerColorEffective = colorScheme.onSurface.copy(alpha = 0f)
-    val focusedContainerColorEffective = colorScheme.primaryContainer.copy(alpha = 0f)
+    val unfocusedContainerColorEffective = colorScheme.surfaceContainer
+    val focusedContainerColorEffective = colorScheme.surfaceContainer
     val errorContainerColorEffective = colorScheme.errorContainer.copy(alpha = 0.7f)
-
-    val unfocusedIndicatorColorEffective = colorScheme.onSurface.copy(alpha = 0.7f)
-    val focusedIndicatorColorEffective = colorScheme.primaryContainer.copy(alpha = 0.7f)
-    val errorIndicatorColorEffective = colorScheme.errorContainer.copy(alpha = 0.7f)
 
     val errorPlaceholderColorEffective = colorScheme.errorContainer.copy(alpha = 0.7f)
     val focusedPlaceholderColorEffective = colorScheme.primaryContainer.copy(alpha = 0.7f)
@@ -81,18 +73,11 @@ fun TextFieldAi(
 
     val focusedTextColorEffective = colorScheme.onSurface
     val unfocusedTextColorEffective = colorScheme.onSurface
-    // ---
 
     val currentContainerColor = when {
         isError -> errorContainerColorEffective
         isFocused -> focusedContainerColorEffective
         else -> unfocusedContainerColorEffective
-    }
-
-    val currentIndicatorColor = when {
-        isError -> errorIndicatorColorEffective
-        isFocused -> focusedIndicatorColorEffective
-        else -> unfocusedIndicatorColorEffective
     }
 
     val currentPlaceholderColor = when {
@@ -104,129 +89,129 @@ fun TextFieldAi(
     val currentTextColor = if (isFocused) focusedTextColorEffective else unfocusedTextColorEffective
 
     var exceedLimit by remember { mutableStateOf(false) }
-    var shape = animateDpAsState(
-        targetValue = if (exceedLimit) 12.dp else 120.dp,
-        label = "Shape"
+    val overallShape = RoundedCornerShape(
+        topStart = 10.dp,
+        topEnd = 10.dp,
     )
-    val overallShape = RoundedCornerShape(shape.value)
     val iconButtonCornerRadius = 12.dp
     val iconButtonSize = 34.dp
-
-    // Call onValueChange when state.text changes
     LaunchedEffect(state.text) {
         onValueChange(state.text.toString())
     }
 
     Box(
-        modifier = modifier // User-provided modifier (e.g., for external padding, fillMaxWidth)
+        modifier = modifier
             .imePadding()
-            .defaultMinSize(minHeight = 56.dp) // Maintain a typical text field height
+            .defaultMinSize(minHeight = 56.dp)
             .background(currentContainerColor, overallShape)
-            .border(1.dp, currentIndicatorColor, overallShape)
-            .clip(overallShape) // Clip contents like text cursor to the shape
+            .clip(overallShape)
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp) // Padding inside the border, before icons
-                .heightIn(min = 56.dp), // Ensure row itself respects min height for alignment
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = 12.dp)
+                .heightIn(min = 56.dp),
         ) {
-            // Leading Icon
-            Box(
+            Row(
                 modifier = Modifier
-                    .size(iconButtonSize)
-                    .background(
-                        color = colorScheme.primaryContainer.copy(alpha = 0f), // Transparent, shape for ripple
-                        shape = RoundedCornerShape(iconButtonCornerRadius)
-                    ),
-                contentAlignment = Alignment.Center
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
+                    .heightIn(min = 56.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                IconButton(onClick = onClickServices) {
-                    Icon(
-                        painter = painterResource(leadingIconResource),
-                        contentDescription = leadingIconContentDescription,
-                        modifier = Modifier.size(24.dp),
-                        tint = colorScheme.onSurface // Or adapt tint based on state if needed
-                    )
-                }
-            }
-
-            Spacer(Modifier.width(8.dp)) // Space between leading icon and text field
-
-            // BasicTextField and Placeholder
-            BasicTextField(
-                state = state,
-                modifier = Modifier.weight(1f), // Take available space
-                textStyle = TextStyle(
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = currentTextColor,
-                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily // Ensure consistency
-                ),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
-                ),
-                onKeyboardAction = {
-                    KeyboardActions(
-                        onDone = { onDone() }
-                    )
-                },
-                interactionSource = interactionSource,
-                cursorBrush = BackgroundAnimated(
-                    colorPrimary = colorScheme.primaryContainer,
-                    colorSecondary = colorScheme.primary
-                ), // Standard cursor color
-                lineLimits = TextFieldLineLimits.MultiLine(
-                    minHeightInLines = 1,
-                    maxHeightInLines = 10
-                ),
-                decorator = { innerTextField ->
-                    Box(
-                        contentAlignment = Alignment.CenterStart,
-                    ) {
-                        if (state.text.isEmpty()) {
-                            Text(
-                                text = placeholder,
-                                fontSize = 14.sp,
-                                fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                                color = currentPlaceholderColor
-                            )
+                BasicTextField(
+                    state = state,
+                    modifier = Modifier.weight(1f),
+                    textStyle = TextStyle(
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = currentTextColor,
+                        fontFamily = MaterialTheme.typography.bodyMedium.fontFamily
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
+                    ),
+                    onKeyboardAction = {
+                        KeyboardActions(
+                            onDone = { onDone() }
+                        )
+                    },
+                    interactionSource = interactionSource,
+                    cursorBrush = BackgroundAnimated(
+                        colorPrimary = colorScheme.primaryContainer,
+                        colorSecondary = colorScheme.primary
+                    ),
+                    lineLimits = TextFieldLineLimits.MultiLine(
+                        minHeightInLines = 1,
+                        maxHeightInLines = 10
+                    ),
+                    decorator = { innerTextField ->
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                        ) {
+                            if (state.text.isEmpty()) {
+                                Text(
+                                    text = placeholder,
+                                    fontSize = 14.sp,
+                                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                                    color = currentPlaceholderColor
+                                )
+                            }
+                            innerTextField()
                         }
-                        innerTextField() // Renders the actual text input
+                    },
+                    onTextLayout = { textLayoutResult ->
+                        val currentLineCount = textLayoutResult()?.lineCount
+                        val hasExceeded = (currentLineCount ?: 0) > 1
+                        if (hasExceeded) exceedLimit = true
                     }
-                },
-                onTextLayout = { textLayoutResult ->
-                    val currentLineCount = textLayoutResult()?.lineCount
-                    val hasExceeded = (currentLineCount ?: 0) > 1
-                    if (hasExceeded) exceedLimit = true
-                }
-            )
-
-            Spacer(Modifier.width(8.dp)) // Space between text field and trailing icon
-
-            // Trailing Icon
-            Box(
-                modifier = Modifier
-                    .size(iconButtonSize)
-                    .background(
-                        color = colorScheme.primaryContainer.copy(alpha = 0f), // Transparent, shape for ripple
-                        shape = CircleShape
-                    ),
-                contentAlignment = Alignment.Center
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                IconButton(
-                    onClick = onSubmitClick,
-                    enabled = buttonEnabled
+                Box(
+                    modifier = Modifier
+                        .size(iconButtonSize)
+                        .background(
+                            color = colorScheme.primaryContainer.copy(alpha = 0f),
+                            shape = RoundedCornerShape(iconButtonCornerRadius)
+                        ),
+                    contentAlignment = Alignment.BottomStart
                 ) {
-                    Icon(
-                        painter = painterResource(trailingIconResource),
-                        contentDescription = trailingIconContentDescription,
-                        modifier = Modifier.size(24.dp),
-                        tint = colorScheme.onSurface // Or adapt tint
-                    )
+                    IconButton(onClick = onClickServices) {
+                        Icon(
+                            painter = painterResource(leadingIconResource),
+                            contentDescription = leadingIconContentDescription,
+                            modifier = Modifier.size(24.dp),
+                            tint = colorScheme.onSurface
+                        )
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .size(iconButtonSize)
+                        .background(
+                            color = colorScheme.primaryContainer.copy(alpha = 0f),
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.BottomEnd
+                ) {
+                    IconButton(
+                        onClick = onSubmitClick,
+                        enabled = buttonEnabled
+                    ) {
+                        Icon(
+                            painter = painterResource(trailingIconResource),
+                            contentDescription = trailingIconContentDescription,
+                            modifier = Modifier.size(24.dp),
+                            tint = colorScheme.onSurface
+                        )
+                    }
                 }
             }
         }
