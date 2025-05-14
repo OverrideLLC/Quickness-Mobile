@@ -275,8 +275,11 @@ internal fun Logout(
                         Button(
                             onClick = {
                                 onAction(SettingsAccountAction.Logout)
-                                navController.navigate(RoutesStart.Start.route)
-                                navController.popBackStack()
+                                navController.navigate(RoutesStart.Start.route){
+                                    popUpTo(RoutesStart.Home.route){
+                                        inclusive = true
+                                    }
+                                }
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.White,
