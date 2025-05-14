@@ -17,4 +17,5 @@ interface DataStoreRepository {
     suspend fun getDouble(key: String, defaultValue: Double): Double?
     suspend fun saveSet(key: String, value: Set<String>)
     suspend fun getSet(key: String, defaultValue: Set<String>): Set<String>?
+    suspend fun clear()
 }

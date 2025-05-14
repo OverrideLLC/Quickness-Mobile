@@ -15,7 +15,6 @@ import androidx.navigation.navDeepLink
 import org.override.quickness.feature.home.cam.CameraRoot
 import org.override.quickness.feature.home.qr.screens.QrScreen
 import org.override.quickness.feature.home.shop.screen.ShopScreen
-import org.override.quickness.shared.ui.animations.ContentSwitchAnimation
 import org.override.quickness.shared.utils.deeplinks.DeepLinksHome
 import org.override.quickness.shared.utils.routes.RoutesHome
 import org.override.quickness.shared.utils.routes.RoutesSettings
@@ -23,6 +22,7 @@ import org.override.quickness.shared.utils.routes.RoutesSettings
 @Composable
 fun NavControllerHome(
     navController: NavHostController,
+    navControllerStart: NavHostController,
     startDestination: String,
     paddingValues: PaddingValues,
     onBackClick: () -> Unit = {}
@@ -67,7 +67,8 @@ fun NavControllerHome(
             NavControllerSettings(
                 navController = rememberNavController(),
                 startDestination = RoutesSettings.Settings.route,
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                navControllerHome = navControllerStart
             )
         }
         composable(

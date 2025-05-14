@@ -129,6 +129,7 @@ fun NavControllerStart(
                             navController = navController,
                             startDestination = RoutesHome.Qr.route,
                             paddingValues = it,
+                            navControllerStart = navControllerStart
                         )
                     }
                 }
