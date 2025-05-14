@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -46,7 +47,11 @@ fun SettingsItem(
                 shape = RoundedCornerShape(10.dp)
             )
             .clickable { navigator() }
-            .padding(15.dp),
+            .padding(15.dp)
+            .heightIn(
+                min = 20.dp,
+                max = 30.dp
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -81,7 +86,11 @@ fun SettingsItemSwitch(
                 shape = RoundedCornerShape(10.dp)
             )
             .clickable { isActive() }
-            .padding(15.dp),
+            .padding(15.dp)
+            .heightIn(
+                min = 20.dp,
+                max = 30.dp
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -143,7 +152,11 @@ fun DropdownSettings(
                 shape = RoundedCornerShape(10.dp)
             )
             .clickable { expanded = !expanded }
-            .padding(15.dp),
+            .padding(15.dp)
+            .heightIn(
+                min = 20.dp,
+                max = 30.dp
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {
@@ -167,11 +180,6 @@ fun DropdownSettings(
             color = colorScheme.tertiary,
             fontFamily = MaterialTheme.typography.bodyMedium.fontFamily
         )
-        Icon(
-            painter = painterResource(iconKey),
-            tint = colorScheme.tertiary,
-            contentDescription = null
-        )
     }
 
     // Menú desplegable sin FocusRequester
@@ -179,7 +187,7 @@ fun DropdownSettings(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 15.dp)
+                .padding(horizontal = 10.dp)
         ) {
             Column(
                 modifier = Modifier

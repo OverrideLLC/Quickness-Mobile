@@ -6,9 +6,14 @@ import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -26,18 +31,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import org.override.quickness.feature.home.componets.BottomBar
-import org.override.quickness.feature.home.componets.TopBar
 import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.override.quickness.feature.home.componets.BottomBar
+import org.override.quickness.feature.home.componets.TopBar
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.override.quickness.shared.ui.animations.BackgroundAnimated
 import org.override.quickness.shared.utils.routes.RoutesHome
@@ -48,17 +55,16 @@ fun HomeScreen(
     navController: NavHostController,
     navControllerStart: NavController,
     navHome: @Composable (paddingValues: PaddingValues) -> Unit
-) =
-    Screen(
-        homeViewModel = koinViewModel(),
-        navController = navController,
-        navHome = navHome,
-        navControllerStart = navControllerStart
-    )
+) = Screen(
+    viewModel = koinViewModel(),
+    navController = navController,
+    navHome = navHome,
+    navControllerStart = navControllerStart,
+)
 
 @Composable
 private fun Screen(
-    homeViewModel: HomeViewModel,
+    viewModel: HomeViewModel,
     navController: NavHostController,
     navControllerStart: NavController,
     navHome: @Composable (paddingValues: PaddingValues) -> Unit
@@ -69,6 +75,7 @@ private fun Screen(
     val scope = rememberCoroutineScope()
     val factory = rememberPermissionsControllerFactory()
     val controller = remember(factory) { factory.createPermissionsController() }
+    var isNavigationBarVisible by remember { mutableStateOf(false) }
     BindEffect(controller)
     LaunchedEffect(Unit) {
         while (true) {
@@ -83,7 +90,7 @@ private fun Screen(
     }
 
     scope.launch {
-        homeViewModel.checkPermissions(
+        viewModel.checkPermissions(
             permissions = Permission.CAMERA,
             controller = controller
         )
@@ -93,51 +100,76 @@ private fun Screen(
         topBar = {
             TopBar(
                 title = topName,
-                viewModel = homeViewModel,
-                onEmergencyClick = {}
+                viewModel = viewModel,
+                onCameraClick = {
+                    navControllerStart.navigate(RoutesStart.Camera.route)
+                },
+                onEvaClick = {
+                    navControllerStart.navigate(RoutesStart.Eva.route)
+                }
+
             )
         },
         content = { padding ->
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = BackgroundAnimated(
-                            colorPrimary = colorScheme.primaryContainer,
-                            colorSecondary = colorScheme.background
-                        )
-                    ),
+                modifier = Modifier.fillMaxSize(),
                 content = {
-                    navHome(padding)
-                }
-            )
-        },
-        bottomBar = {
-            BottomBar(
-                navigationController = navController,
-                viewModel = homeViewModel,
-                topName = { topName = it }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                containerColor = colorScheme.primaryContainer,
-                contentColor = colorScheme.tertiary,
-                shape = shapes.small,
-                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
-                modifier = Modifier.size(70.dp),
-                onClick = { navControllerStart.navigate(RoutesStart.Camera.route) },
-                content = {
-                    Icon(
-                        painter = painterResource(homeViewModel.getDrawable(ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
-                        contentDescription = null,
-                        modifier = Modifier.size(30.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = BackgroundAnimated(
+                                    colorPrimary = colorScheme.primaryContainer,
+                                    colorSecondary = colorScheme.background
+                                )
+                            ),
+                        content = {
+                            navHome(padding)
+                        }
                     )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.BottomCenter)
+                            .padding(horizontal = 5.dp)
+                            .padding(bottom = 10.dp),
+                        contentAlignment = Alignment.BottomCenter,
+                    ){
+                        BottomBar(
+                            navigationController = navController,
+                            viewModel = viewModel,
+                            topName = { topName = it }
+                        )
+                    }
                 }
             )
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        floatingActionButtonPosition = FabPosition.End,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                var totalDragAmount = 0f
+                val dragThreshold = 50f
+
+                detectHorizontalDragGestures(
+                    onDragStart = {
+                        totalDragAmount = 0f
+                    },
+                    onHorizontalDrag = { change, dragAmount ->
+                        totalDragAmount += dragAmount
+
+                        if (totalDragAmount > dragThreshold && !isNavigationBarVisible) {
+                            isNavigationBarVisible = !isNavigationBarVisible
+                            navControllerStart.navigate(RoutesStart.Camera.route)
+                            totalDragAmount = 0f  // Reinicia después de activar
+                        } else if (totalDragAmount < -dragThreshold && !isNavigationBarVisible) {
+                            isNavigationBarVisible = !isNavigationBarVisible
+                            navControllerStart.navigate(RoutesStart.Eva.route)
+                            totalDragAmount = 0f  // Reinicia después de activar
+                        }
+                        change.consume()
+                    },
+                )
+            }
     )
 }

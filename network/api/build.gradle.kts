@@ -37,6 +37,8 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.kotlin.stdlib)
             implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.generativeai)
+            implementation(libs.generativeai.google.wasm.js)
         }
 
         commonTest.dependencies {

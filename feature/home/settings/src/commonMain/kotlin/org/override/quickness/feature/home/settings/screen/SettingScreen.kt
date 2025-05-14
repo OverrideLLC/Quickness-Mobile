@@ -27,7 +27,11 @@ fun SettingsScreen(
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-private fun Screen(navController: NavController, viewModel: SettingsViewModel = koinViewModel(), paddingValues: PaddingValues) {
+private fun Screen(
+    navController: NavController,
+    viewModel: SettingsViewModel = koinViewModel(),
+    paddingValues: PaddingValues
+) {
     val states = viewModel.settingsEnum.asStateFlow().value
     LazyColumn(
         content = {
@@ -45,7 +49,8 @@ private fun Screen(navController: NavController, viewModel: SettingsViewModel = 
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 24.dp)
-            .padding(paddingValues),
+            .padding(paddingValues)
+            .padding(bottom = 50.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     )

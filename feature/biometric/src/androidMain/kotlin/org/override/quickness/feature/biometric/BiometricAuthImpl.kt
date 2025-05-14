@@ -15,6 +15,7 @@ actual class BiometricAuthImpl actual constructor() : BiometricAuth {
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
+        print("BiometricAuthImpl")
         val context = ContextProvider.getContext()!!
         val fragmentActivity: FragmentActivity = ContextProvider.getFragmentActivity()!!
         val biometricManager = BiometricManager.from(context)

@@ -25,6 +25,7 @@ package org.override.quickness.feature.register.states
  * @property errorMessage A descriptive message providing details about the current error, if any.
  * @property isLoading A flag indicating if a loading process is ongoing (e.g., submitting data to a server).
  */
+@Deprecated("It was replaced by WebView")
 data class RegisterState(
     val email: String = "",
     val password: String = "",

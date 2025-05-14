@@ -33,6 +33,10 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.override.quickness.network.api.repository.GeminiRepository
+import org.override.quickness.network.api.service.GeminiService
+import org.override.quickness.network.impl.repository.GeminiRepositoryImpl
+import org.override.quickness.network.impl.service.GeminiServiceImpl
 
 /**
  * Koin module that provides network-related repository dependencies.
@@ -50,6 +54,7 @@ val repositoryNetworkModule = module {
     factoryOf(::RegisterRepositoryImpl).bind(RegisterRepository::class)
     factoryOf(::TokensRepositoryImpl).bind(TokensRepository::class)
     factoryOf(::ApolloRepositoryImpl).bind(ApolloRepository::class)
+    factoryOf(::GeminiRepositoryImpl).bind(GeminiRepository::class)
 }
 
 /**
@@ -64,6 +69,7 @@ val serviceModule = module {
     factoryOf(::TokensServiceImpl).bind(TokensService::class)
     factoryOf(::AuthUserServiceImpl).bind(AuthUserService::class)
     factoryOf(::ApolloServiceImpl).bind(ApolloService::class)
+    factoryOf(::GeminiServiceImpl).bind(GeminiService::class)
     singleOf(::createHttpClient)
 }
 

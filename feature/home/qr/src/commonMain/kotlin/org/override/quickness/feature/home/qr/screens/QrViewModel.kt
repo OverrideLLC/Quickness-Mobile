@@ -17,6 +17,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import org.override.quickness.shared.utils.qr_options.ColorQrOptions
 import org.override.quickness.shared.utils.qr_options.FormatQrOptions
 import org.override.quickness.shared.utils.qr_options.QrOptionsKeys
@@ -24,6 +25,7 @@ import org.override.quickness.shared.utils.qr_options.RoundedQrOptions
 import qrgenerator.qrkitpainter.QrKitBallShape
 import qrgenerator.qrkitpainter.QrKitBrush
 import qrgenerator.qrkitpainter.QrKitColors
+import qrgenerator.qrkitpainter.QrKitLogo
 import qrgenerator.qrkitpainter.QrKitOptions
 import qrgenerator.qrkitpainter.QrKitShapes
 import qrgenerator.qrkitpainter.QrPainter

@@ -176,4 +176,12 @@ class DataStoreRepositoryImpl(
             }
         }
     }
+
+    override suspend fun clear() {
+        withContext(dispatcher) {
+            dataStore.edit {
+                it.clear()
+            }
+        }
+    }
 }

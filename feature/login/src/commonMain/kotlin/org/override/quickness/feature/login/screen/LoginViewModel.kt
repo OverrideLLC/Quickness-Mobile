@@ -18,6 +18,7 @@ import org.override.quickness.shared.utils.objects.Constants
 import org.override.quickness.shared.utils.objects.KeysCache
 import org.override.quickness.shared.utils.objects.ValidatesData
 
+@Deprecated("It was replaced by WebView")
 class LoginViewModel(
     private val authRepository: AuthRepository,
     private val dataStoreRepository: DataStoreRepository,

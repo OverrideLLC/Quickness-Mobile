@@ -19,6 +19,7 @@ import org.override.quickness.shared.utils.objects.ValidatesData
  *
  * @property registerRepository The repository used for handling registration-related operations, such as submitting user data.
  */
+@Deprecated("It was replaced by WebView")
 class RegisterViewModel(
     private val registerRepository: RegisterRepository,
     private val resources: Resources

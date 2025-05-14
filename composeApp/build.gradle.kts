@@ -116,6 +116,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        vectorDrawables.useSupportLibrary = true
     }
     packaging {
         resources {
@@ -138,6 +139,10 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("release")
         }
     }
@@ -153,14 +158,12 @@ android {
 }
 
 buildConfig {
-    packageName("org.override.quickness")
+    packageName("org.override.quickness.shared.utils.objects")
     val properties = Properties()
     properties.load(project.rootProject.file("local.properties").reader())
 
     listOf(
-        properties.getProperty("TOKENS_API_LINK") to "TOKENS_API_LINK",
-        properties.getProperty("AUTH_API_LINK") to "AUTH_API_LINK",
-        properties.getProperty("REGISTER_API_LINK") to "REGISTER_API_LINK"
+        properties.getProperty("GEMINI-API-KEY") to "GEMINI-API-KEY"
     ).forEach { (value, name) ->
         buildConfigField(
             name = name,

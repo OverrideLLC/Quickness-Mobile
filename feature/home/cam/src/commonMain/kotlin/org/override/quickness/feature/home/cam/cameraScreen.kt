@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,9 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
+import org.override.quickness.shared.resources.drawable.ResourceNameKey
+import org.override.quickness.shared.ui.styles.TextStyleBrush
 import qrscanner.CameraLens
 import qrscanner.OverlayShape
 import qrscanner.QrScanner
@@ -56,38 +57,65 @@ fun CameraScreen(
     onAction: (CameraActions) -> Unit,
     navController: NavController,
 ) {
-    Scaffold(
-        containerColor = colorScheme.background,
-        topBar = {
-            TopBarCamera(
-                navController = navController
-            )
-        },
-        content = { padding ->
-            if (!state.isLoading){
-                QrScanner(
-                    modifier = Modifier.fillMaxSize(),
-                    flashlightOn = false,
-                    cameraLens = CameraLens.Back,
-                    openImagePicker = false,
-                    onCompletion = { value ->
-                        viewModel.update { copy(valueScanned = value) }
-                        onAction(CameraActions.OnCompleteScan)
-                    },
-                    imagePickerHandler = { },
-                    onFailure = { },
-                    overlayShape = OverlayShape.Square,
-                    overlayColor = colorScheme.primaryContainer.copy(0.5f),
-                    overlayBorderColor = colorScheme.primary,
-                    permissionDeniedView = {
-                        CameraNoPermissions()
-                    }
-                )
-            } else {
-                QrScannerLoadingScreen()
+    if (!state.isLoading) {
+        QrScanner(
+            modifier = Modifier.fillMaxSize(),
+            flashlightOn = false,
+            cameraLens = CameraLens.Back,
+            openImagePicker = false,
+            onCompletion = { value ->
+                viewModel.update { copy(valueScanned = value) }
+                onAction(CameraActions.OnCompleteScan)
+            },
+            imagePickerHandler = { },
+            onFailure = { },
+            overlayShape = OverlayShape.Square,
+            overlayColor = Color.Transparent,
+            overlayBorderColor = colorScheme.primary,
+            permissionDeniedView = {
+                CameraNoPermissions()
             }
-        }
-    )
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            content = {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color.Transparent)
+                        .align(
+                            alignment = Alignment.TopStart
+                        ),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        modifier = Modifier.size(24.dp),
+                        onClick = { navController.popBackStack() },
+                        content = {
+                            Icon(
+                                painter = painterResource(viewModel.getDrawable(ResourceNameKey.ARROW_BACK_IOS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp),
+                                tint = colorScheme.primary
+                            )
+                        }
+                    )
+                    Text(
+                        text = "Camera",
+                        fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                        fontSize = 30.sp,
+                        textAlign = TextAlign.Start,
+                        style = TextStyleBrush()
+                    )
+                }
+            }
+        )
+    } else {
+        QrScannerLoadingScreen()
+    }
 }
 
 @Composable
@@ -100,31 +128,6 @@ fun CameraNoPermissions() {
                 text = "Camera permissions not granted",
                 color = Color.White,
                 fontSize = 30.sp,
-            )
-        }
-    )
-}
-
-@Composable
-internal fun TopBarCamera(
-    navController: NavController,
-    viewmodel: CameraViewModel = koinViewModel()
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth().background(colorScheme.onBackground),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        content = {
-            IconButton(
-                onClick = { navController.popBackStack() },
-                content = {
-                    Icon(
-                        painter = painterResource(viewmodel.getDrawable(ResourceNameKey.ARROW_BACK_IOS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name)),
-                        contentDescription = "Back",
-                        tint = colorScheme.primary,
-                        modifier = Modifier
-                    )
-                }
             )
         }
     )

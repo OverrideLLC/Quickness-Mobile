@@ -7,4 +7,5 @@ sealed class DeepLinksHome(val deepLink: String) {
     object Service : DeepLinksHome("${BASE_URL}/service")
     object Qr : DeepLinksHome("${BASE_URL}/qr")
     object Settings : DeepLinksHome("${BASE_URL}/settings")
+    object Camera : DeepLinksHome("${BASE_URL}/camera")
 }

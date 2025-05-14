@@ -83,7 +83,7 @@ fun Products(
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
+            .height(100.dp)
             .graphicsLayer(rotationY = rotation.value) // Aplica la rotación
             .clickable {
                 scope.launch {
@@ -106,21 +106,21 @@ fun Products(
                             colorScheme.onBackground,
                             brushEndColor
                         ),
-                        start = Offset(animatedOffset.value, 0f),
-                        end = Offset(animatedOffset.value + 700f, 700f)
+                        start = Offset(0f, animatedOffset.value),
+                        end = Offset(0f,animatedOffset.value + 700f)
                     )
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Icon(
                     painter = painterResource(icon),
                     tint = iconTint,
                     contentDescription = null,
-                    modifier = Modifier.size(60.dp)
+                    modifier = Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
                 Text(

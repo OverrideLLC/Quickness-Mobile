@@ -49,6 +49,7 @@ import org.override.quickness.shared.utils.routes.RoutesStart
  *
  * @param navController Main navigation controller.
  */
+@Deprecated("It was replaced by WebView")
 @Composable
 fun RegisterScreen(navController: NavController) = RegisterContent(navController)
 
