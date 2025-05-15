@@ -78,6 +78,18 @@ kotlin {
             //UTILS ANDROID
             implementation(libs.androidx.biometric)
             implementation(libs.androidx.work.runtime.ktx)
+
+            implementation(libs.androidx.ui.graphics.android)
+
+            //CAMERAX
+            val camerax_version = "1.5.0-beta01"
+            implementation("androidx.camera:camera-core:${camerax_version}")
+            implementation("androidx.camera:camera-camera2:${camerax_version}")
+            implementation("androidx.camera:camera-lifecycle:${camerax_version}")
+            implementation("androidx.camera:camera-video:${camerax_version}")
+            implementation("androidx.camera:camera-view:${camerax_version}")
+            implementation("androidx.camera:camera-mlkit-vision:${camerax_version}")
+            implementation("androidx.camera:camera-extensions:${camerax_version}")
         }
 
         getByName("androidDeviceTest") {

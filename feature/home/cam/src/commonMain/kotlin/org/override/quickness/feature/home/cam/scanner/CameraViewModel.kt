@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.cam
+package org.override.quickness.feature.home.cam.scanner
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

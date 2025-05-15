@@ -18,7 +18,7 @@ kotlin {
         }
     }
 
-    val xcfName = "feature:loginKit"
+    val xcfName = "FeatureLoginKit"
 
     listOf(
         iosX64(),

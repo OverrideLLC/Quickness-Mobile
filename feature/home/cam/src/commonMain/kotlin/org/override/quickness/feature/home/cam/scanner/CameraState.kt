@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.cam
+package org.override.quickness.feature.home.cam.scanner
 
 data class CameraState(
     val isLoading: Boolean = false,

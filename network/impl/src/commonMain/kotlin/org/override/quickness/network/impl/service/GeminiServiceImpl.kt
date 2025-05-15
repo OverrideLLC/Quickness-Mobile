@@ -4,12 +4,13 @@ import dev.shreyaspatil.ai.client.generativeai.Chat
 import dev.shreyaspatil.ai.client.generativeai.GenerativeModel
 import dev.shreyaspatil.ai.client.generativeai.type.Content
 import dev.shreyaspatil.ai.client.generativeai.type.content
+import dev.shreyaspatil.ai.client.generativeai.type.generationConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import org.override.quickness.network.api.service.GeminiService
 
-class GeminiServiceImpl: GeminiService {
+class GeminiServiceImpl : GeminiService {
     private val basePromptTemplate = """
     Eres Eva, la asistente personal inteligente de Override, optimizada para operar dentro de la aplicación Quickness.
     Tu objetivo principal es maximizar la productividad y eficiencia del usuario.
@@ -29,13 +30,18 @@ class GeminiServiceImpl: GeminiService {
     val generativeAiChat: GenerativeModel
         get() = GenerativeModel(
             modelName = "gemini-2.0-flash-001",
-            apiKey = "AIzaSyBsLxYDfVlDDIgdOWg4Ke_dFJdGmYA-9Qc"
+            apiKey = "AIzaSyBsLxYDfVlDDIgdOWg4Ke_dFJdGmYA-9Qc",
         )
     val generativeAiQuestions: GenerativeModel
-        get() = GenerativeModel(
-            modelName = "gemini-2.0-flash-lite-001",
-            apiKey = "AIzaSyBsLxYDfVlDDIgdOWg4Ke_dFJdGmYA-9Qc"
-        )
+        get() {
+            val config = generationConfig {
+                responseMimeType = "application/json"
+            }
+            return GenerativeModel(
+                modelName = "gemini-2.0-flash-lite-001",
+                apiKey = "AIzaSyBsLxYDfVlDDIgdOWg4Ke_dFJdGmYA-9Qc",
+            )
+        }
 
     override suspend fun generate(prompt: String): String {
         return generativeAiQuestions.generateContent(prompt).text ?: "No response"
@@ -47,9 +53,12 @@ class GeminiServiceImpl: GeminiService {
             content(role = "model") { text("Ok") },
         )
         try {
-            val chat = generativeAiChat.startChat(history = promptList)
+            val chat = generativeAiChat
+                .startChat(
+                    history = promptList
+                )
             return chat
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             throw e
         }

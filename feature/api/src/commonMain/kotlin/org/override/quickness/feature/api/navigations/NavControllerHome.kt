@@ -12,7 +12,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
-import org.override.quickness.feature.home.cam.CameraRoot
 import org.override.quickness.feature.home.qr.screens.QrScreen
 import org.override.quickness.feature.home.shop.screen.ShopScreen
 import org.override.quickness.shared.utils.deeplinks.DeepLinksHome
@@ -71,13 +70,8 @@ fun NavControllerHome(
                 navControllerHome = navControllerStart
             )
         }
-        composable(
-            route = RoutesHome.Camera.route,
-            deepLinks = listOf(navDeepLink { uriPattern = DeepLinksHome.Camera.deepLink })
-        ) {
-            CameraRoot(
-                navController = navController
-            )
+        composable(RoutesHome.Widgets.route) {
+            NavControllerWidgets(paddingValues)
         }
     }
 }

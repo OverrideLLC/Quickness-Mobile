@@ -1,10 +1,10 @@
 package org.override.quickness.feature.home.componets
 
+import Photo_camera_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,79 +29,78 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.override.quickness.feature.home.screen.HomeViewModel
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
+import org.override.quickness.shared.resources.vectors.Settings_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24
 import org.override.quickness.shared.ui.styles.TextStyleBrush
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TopBar(
     title: String,
-    showBackButton: Boolean = false,
+    showFunctions: Boolean = false,
     viewModel: HomeViewModel,
     onEvaClick: () -> Unit = {},
-    onCameraClick: () -> Unit = {}
+    onCameraClick: () -> Unit = {},
 ) {
     TopAppBar(
         title = {
             Text(
                 text = title,
                 fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                fontSize = 40.sp,
+                fontSize = 30.sp,
                 textAlign = TextAlign.Center,
                 style = TextStyleBrush()
             )
         },
         actions = {
-            Box(
-                modifier = Modifier
-                    .height(35.dp)
-                    .width(80.dp)
-                    .background(
-                        color = colorScheme.onBackground,
-                        shape = CircleShape
-                    ),
-                contentAlignment = Alignment.Center,
-                content = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize(),
-                        content = {
-                            IconButton(
-                                onClick = { onCameraClick() },
-                                modifier = Modifier.fillMaxWidth(.5f),
-                                content = {
-                                    Icon(
-                                        painter = painterResource(
-                                            viewModel.getDrawable(
-                                                ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name
-                                            )
-                                        ),
-                                        contentDescription = "Camera",
-                                        tint = colorScheme.tertiary,
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                }
-                            )
-                            IconButton(
-                                onClick = { onEvaClick() },
-                                modifier = Modifier.fillMaxWidth(1f),
-                                content = {
-                                    Icon(
-                                        painter = painterResource(
-                                            viewModel.getDrawable(
-                                                ResourceNameKey.EVA_LOGO.name
-                                            )
-                                        ),
-                                        contentDescription = "Eva",
-                                        tint = colorScheme.tertiary,
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                }
-                            )
-                        }
-                    )
-                }
-            )
+            if (showFunctions) {
+                Box(
+                    modifier = Modifier
+                        .height(35.dp)
+                        .width(80.dp)
+                        .background(
+                            color = colorScheme.onBackground,
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center,
+                    content = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize(),
+                            content = {
+                                IconButton(
+                                    onClick = { onCameraClick() },
+                                    modifier = Modifier.fillMaxWidth(.5f),
+                                    content = {
+                                        Icon(
+                                            imageVector = Photo_camera_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24,
+                                            contentDescription = "Camera",
+                                            tint = colorScheme.tertiary,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    }
+                                )
+                                IconButton(
+                                    onClick = { onEvaClick() },
+                                    modifier = Modifier.fillMaxWidth(1f),
+                                    content = {
+                                        Icon(
+                                            painter = painterResource(
+                                                viewModel.getDrawable(
+                                                    ResourceNameKey.EVA_LOGO.name
+                                                )
+                                            ),
+                                            contentDescription = "Eva",
+                                            tint = colorScheme.tertiary,
+                                            modifier = Modifier.size(24.dp)
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    }
+                )
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,

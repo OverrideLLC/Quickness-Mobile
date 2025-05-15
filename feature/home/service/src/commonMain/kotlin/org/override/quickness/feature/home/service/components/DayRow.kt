@@ -34,13 +34,13 @@ import org.override.quickness.feature.home.service.states.DayItem
 @Composable
 fun DayItemView(
     dayItem: DayItem,
-    color: Long,
+    color: Color,
     onDayClick: (DayItem) -> Unit
 ) {
     // Tamaños y colores de ejemplo, ajusta a tu gusto
     val circleSize = 48.dp
     val backgroundColor = when {
-        dayItem.isSelected -> Color(color)
+        dayItem.isSelected -> color
         else -> Color.Transparent
     }
     val borderStroke = if (!dayItem.isSelected) BorderStroke(2.dp, colorScheme.tertiary) else null
@@ -84,7 +84,7 @@ fun CalendarCarousel(
     year: Int,
     month: Int,
     viewModel: LyraViewModel,
-    color: Long,
+    color: Color,
     onDaySelected: (DayItem) -> Unit
 ) {
     val initialDays = remember { viewModel.getDayItemsForMonth(year, month) }

@@ -1,9 +1,12 @@
 package org.override.quickness.feature.home.service.lyra
 
 import androidx.lifecycle.ViewModel
-import org.override.quickness.feature.home.service.states.DayItem
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.datetime.Clock.System.now
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
@@ -11,19 +14,26 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
+import org.override.quickness.feature.home.service.lyra.LyraAction.OnDaySelected
+import org.override.quickness.feature.home.service.states.DayItem
 
 class LyraViewModel : ViewModel() {
-    data class LyraState(
-        var isLoading: Boolean = false,
-        var daySelected: DayItem? = null,
-        val currentDay: LocalDate = now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-    )
 
     private val _state = MutableStateFlow(LyraState())
-    val state = _state.asStateFlow()
+    val state = _state
+        .onStart { }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            initialValue = LyraState()
+        )
 
-    fun update(update: LyraState.() -> LyraState) {
-        _state.value = update(_state.value)
+    fun onAction(action: LyraAction) {
+        when (action) {
+            is OnDaySelected -> {
+                _state.update { it.copy(daySelected = action.item) }
+            }
+        }
     }
 
     private fun getDaysInMonth(year: Int, month: Int): List<LocalDate> {

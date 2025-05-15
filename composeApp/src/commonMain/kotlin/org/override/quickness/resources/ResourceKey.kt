@@ -58,6 +58,8 @@ import org.override.quickness.generated.resources.start_24dp_E8EAED_FILL0_wght40
 import org.override.quickness.generated.resources.visibility_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import org.override.quickness.generated.resources.visibility_off_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import org.override.quickness.generated.resources.warning_24dp_E8EAED_FILL1_wght400_GRAD0_opsz24
+import org.override.quickness.generated.resources.widgets_70dp_E3E3E3_FILL0_wght400_GRAD0_opsz48
+import org.override.quickness.generated.resources.widgets_70dp_E3E3E3_FILL1_wght400_GRAD0_opsz48
 
 enum class ResourceKey(
     val drawable: DrawableResource
@@ -117,5 +119,7 @@ enum class ResourceKey(
     APPS_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48(Res.drawable.apps_48dp_E3E3E3_FILL1_wght400_GRAD0_opsz48),
     SEND_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48(Res.drawable.send_48dp_E3E3E3_FILL1_wght400_GRAD0_opsz48),
     REFRESH_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24(Res.drawable.refresh_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24),
-    EVA_LOGO(Res.drawable.eva_logo)
+    EVA_LOGO(Res.drawable.eva_logo),
+    WIDGETS_70DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ48(Res.drawable.widgets_70dp_E3E3E3_FILL0_wght400_GRAD0_opsz48),
+    WIDGETS_70DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48(Res.drawable.widgets_70dp_E3E3E3_FILL1_wght400_GRAD0_opsz48),
 }

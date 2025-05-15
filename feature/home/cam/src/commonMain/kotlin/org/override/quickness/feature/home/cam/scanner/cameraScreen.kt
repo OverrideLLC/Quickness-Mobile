@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.cam
+package org.override.quickness.feature.home.cam.scanner
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

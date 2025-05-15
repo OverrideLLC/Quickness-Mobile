@@ -7,20 +7,12 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -41,11 +33,9 @@ import dev.icerock.moko.permissions.Permission
 import dev.icerock.moko.permissions.compose.BindEffect
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.override.quickness.feature.home.componets.BottomBar
 import org.override.quickness.feature.home.componets.TopBar
-import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.override.quickness.shared.ui.animations.BackgroundAnimated
 import org.override.quickness.shared.utils.routes.RoutesHome
 import org.override.quickness.shared.utils.routes.RoutesStart
@@ -101,6 +91,8 @@ private fun Screen(
             TopBar(
                 title = topName,
                 viewModel = viewModel,
+                showFunctions = (navController.currentDestination?.route
+                    ?: "Qr") == RoutesHome.Qr.route,
                 onCameraClick = {
                     navControllerStart.navigate(RoutesStart.Camera.route)
                 },
@@ -134,7 +126,7 @@ private fun Screen(
                             .padding(horizontal = 5.dp)
                             .padding(bottom = 10.dp),
                         contentAlignment = Alignment.BottomCenter,
-                    ){
+                    ) {
                         BottomBar(
                             navigationController = navController,
                             viewModel = viewModel,
@@ -158,11 +150,11 @@ private fun Screen(
                     onHorizontalDrag = { change, dragAmount ->
                         totalDragAmount += dragAmount
 
-                        if (totalDragAmount > dragThreshold && !isNavigationBarVisible) {
+                        if (totalDragAmount > dragThreshold && !isNavigationBarVisible && navController.currentBackStackEntry?.destination?.route == RoutesHome.Qr.route) {
                             isNavigationBarVisible = !isNavigationBarVisible
                             navControllerStart.navigate(RoutesStart.Camera.route)
                             totalDragAmount = 0f  // Reinicia después de activar
-                        } else if (totalDragAmount < -dragThreshold && !isNavigationBarVisible) {
+                        } else if (totalDragAmount < -dragThreshold && !isNavigationBarVisible && navController.currentBackStackEntry?.destination?.route == RoutesHome.Qr.route) {
                             isNavigationBarVisible = !isNavigationBarVisible
                             navControllerStart.navigate(RoutesStart.Eva.route)
                             totalDragAmount = 0f  // Reinicia después de activar

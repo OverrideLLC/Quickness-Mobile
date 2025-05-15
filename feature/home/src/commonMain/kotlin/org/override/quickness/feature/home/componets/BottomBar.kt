@@ -2,8 +2,11 @@ package org.override.quickness.feature.home.componets
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.EaseInOutBack
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
@@ -56,12 +59,14 @@ internal fun BottomBar(
         selected == ResourceNameKey.SHOPPING_CART_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
     var selectedQr = selected == ResourceNameKey.QR_CODE_2_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
     var selectedConfig = selected == ResourceNameKey.SETTINGS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24
-    val scaleSelected = 0.6f
+    var selectedWidgets = selected == ResourceNameKey.WIDGETS_70DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ48
+    val scaleSelected = 0.4f
     val scaleNotSelected = .2f
 
     val scaleSpec = tween<Float>(
         durationMillis = 800,
         delayMillis = 0,
+        easing = EaseInOutBack
     )
 
     var scaleAnimationShopping = animateFloatAsState(
@@ -76,6 +81,11 @@ internal fun BottomBar(
     )
     var scaleAnimationConfig = animateFloatAsState(
         targetValue = if (selectedConfig) scaleSelected else scaleNotSelected,
+        label = "",
+        animationSpec = scaleSpec,
+    )
+    var scaleAnimationWidgets = animateFloatAsState(
+        targetValue = if (selectedWidgets) scaleSelected else scaleNotSelected,
         label = "",
         animationSpec = scaleSpec,
     )
@@ -127,6 +137,20 @@ internal fun BottomBar(
                         }
                     )
                     BottomAppBarIcon(
+                        iconResNotSelected = ResourceNameKey.WIDGETS_70DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ48,
+                        iconResSelected = ResourceNameKey.WIDGETS_70DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48,
+                        iconSelected = selected,
+                        viewModel = viewModel,
+                        modifier = Modifier.weight(scaleAnimationWidgets.value),
+                        name = "Widgets",
+                        onClick = {
+                            selected =
+                                ResourceNameKey.WIDGETS_70DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ48
+                            topName(RoutesHome.Widgets.route)
+                            navigationController.navigate(RoutesHome.Widgets.route) { popUpTo(0) }
+                        }
+                    )
+                    BottomAppBarIcon(
                         iconResNotSelected = ResourceNameKey.SETTINGS_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24,
                         iconResSelected = ResourceNameKey.SETTINGS_24DP_E8EAED_FILL1_WGHT400_GRAD0_OPSZ24,
                         iconSelected = selected,
@@ -173,7 +197,7 @@ private fun BottomAppBarIcon(
         content = {
             AnimatedContent(
                 transitionSpec = {
-                    scaleIn(tween(500)) togetherWith (scaleOut(tween(500)))
+                    fadeIn(tween(500, delayMillis = 300)) togetherWith (fadeOut(tween(0)))
                 },
                 targetState = isSelected,
                 content = { isSelected ->
