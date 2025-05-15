@@ -1,5 +1,6 @@
 package org.override.quickness.feature.eva.components
 
+// Se recomienda usar org.jetbrains.markdown si es un proyecto nuevo, pero org.intellij.markdown también funciona.
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight

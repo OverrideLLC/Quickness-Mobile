@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -22,6 +20,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import org.override.quickness.feature.eva.screen.EvaViewModel
+import org.override.quickness.feature.eva.utils.RenderAstNode
+import org.override.quickness.feature.eva.utils.parseMarkdownToAst
 
 @Composable
 internal fun MessageBubble(
@@ -70,14 +70,11 @@ internal fun MessageBubble(
                 )
                 .padding(12.dp)
         ) {
-            Text(
-                text = message.text,
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (message.isUser)
-                    colorScheme.onPrimaryContainer
-                else
-                    colorScheme.onSecondaryContainer
-            )
+            val messageText = message.text
+            val astRootNode = parseMarkdownToAst(messageText)
+            astRootNode.children.forEach { node ->
+                RenderAstNode(node, messageText)
+            }
         }
     }
 }
