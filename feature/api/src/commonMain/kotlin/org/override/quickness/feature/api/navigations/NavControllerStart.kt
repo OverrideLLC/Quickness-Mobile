@@ -19,7 +19,7 @@ import org.override.quickness.feature.api.NavigationViewModel
 import org.override.quickness.feature.home.cam.analyzer.CamAnalyzerRoot
 import org.override.quickness.feature.home.cam.scanner.CameraRoot
 import org.override.quickness.feature.home.screen.HomeScreen
-import org.override.quickness.feature.home.service.eva.EvaRoot
+import org.override.quickness.feature.eva.screen.EvaRoot
 import org.override.quickness.feature.start.screen.StartScreen
 import org.override.quickness.shared.ui.component.Progress
 import org.override.quickness.shared.utils.deeplinks.DeepLinksStart

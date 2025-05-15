@@ -6,22 +6,13 @@ plugins {
 }
 
 kotlin {
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "FeatureApiKit"
-            isStatic = true
-        }
-    }
     androidLibrary {
-        namespace = "org.override.quickness.feature.api"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        namespace = "org.override.quickness.feature.eva"
+        compileSdk = 35
+        minSdk = 30
 
-        withHostTestBuilder {}
+        withHostTestBuilder {
+        }
 
         withDeviceTestBuilder {
             sourceSetTreeName = "test"
@@ -30,28 +21,28 @@ kotlin {
         }
     }
 
+    val xcfName = "FeatureEvaKit"
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = xcfName
+            isStatic = true
+        }
+    }
+
     sourceSets {
         commonMain.dependencies {
-            //UTILS
             implementation(libs.kotlin.stdlib)
 
             //MODULES
-            //-----Features
-            implementation(projects.feature.start)
-            implementation(projects.feature.home)
-            implementation(projects.feature.home.settings)
-            implementation(projects.feature.home.qr)
-            implementation(projects.feature.home.service)
-            implementation(projects.feature.home.shop)
-            implementation(projects.feature.home.cam)
-            implementation(projects.feature.eva)
-            //-----Shared
             implementation(projects.shared.ui)
             implementation(projects.shared.utils)
             implementation(projects.shared.resources)
-            //-----Network
             implementation(projects.network.api)
-            //-----Data
             implementation(projects.data.api)
 
             //KOIN
@@ -68,11 +59,27 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.ui)
             implementation(libs.navigation.compose)
+
+            //UTILS
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.markdown)
+
+            //MOKO
+            implementation(libs.moko.permissions)
+            implementation(libs.moko.permissions.compose)
+
+            //GEMINI
+            implementation(libs.generativeai.google.wasm.js)
+            implementation(libs.generativeai)
         }
 
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-        }
+        commonTest.dependencies { implementation(libs.kotlin.test) }
+
+        androidMain.dependencies { }
+
+        iosMain.dependencies { implementation(libs.ktor.client.darwin) }
 
         getByName("androidDeviceTest") {
             dependencies {

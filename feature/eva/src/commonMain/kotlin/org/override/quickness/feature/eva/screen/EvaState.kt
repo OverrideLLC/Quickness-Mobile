@@ -1,10 +1,9 @@
-package org.override.quickness.feature.home.service.eva
+package org.override.quickness.feature.eva.screen
 
 import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Immutable
 import dev.shreyaspatil.ai.client.generativeai.Chat
-import org.override.quickness.feature.home.service.eva.EvaViewModel.Message
-import org.override.quickness.feature.home.service.utils.EvaService
+import org.override.quickness.feature.eva.utils.EvaService
 
 @Immutable
 data class EvaState(
@@ -14,7 +13,7 @@ data class EvaState(
     val chat: Chat? = null,
     val chatActive: Boolean = false,
     val messageError: String? = null,
-    val messages: List<Message> = emptyList(),
+    val messages: List<EvaViewModel.Message> = emptyList(),
     val isLoadingMessages: Boolean = false,
     val isNavigationBarVisible: Boolean = false,
     val serviceSuggestions: List<EvaService> = emptyList(),

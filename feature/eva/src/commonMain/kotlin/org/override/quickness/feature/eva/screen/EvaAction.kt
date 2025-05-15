@@ -1,6 +1,6 @@
-package org.override.quickness.feature.home.service.eva
+package org.override.quickness.feature.eva.screen
 
-import org.override.quickness.feature.home.service.utils.EvaService
+import org.override.quickness.feature.eva.utils.EvaService
 
 sealed interface EvaAction {
     data object SendMessage : EvaAction

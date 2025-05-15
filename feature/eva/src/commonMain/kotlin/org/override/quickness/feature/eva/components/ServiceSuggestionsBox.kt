@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.service.eva.components
+package org.override.quickness.feature.eva.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.override.quickness.feature.home.service.utils.EvaService
+import org.override.quickness.feature.eva.utils.EvaService
 
 @Composable
 fun ServiceSuggestionsBox(

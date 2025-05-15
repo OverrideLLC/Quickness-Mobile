@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.service.eva.components
+package org.override.quickness.feature.eva.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.override.quickness.feature.home.service.eva.EvaState
+import org.override.quickness.feature.eva.screen.EvaState
 
 @Composable
 internal fun Chat(state: EvaState) {

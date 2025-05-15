@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.service.eva.components
+package org.override.quickness.feature.eva.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
-import org.override.quickness.feature.home.service.eva.EvaViewModel
+import org.override.quickness.feature.eva.screen.EvaViewModel
 
 @Composable
 internal fun MessageBubble(

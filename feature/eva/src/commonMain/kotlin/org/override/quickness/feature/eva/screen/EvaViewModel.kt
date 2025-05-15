@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.service.eva
+package org.override.quickness.feature.eva.screen
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Immutable
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
-import org.override.quickness.feature.home.service.utils.EvaService
+import org.override.quickness.feature.eva.utils.EvaService
 import org.override.quickness.network.api.repository.GeminiRepository
 import org.override.quickness.shared.resources.interfaces.Resources
 import org.override.quickness.shared.resources.interfaces.ResourcesProvider

@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.service.utils
+package org.override.quickness.feature.eva.utils
 
 import androidx.compose.runtime.Immutable
 

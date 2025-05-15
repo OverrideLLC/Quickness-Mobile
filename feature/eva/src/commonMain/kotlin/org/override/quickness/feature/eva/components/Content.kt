@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.service.eva.components
+package org.override.quickness.feature.eva.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Animatable
@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.override.quickness.feature.home.service.eva.EvaAction
-import org.override.quickness.feature.home.service.eva.EvaState
-import org.override.quickness.feature.home.service.eva.EvaViewModel
+import org.override.quickness.feature.eva.screen.EvaAction
+import org.override.quickness.feature.eva.screen.EvaState
+import org.override.quickness.feature.eva.screen.EvaViewModel
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
 import org.override.quickness.shared.ui.fields.TextFieldAi
 import org.override.quickness.shared.ui.styles.TextStyleBrush

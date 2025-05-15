@@ -1,4 +1,4 @@
-package org.override.quickness.feature.home.service.eva.components
+package org.override.quickness.feature.eva.components
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.StartOffset
