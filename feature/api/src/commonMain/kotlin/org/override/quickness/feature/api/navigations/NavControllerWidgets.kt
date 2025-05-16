@@ -22,11 +22,9 @@ fun NavControllerWidgets(
         modifier = Modifier.fillMaxSize().padding(paddingValues),
         startDestination = RoutesWidget.Widgets.route
     ) {
-        composable(RoutesWidget.Widgets.route) {
-            WidgetsRoot(navController = navController)
-        }
-        composable(RoutesWidget.Lyra.route) {
-            LyraRoot()
-        }
+        composable(RoutesWidget.Widgets.route) { WidgetsRoot(navController = navController) }
+        composable(RoutesWidget.Lyra.route) { LyraRoot() }
+        composable(RoutesWidget.TaskTec.route) {  }
+        composable(RoutesWidget.MindStack.route) {  }
     }
 }

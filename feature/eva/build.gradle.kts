@@ -65,6 +65,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.markdown)
+            implementation(libs.cmp.image.pick.n.crop)
 
             //MOKO
             implementation(libs.moko.permissions)

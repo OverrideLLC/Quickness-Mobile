@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.override.quickness.feature.eva.utils.EvaService
+import org.override.quickness.feature.eva.utils.toByteArray
 import org.override.quickness.network.api.repository.GeminiRepository
 import org.override.quickness.shared.resources.interfaces.Resources
 import org.override.quickness.shared.resources.interfaces.ResourcesProvider
@@ -39,8 +40,8 @@ class EvaViewModel(
     )
 
     private val availableServices = listOf(
-        EvaService(id = "Lyra", name = "@Lyra", description = "AI assistant"),
-        EvaService(id = "Apollo", name = "@Apollo", description = "AI assistant"),
+        EvaService(id = "Lyra", name = "@Lyra", description = "Nutrition assistant"),
+        EvaService(id = "Apollo", name = "@Apollo", description = "Education assistant"),
     )
 
     private val _state = MutableStateFlow(EvaState())
@@ -60,7 +61,11 @@ class EvaViewModel(
             is EvaAction.SelectService -> selectService(action.service)
             EvaAction.DismissServiceSuggestions -> dismissServiceSuggestions()
             EvaAction.OpenCamera -> {
+                _state.update { currentState -> currentState.copy(cameraVisible = !this.state.value.cameraVisible) }
+            }
 
+            is EvaAction.SelectImage -> {
+                _state.update { currentState -> currentState.copy(imageSelected = action.image) }
             }
         }
     }
@@ -118,6 +123,26 @@ class EvaViewModel(
                 val chat = _state.value.chat ?: geminiRepository.startChat().also { newChat ->
                     _state.update { it.copy(chat = newChat) }
                 }
+                _state.value.imageSelected?.let { image ->
+                    val imageByteArray = image.toByteArray(format = "PNG", quality = 100)!!
+                    val response = geminiRepository.sendMessageWithImage(
+                        message = message,
+                        chat = chat,
+                        image = imageByteArray
+                    )
+                    _state.update { currentState ->
+                        currentState.copy(
+                            messages = currentState.messages + Message(
+                                text = response,
+                                isUser = false
+                            ),
+                            messageError = null,
+                            isLoadingMessages = false,
+                            imageSelected = null
+                        )
+                    }
+                    return@launch
+                }
 
                 val response = geminiRepository.sendMessage(message = message, chat = chat)
                 _state.update { currentState ->
@@ -146,58 +171,112 @@ class EvaViewModel(
         if (serviceCall != null) {
             val params = text.substringAfter(serviceCall.name).trim()
             _state.update { it.copy(isLoadingMessages = true) }
-
-            try {
-                val serviceResult: String? = when (serviceCall.id) {
-                    "Apollo" -> executeApollo(params)
-                    "Lyra" -> executeLyra(params)
-                    else -> null
-                }
-
-                if (serviceResult != null) {
-                    _state.update { currentState ->
-                        currentState.copy(
-                            messages = currentState.messages + Message(
-                                text = serviceResult,
-                                isUser = false,
-                                displayType = MessageDisplayType.CUSTOM_COMPONENT
-                            ),
-                            isLoadingMessages = false,
-                            messageError = null
-                        )
-                    }
-                } else if (serviceCall.id != "gemini") {
-                    _state.update { currentState ->
-                        currentState.copy(
-                            messages = currentState.messages + Message(
-                                text = "Lo siento, no pude procesar el comando para ${serviceCall.name}.",
-                                isUser = false,
-                            ),
-                            isLoadingMessages = false
-                        )
-                    }
-                }
-                return serviceCall.id != "gemini"
-            } catch (e: Exception) {
-                _state.update { currentState ->
-                    currentState.copy(
-                        messages = currentState.messages + Message(
-                            text = "Error al procesar '${serviceCall.name}': ${e.message}",
-                            isUser = false
-                        ),
-                        isLoadingMessages = false,
-                        isError = true
-                    )
-                }
-                e.printStackTrace()
-                return true
+            when (serviceCall.id) {
+                "Apollo" -> executeApollo(params)
+                "Lyra" -> executeLyra(params)
+                else -> null
             }
+            return true
         }
         return false
     }
 
     private fun executeLyra(params: String): String {
-        return ""
+        var response: String? = null
+        val lyraPromptTemplate = """
+        Responde preguntas (alimentos, porciones, sustituciones, imágenes) de forma clara, directa, concisa. Ayúdalo a sus metas (perder peso, energía, hábitos saludables, digestión, más verdura/agua, menos azúcar/ultraprocesados), considerando prediabetes, dislipidemia, posible intolerancia lactosa, estilo de vida.
+        Información Clave del Plan y Paciente (JUAN MANUEL MORENO GARCIA):
+        Nombre: JUAN MANUEL MORENO GARCIA, 38 años.
+        Objetivo Calórico: ~1550-1600 kcal/día.
+        Macros: Proteínas ~120g, Grasas ~53g (mono/poliinsaturadas), Carbohidratos ~160g (complejos/integrales).
+        Fibra: >25-30 g/día. Hidratación: 2-2.5 L agua/día.
+        Condiciones: Obesidad I (IMC 30.1), cintura 95cm (riesgo cardiovascular), prediabetes, dislipidemia, posible intolerancia lactosa, estreñimiento, insuficiencia Vit D.
+        Desafíos: Sedentarismo, estrés/comida emocional, poco tiempo cocina, dieta actual desequilibrada, comidas irregulares.
+        Preferencias: Pastas, pan, queso, chocolate, aguacate, patatas. Rechaza: Verduras amargas, vísceras, pescados grasos.
+        Instrucciones Específicas para Respuestas IA:
+        Claridad y Concisión: Directo, lenguaje sencillo. Ej: "Sí.", "No es ideal.", "Prefiere X."
+        Basado en Plan: Alinea a objetivos/condiciones. Justifica breve. Ej: "No galletas (afectan glucosa/fibra). Mejor avena."
+        Preguntas Alimentos (Texto/Imagen): Respuesta directa ("Sí", "No", "Modera") + justificación. Si "No"/modera, da 1-2 alternativas. Ej (imagen ensalada César): "No, pollo frito/aderezo alto en calorías/grasas. Mejor pollo plancha, aderezo ligero."
+        Sustituciones: Ofrece 1-2 alternativas saludables, ajustadas al plan/preferencias. Ej: "Reemplaza pan blanco con integral por fibra."
+        Consideraciones Adicionales: Recuerda intolerancia lactosa, prioriza fibra (estreñimiento), opciones rápidas (tiempo/estrés), hidratación.
+        Ejemplos de Interacción Esperada:
+        JUAN MANUEL: "NutriGuía IA, ¿puedo pasta boloñesa?"
+        NutriGuía IA: "Modera porción (1 taza pasta, carne magra, poco queso). Incluye ensalada."
+        JUAN MANUEL: "Antojo chocolate, ¿qué hago?"
+        NutriGuía IA: "1-2 cuadritos chocolate negro (>70%) o fruta."
+        
+        este es el prompt: $params
+    """.trimIndent()
+        return try {
+            viewModelScope.launch {
+                _state.value.imageSelected?.let {
+                    response = geminiRepository.sendMessageWithImage(
+                        message = if (!_state.value.isUseLyraServices) lyraPromptTemplate else "Esta consulta es de lyra:  $params",
+                        chat = _state.value.chat ?: geminiRepository.startChat(),
+                        image = it.toByteArray(format = "PNG", quality = 100)!!
+                    )
+                    _state.update { currentState ->
+                        currentState.copy(
+                            messages = currentState.messages + Message(
+                                text = response!!,
+                                isUser = false,
+                                displayType = MessageDisplayType.TEXT
+                            ),
+                            isLoadingMessages = false,
+                            messageError = null,
+                            isError = false,
+                            showServiceSuggestions = false,
+                            serviceSuggestions = emptyList(),
+                            currentServiceQuery = "",
+                            textFieldState = TextFieldState(),
+                            imageSelected = null
+                        )
+                    }
+                } ?: run {
+                    response = geminiRepository.sendMessage(
+                        message = if (!_state.value.isUseLyraServices) lyraPromptTemplate else "Esta consulta es de lyra:  $params",
+                        chat = _state.value.chat ?: geminiRepository.startChat()
+                    )
+                    _state.update { currentState ->
+                        currentState.copy(
+                            messages = currentState.messages + Message(
+                                text = response!!,
+                                isUser = false,
+                                displayType = MessageDisplayType.TEXT
+                            ),
+                            isLoadingMessages = false,
+                            messageError = null,
+                            isError = false,
+                            showServiceSuggestions = false,
+                            serviceSuggestions = emptyList(),
+                            currentServiceQuery = "",
+                            textFieldState = TextFieldState(),
+                            imageSelected = null
+                        )
+                    }
+                }
+            }
+            response ?: ""
+        } catch (e: Exception) {
+            _state.update { currentState ->
+                currentState.copy(
+                    messages = currentState.messages + Message(
+                        text = "Error al procesar '${1}': ${e.message}",
+                        isUser = false
+                    ),
+                    isLoadingMessages = false,
+                    isError = true,
+                    messageError = null,
+                    showServiceSuggestions = false,
+                    serviceSuggestions = emptyList(),
+                    currentServiceQuery = "",
+                    textFieldState = TextFieldState(),
+                    imageSelected = null
+                )
+            }
+            e.printStackTrace()
+            response ?: ""
+        }
     }
 
     private fun executeApollo(params: String): String {

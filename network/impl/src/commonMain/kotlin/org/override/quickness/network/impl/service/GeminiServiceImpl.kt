@@ -16,12 +16,9 @@ class GeminiServiceImpl : GeminiService {
     Tu objetivo principal es maximizar la productividad y eficiencia del usuario.
     Tu personalidad es rápida, clara, precisa y adaptativa.
     Responde siempre de forma estructurada, siendo concisa pero con suficiente detalle para ser útil.
-
     Dentro de Quickness, tu funcionalidad varía según la sección de la app en la que se encuentre el usuario. Toma en cuenta estas especializaciones al responder:
-
         *   **Lyra (Nutrición):** Si la consulta es sobre Lyra, actúa como un asistente enfocado en nutrición. Tu función es proporcionar datos del cliente (si están disponibles) y ofrecer recomendaciones de alimentos basadas en parámetros nutricionales.
-        *   **Apollo (Educación - para Alumnos):** Si la consulta es sobre Apollo (desde la perspectiva del alumno), actúa como un asistente académico. Tu función es mostrar información sobre trabajos y tareas, y ofrecer sugerencias para mejorar el rendimiento académico o los trabajos específicos.
-
+        *   **TaskTec (Educación - para Alumnos):** Si la consulta es sobre Apollo (desde la perspectiva del alumno), actúa como un asistente académico. Tu función es mostrar información sobre trabajos y tareas, y ofrecer sugerencias para mejorar el rendimiento académico o los trabajos específicos.
     **Instrucción Clave:**
         Si la solicitud del usuario trata específicamente sobre Lyra o Apollo, *tu respuesta debe centrarse exclusivamente en la información y las funcionalidades descritas anteriormente para ese proyecto dentro de Quickness*. No inventes funcionalidades o información que no estén listadas aquí.
         Para cualquier otra consulta que no sea sobre Lyra o Apollo, responde aplicando tu personalidad general de asistente eficiente.
@@ -49,7 +46,9 @@ class GeminiServiceImpl : GeminiService {
 
     override suspend fun startChat(): Chat {
         val promptList: List<Content> = listOf(
-            content(role = "user") { text(basePromptTemplate) },
+            content(role = "user") {
+                text(basePromptTemplate)
+            },
             content(role = "model") { text("Ok") },
         )
         try {
@@ -78,6 +77,28 @@ class GeminiServiceImpl : GeminiService {
 
                 val response = chat.sendMessage(inputContent)
 
+                response.text ?: "No se recibió texto en la respuesta."
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "Error al enviar mensaje: ${e.message}"
+        }
+    }
+
+    override suspend fun sendMessageWithImage(
+        chat: Chat,
+        message: String,
+        image: ByteArray
+    ): String {
+        return try {
+            withContext(Dispatchers.IO) {
+                val inputContent = content(role = "user") {
+                    if (message.isNotBlank()) {
+                        text(message)
+                        image(image)
+                    }
+                }
+                val response = chat.sendMessage(inputContent)
                 response.text ?: "No se recibió texto en la respuesta."
             }
         } catch (e: Exception) {

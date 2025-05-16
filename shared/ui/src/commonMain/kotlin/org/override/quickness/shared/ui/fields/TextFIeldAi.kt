@@ -1,5 +1,6 @@
 package org.override.quickness.shared.ui.fields
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -20,6 +22,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +37,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -49,15 +54,18 @@ fun TextFieldAi(
     state: TextFieldState,
     isError: Boolean,
     modifier: Modifier = Modifier,
-    onDone: () -> Unit = {},
     leadingIconResource: DrawableResource,
     leadingIconContentDescription: String,
     trailingIconResource: DrawableResource,
     trailingIconContentDescription: String,
+    cameraIconResource: DrawableResource,
     placeholder: String = "Ask something to EVA",
     buttonEnabled: Boolean = true,
+    selectedImage: ImageBitmap? = null,
+    onDone: () -> Unit = {},
     onSubmitClick: () -> Unit = {},
     onClickServices: () -> Unit = {},
+    openCamera: () -> Unit,
     onValueChange: (String) -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -112,6 +120,32 @@ fun TextFieldAi(
                 .padding(horizontal = 12.dp)
                 .heightIn(min = 56.dp),
         ) {
+            selectedImage?.let {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = colorScheme.primaryContainer.copy(alpha = 0.5f),
+                            shape = RoundedCornerShape(iconButtonCornerRadius)
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .size(80.dp)
+                            .padding(8.dp),
+                        content = {
+                            Image(
+                                bitmap = it,
+                                contentDescription = "Imagen seleccionada",
+                                modifier = Modifier.size(80.dp),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                    )
+                }
+            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -135,7 +169,12 @@ fun TextFieldAi(
                     ),
                     onKeyboardAction = {
                         KeyboardActions(
-                            onDone = { onDone() }
+                            onDone = { onDone() },
+                            onGo = { onDone() },
+                            onNext = { onDone() },
+                            onPrevious = { onDone() },
+                            onSearch = { onDone() },
+                            onSend = { onDone() }
                         )
                     },
                     interactionSource = interactionSource,
@@ -176,19 +215,37 @@ fun TextFieldAi(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(iconButtonSize)
+                        .wrapContentSize()
                         .background(
                             color = colorScheme.primaryContainer.copy(alpha = 0f),
                             shape = RoundedCornerShape(iconButtonCornerRadius)
                         ),
                     contentAlignment = Alignment.BottomStart
                 ) {
-                    IconButton(onClick = onClickServices) {
-                        Icon(
-                            painter = painterResource(leadingIconResource),
-                            contentDescription = leadingIconContentDescription,
-                            modifier = Modifier.size(24.dp),
-                            tint = colorScheme.onSurface
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    ) {
+                        IconButton(onClick = onClickServices) {
+                            Icon(
+                                painter = painterResource(leadingIconResource),
+                                contentDescription = leadingIconContentDescription,
+                                modifier = Modifier.size(24.dp),
+                                tint = colorScheme.onSurface
+                            )
+                        }
+                        IconButton(
+                            onClick = { openCamera() },
+                            modifier = Modifier,
+                            content = {
+                                Icon(
+                                    painter = painterResource(cameraIconResource),
+                                    contentDescription = "Icono de cámara",
+                                    tint = colorScheme.onSurface,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
                         )
                     }
                 }

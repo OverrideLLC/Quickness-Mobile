@@ -2,6 +2,7 @@ package org.override.quickness.feature.eva.screen
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.graphics.ImageBitmap
 import dev.shreyaspatil.ai.client.generativeai.Chat
 import org.override.quickness.feature.eva.utils.EvaService
 
@@ -18,5 +19,8 @@ data class EvaState(
     val isNavigationBarVisible: Boolean = false,
     val serviceSuggestions: List<EvaService> = emptyList(),
     val showServiceSuggestions: Boolean = false,
-    val currentServiceQuery: String = ""
+    val currentServiceQuery: String = "",
+    val imageSelected: ImageBitmap? = null,
+    val cameraVisible: Boolean = false,
+    val isUseLyraServices: Boolean = false
 )

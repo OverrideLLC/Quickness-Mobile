@@ -8,6 +8,7 @@ androidx-activityCompose = "1.10.1"
 androidx-lifecycle = "2.8.4"
 androidx-room = "2.7.1"
 androidx-sqliteBundled = "2.5.0"
+cmpImagePickNCrop = "1.0.9"
 compose-multiplatform = "1.8.0"
 coreSplashscreen = "1.0.1"
 firebase-bom = "33.13.0"
@@ -48,6 +49,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-sqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "androidx-sqliteBundled" }
 androidx-ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
+cmp-image-pick-n-crop = { module = "network.chaintech:cmp-image-pick-n-crop", version.ref = "cmpImagePickNCrop" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }

@@ -42,6 +42,18 @@ class WidgetsViewModel(
                     icon = getDrawable(ResourceNameKey.LOGO_GAIA_SB.name),
                     name = "Lyra",
                     route = RoutesWidget.Lyra.route
+                ),
+                Widget(
+                    id = Uuid.random().toString(),
+                    icon = getDrawable(ResourceNameKey.TT_LOGO.name),
+                    name = "TaskTec",
+                    route = RoutesWidget.TaskTec.route
+                ),
+                Widget(
+                    id = Uuid.random().toString(),
+                    icon = getDrawable(ResourceNameKey.OVERRIDE_LOGO.name),
+                    name = "MindStack",
+                    route = RoutesWidget.MindStack.route
                 )
             )
         )

@@ -35,6 +35,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.override.quickness.feature.home.service.components.CalendarCarousel
 import org.override.quickness.feature.home.service.components.CaloriesCount
 import org.override.quickness.feature.home.service.components.MenuSeccionItem
+import org.override.quickness.feature.home.service.components.Wearable
 import org.override.quickness.feature.home.service.components.obtenerSeccionesDeMenuEjemplo
 
 @Composable
@@ -46,7 +47,7 @@ fun MacrosItem(name: String, count: Number, modifier: Modifier = Modifier) {
                 CircleShape.copy(all = androidx.compose.foundation.shape.CornerSize(16.dp))
             )
             .padding(vertical = 16.dp, horizontal = 8.dp)
-            .size(height = 70.dp, width = 70.dp),
+            .size(height = 70.dp, width = 90.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -155,7 +156,7 @@ fun LyraScreen(
                 }
             }
         }
-        item {
+        item{
             Text(
                 text = "Menu",
                 style = MaterialTheme.typography.titleLarge,
@@ -169,9 +170,24 @@ fun LyraScreen(
             Spacer(modifier = Modifier.height(16.dp))
         }
         items(obtenerSeccionesDeMenuEjemplo()) { seccion ->
-            MenuSeccionItem(
-                seccion = seccion,
+            MenuSeccionItem(seccion = seccion)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Text(
+                text = "Wearable",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(vertical = 16.dp),
+                fontSize = 20.sp,
+                color = colorScheme.onSurface
             )
+            HorizontalDivider(
+                color = colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Wearable()
         }
     }
 }
@@ -203,3 +219,4 @@ fun DotsIndicator(
         }
     }
 }
+

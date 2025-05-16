@@ -1,6 +1,7 @@
 package org.override.quickness.network.impl.repository
 
 import dev.shreyaspatil.ai.client.generativeai.Chat
+import dev.shreyaspatil.ai.client.generativeai.type.Bitmap
 import org.override.quickness.network.api.repository.GeminiRepository
 import org.override.quickness.network.api.service.GeminiService
 
@@ -28,5 +29,17 @@ class GeminiRepositoryImpl(
 
     override suspend fun generateAdvancedPrompt(prompt: String): String {
         return service.generateAdvancedPrompt(prompt = prompt)
+    }
+
+    override suspend fun sendMessageWithImage(
+        chat: Chat,
+        message: String,
+        image: ByteArray
+    ): String {
+        return service.sendMessageWithImage(
+            chat = chat,
+            message = message,
+            image = image
+        )
     }
 }

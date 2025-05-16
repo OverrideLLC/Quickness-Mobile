@@ -5,7 +5,10 @@ import org.override.quickness.generated.resources.Blanco
 import org.override.quickness.generated.resources.LogoQuicknessQC
 import org.override.quickness.generated.resources.Logo_Gaia_SB
 import org.override.quickness.generated.resources.Negro
+import org.override.quickness.generated.resources.OverrideNegro
 import org.override.quickness.generated.resources.Res
+import org.override.quickness.generated.resources.TTNegro
+import org.override.quickness.generated.resources._3702396_code_qr_scan_scanner_icon
 import org.override.quickness.generated.resources.add_box_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import org.override.quickness.generated.resources.admin_panel_settings_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
 import org.override.quickness.generated.resources.alternate_email_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24
@@ -122,4 +125,7 @@ enum class ResourceKey(
     EVA_LOGO(Res.drawable.eva_logo),
     WIDGETS_70DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ48(Res.drawable.widgets_70dp_E3E3E3_FILL0_wght400_GRAD0_opsz48),
     WIDGETS_70DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48(Res.drawable.widgets_70dp_E3E3E3_FILL1_wght400_GRAD0_opsz48),
+    TT_LOGO(Res.drawable.TTNegro),
+    OVERRIDE_LOGO(Res.drawable.OverrideNegro),
+    CODE_QR_SCAN_SCANNER_ICON(Res.drawable._3702396_code_qr_scan_scanner_icon)
 }

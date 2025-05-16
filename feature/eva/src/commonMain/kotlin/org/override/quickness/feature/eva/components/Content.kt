@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import network.chaintech.cmpimagepickncrop.imagecropper.rememberImageCropper
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.override.quickness.feature.eva.screen.EvaAction
@@ -41,6 +42,7 @@ internal fun Content(
     onAction: (EvaAction) -> Unit,
     onBackNavigate: () -> Unit,
 ) {
+    val imageCropper = rememberImageCropper()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -112,31 +114,29 @@ internal fun Content(
             state = state.textFieldState,
             isError = state.isError,
             modifier = Modifier,
-            onValueChange = {
-                onAction(EvaAction.UpdateTextFieldState(it))
-            },
-            onClickServices = {
-            },
-            onSubmitClick = {
-                onAction(EvaAction.SendMessage)
-            },
             buttonEnabled = state.textFieldState.text.isNotEmpty(),
+            selectedImage = state.imageSelected,
             leadingIconResource = viewModel.getDrawable(ResourceNameKey.ADD_BOX_24DP_E8EAED_FILL0_WGHT400_GRAD0_OPSZ24.name),
             trailingIconResource = viewModel.getDrawable(ResourceNameKey.SEND_48DP_E3E3E3_FILL1_WGHT400_GRAD0_OPSZ48.name),
             leadingIconContentDescription = "Icono de servicios",
-            trailingIconContentDescription = "Icono de enviar"
+            trailingIconContentDescription = "Icono de enviar",
+            cameraIconResource = viewModel.getDrawable(ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name),
+            openCamera = { onAction(EvaAction.OpenCamera) },
+            onValueChange = { onAction(EvaAction.UpdateTextFieldState(it)) },
+            onSubmitClick = { onAction(EvaAction.SendMessage) },
+            onClickServices = {},
         )
     }
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 8.dp),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.TopStart,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().background(
+                color = colorScheme.background.copy(alpha = .6f),
+            )
         ) {
             IconButton(
                 onClick = { onBackNavigate() },
@@ -157,19 +157,11 @@ internal fun Content(
                 style = TextStyleBrush(),
             )
         }
-        IconButton(
-            onClick = { onAction(EvaAction.OpenCamera) },
-            modifier = Modifier.align(Alignment.TopEnd),
-            content = {
-                Icon(
-                    painter = painterResource(
-                        viewModel.getDrawable(ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name)
-                    ),
-                    contentDescription = "Icono de cámara",
-                    tint = colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        )
     }
+    ImagePicker(
+        openImagePickerState = state.cameraVisible,
+        imageCropper = imageCropper,
+        selectedImage = { image -> onAction(EvaAction.SelectImage(image)) },
+        openImagePicker = { openImagePicker -> onAction(EvaAction.OpenCamera) }
+    )
 }

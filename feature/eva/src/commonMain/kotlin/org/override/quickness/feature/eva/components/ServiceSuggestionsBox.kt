@@ -32,7 +32,7 @@ fun ServiceSuggestionsBox(
             .fillMaxWidth()
             .height(150.dp), // Altura fija para la caja de sugerencias, ajusta según necesites
         shape = RoundedCornerShape(8.dp),
-        color = colorScheme.surfaceVariant, // Un color de fondo distinguible
+        color = colorScheme.surfaceContainer, // Un color de fondo distinguible
         tonalElevation = 4.dp,
         shadowElevation = 4.dp
     ) {
@@ -60,7 +60,7 @@ fun ServiceSuggestionItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .background(colorScheme.surface, shape = RoundedCornerShape(4.dp))
+            .background(colorScheme.surfaceContainer, shape = RoundedCornerShape(4.dp))
             .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
         Column {
@@ -72,8 +72,8 @@ fun ServiceSuggestionItem(
             if (service.description.isNotEmpty()) {
                 Text(
                     text = service.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colorScheme.onSurfaceVariant
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = colorScheme.onSurface
                 )
             }
         }

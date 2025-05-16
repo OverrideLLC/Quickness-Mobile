@@ -1,6 +1,5 @@
 package org.override.quickness.feature.home.componets
 
-import Photo_camera_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import org.override.quickness.feature.home.screen.HomeViewModel
 import org.override.quickness.shared.resources.drawable.ResourceNameKey
-import org.override.quickness.shared.resources.vectors.Settings_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24
 import org.override.quickness.shared.ui.styles.TextStyleBrush
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,7 +71,11 @@ internal fun TopBar(
                                     modifier = Modifier.fillMaxWidth(.5f),
                                     content = {
                                         Icon(
-                                            imageVector = Photo_camera_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24,
+                                            painter = painterResource(
+                                                viewModel.getDrawable(
+                                                    ResourceNameKey.CODE_QR_SCAN_SCANNER_ICON.name
+                                                )
+                                            ),
                                             contentDescription = "Camera",
                                             tint = colorScheme.tertiary,
                                             modifier = Modifier.size(24.dp)
