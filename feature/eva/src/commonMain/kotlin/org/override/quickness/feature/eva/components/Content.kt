@@ -90,19 +90,6 @@ internal fun Content(
                                 )
                             }
                         }
-                        IconButton(
-                            onClick = { onAction(EvaAction.OpenCamera) },
-                            content = {
-                                Icon(
-                                    painter = painterResource(
-                                        viewModel.getDrawable(ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name)
-                                    ),
-                                    contentDescription = "Icono de cámara",
-                                    tint = colorScheme.primary,
-                                    modifier = Modifier.size(48.dp)
-                                )
-                            }
-                        )
                     }
                 }
             )
@@ -170,5 +157,19 @@ internal fun Content(
                 style = TextStyleBrush(),
             )
         }
+        IconButton(
+            onClick = { onAction(EvaAction.OpenCamera) },
+            modifier = Modifier.align(Alignment.TopEnd),
+            content = {
+                Icon(
+                    painter = painterResource(
+                        viewModel.getDrawable(ResourceNameKey.PHOTO_CAMERA_24DP_E3E3E3_FILL0_WGHT400_GRAD0_OPSZ24.name)
+                    ),
+                    contentDescription = "Icono de cámara",
+                    tint = colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        )
     }
 }

@@ -70,6 +70,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.markdown)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
 
             //MOKO
             implementation(libs.moko.permissions)

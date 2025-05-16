@@ -26,9 +26,7 @@ fun NavControllerWidgets(
             WidgetsRoot(navController = navController)
         }
         composable(RoutesWidget.Lyra.route) {
-            LyraRoot(
-                paddingValues =  paddingValues,
-            )
+            LyraRoot()
         }
     }
 }

@@ -79,26 +79,16 @@ private fun Screen(
         }
     }
 
-    scope.launch {
-        viewModel.checkPermissions(
-            permissions = Permission.CAMERA,
-            controller = controller
-        )
-    }
+    scope.launch { viewModel.checkPermissions(permissions = Permission.CAMERA, controller = controller) }
 
     Scaffold(
         topBar = {
             TopBar(
                 title = topName,
                 viewModel = viewModel,
-                showFunctions = (navController.currentDestination?.route
-                    ?: "Qr") == RoutesHome.Qr.route,
-                onCameraClick = {
-                    navControllerStart.navigate(RoutesStart.Camera.route)
-                },
-                onEvaClick = {
-                    navControllerStart.navigate(RoutesStart.Eva.route)
-                }
+                showFunctions = (navController.currentDestination?.route ?: "Qr") == RoutesHome.Qr.route,
+                onCameraClick = { navControllerStart.navigate(RoutesStart.Camera.route) },
+                onEvaClick = { navControllerStart.navigate(RoutesStart.Eva.route) }
 
             )
         },
@@ -153,11 +143,11 @@ private fun Screen(
                         if (totalDragAmount > dragThreshold && !isNavigationBarVisible && navController.currentBackStackEntry?.destination?.route == RoutesHome.Qr.route) {
                             isNavigationBarVisible = !isNavigationBarVisible
                             navControllerStart.navigate(RoutesStart.Camera.route)
-                            totalDragAmount = 0f  // Reinicia después de activar
+                            totalDragAmount = 0f
                         } else if (totalDragAmount < -dragThreshold && !isNavigationBarVisible && navController.currentBackStackEntry?.destination?.route == RoutesHome.Qr.route) {
                             isNavigationBarVisible = !isNavigationBarVisible
                             navControllerStart.navigate(RoutesStart.Eva.route)
-                            totalDragAmount = 0f  // Reinicia después de activar
+                            totalDragAmount = 0f
                         }
                         change.consume()
                     },

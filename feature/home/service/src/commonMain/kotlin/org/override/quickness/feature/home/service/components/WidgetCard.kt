@@ -26,8 +26,8 @@ internal fun WidgetCard(
 ){
     Card(
         colors = CardDefaults.cardColors(
-            contentColor = colorScheme.surface,
-            containerColor = colorScheme.onSurface
+            contentColor = colorScheme.onSurface,
+            containerColor = colorScheme.surfaceContainer
         ),
         onClick = onClick,
         modifier = Modifier
