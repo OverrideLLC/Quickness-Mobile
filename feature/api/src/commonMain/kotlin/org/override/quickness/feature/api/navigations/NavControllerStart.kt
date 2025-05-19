@@ -16,10 +16,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import org.koin.compose.viewmodel.koinViewModel
 import org.override.quickness.feature.api.NavigationViewModel
+import org.override.quickness.feature.eva.screen.EvaRoot
 import org.override.quickness.feature.home.cam.analyzer.CamAnalyzerRoot
 import org.override.quickness.feature.home.cam.scanner.CameraRoot
 import org.override.quickness.feature.home.screen.HomeScreen
-import org.override.quickness.feature.eva.screen.EvaRoot
 import org.override.quickness.feature.start.screen.StartScreen
 import org.override.quickness.shared.ui.component.Progress
 import org.override.quickness.shared.utils.deeplinks.DeepLinksStart
@@ -77,9 +77,7 @@ fun NavControllerStart(
                     )
                 }
 
-                composable(RoutesStart.CamAnalyzer.route) {
-                    CamAnalyzerRoot()
-                }
+                composable(RoutesStart.CamAnalyzer.route) { CamAnalyzerRoot() }
 
                 composable(
                     route = RoutesStart.Camera.route,
@@ -106,24 +104,16 @@ fun NavControllerStart(
                             animationSpec = tween(500)
                         )
                     }
-                ) {
-                    CameraRoot(navController = navControllerStart)
-                }
+                ) { CameraRoot(navController = navControllerStart) }
+
                 composable(
                     route = RoutesStart.Start.route,
-                    deepLinks = listOf(
-                        navDeepLink { uriPattern = DeepLinksStart.Start.deepLink }
-                    )
-                ) {
-                    StartScreen(navController = navControllerStart)
-                }
+                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Start.deepLink })
+                ) { StartScreen(navController = navControllerStart) }
+
                 composable(
                     route = RoutesStart.Home.route,
-                    deepLinks = listOf(
-                        navDeepLink {
-                            uriPattern = DeepLinksStart.Home.deepLink
-                        }
-                    ),
+                    deepLinks = listOf(navDeepLink { uriPattern = DeepLinksStart.Home.deepLink })
                 ) { args ->
                     args.arguments?.getString("uid")?.let { uid -> viewModel.saveUid(uid) }
                     val navController = rememberNavController()
