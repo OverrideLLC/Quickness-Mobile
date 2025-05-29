@@ -59,17 +59,37 @@ class QrViewModel(
 
     fun calculateInterval(): Int {
         val now = Clock.System.now() // Tiempo actual UTC
-        val localTime = now.toLocalDateTime(TimeZone.of("UTC-6"))
-        val minutesSinceMidnight = localTime.hour * 60 + localTime.minute
-        println("Minutes since midnight: $minutesSinceMidnight")
-        return (minutesSinceMidnight / 10) % 144 + 1
+
+        // Utilizar la zona horaria especificada UTC-6 (Horario Estándar Central, por ejemplo)
+        // Nota: TimeZone.of("UTC-6") es un desplazamiento fijo. Si la región observa horario de verano,
+        // podría ser más preciso usar un ID de región como "America/Chicago" si se desea
+        // seguir el horario local de pared de esa región.
+        // Para este ejemplo, se mantiene "UTC-6" según la función original.
+        val targetTimeZone = TimeZone.of("UTC-6")
+        val localTime = now.toLocalDateTime(targetTimeZone)
+
+        // Calcular el total de segundos transcurridos desde la medianoche en la zona horaria UTC-6
+        val secondsSinceMidnight = localTime.hour * 3600 + localTime.minute * 60 + localTime.second
+
+        // Imprimir los segundos desde la medianoche (opcional, para depuración)
+        // println("Segundos desde la medianoche (UTC-6): $secondsSinceMidnight")
+
+        // El valor del intervalo cambiará cada segundo.
+        // Mantenemos el ciclo de 144 valores (rango de 1 a 144).
+        // Esto significa que la secuencia de valores se repetirá cada 144 segundos (2 minutos y 24 segundos).
+        return (secondsSinceMidnight % 144) + 1
     }
 
     fun updateQrCodeForCurrentInterval() {
         viewModelScope.launch {
             val interval = calculateInterval()
             if (_qrState.value.currentInterval == "Interval $interval") return@launch
-            val token = tokenDatabaseRepository.getTokenByIndex(interval)?.tokenValue
+            //val token = tokenDatabaseRepository.getTokenByIndex(interval)?.tokenValue
+            val tokens = dataStoreRepository.getSet(
+                key = "DATA_TOKENS",
+                defaultValue = emptySet()
+            )
+            val token = tokens?.elementAtOrNull(interval - 1)
             println("Token for interval $interval: $token")
             updateQrCodeForToken(token, "Interval $interval")
         }

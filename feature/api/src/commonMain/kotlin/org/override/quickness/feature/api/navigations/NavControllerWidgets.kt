@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import org.override.quickness.feature.home.service.apollo.ApolloRoot
 import org.override.quickness.feature.home.service.lyra.LyraRoot
 import org.override.quickness.feature.home.service.screen.WidgetsRoot
 import org.override.quickness.shared.utils.routes.RoutesWidget
@@ -24,7 +25,7 @@ fun NavControllerWidgets(
     ) {
         composable(RoutesWidget.Widgets.route) { WidgetsRoot(navController = navController) }
         composable(RoutesWidget.Lyra.route) { LyraRoot() }
-        composable(RoutesWidget.TaskTec.route) {  }
+        composable(RoutesWidget.TaskTec.route) { ApolloRoot() }
         composable(RoutesWidget.MindStack.route) {  }
     }
 }

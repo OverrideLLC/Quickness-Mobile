@@ -9,6 +9,7 @@ import org.override.quickness.feature.home.cam.analyzer.CamAnalyzerViewModel
 import org.override.quickness.feature.home.cam.scanner.CameraViewModel
 import org.override.quickness.feature.home.qr.screens.QrViewModel
 import org.override.quickness.feature.home.screen.HomeViewModel
+import org.override.quickness.feature.home.service.apollo.ApolloViewModel
 import org.override.quickness.feature.home.service.lyra.LyraViewModel
 import org.override.quickness.feature.home.service.screen.WidgetsViewModel
 import org.override.quickness.feature.home.settings.screen.SettingsViewModel
@@ -48,4 +49,5 @@ val viewModelModulesService: Module
     get() = module {
         viewModelOf(::LyraViewModel)
         viewModelOf(::EvaViewModel)
+        viewModelOf(::ApolloViewModel)
     }

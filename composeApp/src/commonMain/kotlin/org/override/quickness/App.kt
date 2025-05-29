@@ -18,6 +18,7 @@ fun App(
     viewModel: AppViewModel = koinViewModel()
 ) {
     val isDarkTheme = viewModel.isDarkTheme.collectAsState().value
+    viewModel.getTokens()
     MaterialThemeApp(
         isDarkTheme = !isDarkTheme,
         content = {

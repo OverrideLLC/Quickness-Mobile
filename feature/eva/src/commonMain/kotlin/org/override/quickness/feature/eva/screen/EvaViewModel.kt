@@ -41,7 +41,7 @@ class EvaViewModel(
 
     private val availableServices = listOf(
         EvaService(id = "Lyra", name = "@Lyra", description = "Nutrition assistant"),
-        EvaService(id = "Apollo", name = "@Apollo", description = "Education assistant"),
+        EvaService(id = "TaskTec", name = "@TaskTec", description = "Education assistant"),
     )
 
     private val _state = MutableStateFlow(EvaState())
@@ -172,7 +172,7 @@ class EvaViewModel(
             val params = text.substringAfter(serviceCall.name).trim()
             _state.update { it.copy(isLoadingMessages = true) }
             when (serviceCall.id) {
-                "Apollo" -> executeApollo(params)
+                "TaskTec" -> executeApollo(params)
                 "Lyra" -> executeLyra(params)
                 else -> null
             }
@@ -280,7 +280,93 @@ class EvaViewModel(
     }
 
     private fun executeApollo(params: String): String {
-        return ""
+        var response: String? = null
+        val apolloPromptTemplate = """
+            Base de Conocimientos de Cursos:
+            1. Matemáticas Discretas (Ingeniería de Software, 3er Semestre, Sección A)
+            Trabajo: Tarea 1: Tablas de Verdad (Resolver ejercicios 1.1-1.5 del libro).
+            Anuncio: Próximo Examen Parcial (Temas: Lógica Proposicional, Teoría de Conjuntos).
+            2. Introducción a la Economía (Administración de Empresas, 1er Año, Sección Única)
+            Trabajo: Ensayo: Inflación (1000 palabras sobre causas y consecuencias).
+            Anuncio: Conferencia Invitada (Dr. Pérez sobre "Perspectivas Económicas Globales", el viernes).
+            3. Biología Celular (Medicina, 2º Semestre, Sección B-1)
+            Trabajo: Reporte de Práctica de Mitosis (Detallar fases observadas y dibujar).
+            Anuncio: Cambio de Horario Laboratorio (Miércoles ahora de 14-16 hrs).
+            4. Historia del Arte Renacentista (Bellas Artes, 5º Semestre, Sección C)
+            Trabajo: Análisis Comparativo: Donatello vs. Miguel Ángel (Comparar técnicas y temáticas).
+            Anuncio: Visita al Museo Cancelada (Visita al Museo Nacional de Arte del jueves cancelada).
+        este es el prompt: $params
+    """.trimIndent()
+        return try {
+            viewModelScope.launch {
+                _state.value.imageSelected?.let {
+                    response = geminiRepository.sendMessageWithImage(
+                        message = if (!_state.value.isUseLyraServices) apolloPromptTemplate else "Esta consulta es de TaskTec:  $params",
+                        chat = _state.value.chat ?: geminiRepository.startChat(),
+                        image = it.toByteArray(format = "PNG", quality = 100)!!
+                    )
+                    _state.update { currentState ->
+                        currentState.copy(
+                            messages = currentState.messages + Message(
+                                text = response!!,
+                                isUser = false,
+                                displayType = MessageDisplayType.TEXT
+                            ),
+                            isLoadingMessages = false,
+                            messageError = null,
+                            isError = false,
+                            showServiceSuggestions = false,
+                            serviceSuggestions = emptyList(),
+                            currentServiceQuery = "",
+                            textFieldState = TextFieldState(),
+                            imageSelected = null
+                        )
+                    }
+                } ?: run {
+                    response = geminiRepository.sendMessage(
+                        message = if (!_state.value.isUseLyraServices) apolloPromptTemplate else "Esta consulta es de TaskTec:  $params",
+                        chat = _state.value.chat ?: geminiRepository.startChat()
+                    )
+                    _state.update { currentState ->
+                        currentState.copy(
+                            messages = currentState.messages + Message(
+                                text = response!!,
+                                isUser = false,
+                                displayType = MessageDisplayType.TEXT
+                            ),
+                            isLoadingMessages = false,
+                            messageError = null,
+                            isError = false,
+                            showServiceSuggestions = false,
+                            serviceSuggestions = emptyList(),
+                            currentServiceQuery = "",
+                            textFieldState = TextFieldState(),
+                            imageSelected = null
+                        )
+                    }
+                }
+            }
+            response ?: ""
+        } catch (e: Exception) {
+            _state.update { currentState ->
+                currentState.copy(
+                    messages = currentState.messages + Message(
+                        text = "Error al procesar '${1}': ${e.message}",
+                        isUser = false
+                    ),
+                    isLoadingMessages = false,
+                    isError = true,
+                    messageError = null,
+                    showServiceSuggestions = false,
+                    serviceSuggestions = emptyList(),
+                    currentServiceQuery = "",
+                    textFieldState = TextFieldState(),
+                    imageSelected = null
+                )
+            }
+            e.printStackTrace()
+            response ?: ""
+        }
     }
 
     private fun onValueChange(text: String) {
